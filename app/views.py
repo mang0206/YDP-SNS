@@ -1,6 +1,10 @@
 from flask import request, render_template
 from . import app
 
+@app.route("/login")
+def login():
+    return render_template('login.html')
+
 @app.route('/join', methods=['GET',"POST"])
 def join():
     if request.method == "POST" :
@@ -12,3 +16,6 @@ def join():
 
     return render_template('join.html')
 
+@app.route("/index")
+def index():
+    return render_template('index.html')
