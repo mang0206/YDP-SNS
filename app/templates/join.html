@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block join %}
+<div class="join">
+    <h2>Join</h2>
+    <form action="">
+        <div class="user_id">
+            <label for="user"><h4>User ID</h4></label>
+            <input type="text" placeholder="User ID" id="user_id" name='user_id' required>
+        </div>
+        <div class="join_email">
+            <label for="join_email"><h4>E-mail</h4></label>
+            <input type="email" placeholder="Email" id="join_email" name='email' required>
+        </div>
+        <div class="join_pw">
+            <label for="join_pw"><h4>Password</h4></label>
+            <input type="password" placeholder="Password" id="join_pw" name='password' required>
+        </div>
+    </form>
+    <div class="join_submit">
+        <a href="/join_result">Join</a>
+    </div>
+</div>
+{% endblock %}
