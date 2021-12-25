@@ -20,12 +20,9 @@ def join():
 def index():
     return render_template('index.html')
 
-<<<<<<< HEAD
 @app.route('/test')
 def connection_mongodb():
     print(conn)
     db = conn['user']
     print(db)
     return jsonify({"":''})
-=======
->>>>>>> HG
