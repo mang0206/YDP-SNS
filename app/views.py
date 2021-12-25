@@ -16,6 +16,7 @@ def join():
 
     return render_template('join.html')
 
-@app.route("/index")
+@app.route("/")
 def index():
     return render_template('index.html')
+
