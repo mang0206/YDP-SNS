@@ -16,13 +16,16 @@ def join():
 
     return render_template('join.html')
 
-@app.route("/index")
+@app.route("/")
 def index():
     return render_template('index.html')
 
+<<<<<<< HEAD
 @app.route('/test')
 def connection_mongodb():
     print(conn)
     db = conn['user']
     print(db)
     return jsonify({"":''})
+=======
+>>>>>>> HG
