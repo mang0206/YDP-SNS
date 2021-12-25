@@ -23,6 +23,9 @@ def index():
 @app.route('/test')
 def connection_mongodb():
     print(conn)
-    db = conn['user']
-    print(db)
-    return jsonify({"":''})
+    db = conn.get_database('root')
+    col = db.get_collection('test')
+    col.insert_one({'Hello':'World'})
+    print(conn.list_database_names())
+    print(db.list_collection_names())
+    return jsonify({"":list(col.find())})
