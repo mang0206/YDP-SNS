@@ -1,5 +1,5 @@
-from flask import request, render_template
-from . import app
+from flask import request, render_template, jsonify
+from . import app, conn
 
 @app.route("/login")
 def login():
@@ -19,3 +19,10 @@ def join():
 @app.route("/index")
 def index():
     return render_template('index.html')
+
+@app.route('/test')
+def connection_mongodb():
+    print(conn)
+    db = conn['user']
+    print(db)
+    return jsonify({"":''})
