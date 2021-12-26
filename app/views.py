@@ -1,5 +1,7 @@
 from flask import request, render_template, jsonify
 from . import app, conn
+db = conn.get_database('root')
+col = db.get_collection('test')
 
 @app.route("/login")
 def login():
@@ -22,10 +24,12 @@ def index():
 
 @app.route('/test')
 def connection_mongodb():
-    print(conn)
-    db = conn.get_database('root')
-    col = db.get_collection('test')
-    col.insert_one({'Hello':'World'})
+    # print(conn)
+    # db = conn.get_database('root')
+    # col = db.get_collection('test')
+    # col.insert_one({'Hello':'World'})
     print(conn.list_database_names())
     print(db.list_collection_names())
-    return jsonify({"":list(col.find())})
+    # return jsonify({"":list(col.find())})
+    print(conn, db)
+    return jsonify({"":''})
