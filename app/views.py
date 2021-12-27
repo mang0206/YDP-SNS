@@ -1,4 +1,4 @@
-from flask import request, render_template, jsonify
+from flask import request, render_template, jsonify, redirect, url_for
 from . import app, conn
 
 @app.route("/login")
@@ -7,14 +7,18 @@ def login():
 
 @app.route('/join', methods=['GET',"POST"])
 def join():
-    if request.method == "POST" :
+    if request.method == "POST" and request.form.get('submit_btn') == "join_form":
         email = request.form.get('join_email')
-        password = request.form.get('join_pw')
-        password = request.form.get('join_pw2')
+        pw = request.form.get('join_pw')
+        pw2 = request.form.get('join_pw2')
         user_id = request.form.get('user_id')
-        
 
-    return render_template('join.html')
+        return render_template('join_success.html')
+    else:
+        return render_template('join.html')
+
+
+
 
 @app.route("/")
 def index():
