@@ -23,7 +23,7 @@ def join():
         return render_template('join.html')
 
 @app.route("/password_reset")
-def login():
+def password_reset():
     return render_template('password_reset.html')
 
 
