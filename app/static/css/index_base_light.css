@@ -1,0 +1,15 @@
+*{
+    margin: 0;
+    font-family: 'M PLUS 1', 'Spoqa Han Sans Neo', 'sans-serif';
+}
+.index_base_topbar{
+    height: 80px;
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+img{
+    width: 30px;
+    height: 30px;
+}

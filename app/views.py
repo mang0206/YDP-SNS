@@ -34,6 +34,10 @@ def join_success():
 def index():
     return render_template('index.html')
 
+@app.route("/user")
+def user():
+    return render_template('user.html')
+
 @app.route('/test')
 def connection_mongodb():
     print(conn.list_database_names())
@@ -45,3 +49,4 @@ def connection_mongodb():
 
     print(list(col.find()))
     return jsonify({"":'list(col.find())'})
+

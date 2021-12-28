@@ -5,8 +5,30 @@
     <meta charset="UTF-8">
     <title>YDP-SNS</title>
 
+    <link rel="stylesheet" href="../static/css/index_base_light.css">
+    <!-- font -->
+    <link href="https://fonts.googleapis.com/css2?family=M+PLUS+1:wght@100;200;300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href='//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css' rel='stylesheet' type='text/css'>
 </head>
 <body>
+    <div class="index_base_topbar">
+        <h3>SNS Project</h3>
+        <div>
+            <input type="text" id="search_input">
+            <label for="search_input">
+                <img src="../static/img/search.png" alt="search_icon">
+            </label>
+            <a href="/">
+                <img src="../static/img/home.png" alt="home_icon">
+            </a>
+            <a href="/friend">
+                <img src="../static/img/friends.png" alt="friend_icon">
+            </a>
+            <!-- <a href="/content"></a> 팝업창 -->
+            <!-- <a href="/notice"></a> 팝업창 -->
+            <!-- <a href=""></a> 유저 팝업창 -->
+        </div>
+    </div>
     <div>
         {% block index %}
         {% endblock %}
