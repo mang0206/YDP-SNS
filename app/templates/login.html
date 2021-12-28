@@ -1,26 +1,29 @@
 {% extends 'login_base.html' %}
 {% block login %}
 <div>
-    <h2>Log-in</h2>
+    <!-- <h2>Log-in</h2> -->
     <form action="">
         <div>
             <label for="id"><h4>ID</h4></label>
-            <input type="id" placeholder="user_id" id="user_id" required>
+            <input type="id" placeholder="user_id" id="user_id" class="login_base_input_box" required>
         </div>
         <div>
             <label for="password"><h4>Password</h4></label>
-            <input type="password" placeholder="Password" id="password" required>
+            <input type="password" placeholder="Password" id="password"  class="login_base_input_box" required>
         </div>
     </form>
     <div>
-        <a>비밀번호를 잊으셨나요?</a>
-    </div>
-    <div>
-        <a href="/index">Log-in</a>
+        <span>비밀번호를 잊으셨나요?</span>
+        <a href="/password_reset">비밀번호 재설정</a>
     </div>
     <div>
         <span>회원가입 하기</span>
         <a href="/join" class="login_join_button">Join</a>
+    </div>
+    <div class="login_base_button">
+        <input type="button" id="login_btn">
+        <label for="login_btn"><a href="/index">Log in</a></label>
+        <!-- <a href="/index">Log-in</a> -->
     </div>
 </div>
 {% endblock %}

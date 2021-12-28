@@ -5,22 +5,28 @@
     <meta charset="UTF-8">
     <title>YDP-SNS</title>
 
+    <link rel="stylesheet" href="../static/css/style_light.css?ver1">
 </head>
-<body>
-    <div>
-        {% block login %}
-        {% endblock %}
-    </div>
-    <div>
-        {% block password_reset %}
-        {% endblock %}
-    </div>
-    <div>
-        {% block join %}
-        {% endblock %}
-    </div>
-    <div>
-        {% block join_success %}
-        {% endblock %}
+<body class="login_base">
+    <div class="login_base_container">
+        <h1 class="login_base_logo">SNS<br>Project</h1>
+        <div class="login_base_right">
+            <div class="login">
+                {% block login %}
+                {% endblock %}
+            </div>
+            <div class="password_reset">
+                {% block password_reset %}
+                {% endblock %}
+            </div>
+            <div class="join">
+                {% block join %}
+                {% endblock %}
+            </div>
+            <div class="join_success">
+                {% block join_success %}
+                {% endblock %}
+            </div>
+        </div>
     </div>
 </body>
