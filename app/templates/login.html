@@ -11,20 +11,19 @@
             <label for="password"><h4>Password</h4></label>
             <input type="password" placeholder="Password" id="password"  class="login_base_input_box" required>
         </div>
+        <div>
+            <span>비밀번호를 잊으셨나요?</span>
+            <a href="/password_reset">비밀번호 재설정</a>
+        </div>
+        <div>
+            <span>회원가입 하기</span>
+            <a href="/join" class="login_join_button">Join</a>
+        </div>
+        <div  class="login_base_button">
+            <input type="submit" id="login_btn">
+            <label for="login_btn">Log in</label>
+        </div>
     </form>
-    <div>
-        <span>비밀번호를 잊으셨나요?</span>
-        <a href="/password_reset">비밀번호 재설정</a>
-    </div>
-    <div>
-        <span>회원가입 하기</span>
-        <a href="/join" class="login_join_button">Join</a>
-    </div>
-    <div class="login_base_button">
-        <input type="submit" id="login_btn">
-        <label for="login_btn">Log in</label>
-        <!-- <a href="/index">Log-in</a> -->
-    </div>
 </div>
 {% endblock %}
 

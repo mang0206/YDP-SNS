@@ -26,6 +26,9 @@ def join():
 def password_reset():
     return render_template('password_reset.html')
 
+@app.route("/join_success")
+def join_success():
+    return render_template('join_success.html')
 
 @app.route("/")
 def index():
