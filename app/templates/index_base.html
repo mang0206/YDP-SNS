@@ -12,24 +12,22 @@
 </head>
 <body>
     <div class="index_base_topbar">
-        <h3>SNS Project</h3>
-        <div>
-            <input type="text" id="search_input">
+        <a href="/"><h2>SNS Project</h2></a>
+        <form action="">
+            <input type="text" id="search_input" placeholder="검색">
             <label for="search_input">
                 <img src="../static/img/search.png" alt="search_icon">
             </label>
-            <a href="/">
-                <img src="../static/img/home.png" alt="home_icon">
-            </a>
-            <a href="/friend">
-                <img src="../static/img/friends.png" alt="friend_icon">
-            </a>
-            <!-- <a href="/content"></a> 팝업창 -->
-            <!-- <a href="/notice"></a> 팝업창 -->
-            <!-- <a href=""></a> 유저 팝업창 -->
+        </form>
+        <div class="navigation_icon">
+            <a href="/"><img src="../static/img/home.png" alt="home_icon"></a>
+            <a href="/friend"><img src="../static/img/friends.png" alt="friend_icon"></a>
+            <a href="/content"><img src="../static/img/plus.png" alt="plus_icon"></a>
+            <a href="/notice"><img src="../static/img/notification.png" alt="notice_icon"></a>
+            <a href="/user">사용자 프로필</a> <!-- 프로필,로그아웃,설정 팝업창 -->
         </div>
     </div>
-    <div>
+    <div class="both_layout">
         {% block index %}
         {% endblock %}
     </div>
@@ -45,7 +43,7 @@
         {% block search %}
         {% endblock %}
     </div>
-    <div>
+    <div class="setting">
         {% block setting %}
         {% endblock %}
     </div>

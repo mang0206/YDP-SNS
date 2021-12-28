@@ -1,4 +1,15 @@
 {% extends 'index_base.html' %}
 {% block friend %}
-
+<div>
+    <h2>친구 목록</h2>
+</div>
+<div class="both_layout">
+    <!-- js 사용하여 친구추천이 있는 경우만 나타나는 영역 생성 -->
+    <div class="friend_list">
+        친구 목록
+    </div>
+    <div class="layout_right friend_recommend">
+        친구 추천 목록
+    </div>
+</div>
 {% endblock %}
