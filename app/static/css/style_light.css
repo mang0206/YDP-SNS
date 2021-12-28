@@ -61,9 +61,9 @@
     border-radius: 15px;
     border: none;
 }
-.login_base_button input{
+/* .login_base_button input{
     display: none;
-}
+} */
 .login_base_button label{
     display: block;
 }
