@@ -22,7 +22,9 @@ def join():
     else:
         return render_template('join.html')
 
-
+@app.route("/password_reset")
+def login():
+    return render_template('password_reset.html')
 
 
 @app.route("/")
