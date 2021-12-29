@@ -22,9 +22,33 @@ def join():
     else:
         return render_template('join.html')
 
+@app.route("/password_reset")
+def password_reset():
+    return render_template('password_reset.html')
+
+@app.route("/join_success")
+def join_success():
+    return render_template('join_success.html')
+
 @app.route("/")
 def index():
     return render_template('index.html')
+
+@app.route("/search")
+def search():
+    return render_template('search.html')
+
+@app.route("/user")
+def user():
+    return render_template('user.html')
+
+@app.route("/friend")
+def friend():
+    return render_template('friend.html')
+
+@app.route("/setting")
+def setting():
+    return render_template('setting.html')
 
 @app.route('/test')
 def connection_mongodb():
@@ -37,3 +61,4 @@ def connection_mongodb():
 
     print(list(col.find()))
     return jsonify({"":'list(col.find())'})
+

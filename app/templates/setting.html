@@ -1,4 +1,52 @@
-{% extends 'login_base.html' %}
+{% extends 'index_base.html' %}
 {% block setting %}
-
+<div>
+    <h2>설정</h2>
+    <div>
+        계정
+        <div class="both_layout">
+            <div>
+                닉네임 변경
+            </div>
+            <form action="">
+                <div class="user_id">
+                    <label for="setting_id"></label>
+                    <input type="text" placeholder="새로운 닉네임" id="setting_id" name='setting_id' class="" required>
+                </div>
+                <div class="">
+                    <input type="submit" id="setting_id_submit" name="submit_btn" value="setting_id">
+                    <label for="setting_id_submit">닉네임 저장</label>
+                </div>
+            </form>
+        </div>
+        <div class="both_layout">
+            <div>
+                비밀번호 변경
+            </div>
+            <form action="">
+                <div class="setting_pw">
+                    <label for="setting_pw"></label>
+                    <input type="password" placeholder="기존 비밀번호" id="setting_pw" name='password' class="" required>
+                </div>
+                <div class="setting_pw2">
+                    <label for="setting_pw2"></label>
+                    <input type="password" placeholder="새로운 비밀번호" id="setting_pw2" name='password' class="" required>
+                </div>
+                <div class="">
+                    <input type="submit" id="setting_pw_submit" name="submit_btn" value="setting_pw">
+                    <label for="setting_pw_submit">비밀번호 저장</label>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div>
+        로그아웃
+    </div>
+    <div>
+        탈퇴
+    </div>
+    <div>
+        버전 정보 Ver.00
+    </div>
+</div>
 {% endblock %}

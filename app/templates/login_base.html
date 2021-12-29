@@ -5,25 +5,28 @@
     <meta charset="UTF-8">
     <title>YDP-SNS</title>
 
-    <link rel="stylesheet" href="../static/css/style_light.css?ver1">
+    <link rel="stylesheet" href="../static/css/login_base_light.css">
+    <!-- font -->
+    <link href="https://fonts.googleapis.com/css2?family=M+PLUS+1:wght@100;200;300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href='//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css' rel='stylesheet' type='text/css'>
 </head>
 <body class="login_base">
     <div class="login_base_container">
         <h1 class="login_base_logo">SNS<br>Project</h1>
         <div class="login_base_right">
-            <div class="login">
+            <div name="login">
                 {% block login %}
                 {% endblock %}
             </div>
-            <div class="password_reset">
+            <div name="password_reset">
                 {% block password_reset %}
                 {% endblock %}
             </div>
-            <div class="join">
+            <div name="join">
                 {% block join %}
                 {% endblock %}
             </div>
-            <div class="join_success">
+            <div name="join_success">
                 {% block join_success %}
                 {% endblock %}
             </div>

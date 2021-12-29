@@ -1,9 +1,10 @@
 {% extends 'login_base.html' %}
 {% block join_success %}
-<div class="">
-    <h2>회원가입이 완료되었습니다!</h2>
-    <div class="">
-        <a href="/login">로그인 화면으로 이동</a>
+<div class="join_success_container">
+    <h3>회원가입이 완료되었습니다!</h3>
+    <div class="login_base_button">
+        <input type="button" id="join_success" onClick="location.href='http://localhost:5000/login'">
+        <label for="join_success">로그인 화면으로 이동</label>
     </div>
 </div>
 {% endblock %}
