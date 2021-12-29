@@ -13,9 +13,9 @@ def login():
 @app.route('/join', methods=['GET',"POST"])
 def join():
     if request.method == "POST": #and request.form.get('submit_btn') == "join_form":
-        email = request.form.get('join_email')
-        pw = request.form.get('join_pw')
-        pw2 = request.form.get('join_pw2')
+        email = request.form.get('email')
+        pw = request.form.get('password')
+        pw2 = request.form.get('password2')
         user_id = request.form.get('user_id')
         print(email, pw, pw2, user_id)
         return render_template('join_success.html')
