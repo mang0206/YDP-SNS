@@ -22,9 +22,6 @@ def join():
     else:
         return render_template('join.html')
 
-
-
-
 @app.route("/")
 def index():
     return render_template('index.html')
