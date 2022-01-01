@@ -55,14 +55,22 @@ def password_reset():
 def join_success():
     return render_template('join_success.html')
 
-@app.route("/")
+@app.route("/", methods=['GET',"POST"])
 def index():
     print(session['login'])
+    if request.method == 'POST':
+        search = request.form.get('search_input')
+        # return redirect(url_for('search', search = search))
+        return render_template('search.html')
     return render_template('index.html')
 
 @app.route("/search")
 def search():
     return render_template('search.html')
+
+# @app.route("/search/<search>")
+# def search(search):
+#     return redirect(url_for('search'))
 
 @app.route("/user")
 def user():
