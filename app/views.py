@@ -1,8 +1,9 @@
-from flask import request, render_template, jsonify, redirect, url_for
-import bcrypt
+from flask import request, render_template, jsonify, redirect, url_for, session
+from flask_bcrypt import Bcrypt
 from . import app, conn
 db = conn.get_database('root')
 col = db.get_collection('user')
+bcrypt = Bcrypt()
 
 @app.route("/login", methods=['GET',"POST"])
 def login():
@@ -14,8 +15,10 @@ def login():
 def join():
     if request.method == "POST": #and request.form.get('submit_btn') == "join_form":
         email = request.form.get('email')
-        pw = request.form.get('password')
-        pw2 = request.form.get('password2')
+        #중복 체크 필요
+        pw = bcrypt.generate_password_hash(request.form.get('password'))
+        pw2 =bcrypt.generate_password_hash(request.form.get('password2'))
+
         user_id = request.form.get('user_id')
         print(email, pw, pw2, user_id)
         return render_template('join_success.html')
