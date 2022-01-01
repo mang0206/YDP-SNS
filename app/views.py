@@ -1,15 +1,29 @@
-from flask import request, render_template, jsonify, redirect, url_for, session
+import re
+from flask import request, render_template, jsonify, redirect, url_for, session, flash
 from flask_bcrypt import Bcrypt
+
 from . import app, conn
 db = conn.get_database('root')
-col = db.get_collection('user')
 bcrypt = Bcrypt()
+app.config["SECRET_KEY"] = "sns"
 
 @app.route("/login", methods=['GET',"POST"])
 def login():
+    col = db.get_collection('user')
     if request.method == 'POST':
-        return 
-    return render_template('login.html')
+        email = request.form.get('user_id')
+        pw =  request.form.get('password')
+        find_user = col.find_one({'user_id':email})
+        if bcrypt.check_password_hash(find_user['password'], pw):
+            session['login'] =  email
+            print('success')
+            return redirect(url_for('index'))
+        else:
+            print('fail')
+            flash("아이디와 비밀번호를 확인하세요")
+            return redirect(url_for('login'))
+    else:
+        return render_template('login.html')
 
 @app.route('/join', methods=['GET',"POST"])
 def join():
@@ -17,11 +31,19 @@ def join():
         email = request.form.get('email')
         #중복 체크 필요
         pw = bcrypt.generate_password_hash(request.form.get('password'))
-        pw2 =bcrypt.generate_password_hash(request.form.get('password2'))
-
-        user_id = request.form.get('user_id')
-        print(email, pw, pw2, user_id)
-        return render_template('join_success.html')
+        pw2 = request.form.get('password2')
+        if bcrypt.check_password_hash(pw, pw2):
+            user_id = request.form.get('user_id')
+            col = db.get_collection('user')
+            col.insert_one(
+                { 'user_id': email,
+                'password': pw,
+                'user_ide': user_id })
+            return render_template('join_success.html')
+            
+        # print(bcrypt.check_password_hash(pw, pw2))
+        return redirect(url_for('join'))
+        # return redirect('join.html')
     else:
         return render_template('join.html')
 
@@ -35,6 +57,7 @@ def join_success():
 
 @app.route("/")
 def index():
+    print(session['login'])
     return render_template('index.html')
 
 @app.route("/search")
@@ -61,7 +84,7 @@ def connection_mongodb():
     #     {'user_id':'test1',
     #     'password': 1111,
     #     'user_ide':'test1'})
-
+    col = db.get_collection('user')
     print(list(col.find()))
     return jsonify({"":'list(col.find())'})
 
