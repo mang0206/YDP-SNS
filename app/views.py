@@ -5,7 +5,6 @@ from flask_bcrypt import Bcrypt
 from . import app, conn
 db = conn.get_database('root')
 bcrypt = Bcrypt()
-app.config["SECRET_KEY"] = "sns"
 
 @app.route("/login", methods=['GET',"POST"])
 def login():
@@ -22,6 +21,7 @@ def login():
             print('fail')
             flash("아이디와 비밀번호를 확인하세요")
             return redirect(url_for('login'))
+            # return render_template('login.html')
     else:
         return render_template('login.html')
 
