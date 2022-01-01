@@ -22,7 +22,16 @@
         <div class="navigation_icon">
             <a href="/"><img src="../static/img/home.png" alt="home_icon"></a>
             <a href="/friend"><img src="../static/img/friends.png" alt="friend_icon"></a>
-            <a href="/content"><img src="../static/img/plus.png" alt="plus_icon"></a>
+            <div name="content_popup">
+                <button id="plus_icon_btn"><img src="../static/img/plus.png" alt="plus_icon"></button>
+                <div class="plus_background">
+                    <div class="plus_container">
+                        <div class="plus_popup">
+                            <button id="close_icon_btn"><img src="../static/img/close.png" alt="close_icon"></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <a href="/notice"><img src="../static/img/notification.png" alt="notice_icon"></a>
             <a href="/user">사용자 프로필</a> <!-- 프로필,로그아웃,설정 팝업창 -->
         </div>
@@ -47,4 +56,6 @@
         {% block setting %}
         {% endblock %}
     </div>
+
 </body>
+<script src="../static/js/content.js" defer="defer"></script>
