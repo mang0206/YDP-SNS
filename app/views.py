@@ -57,7 +57,7 @@ def join_success():
 
 @app.route("/", methods=['GET',"POST"])
 def index():
-    print(session['login'])
+    # print(session['login'])
     if request.method == 'POST':
         search = request.form.get('search_input')
         # return redirect(url_for('search', search = search))

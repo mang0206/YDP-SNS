@@ -9,6 +9,8 @@
     <!-- font -->
     <link href="https://fonts.googleapis.com/css2?family=M+PLUS+1:wght@100;200;300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link href='//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css' rel='stylesheet' type='text/css'>
+    <!-- jquery -->
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 </head>
 <body>
     <div class="index_base_topbar">
@@ -27,7 +29,22 @@
                 <div class="plus_background">
                     <div class="plus_container">
                         <div class="plus_popup">
-                            <button id="close_icon_btn"><img src="../static/img/close.png" alt="close_icon"></button>
+                            <div class="popup_header">
+                                <button id="close_icon_btn"><img src="../static/img/close.png" alt="close_icon"></button>
+                                <span>게시물 작성</span>
+                                <button>공유하기</button>
+                            </div>
+                            <div class="popup_txt">
+                                <textarea placeholder="내용을 입력 해주세요."></textarea>
+                            </div>
+                            <span>파일을 드래그하여 순서 변경</span>
+                            <div class="popup_file">
+                                <div id="img_preview_area">미리보기
+                                    <img id="img_preview">
+                                </div>
+                                <input type="file" id="popup_input_file" required multiple>
+                                <label for="popup_input_file"><img src="../static/img/file_plus.png" alt="file_plus_icon"></label>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -58,4 +75,4 @@
     </div>
 
 </body>
-<script src="../static/js/content.js" defer="defer"></script>
+<script src="../static/js/popup.js" defer="defer"></script>
