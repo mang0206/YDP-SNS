@@ -61,16 +61,16 @@ def index():
     if request.method == 'POST':
         search = request.form.get('search_input')
         # return redirect(url_for('search', search = search))
-        return render_template('search.html')
+        return redirect(url_for('search', search = search))
     return render_template('index.html')
 
 @app.route("/search")
 def search():
-    return render_template('search.html')
-
-# @app.route("/search/<search>")
-# def search(search):
-#     return redirect(url_for('search'))
+    col = db.get_collection('user')
+    search = request.args.get('search')
+    search_user = col.find_one({'user_ide':search})
+    print(search_user)
+    return render_template('search.html',search = search)
 
 @app.route("/user")
 def user():
@@ -88,11 +88,8 @@ def setting():
 def connection_mongodb():
     print(conn.list_database_names())
     print(db.list_collection_names())
-    # col.insert_one(
-    #     {'user_id':'test1',
-    #     'password': 1111,
-    #     'user_ide':'test1'})
+
     col = db.get_collection('user')
-    print(list(col.find()))
+    print(list(col.find({},{'user_id':True, 'user_ide':True})))
     return jsonify({"":'list(col.find())'})
 
