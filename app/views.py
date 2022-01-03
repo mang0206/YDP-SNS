@@ -60,7 +60,7 @@ def index():
     print(session['login'])
     if request.method == 'POST':
         search = request.form.get('search_input')
-        # return redirect(url_for('search', search = search))
+        
         return redirect(url_for('search', search = search))
     return render_template('index.html')
 
