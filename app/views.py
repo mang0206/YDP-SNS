@@ -68,7 +68,7 @@ def index():
 def search():
     col = db.get_collection('user')
     search = request.args.get('search')
-    search_user = col.find_one({'user_ide':search})
+    search_user = col.find_one({'name': { '$regex' : ".*" + search + ".*"}})
     print(search_user)
     return render_template('search.html',search = search)
 
@@ -90,6 +90,8 @@ def connection_mongodb():
     print(db.list_collection_names())
 
     col = db.get_collection('user')
-    print(list(col.find({},{'user_id':True, 'user_ide':True})))
+    # print(* list(col.find({},{'user_id':True, 'user_ide':True})))
+    for i in col.find({}):
+        print(i)
     return jsonify({"":'list(col.find())'})
 
