@@ -10,6 +10,12 @@
     </div>
     <div class="layout_right friend_list">
         search friend list
+        {% for user in search_user %}
+            <li> {{user.name}} </li>
+        {% endfor %}
     </div>
+    {% for user in search_user %}
+        <li> {{user.name}} </li>
+    {% endfor %}
 </div>
 {% endblock %}

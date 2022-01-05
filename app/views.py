@@ -68,9 +68,14 @@ def index():
 def search():
     col = db.get_collection('user')
     search = request.args.get('search')
-    search_user = col.find_one({'name': { '$regex' : ".*" + search + ".*"}})
-    print(search_user)
-    return render_template('search.html',search = search)
+    query = { '$or' : 
+        [ {'name': { '$regex' : "^" + search + ".*", '$options': '$i'}},\
+            {'user_ide' :  { '$regex' : "^" + search + ".*", '$options': '$i'}}
+        ]
+    }
+    search_user = col.find(query)
+    print(list(search_user))
+    return render_template('search.html',search = search, search_user=list(search_user))
 
 @app.route("/user")
 def user():
