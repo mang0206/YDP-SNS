@@ -72,9 +72,13 @@ def index():
         return redirect(url_for('search', search = search))
     return render_template('index.html')
 
-@app.route("/search")
+@app.route("/search", methods=['GET',"POST"])
 def search():
     col = db.get_collection('user')
+    if request.method == 'POST':
+        search = request.form.get('search_input')
+        return redirect(url_for('search', search = search))
+    
     search = request.args.get('search')
     query = { '$or' : 
         [ {'name': { '$regex' :  search, '$options': '$i'}},\
