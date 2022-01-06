@@ -31,7 +31,7 @@ def join():
     email_list = [user['user_id'] for user in col.find()]
     ide_list = [user['user_ide'] for user in col.find()]
 
-    if request.method == "POST": #and request.form.get('submit_btn') == "join_form":
+    if request.method == "POST":
         email = request.form.get('email')
         if email in email_list:
             flash('이미 존재하는 이메일 입니다.')
@@ -85,9 +85,10 @@ def search():
             {'user_ide' :  { '$regex' : search, '$options': '$i'}}
         ]
     }
-    search_user = col.find(query)
-    print(list(search_user))
-    return render_template('search.html',search = search, search_user=list(search_user))
+    search_user = list(col.find(query))
+    # search_user = [user['user_ide'] for user in col.find(query)]
+    print(search_user)
+    return render_template('search.html',search = search, search_user=search_user)
 
 @app.route("/user")
 def user():
