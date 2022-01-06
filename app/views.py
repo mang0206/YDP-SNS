@@ -77,8 +77,8 @@ def search():
     col = db.get_collection('user')
     search = request.args.get('search')
     query = { '$or' : 
-        [ {'name': { '$regex' : "^" + search + ".*", '$options': '$i'}},\
-            {'user_ide' :  { '$regex' : "^" + search + ".*", '$options': '$i'}}
+        [ {'name': { '$regex' :  search, '$options': '$i'}},\
+            {'user_ide' :  { '$regex' : search, '$options': '$i'}}
         ]
     }
     search_user = col.find(query)
