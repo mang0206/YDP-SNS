@@ -27,25 +27,33 @@ def login():
 
 @app.route('/join', methods=['GET',"POST"])
 def join():
+    col = db.get_collection('user')
+    email_list = [user['user_id'] for user in col.find()]
+    ide_list = [user['user_ide'] for user in col.find()]
+
     if request.method == "POST": #and request.form.get('submit_btn') == "join_form":
         email = request.form.get('email')
-        #중복 체크 필요
+        if email in email_list:
+            flash('이미 존재하는 이메일 입니다.')
+            return redirect(url_for('join'))
+        
         pw = bcrypt.generate_password_hash(request.form.get('password'))
         pw2 = request.form.get('password2')
         if bcrypt.check_password_hash(pw, pw2):
             user_id = request.form.get('user_id')
-            col = db.get_collection('user')
+            user_name = request.form.get('user_name')
             col.insert_one(
                 { 'user_id': email,
                 'password': pw,
-                'user_ide': user_id })
+                'user_ide': user_id,
+                'user_name': user_name })
             return render_template('join_success.html')
             
         # print(bcrypt.check_password_hash(pw, pw2))
         return redirect(url_for('join'))
         # return redirect('join.html')
     else:
-        return render_template('join.html')
+        return render_template('join.html', email_list=email_list, ide_list=ide_list)
 
 @app.route("/password_reset")
 def password_reset():
