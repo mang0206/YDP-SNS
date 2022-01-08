@@ -90,6 +90,21 @@ def search():
     print(search_user)
     return render_template('search.html',search = search, search_user=search_user)
 
+# 팝업창 txt와 img를 DB로 전송
+# @app.route("/popup", method=["GET", "POST"])
+# def popup():
+#     if request.method == "POST":
+#         popup_txt = request.form.get("popup_txt")
+#         col = db.get_collection('')
+#         post = {
+#             "popup_txt": popup_txt
+#         }
+
+#         return ""
+#     else:
+#         return render_template('popup.html')
+
+
 @app.route("/user")
 def user():
     return render_template('user.html')
