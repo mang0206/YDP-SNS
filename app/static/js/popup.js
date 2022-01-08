@@ -1,10 +1,12 @@
 // 게시물 추가 popup창 생성 및 닫기 버튼
 function plus(){
     document.querySelector(".plus_background").className = "plus_background show";
+    document.querySelector(".body").className = "body hidden";
 }
   
 function close(){ 
-    document.querySelector(".plus_background").className = "plus_background";
+    document.querySelector(".plus_background").className = "plus_background none";
+    document.querySelector(".body").className = "body";
 }
   
 document.querySelector("#close_icon_btn").addEventListener('click', close);
