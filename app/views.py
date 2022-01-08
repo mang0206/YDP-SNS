@@ -1,6 +1,7 @@
 import re
 from flask import request, render_template, jsonify, redirect, url_for, session, flash
 from flask_bcrypt import Bcrypt
+import json
 
 from . import app, conn
 db = conn.get_database('root')
@@ -85,6 +86,7 @@ def search():
             {'user_ide' :  { '$regex' : search, '$options': '$i'}}
         ]
     }
+    # search_user = {}
     search_user = list(col.find(query))
     # search_user = [user['user_ide'] for user in col.find(query)]
     print(search_user)
@@ -124,7 +126,8 @@ def connection_mongodb():
 
     col = db.get_collection('user')
     # print(* list(col.find({},{'user_id':True, 'user_ide':True})))
+    lis = []
     for i in col.find({}):
-        print(i)
-    return jsonify({"":'list(col.find())'})
+        lis.append(i)
+    return jsonify({"":lis})
 
