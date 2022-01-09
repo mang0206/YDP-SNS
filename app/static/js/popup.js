@@ -17,7 +17,7 @@ document.querySelector("#plus_icon_btn").addEventListener('click', plus);
 
 // 업로드 할 이미지 미리보기 1
 // function readInputFile(e){
-//     let sel_files = [];
+//     let sel_files = [];ㅔㅛ
     
 //     sel_files = [];
 //     $('#img_preview_area').empty();
