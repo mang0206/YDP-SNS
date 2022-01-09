@@ -22,12 +22,18 @@
                         {{ user.user_id }}
                     </div>
                 </div>
-                <a href="">
-                    <input class="friend_button" id="friend_button" value="">
-                </a>
+                <div class="friend_button_area">
+                    <a href="" id="button_a">
+                        <input class="friend_button" id="friend_button" value="친구 요청">
+                    </a>
+                </div>
             </div> 
-        {% endfor %}
+            {% endfor %}
     </div>
+    <!-- 검색어 db 필터링, js 조건문 별로 다른 버튼 생성 -->
+</div>
+<div id="friend_button_test">
+    <input type='button' value='createDiv'onclick='create_btn()'/>
 </div>
 <script src="../static/js/search.js" defer="defer"></script>
 {% endblock %}
