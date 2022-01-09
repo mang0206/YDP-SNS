@@ -11,7 +11,7 @@ function image_select() {
                 "file" : image[i],
             })
             } else {
-                alert(image[i].name + "이미 올린 파일입니다.");
+                alert(image[i].name + "는 선택된 파일입니다.");
             }
     }
 

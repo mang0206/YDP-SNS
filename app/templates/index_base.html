@@ -21,20 +21,20 @@
             <form method="POST" action="" class="topbar_search">
                 <input type="text" name = 'search_input' id="search_input" placeholder="검색">
                 <button>
-                    <img src="../static/img/search.png" alt="search_icon">
+                    <img class="top_bar_icon" src="../static/img/search.png" alt="search_icon">
                 </button>
             </form>
         </div>
         <div class="navigation_icon">
-            <a href="/"><img src="../static/img/home.png" alt="home_icon"></a>
-            <a href="/friend"><img src="../static/img/friends.png" alt="friend_icon"></a>
+            <a href="/"><img class="top_bar_icon" src="../static/img/home.png" alt="home_icon"></a>
+            <a href="/friend"><img class="top_bar_icon" src="../static/img/friends.png" alt="friend_icon"></a>
             <div class="content_popup">
-                <button id="plus_icon_btn"><img src="../static/img/plus.png" alt="plus_icon"></button>
+                <button id="plus_icon_btn"><img class="top_bar_icon" src="../static/img/plus.png" alt="plus_icon"></button>
                 <div class="plus_background none">
-                    <form name="plus_container" method="POST" enctype="multipart/form-data" class="plus_container">
+                    <form class="plus_container" id="plus_container" method="POST" enctype="multipart/form-data">
                         <div class="plus_popup">
                             <div class="popup_header">
-                                <button id="close_icon_btn"><img src="../static/img/close.png" alt="close_icon"></button>
+                                <button id="close_icon_btn"><img class="top_bar_icon" src="../static/img/close.png" alt="close_icon"></button>
                                 <span>게시물 작성</span>
                                 <input type="submit" id="popup_submit">
                                 <label for="popup_submit" class="popup_submit_label">공유하기</label>
@@ -42,19 +42,21 @@
                             <div class="popup_txt">
                                 <textarea name="popup_txt" placeholder="내용을 입력 해주세요."></textarea>
                             </div>
-                            <span>파일을 드래그하여 순서 변경</span>
+                            <span>업로드 할 파일 선택</span>
                             <div class="popup_file">
-                                <div id="img_preview_area">
-                                    <img id="img_preview" />
+                                <div class="" id="file_container">
+                                    <!-- 이미지 미리보기 구역 -->
                                 </div>
-                                <input type="file" id="popup_input_file" required multiple>
-                                <label for="popup_input_file"><img src="../static/img/file_plus.png" alt="file_plus_icon"></label>
+                                <input type="file" id="popup_input_image" onChange="image_select()" required multiple>
+                                <label for="popup_input_file" onclick="document.getElementById('popup_input_image').click()">
+                                    <img class="file_add_btn" src="../static/img/file_plus.png" alt="file_plus_icon">
+                                </label>
                             </div>
                         </div>
                     </form>
                 </div>
             </div>
-            <a href="/"><img src="../static/img/notification.png" alt="notice_icon"></a>
+            <a href="/"><img class="top_bar_icon" src="../static/img/notification.png" alt="notice_icon"></a>
             <a href="/user">사용자 프로필</a> <!-- 프로필,로그아웃,설정 팝업창 -->
         </div>
     </div>
