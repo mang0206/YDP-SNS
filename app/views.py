@@ -1,8 +1,8 @@
 import re
 from flask import request, render_template, jsonify, redirect, url_for, session, flash
 from flask_bcrypt import Bcrypt
+from bson.json_util import dumps
 import json
-
 from . import app, conn
 db = conn.get_database('root')
 bcrypt = Bcrypt()
@@ -92,6 +92,13 @@ def search():
     print(search_user)
     return render_template('search.html',search = search, search_user=search_user)
 
+
+@app.route("/???")
+def append_friend():
+    
+
+    return redirect(url_for('search'))
+
 # 팝업창 txt와 img를 DB로 전송
 # @app.route("/popup", method=["GET", "POST"])
 # def popup():
@@ -126,8 +133,10 @@ def connection_mongodb():
 
     col = db.get_collection('user')
     # print(* list(col.find({},{'user_id':True, 'user_ide':True})))
-    lis = []
-    for i in col.find({}):
-        lis.append(i)
-    return jsonify({"":lis})
+
+    lis = col.find({})
+
+    json_lis = dumps(lis)
+    print(json_lis)
+    return jsonify(json_lis)
 
