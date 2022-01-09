@@ -1,20 +1,33 @@
 {% extends 'index_base.html' %}
 {% block search %}
 
-<div>
+<div class="search_container">
     <h2>"{{ search }}" 검색 결과</h2>
 </div>
 <div class="both_layout">
     <div class="content_container">
-        search content
+        <h4>게시물</h4>
     </div>
+
     <div class="layout_right friend_list">
-        search friend list                                                                                 
+        <h4>계정</h4>
         {% for user in search_user %}
-            <div>
-                {{user.name}}, {{ user.user_id }}
+            <div class="search_user">
+                <div class="user_profile_img"></div>
+                <div class="user_name_id">
+                    <div class="user_name">
+                        {{user.name}}
+                    </div>
+                    <div class="user_id">
+                        {{ user.user_id }}
+                    </div>
+                </div>
+                <a href="">
+                    <input class="friend_button" id="friend_button" value="">
+                </a>
             </div> 
         {% endfor %}
     </div>
 </div>
+<script src="../static/js/search.js" defer="defer"></script>
 {% endblock %}
