@@ -75,6 +75,9 @@ def index():
 
 @app.route("/search", methods=['GET',"POST"])
 def search():
+    col_request_friend = db.get_collection('request_friend')
+    request_list = col_request_friend.find()
+    print(list(request_list))
     col = db.get_collection('user')
     if request.method == 'POST':
         search = request.form.get('search_input')
@@ -86,14 +89,19 @@ def search():
             {'user_ide' :  { '$regex' : search, '$options': '$i'}}
         ]
     }
-    # search_user = {}
-    search_user = list(col.find(query))
+
+    # search_user = list(col.find(query))
+    search_user = [user['user_id'] for user in col.find(query)]
+    # friend_list = col.find({'user_id': session['login']})['fiend_l
+    friend_list = [user['friend_list'] for user in col.find({'user_id': session['login']})]
+    # search_user = [user['user_id'] for user in col.find(query)]ist']
+    # sessiotn_request_list = col_request_friend.find({'user_id': session['login']})
     # search_user = [user['user_ide'] for user in col.find(query)]
     print(search_user)
     return render_template('search.html',search = search, search_user=search_user)
 
 
-@app.route("/???")
+@app.route("/request_friend")
 def append_friend():
     
 

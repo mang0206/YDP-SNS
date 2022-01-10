@@ -3,26 +3,31 @@ from bson.objectid import ObjectId
 
 conn = pymongo.MongoClient("mongodb://root:study111@13.125.71.134:27017/root?authSource=admin")
 db = conn.get_database('root')
-col = db.get_collection('user')
+col = db.get_collection('request_friend')
 def modify_user():
     lst = []
-    for i in col.find({},{'user_id':True, 'user_ide':True}):
-        lst.append(i['user_id'])
-    # print(lst)
-    name = ['test', 'aa', 'bb', 'cc', 'dd', "ee"]
-    # for i in range(len(lst)):
-    #     col.update_one(
-    #         {'user_id':lst[i]},
-    #         {'$set':{'name':name[i]}}
-    #     )
-    for i in col.find({},{'user_id':True, 'user_ide':True}):
-        print(i)
+    ''' 유저마다 닉네임 추가'''
+    # for i in col.find({},{'user_id':True, 'user_ide':True}):
+    #     lst.append(i['user_id'])
+    # # print(lst)
+    # name = ['test', 'aa', 'bb', 'cc', 'dd', "ee"]
+    # # for i in range(len(lst)):
+    # #     col.update_one(
+    # #         {'user_id':lst[i]},
+    # #         {'$set':{'name':name[i]}}
+    # #     )
+    # for i in col.find({},{'user_id':True, 'user_ide':True}):
+    #     print(i)
+    '''유저에 친구 목록 리스트 추가'''
+    for user in col.find():
+        print(user)
     return
 
 def modify_user_one():
-    result = col.update_one(
-        {'user_ide':'eee'},
-        {'$set':{'name':'abcd'}}
+    '''유저에 친구 목록 리스트 추가'''
+    result = col.update_many(
+        {},
+        {'$set':{'friend_list':[]}}
     )
     return
 
@@ -50,5 +55,6 @@ def search():
     # print(list(s['_id']))
 
 # del_user()
-search()
+# search()
 # modify_user_one()
+# search()

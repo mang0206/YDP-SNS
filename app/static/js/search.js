@@ -13,7 +13,9 @@ const request_friend_list = [
 // 조건에 따른 버튼( <a>, <input> ) 생성
 function create_btn() {
     const create_a = document.createElement('a');
-
+    $(create_a).attr({
+        'href': 'request_friend'
+    })
     for (i in search_result_list){
         if (i.id === user_friend_list.id){
             // input 노드 생성
