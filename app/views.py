@@ -66,8 +66,12 @@ def join_success():
 
 @app.route("/", methods=['GET',"POST"])
 def index():
+<<<<<<< HEAD
     # print(session['login'])
     if request.form.get('topbar_search') == 'topbar_search':
+=======
+    if request.method == 'POST':
+>>>>>>> MJ
         search = request.form.get('search_input')
         
         return redirect(url_for('search', search = search))
@@ -75,6 +79,7 @@ def index():
 
 @app.route("/search", methods=['GET',"POST"])
 def search():
+    email = session['login']
     col_request_friend = db.get_collection('request_friend')
     request_list = col_request_friend.find()
     print(list(request_list))
@@ -95,7 +100,9 @@ def search():
     # search_user = list(col.find(query))
     search_user = [user['user_id'] for user in col.find(query)]
     # friend_list = col.find({'user_id': session['login']})['fiend_l
-    friend_list = [user['friend_list'] for user in col.find({'user_id': session['login']})]
+    friend_list = list(col.find({'user_id': email}, {'friend_list':True}))
+    # friend_list = friend_list['friend_list']
+    print(friend_list)
     # search_user = [user['user_id'] for user in col.find(query)]ist']
     # sessiotn_request_list = col_request_friend.find({'user_id': session['login']})
     # search_user = [user['user_ide'] for user in col.find(query)]
