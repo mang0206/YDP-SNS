@@ -1,3 +1,4 @@
+// 팝업창 이미지 올리기
 var images = [];
 
 // 이미지 선택
@@ -11,7 +12,7 @@ function image_select() {
                 "file" : image[i],
             })
             } else {
-                alert(image[i].name + "는 선택된 파일입니다.");
+                alert(image[i].name + "이미 선택한 파일입니다.");
             }
     }
 
@@ -24,10 +25,10 @@ function image_show() {
     var image = "";
     images.forEach((i) => {
         image += `<div class="image_container d-flex justify-content-center position-relative">
-                <img src="`+ i.url +`" alt="Image">
-                <span class="position-absolute" onclick="delete_image(`+ images.indexOf(i) +`)">&times;</span>
-            </div>`;
-    })
+   	  	  	  	  <img src="`+ i.url +`" alt="Image">
+   	  	  	  	  <span class="position-absolute" onclick="delete_image(`+ images.indexOf(i) +`)">&times;</span>
+   	  	  	  </div>`;
+   	  	})
     return image;
 }
 
@@ -59,5 +60,3 @@ function get_image_data() {
     }
     return form;
 }
-
-console.log("test")

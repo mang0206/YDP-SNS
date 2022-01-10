@@ -78,9 +78,10 @@ function get_image_data() {
 console.log("test")
 
 
-// 업로드 할 이미지 미리보기 1
+// 파일 업로드 제한
+
 // function readInputFile(e){
-//     let sel_files = [];ㅔㅛ
+//     let sel_files = [];
     
 //     sel_files = [];
 //     $('#img_preview_area').empty();
@@ -111,21 +112,5 @@ console.log("test")
 // }
 
 // $('#popup_input_file').on('change',readInputFile);
-
-// 업로드 할 이미지 미리보기(단일이미지)
-// $(function() {
-//     $("#popup_input_file").on('change', function(){
-//     readURL(this);
-//     });
-// });
-// function readURL(input) {
-//     if (input.files && input.files[0]) {
-//         var reader = new FileReader();
-//         reader.onload = function (e) {
-//         $('#img_preview').attr('src', e.target.result);
-//         }
-//         reader.readAsDataURL(input.files[0]);
-//     }
-// }
 
 
