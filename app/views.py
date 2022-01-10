@@ -67,7 +67,7 @@ def join_success():
 @app.route("/", methods=['GET',"POST"])
 def index():
     # print(session['login'])
-    if request.method == 'POST':
+    if request.form.get('topbar_search') == 'topbar_search':
         search = request.form.get('search_input')
         
         return redirect(url_for('search', search = search))
@@ -76,20 +76,21 @@ def index():
 @app.route("/search", methods=['GET',"POST"])
 def search():
     col = db.get_collection('user')
-    if request.method == 'POST':
-        search = request.form.get('search_input')
-        return redirect(url_for('search', search = search))
+    if request.method == "POST":
+        if request.form.get('topbar_search') == 'topbar_search':
+            search = request.form.get('search_input')
+            return redirect(url_for('search', search = search))
     
-    search = request.args.get('search')
-    query = { '$or' : 
-        [ {'name': { '$regex' :  search, '$options': '$i'}},\
-            {'user_ide' :  { '$regex' : search, '$options': '$i'}}
-        ]
-    }
-    # search_user = {}
-    search_user = list(col.find(query))
-    # search_user = [user['user_ide'] for user in col.find(query)]
-    print(search_user)
+        search = request.args.get('search')
+        query = { '$or' : 
+            [ {'name': { '$regex' :  search, '$options': '$i'}},\
+                {'user_ide' :  { '$regex' : search, '$options': '$i'}}
+            ]
+        }
+        # search_user = {}
+        search_user = list(col.find(query))
+        # search_user = [user['user_ide'] for user in col.find(query)]
+        print(search_user)
     return render_template('search.html',search = search, search_user=search_user)
 
 
@@ -100,18 +101,20 @@ def append_friend():
     return redirect(url_for('search'))
 
 # 팝업창 txt와 img를 DB로 전송
-# @app.route("/popup", method=["GET", "POST"])
-# def popup():
-#     if request.method == "POST":
-#         popup_txt = request.form.get("popup_txt")
-#         col = db.get_collection('')
-#         post = {
-#             "popup_txt": popup_txt
-#         }
+@app.route("/content_submit", methods=["GET", "POST"])
+def content_submit():
+    if request.method == "POST":
+        if request.form.get('content_submit') == "content_submit":
+    #     popup_txt = request.form.get("popup_txt")
+    #     col = db.get_collection('')
+    #     post = {
+    #         "popup_txt": popup_txt
+    #     }
 
-#         return ""
-#     else:
-#         return render_template('popup.html')
+    #     return ""
+            pass
+    # else:
+        return render_template('user.html')
 
 
 @app.route("/user")
