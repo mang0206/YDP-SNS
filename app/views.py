@@ -66,12 +66,8 @@ def join_success():
 
 @app.route("/", methods=['GET',"POST"])
 def index():
-<<<<<<< HEAD
     # print(session['login'])
     if request.form.get('topbar_search') == 'topbar_search':
-=======
-    if request.method == 'POST':
->>>>>>> MJ
         search = request.form.get('search_input')
         
         return redirect(url_for('search', search = search))
