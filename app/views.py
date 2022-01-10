@@ -68,7 +68,8 @@ def join_success():
 def index():
     # print(session['login'])
     if request.form.get('search_btn') == 'topbar_search':
-        search = request.form.get('topbar_search')
+        # input의 name으로 값을 가져옴
+        search = request.form.get('search')
         
         print(search)
         return redirect(url_for('search', search = search))
@@ -83,7 +84,7 @@ def search():
     col = db.get_collection('user')
     # if request.method == "POST":
     if request.form.get('search_btn') == 'topbar_search':
-        search = request.form.get('search_input')
+        search = request.form.get('search')
         return redirect(url_for('search', search = search))
     
     search = request.args.get('search')
