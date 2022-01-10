@@ -68,7 +68,7 @@ def join_success():
 def index():
     # print(session['login'])
     if request.form.get('search_btn') == 'topbar_search':
-        search = request.form.get('search_input')
+        search = request.form.get('topbar_search')
         
         print(search)
         return redirect(url_for('search', search = search))
