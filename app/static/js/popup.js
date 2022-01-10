@@ -17,7 +17,7 @@ var images = [];
 
 // 이미지 선택
 function image_select() {
-    var image = document.getElementById('popup_input_image').files;
+    var image = document.getElementById('popup_input_file').files;
     for (i = 0; i < image.length; i++) {
         if (check_duplicate(image[i].name)) {
             images.push({

@@ -117,16 +117,11 @@ def append_friend():
 @app.route("/content_submit", methods=["GET", "POST"])
 def content_submit():
     if request.method == "POST":
-        if request.form.get('content_submit') == "content_submit":
-    #     popup_txt = request.form.get("popup_txt")
-    #     col = db.get_collection('')
-    #     post = {
-    #         "popup_txt": popup_txt
-    #     }
+        if request.form.get('content_submit') == "content_form":
+            content_txt = request.form.get('content_txt')
+            content_file = request.form.get('content_file')
 
-    #     return ""
-            pass
-    # else:
+
         return render_template('user.html')
 
 

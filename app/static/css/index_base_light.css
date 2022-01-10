@@ -175,23 +175,32 @@ a:visited{color: black}
 }
 .popup_file{
     width: 100%;
-    height: 150px;
+    height: 100%;
     padding: 5px 7px;
-    box-sizing: border-box;
     margin: 5px 0;
-
+    
+    box-sizing: border-box;
     box-shadow: 0px 0px 1px 1px rgb(0, 0, 0, 0.1);
 
     display: flex;
-    align-items: center;
-    justify-content: space-between;
+    align-items: flex-start;
+    justify-content: center;
+    flex-direction: column;
+    overflow: auto;
+}
+.popup_file_input{
+    width: 100%;
+
+    display: flex;
+    justify-content: center;
 }
 #file_container{
     width: fit-content;
 
     display: flex;
     align-items: center;
-    
+    flex-direction: row;
+
     overflow: auto;
 }
 .file_preview{
@@ -225,8 +234,20 @@ a:visited{color: black}
     align-items: center;
     justify-content: center;
 }
-.popup_file input{
+#popup_input_file{
     display: none;
+}
+.input_file_label{
+    margin-bottom: 5px;
+    font-size: 15px;
+
+    cursor: pointer;
+    padding: 5px 10px;
+
+    color: #FFFFFF;
+    border: solid 1px lightgray;
+    border-radius: 5px;
+    background: #46A6FF;
 }
 .file_add_btn{
     width: 30px;
@@ -236,7 +257,7 @@ a:visited{color: black}
 #popup_submit{
     display: none;
 }
-.popup_submit_label{
+.popup_submit_btn{
     width: 80px;
     height: 30px;
 
@@ -245,11 +266,13 @@ a:visited{color: black}
     align-items: center;
     cursor: pointer;
 
+    border: none;
+    border-radius: 5px;
     background: linear-gradient(90deg, rgba(252, 214, 157, 0.7) 0%, rgba(252, 157, 157, 0.7) 100%);
     box-shadow: inset 0px 0px 1px 1px rgb(255 255 255);
-    border-radius: 5px;
 }
-.popup_submit_label:hover{
+.popup_submit_btn:hover{
+    font-size: 13px;
     background: linear-gradient(0deg, rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.7)), 
         linear-gradient(90deg, rgba(252, 214, 157, 0.7) 0%, rgba(252, 157, 157, 0.7) 100%);
 }
