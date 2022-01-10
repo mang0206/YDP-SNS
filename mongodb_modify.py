@@ -3,7 +3,7 @@ from bson.objectid import ObjectId
 
 conn = pymongo.MongoClient("mongodb://root:study111@13.125.71.134:27017/root?authSource=admin")
 db = conn.get_database('root')
-col = db.get_collection('request_friend')
+col = db.get_collection('user')
 def modify_user():
     lst = []
     ''' 유저마다 닉네임 추가'''
@@ -40,7 +40,7 @@ def del_user():
     # print(lst)
     result = col.delete_one({
         # '_id': ObjectId('61d00cdeba8833acb1019a6b')
-        # '_id': ObjectId('61d00d0dba8833acb1019a6e')
+        '_id': ObjectId('61dc1006c540a7b3d8829150')
     })
     print(result.deleted_count)
 
