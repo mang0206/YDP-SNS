@@ -66,10 +66,12 @@ def join_success():
 
 @app.route("/", methods=['GET',"POST"])
 def index():
-    print(session['login'])
-    if request.form.get('topbar_search') == 'topbar_search':
-        search = request.form.get('search_input')
+    # print(session['login'])
+    if request.form.get('search_btn') == 'topbar_search':
+        # input의 name으로 값을 가져옴
+        search = request.form.get('search')
         
+        print(search)
         return redirect(url_for('search', search = search))
     return render_template('index.html')
 
@@ -79,10 +81,10 @@ def search():
     col_request_friend = db.get_collection('request_friend')
     request_list = col_request_friend.find()
     col = db.get_collection('user')
-    if request.method == "POST":
-        if request.form.get('topbar_search') == 'topbar_search':
-            search = request.form.get('search_input')
-            return redirect(url_for('search', search = search))
+    # if request.method == "POST":
+    if request.form.get('search_btn') == 'topbar_search':
+        search = request.form.get('search')
+        return redirect(url_for('search', search = search))
     
     search = request.args.get('search')
     query = { '$or' : 
