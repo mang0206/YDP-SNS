@@ -84,7 +84,6 @@ def search():
             search = request.form.get('search_input')
             return redirect(url_for('search', search = search))
     
-<<<<<<< HEAD
     search = request.args.get('search')
     query = { '$or' : 
         [ {'name': { '$regex' :  search, '$options': '$i'}},\
@@ -100,18 +99,6 @@ def search():
     # sessiotn_request_list = col_request_friend.find({'user_id': session['login']})
     # search_user = [user['user_ide'] for user in col.find(query)]
     print(search_user)
-=======
-        search = request.args.get('search')
-        query = { '$or' : 
-            [ {'name': { '$regex' :  search, '$options': '$i'}},\
-                {'user_ide' :  { '$regex' : search, '$options': '$i'}}
-            ]
-        }
-        # search_user = {}
-        search_user = list(col.find(query))
-        # search_user = [user['user_ide'] for user in col.find(query)]
-        print(search_user)
->>>>>>> HG
     return render_template('search.html',search = search, search_user=search_user)
 
 
