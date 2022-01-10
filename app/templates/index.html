@@ -1,29 +1,32 @@
 {% extends 'index_base.html' %}
 {% block index %}
-<div class="index_container">
-
-    <div class="content_container">
-        content list
+<div class="content_container">
+    <span class="empty_content">아직 게시물이 없습니다</span>
+    <div id="content" class="index_content">
+        <!-- db로 전송한 게시물 업로드 area -->
     </div>
-    <div class="layout_right">
-        <div class="friend_list">
-            friend list
-        </div>
-    </div>
-    <!-- 사진 업로드 테스트 -->
-    <div class="container mt-3 w-100">
-        <div class="card shadow-sm w-100">
-            <div class="card-header d-flex justify-content-between">
-                <h4>Image Uploading</h4>
-                <form class="form" action="/" method="POST" id="form">
-                    <input type="file" name="Image" id="image" multiple="" class="d-none" onChange="image_select()">
-                    <button class="btn btn-sm btn-primary" type="button" onclick="document.getElementById('image').click()">Choose Images</button>
-                </form>
-            </div>
-            <div class="card-body d-flex flex-wrap justify-content-start" id="container">
-                <!-- Image will be show here-->    	  
-            </div>
-        </div>
+</div>
+<div class="layout_right">
+    <div class="friend_list">
+        <h4>친구 목록</h4>
+        {% for user in search_user %}
+            <div class="search_user">
+                <div class="user_profile_img"></div>
+                <div class="user_name_id">
+                    <div class="user_name">
+                        {{ user.name }}
+                    </div>
+                    <div class="user_id">
+                        {{ user.user_id }}
+                    </div>
+                </div>
+                <div class="friend_button_area">
+                    <a href="" id="button_a">
+                        <input class="friend_button" id="friend_button" value="친구 요청">
+                    </a>
+                </div>
+            </div> 
+        {% endfor %}
     </div>
 </div>
 <script src="../static/js/index.js" defer="defer"></script>

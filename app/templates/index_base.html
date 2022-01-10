@@ -34,7 +34,7 @@
                     <form class="plus_container" id="plus_container" method="POST" enctype="multipart/form-data">
                         <div class="plus_popup">
                             <div class="popup_header">
-                                <button id="close_icon_btn"><img class="top_bar_icon" src="../static/img/close.png" alt="close_icon"></button>
+                                <button id="close_icon_btn"><img class="top_bar_icon close" src="../static/img/close.png" alt="close_icon"></button>
                                 <span>게시물 작성</span>
                                 <input type="submit" id="popup_submit">
                                 <label for="popup_submit" class="popup_submit_label">공유하기</label>
@@ -57,7 +57,9 @@
                 </div>
             </div>
             <a href="/"><img class="top_bar_icon" src="../static/img/notification.png" alt="notice_icon"></a>
-            <a href="/user">사용자 프로필</a> <!-- 프로필,로그아웃,설정 팝업창 -->
+            <a href="/user">
+                <div class="user_profile"></div>
+            </a> <!-- 프로필,로그아웃,설정 팝업창 -->
         </div>
     </div>
     <div class="both_layout index">
