@@ -18,9 +18,9 @@
             <a href="/"><h2>SNS Project</h2></a>
         </div>
         <div>
-            <form method="POST" action="" class="topbar_search">
+            <form method="POST" action="" class="topbar_search" id="topbar_search">
                 <input type="text" name = 'search_input' id="search_input" placeholder="검색">
-                <button>
+                <button name="topbar_search">
                     <img class="top_bar_icon" src="../static/img/search.png" alt="search_icon">
                 </button>
             </form>
@@ -31,23 +31,23 @@
             <div class="content_popup">
                 <button id="plus_icon_btn"><img class="top_bar_icon" src="../static/img/plus.png" alt="plus_icon"></button>
                 <div class="plus_background none">
-                    <form class="plus_container" id="plus_container" method="POST" enctype="multipart/form-data">
+                    <form class="plus_container" id="plus_container" name="content_submit" method="POST" enctype="multipart/form-data">
                         <div class="plus_popup">
                             <div class="popup_header">
                                 <button id="close_icon_btn"><img class="top_bar_icon close" src="../static/img/close.png" alt="close_icon"></button>
                                 <span>게시물 작성</span>
-                                <input type="submit" id="popup_submit">
+                                <input type="submit" id="popup_submit" name="content_submit">
                                 <label for="popup_submit" class="popup_submit_label">공유하기</label>
                             </div>
                             <div class="popup_txt">
-                                <textarea name="popup_txt" placeholder="내용을 입력 해주세요."></textarea>
+                                <textarea name="content_submit" placeholder="내용을 입력 해주세요."></textarea>
                             </div>
                             <span>업로드 할 파일 선택</span>
                             <div class="popup_file">
                                 <div class="" id="file_container">
                                     <!-- 이미지 미리보기 구역 -->
                                 </div>
-                                <input type="file" id="popup_input_image" onChange="image_select()" required multiple>
+                                <input type="file" id="popup_input_image" name="content_submit" onChange="image_select()" required multiple>
                                 <label for="popup_input_file" onclick="document.getElementById('popup_input_image').click()">
                                     <img class="file_add_btn" src="../static/img/file_plus.png" alt="file_plus_icon">
                                 </label>

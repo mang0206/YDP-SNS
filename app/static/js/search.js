@@ -5,54 +5,53 @@ const user_friend_list = [""]
 
 const request_friend_list = ["", ""]
 
-// // 조건에 따른 버튼( <a>, <input> ) 생성
-// function create_btn() {
-//     // const key = search_result_list
-//     for (let key in search_result_list.id){
-//         for (let i in key.length) {
-//             const create_a = document.createElement('a');
+// 조건에 따른 버튼( <a>, <input> ) 생성
+function create_btn() {
+    for (let key in search_result_list.id){
+        for (let i in key.length) {
+            const create_a = document.createElement('a');
         
-//             if (i == user_friend_list.id){
-//                 // input 노드 생성
-//                const newText = document.createElement('input');
-//                 // input 속성 추가
-//                 $(newText).attr({
-//                       "type": "button", 
-//                       "class": "friend_button",
-//                       "value": "친구 삭제"
-//                     });
-//                 // a 태그에 input 노드 추가
-//                 create_a.appendChild(newText);
-//                     // id값으로 가져온 위치에 a태그 추가
-//                 return document.getElementById('friend_button_test').appendChild(create_a);
+            if (i == user_friend_list.id){
+                // input 노드 생성
+               const newText = document.createElement('input');
+                // input 속성 추가
+                $(newText).attr({
+                      "type": "button", 
+                      "class": "friend_button",
+                      "value": "친구 삭제"
+                    });
+                // a 태그에 input 노드 추가
+                create_a.appendChild(newText);
+                    // id값으로 가져온 위치에 a태그 추가
+                return document.getElementById('friend_button_test').appendChild(create_a);
         
-//             } else if (i == request_friend_list.id){
-//                 const newText = document.createElement('input');
-//                 $(newText).attr({
-//                       "type": "button", 
-//                       "class": "friend_button",
-//                       "value": "요청 삭제"
-//                     });
+            } else if (i == request_friend_list.id){
+                const newText = document.createElement('input');
+                $(newText).attr({
+                      "type": "button", 
+                      "class": "friend_button",
+                      "value": "요청 삭제"
+                    });
                 
-//                 create_a.appendChild(newText);
+                create_a.appendChild(newText);
                 
-//                 return document.getElementById('friend_button_test').appendChild(create_a);
+                return document.getElementById('friend_button_test').appendChild(create_a);
                 
-//             } else {
-//                 const newText = document.createElement('input');
-//                 $(newText).attr({
-//                       "type": "button", 
-//                       "class": "friend_button",
-//                       "value": "친구 요청"
-//                     });
+            } else {
+                const newText = document.createElement('input');
+                $(newText).attr({
+                      "type": "button", 
+                      "class": "friend_button",
+                      "value": "친구 요청"
+                    });
         
-//                 create_a.appendChild(newText);
+                create_a.appendChild(newText);
         
-//                 return document.getElementById('friend_button_test').appendChild(create_a);
-//             }
-//         }
-//     }
-// }
+                return document.getElementById('friend_button_test').appendChild(create_a);
+            }
+        }
+    }
+}
 
 console.log("test")
 
