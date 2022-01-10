@@ -66,7 +66,7 @@ def join_success():
 
 @app.route("/", methods=['GET',"POST"])
 def index():
-    # print(session['login'])
+    print(session['login'])
     if request.form.get('topbar_search') == 'topbar_search':
         search = request.form.get('search_input')
         
@@ -78,7 +78,6 @@ def search():
     email = session['login']
     col_request_friend = db.get_collection('request_friend')
     request_list = col_request_friend.find()
-    print(list(request_list))
     col = db.get_collection('user')
     if request.method == "POST":
         if request.form.get('topbar_search') == 'topbar_search':
