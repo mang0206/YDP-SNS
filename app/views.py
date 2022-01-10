@@ -67,9 +67,10 @@ def join_success():
 @app.route("/", methods=['GET',"POST"])
 def index():
     # print(session['login'])
-    if request.form.get('topbar_search') == 'topbar_search':
+    if request.form.get('search_btn') == 'topbar_search':
         search = request.form.get('search_input')
         
+        print(search)
         return redirect(url_for('search', search = search))
     return render_template('index.html')
 
@@ -80,10 +81,10 @@ def search():
     request_list = col_request_friend.find()
     print(list(request_list))
     col = db.get_collection('user')
-    if request.method == "POST":
-        if request.form.get('topbar_search') == 'topbar_search':
-            search = request.form.get('search_input')
-            return redirect(url_for('search', search = search))
+    # if request.method == "POST":
+    if request.form.get('search_btn') == 'topbar_search':
+        search = request.form.get('search_input')
+        return redirect(url_for('search', search = search))
     
     search = request.args.get('search')
     query = { '$or' : 
