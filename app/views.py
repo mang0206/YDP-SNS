@@ -92,18 +92,15 @@ def search():
             {'user_ide' :  { '$regex' : search, '$options': '$i'}}
         ]
     }
-
-    # search_user = list(col.find(query))
-    search_user = [user['user_id'] for user in col.find(query)]
-    # friend_list = col.find({'user_id': session['login']})['fiend_l
-    friend_list = list(col.find({'user_id': email}, {'friend_list':True}))
-    # friend_list = friend_list['friend_list']
-    print(friend_list)
-    # search_user = [user['user_id'] for user in col.find(query)]ist']
-    # sessiotn_request_list = col_request_friend.find({'user_id': session['login']})
-    # search_user = [user['user_ide'] for user in col.find(query)]
+    search_user = col.find(query)
     print(search_user)
-    return render_template('search.html',search = search, search_user=search_user)
+    # search_user = [user['user_id'] for user in col.find(query)]
+    for i in col.find({'user_id': email}):
+        friend_list = i['friend_list']
+
+    sesstion_request_list = [user['user_ide'] for user in col_request_friend.find({'user_id': session['login']})]
+    return render_template('search.html',search = search, search_user=search_user,\
+                friend_list=friend_list, sesstion_request_list=sesstion_request_list)
 
 
 @app.route("/request_friend")
