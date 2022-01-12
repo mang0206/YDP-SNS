@@ -75,7 +75,7 @@ function get_image_data() {
     return form;
 }
 
-console.log("test")
+// console.log("test")
 
 
 // 파일 업로드 제한

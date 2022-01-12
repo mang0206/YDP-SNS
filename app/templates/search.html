@@ -4,7 +4,8 @@
 <div class="search_container">
     <h2>"{{ search }}" 검색 결과</h2>
 </div>
-<div class="both_layout">
+<div class="both_layout" id="search" data-name= '{{ session_user }}' data-search_user = '{{ search_user_id }}'\
+        data-friend_list='{{ friend_list }}' data-session_request_list='{{ session_request_list }}'>
     <div class="content_container">
         <h4>게시물</h4>
     </div>
@@ -22,10 +23,10 @@
                         {{ user.user_id }}
                     </div>
                 </div>
-                <div class="friend_button_area">
-                    <a href="" id="button_a">
+                <div class="friend_button_area" id = "friend_button_area">
+                    <!-- <a href="" id="button_a">
                         <input class="friend_button" id="friend_button" value="친구 요청">
-                    </a>
+                    </a> -->
                 </div>
             </div> 
         {% endfor %}

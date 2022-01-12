@@ -66,7 +66,9 @@ def join_success():
 
 @app.route("/", methods=['GET',"POST"])
 def index():
-    # print(session['login'])
+    if session.get('login') is None:
+        return redirect(url_for('login'))
+
     if request.form.get('search_btn') == 'topbar_search':
         # input의 name으로 값을 가져옴
         search = request.form.get('search')
@@ -92,21 +94,26 @@ def search():
             {'user_ide' :  { '$regex' : search, '$options': '$i'}}
         ]
     }
-    search_user = col.find(query)
+    search_user = list(col.find(query))
     print(search_user)
-    # search_user = [user['user_id'] for user in col.find(query)]
+    search_user_id = [user['user_id'] for user in col.find(query)]
     for i in col.find({'user_id': email}):
         friend_list = i['friend_list']
 
-    sesstion_request_list = [user['user_ide'] for user in col_request_friend.find({'user_id': session['login']})]
-    return render_template('search.html',search = search, search_user=search_user,\
-                friend_list=friend_list, sesstion_request_list=sesstion_request_list)
+    session_request_list = [user['user_ide'] for user in col_request_friend.find({'user_id': session['login']})]
+    return render_template('search.html',session_user=email, search = search, search_user=search_user,\
+                search_user_id = search_user_id, friend_list=friend_list, session_request_list=session_request_list)
 
 
+# @app.route("/request_friend/<f>")
+# def append_friend(f):
+    
+#     print(f)
+#     return redirect(url_for('search'))
 @app.route("/request_friend")
 def append_friend():
     
-
+    print(1234123412341234123412)
     return redirect(url_for('search'))
 
 # 팝업창 txt와 img를 DB로 전송
