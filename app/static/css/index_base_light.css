@@ -9,7 +9,7 @@ body{
 }
 a:link{color: black; text-decoration: none;}
 a:visited{color: black}
-
+/* top_bar */
 .index_base_topbar{
     top: 0;
     height: 65px;
@@ -237,7 +237,7 @@ a:visited{color: black}
 #popup_input_file{
     display: none;
 }
-.input_file_label{
+.input_file_btn{
     margin-bottom: 5px;
     font-size: 15px;
 
@@ -326,6 +326,12 @@ a:visited{color: black}
     background: #46A6FF;
 }
 /* user */
+.user_background{
+    width: 100%;
+    height: 300px;
+    background-color: lightgray;
+    margin-top: -50px;
+}
 .user_profile{
     width: 30px;
     height: 30px;

@@ -12,7 +12,7 @@
     <!-- jquery -->
     <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 </head>
-<body class="body">
+<body>
     <div class="index_base_topbar">
         <div class="top_bar_logo">
             <a href="/"><h2>SNS Project</h2></a>
@@ -45,10 +45,10 @@
                             <span>업로드 할 파일 선택</span>
                             <div class="popup_file">
                                 <div class="popup_file_input">
-                                    <input type="file" id="popup_input_file" name="content_file" required multiple>
-                                    <label for="popup_input_file" id="input_file_label" onclick="image_select()" class="input_file_label">                                
+                                    <input type="file" id="popup_input_file" name="content_file" onChange="image_select()" required multiple>
+                                    <button id="input_file_btn" onClick="document.getElementById('popup_input_file').click()" class="input_file_btn">                                
                                         파일 선택하기
-                                    </label>
+                                    </button>
                                 </div>
                                 <div class="" id="file_container">
                                     <!-- 이미지 미리보기 구역 -->
@@ -64,19 +64,19 @@
             </a> <!-- 프로필,로그아웃,설정 팝업창 -->
         </div>
     </div>
-    <div class="both_layout index">
+    <div class="both_layout">
         {% block index %}
         {% endblock %}
     </div>
-    <div>
+    <div class="">
         {% block user %}
         {% endblock %}
     </div>
-    <div>
+    <div class="">
         {% block friend %}
         {% endblock %}
     </div>
-    <div>
+    <div class="">
         {% block search %}
         {% endblock %}
     </div>
