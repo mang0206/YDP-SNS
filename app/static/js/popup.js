@@ -13,13 +13,14 @@ function close(){
         document.querySelector(".plus_background").className = "plus_background none";
         document.querySelector(".body").className = "body";
         document.getElementById('plus_container').reset();
-        
+        // document.getElementById("file_container").reset();
+        images = null;
     } else {
-        // document.getElementById("popup_input_file").reset();
         return false;
     }
 }
-  
+console.log(images)
+
 document.querySelector("#close_icon_btn").addEventListener('click', close);
 document.querySelector("#plus_icon_btn").addEventListener('click', plus);
 
