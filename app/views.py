@@ -96,7 +96,12 @@ def search():
     }
     search_user = list(col.find(query))
     print(search_user)
-    search_user_id = [user['user_id'] for user in col.find(query)]
+    search_user_id = {}
+    for user in search_user:
+        search_user_id[user['user_id']] = user['user_id']
+
+    search_user_id = json.dumps(search_user_id, ensure_ascii = False)
+    
     for i in col.find({'user_id': email}):
         friend_list = i['friend_list']
 
