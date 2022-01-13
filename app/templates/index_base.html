@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <title>YDP-SNS</title>
 
-    <link rel="stylesheet" href="../static/css/index_base_light.css?aaa">
+    <link rel="stylesheet" href="../static/css/index_base_light.css?ver=1">
     <!-- font -->
     <link href="https://fonts.googleapis.com/css2?family=M+PLUS+1:wght@100;200;300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link href='//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css' rel='stylesheet' type='text/css'>
@@ -18,7 +18,7 @@
             <a href="/"><h2>SNS Project</h2></a>
         </div>
         <div>
-            <form method="POST" action="/" name="topbar_search" class="topbar_search">
+            <form method="POST" action="/" name="topbar_search" novalidate class="topbar_search">
                 <input type="text" name='search' placeholder="검색">
                 <button type="submit" name="search_btn" value="topbar_search">
                     <img class="top_bar_icon" src="../static/img/search.png" alt="search_icon">
@@ -45,8 +45,8 @@
                             <span>업로드 할 파일 선택</span>
                             <div class="popup_file">
                                 <div class="popup_file_input">
-                                    <input type="file" id="popup_input_file" name="content_file" onChange="image_select()" required multiple>
-                                    <label for="popup_input_file" onclick="document.getElementById('popup_input_image').click()" class="input_file_label">                                
+                                    <input type="file" id="popup_input_file" name="content_file" required multiple>
+                                    <label for="popup_input_file" id="input_file_label" onclick="image_select()" class="input_file_label">                                
                                         파일 선택하기
                                     </label>
                                 </div>
@@ -86,4 +86,4 @@
     </div>
 
 </body>
-<script src="../static/js/popup.js" defer="defer"></script>
+<script src="../static/js/popup.js?ver=1" defer="defer"></script>

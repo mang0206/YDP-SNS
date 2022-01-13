@@ -1,14 +1,25 @@
-// 게시물 추가 popup창 생성 및 닫기 버튼
+// 게시물 추가 popup창 
 function plus(){
     document.querySelector(".plus_background").className = "plus_background show";
     document.querySelector(".body").className = "body hidden";
 }
-  
+// 게시물 작성 취소 버튼 및 경고창
 function close(){ 
-    document.querySelector(".plus_background").className = "plus_background none";
-    document.querySelector(".body").className = "body";
+    if(document.getElementById('content_submit') != null){
+        if(confirm("작성하신 내용이 사라집니다.") == true){
+            document.querySelector(".plus_background").className = "plus_background none";
+            document.querySelector(".body").className = "body";
+            document.getElementById('plus_container').reset();
+            // document.getElementById("popup_input_file").reset();
+            images.splice(0);
+            document.getElementById('file_container').innerHTML = image_show();
+            
+        } else {
+            return false;
+        }
+    }
 }
-  
+
 document.querySelector("#close_icon_btn").addEventListener('click', close);
 document.querySelector("#plus_icon_btn").addEventListener('click', plus);
 
@@ -29,13 +40,12 @@ function image_select() {
                 alert(image[i].name + "이미 선택한 파일입니다.");
             }
     }
-
-    // document.getElementById('form').reset();
     document.getElementById('file_container').innerHTML = image_show();
 }
 
 // 이미지 미리보기
 function image_show() {
+    console.log('image_show')
     var image = "";
     images.forEach((i) => {
         image += `<div class="file_preview">
