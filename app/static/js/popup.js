@@ -1,5 +1,5 @@
 // 게시물 추가 popup창 
-
+console.log()
 function plus(){
     console.log('plus function')
     document.querySelector(".plus_background").className = "plus_background show";
