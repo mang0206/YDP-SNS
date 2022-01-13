@@ -11,7 +11,7 @@ function create_btn(){
     console.log('tt')
     for (let user_l in search_result_list){
         user = search_result_list[user_l]
-        console.log(user, search_result_list)
+        console.log(user)
         const create_a = document.createElement('a');
 
         if (user == session_user){
