@@ -8,7 +8,6 @@ const user_friend_list = $('#search').data().friend_list;
 const request_friend_list = $('#search').data().session_request_list;
 
 function create_btn(){
-    console.log('tt')
     for (let user_l in search_result_list){
         user = search_result_list[user_l]
         console.log(user)
