@@ -1,12 +1,19 @@
-// 게시물 추가 popup창 생성 및 닫기 버튼
+// 게시물 추가 popup창 생성
 function plus(){
     document.querySelector(".plus_background").className = "plus_background show";
     document.querySelector(".body").className = "body hidden";
 }
-  
+// 게시물 작성 취소 버튼 및 경고창
 function close(){ 
-    document.querySelector(".plus_background").className = "plus_background none";
-    document.querySelector(".body").className = "body";
+    if(confirm("작성하신 내용이 사라집니다.") == true){
+        document.querySelector(".plus_background").className = "plus_background none";
+        document.querySelector(".body").className = "body";
+        document.getElementById('plus_container').reset();
+        
+    } else {
+        // document.getElementById("popup_input_file").reset();
+        return false;
+    }
 }
   
 document.querySelector("#close_icon_btn").addEventListener('click', close);
@@ -29,8 +36,6 @@ function image_select() {
                 alert(image[i].name + "이미 선택한 파일입니다.");
             }
     }
-
-    // document.getElementById('form').reset();
     document.getElementById('file_container').innerHTML = image_show();
 }
 

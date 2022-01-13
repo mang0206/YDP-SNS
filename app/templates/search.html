@@ -14,11 +14,15 @@
         <h4>계정</h4>
         {% for user in search_user %}
             <div class="search_user">
-                <div class="user_profile_img"></div>
+                <div class="user_profile_img">
+                    <!-- user 검색 결과 프로필 이미지 -->
+                    <a>
+                    </a>
+                </div>
                 <div class="user_name_id">
-                    <div class="user_name">
+                    <a class="user_name">
                         {{user.name}}
-                    </div>
+                    </a>
                     <div class="user_id">
                         {{ user.user_id }}
                     </div>
@@ -37,6 +41,6 @@
     <input type='button' value='createDiv'onclick='create_btn()'/>
 </div>
 
-<!-- <script src="../static/js/search.js" defer="defer"></script> -->
-<script src="../static/js/search_test.js" defer="defer"></script>
+<script src="../static/js/search.js" defer="defer"></script>
+<!-- <script src="../static/js/search_test.js" defer="defer"></script> -->
 {% endblock %}
