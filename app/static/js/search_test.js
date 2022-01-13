@@ -10,7 +10,7 @@ const request_friend_list = $('#search').data().session_request_list;
 function create_btn(){
     for (let user_l in search_result_list){
         user = search_result_list[user_l]
-        console.log(user, search_result_list)
+        console.log(user)
         const create_a = document.createElement('a');
 
         if (user == session_user){

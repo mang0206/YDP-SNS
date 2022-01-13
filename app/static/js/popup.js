@@ -1,25 +1,25 @@
 // 게시물 추가 popup창 
 
 function plus(){
-    console.log('plus function')
     document.querySelector(".plus_background").className = "plus_background show";
     document.querySelector(".body").className = "body hidden";
 }
 // 게시물 작성 취소 버튼 및 경고창
 function close(){ 
-    console.log('취소 버튼')
-    if(confirm("작성하신 내용이 사라집니다.") == true){
-        console.log('취소 true')
-        document.querySelector(".plus_background").className = "plus_background none";
-        document.querySelector(".body").className = "body";
-        document.getElementById('plus_container').reset();
-        // document.getElementById("file_container").reset();
-        images = null;
-    } else {
-        return false;
+    if(document.getElementById('content_submit') != null){
+        
+        if(confirm("작성하신 내용이 사라집니다.") == true){
+            document.querySelector(".plus_background").className = "plus_background none";
+            document.querySelector(".body").className = "body";
+            document.getElementById('plus_container').reset();
+            // document.getElementById("file_container").reset();
+            
+        } else {
+            console.log("false")
+            return false;
+        }
     }
 }
-console.log(images)
 
 document.querySelector("#close_icon_btn").addEventListener('click', close);
 document.querySelector("#plus_icon_btn").addEventListener('click', plus);
