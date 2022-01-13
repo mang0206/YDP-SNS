@@ -127,7 +127,7 @@ def content_submit():
             print(content_file)
 
         return render_template('user.html')
-
+    return redirect(url_for('user'))
 
 @app.route("/user")
 def user():
