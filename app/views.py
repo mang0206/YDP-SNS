@@ -123,10 +123,11 @@ def content_submit():
         if request.form.get('content_submit') == "content_form":
             content_txt = request.form.get('content_txt')
             content_file = request.form.get('content_file')
-
+            print(content_txt)
+            print(content_file)
 
         return render_template('user.html')
-
+    return redirect(url_for('user'))
 
 @app.route("/user")
 def user():
