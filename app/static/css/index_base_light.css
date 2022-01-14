@@ -77,17 +77,17 @@ a:visited{color: black}
     z-index: -1000;
     opacity: 0;
 }
-    /* 팝업창 활성화 */
+/* 팝업창 활성화 */
 .show{
     opacity: 1;
     z-index: 1000;
     transition: all .5s;
 }
-    /* 팝업창 활성화 시 스크롤 숨김 */
+/* 팝업창 활성화 시 스크롤 숨김 */
 .hidden{
     overflow: hidden;
 }
-    /* 팝업창 비활성화 시 팝업창 영역 숨김 */
+/* 팝업창 비활성화 시 팝업창 영역 숨김 */
 .none{
     display: none;
 }
