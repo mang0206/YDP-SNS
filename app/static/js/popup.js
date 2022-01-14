@@ -29,8 +29,10 @@ function close(){
             // images.splice(0);
             // document.getElementById('file_container').innerHTML = image_show();
             
+            // document.getElementById("popup_input_file").reset();
         } else {
-            return false;
+            console.log('second else')
+            // return false;
         }
     }
 }

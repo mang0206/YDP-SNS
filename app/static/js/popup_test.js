@@ -48,7 +48,7 @@ function close(){
 }
 
 // 팝업창 이미지 올리기
-var images = [1];
+// var images = [1];
 
 // 이미지 선택
 function image_select() {
