@@ -50,7 +50,8 @@ function close(){
             document.querySelector(".body").className = "body";
             file = null;
             console.log(file)
-            images.splice(0,);
+            images.splice(0);
+            document.getElementById('file_container').innerHTML = image_show();
 
             document.getElementById('content_submit').value = '';
             console.log(file)
