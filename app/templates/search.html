@@ -35,6 +35,31 @@
             </div> 
         {% endfor %}
     </div>
+    <script>
+        $('#friend_button_area').click(function(){
+            var id = $('#id1').val();
+            var password = $('#password1').val();
+            var email = $('#email1').val();
+
+            var postdata = {
+                'id':id, 'password':password, 'email':email
+            }
+            $.ajax({
+                type: 'POST',
+                url: '{{url_for("ajax")}}',
+                data: JSON.stringify(postdata),
+                dataType : 'JSON',
+                contentType: "application/json",
+                success: function(data){
+                    alert('성공! 데이터 값:' + data.result2['id']+" " + data.result2['password']+ " " + data.result2['email'])
+                },
+                error: function(request, status, error){
+                    alert('ajax 통신 실패')
+                    alert(error);
+                }
+            })
+        })
+    </script>
     <!-- 검색어 db 필터링, js 조건문 별로 다른 버튼 생성 -->
 </div>
 <div id="friend_button_test">

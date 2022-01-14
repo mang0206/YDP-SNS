@@ -121,7 +121,7 @@ def search():
 def append_friend():
     
     print(1234123412341234123412)
-    return redirect(url_for('search'))
+    return redirect(url_for('index'))
 
 # 팝업창 txt와 img를 DB로 전송
 @app.route("/content_submit", methods=["GET", "POST"])
@@ -145,6 +145,13 @@ def friend():
 @app.route("/setting")
 def setting():
     return render_template('setting.html')
+
+@app.route('/ajax', methods=['POST'])
+def ajax():
+    data = request.get_json()
+    print(data)
+
+    return jsonify(result = "success", result2= data)
 
 @app.route('/test')
 def connection_mongodb():
