@@ -1,27 +1,27 @@
 {% extends 'index_base.html' %}
 {% block user %}
-<div name="user_profile">
+<div class="user_container">
     <div class="user_background">
         background photo
     </div>
-    <div class="user_">
-        <div>
+    <div class="user_profile">
+        <div class="user_profile_image">
             user photo
-        </div>
-        <div>
-            <div>
-                user id
+            <div class="user_profile_edit">
+                <div>
+                    user id
+                </div>
+                <div>
+                    friend count
+                </div>
+                <div>
+                    edit profile
+                </div>
+                <div><a href="/setting">설정</a></div>
             </div>
             <div>
-                friend count
+                introduce self
             </div>
-            <div>
-                edit profile
-            </div>
-            <div><a href="/setting">설정</a></div>
-        </div>
-        <div>
-            introduce self
         </div>
         <div class="both_layout">
             <div>
