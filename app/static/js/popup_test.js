@@ -36,6 +36,7 @@ function close(){
 
             // textarea 초기화
             document.getElementById('popup_textarea').value = '';
+            img_value = {}
 
         } else {
             return false;
@@ -71,7 +72,6 @@ function image_select() {
 
 // 이미지 미리보기
 function image_show() {
-    console.log('image_show')
     var image = "";
     images.forEach((i) => {
         image += `<div class="file_preview" id="file_preview" value="file">
