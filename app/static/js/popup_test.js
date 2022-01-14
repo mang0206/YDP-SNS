@@ -13,35 +13,20 @@ function plus(){
     document.querySelector(".body").className = "body hidden";
 }
 
-// test
-// let div = document.getElementById('file_container');
-// let div_child = div.childNodes;
-
-// console.log(typeof(div));
-// console.log(div.childNodes)
-
 
 // 게시물 작성 취소 버튼 및 경고창
 function close(){ 
-    let text = document.getElementById('popup_textarea').value;
-    // console.log(typeof(text)); //string
+    // textarea의 value를 가져옴
+    let text_value = document.getElementById('popup_textarea').value;
 
-    // 이미지를 추가하면 생성되는 div의
-    // let file_div = document.getElementById('file_container')
-    // console.log(file_div); 
-
-    // img가 선택돼야 value="file"을 가진 div가 생성됨.
-    // text.length가 0이고, img 미리보기 영역의 value가 file이 아니면 팝업창 닫힘
-    if (text.length == 0 && img_value != "file") {
-        console.log("first_if")
+    // text value의 length가 0이고, img 미리보기 영역의 value가 file이 아니면 팝업창 닫힘
+    if (text_value.length == 0 && img_value != "file") {  // img_value : line 72
         document.querySelector(".plus_background").className = "plus_background none";
         document.querySelector(".body").className = "body";
-        console.log(img_value)
 
+    // 게시물 작성 취소 경고창
     } else {
-        console.log("else")
         if(confirm("작성하신 내용이 사라집니다.") == true){
-            console.log("true")
             document.querySelector(".plus_background").className = "plus_background none";
             document.querySelector(".body").className = "body";
 
@@ -53,7 +38,6 @@ function close(){
             document.getElementById('popup_textarea').value = '';
 
         } else {
-            console.log("confirm_else")
             return false;
         }
     }
@@ -79,10 +63,6 @@ function image_select() {
         }
     }
     document.getElementById('file_container').innerHTML = image_show();
-    // console.log(typeof(images))
-    // console.log(isEmpty(images))
-    // console.log(div.childNodes); 
-    // console.log(typeof(div_child));
 
     // img를 선택하면 생성되는 div의 value를 할당
     img_value = document.getElementById('file_preview').getAttribute('value');
