@@ -5,17 +5,23 @@ function plus(){
 }
 // 게시물 작성 취소 버튼 및 경고창
 function close(){ 
+    console.log('close')
     if(document.getElementById('content_submit') != null){
+        console.log('first if')
         if(confirm("작성하신 내용이 사라집니다.") == true){
+            console.log('second if')
             document.querySelector(".plus_background").className = "plus_background none";
-            document.querySelector(".body").className = "body";
             document.getElementById('plus_container').reset();
-            // document.getElementById("popup_input_file").reset();
             images.splice(0);
             document.getElementById('file_container').innerHTML = image_show();
+            document.querySelector(".body").className = "body";
+            var t= document.getElementById('plus_container');
+            console.log(t)
             
+            // document.getElementById("popup_input_file").reset();
         } else {
-            return false;
+            console.log('second else')
+            // return false;
         }
     }
 }
