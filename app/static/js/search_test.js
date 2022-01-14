@@ -12,11 +12,20 @@ function create_btn(){
         user = search_result_list[user_l]
         // console.log(user, search_result_list)
         const create_a = document.createElement('a');
-
+        const di = document.getElementById('friend_button_area')
+        console.log(user)
         if (user == session_user){
-            console.log(user)
             console.log(1)
-            continue
+            const newText = document.createElement('input');
+                $(newText).attr({
+                      "type": "button", 
+                      "class": "friend_button",
+                      "value": "",
+                      'visibility':'hidden' 
+                    });
+                $(di).attr("visibility", 'hidden');
+                create_a.appendChild(newText);
+                document.getElementById('friend_button_area').appendChild(create_a);
         } else if (user in user_friend_list){
             console.log(2)
             const newText = document.createElement('input');
@@ -31,9 +40,9 @@ function create_btn(){
             // a 태그에 input 노드 추가
             create_a.appendChild(newText);
                 // id값으로 가져온 위치에 a태그 추가
-            return document.getElementById(user).appendChild(create_a);
+            document.getElementById(user).appendChild(create_a);
         } else {
-            console.log(user)
+            console.log(3)
             if (user in request_friend_list){
                 const newText = document.createElement('input');
                 $(newText).attr({
@@ -44,7 +53,7 @@ function create_btn(){
                     $(create_a).attr("href", '/request_friend');
                 create_a.appendChild(newText);
                 
-                return document.getElementById(user).appendChild(create_a);
+             document.getElementById(user).appendChild(create_a);
             } else {
                 const newText = document.createElement('input');
                 $(newText).attr({
@@ -57,7 +66,7 @@ function create_btn(){
                 $(create_a).attr("href", '/request_friend');
                 create_a.appendChild(newText);
                 
-                return document.getElementById(user).appendChild(create_a);
+                document.getElementById('friend_button_area').appendChild(create_a);
             }
         }
     }

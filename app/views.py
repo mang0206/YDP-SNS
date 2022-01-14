@@ -7,6 +7,8 @@ from . import app, conn
 db = conn.get_database('root')
 bcrypt = Bcrypt()
 
+search = ''
+
 @app.route("/login", methods=['GET',"POST"])
 def login():
     col = db.get_collection('user')
@@ -79,6 +81,7 @@ def index():
 
 @app.route("/search", methods=['GET',"POST"])
 def search():
+    global search
     email = session['login']
     col_request_friend = db.get_collection('request_friend')
     request_list = col_request_friend.find()
@@ -88,7 +91,7 @@ def search():
         search = request.form.get('search')
         return redirect(url_for('search', search = search))
     
-    search = request.args.get('search')
+    # search = request.args.get('search')
     query = { '$or' : 
         [ {'name': { '$regex' :  search, '$options': '$i'}},\
             {'user_ide' :  { '$regex' : search, '$options': '$i'}}
