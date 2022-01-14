@@ -1,11 +1,11 @@
 // object형 데이터 null 확인
-function isEmpty(obj){
-    if (obj === Object && Object.keys(obj).length === 0){
-        return true;
-    } else {
-        return false;
-    }
-}
+// function isEmpty(obj){
+//     if (obj === Object && Object.keys(obj).length === 0){
+//         return true;
+//     } else {
+//         return false;
+//     }
+// }
 
 // 게시물 추가 popup창 
 function plus(){
@@ -14,28 +14,24 @@ function plus(){
 }
 
 // test
-let div = document.getElementById('file_container');
-let div_child = div.childNodes;
+// let div = document.getElementById('file_container');
+// let div_child = div.childNodes;
 
-console.log(typeof(div));
-console.log(div.childNodes)
+// console.log(typeof(div));
+// console.log(div.childNodes)
 
 
 // 게시물 작성 취소 버튼 및 경고창
 function close(){ 
-    let text = document.getElementById('content_submit').value;
-    let file = images.value;
-    console.log(typeof(text)); //string
-    console.log(typeof(file)); //undefined
+    let text = document.getElementById('popup_textarea').value;
+    // console.log(typeof(text)); //string
 
-    console.log(typeof(images));
-    console.log(isEmpty(images));
-     
-    let file_div = document.getElementById('file_container')
-    console.log(file_div); 
+    // 이미지를 추가하면 생성되는 div의
+    // let file_div = document.getElementById('file_container')
+    // console.log(file_div); 
 
-    
-    // text와 file이 null이면 confirm없이 팝업창 닫힘
+    // img가 선택돼야 value="file"을 가진 div가 생성됨.
+    // text.length가 0이고, img 미리보기 영역의 value가 file이 아니면 팝업창 닫힘
     if (text.length == 0 && img_value != "file") {
         console.log("first_if")
         document.querySelector(".plus_background").className = "plus_background none";
@@ -48,14 +44,11 @@ function close(){
             console.log("true")
             document.querySelector(".plus_background").className = "plus_background none";
             document.querySelector(".body").className = "body";
-            file = null;
-            console.log(file)
-            images.splice(0,);
 
-            document.getElementById('content_submit').value = '';
-            console.log(file)
-            console.log(images)
-
+            // 이미지 영역 초기화
+            images.splice(0);
+            // textarea 초기화
+            document.getElementById('popup_textarea').value = '';
 
         } else {
             console.log("confirm_else")
@@ -86,12 +79,11 @@ function image_select() {
     document.getElementById('file_container').innerHTML = image_show();
     // console.log(typeof(images))
     // console.log(isEmpty(images))
-    console.log(div.childNodes); 
-    console.log(typeof(div_child));
+    // console.log(div.childNodes); 
+    // console.log(typeof(div_child));
 
+    // img를 선택하면 생성되는 div의 value를 할당
     img_value = document.getElementById('file_preview').getAttribute('value');
-    console.log(img_value)
-
 }
     
 
