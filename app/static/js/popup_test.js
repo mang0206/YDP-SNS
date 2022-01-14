@@ -13,6 +13,14 @@ function plus(){
     document.querySelector(".body").className = "body hidden";
 }
 
+// test
+let div = document.getElementById('file_container');
+let div_child = div.childNodes;
+
+console.log(typeof(div));
+console.log(div.childNodes)
+
+
 // 게시물 작성 취소 버튼 및 경고창
 function close(){ 
     let text = document.getElementById('content_submit').value;
@@ -21,14 +29,19 @@ function close(){
     console.log(typeof(file)); //undefined
 
     console.log(typeof(images));
-    console.log(isEmpty(images)); 
+    console.log(isEmpty(images));
+     
+    let file_div = document.getElementById('file_container')
+    console.log(file_div); 
 
-
+    
     // text와 file이 null이면 confirm없이 팝업창 닫힘
-    if (text.length == 0 && file == undefined) {
+    if (text.length == 0 && img_value != "file") {
         console.log("first_if")
         document.querySelector(".plus_background").className = "plus_background none";
         document.querySelector(".body").className = "body";
+        console.log(img_value)
+
     } else {
         console.log("else")
         if(confirm("작성하신 내용이 사라집니다.") == true){
@@ -37,8 +50,12 @@ function close(){
             document.querySelector(".body").className = "body";
             file = null;
             console.log(file)
+            images.splice(0,);
+
             document.getElementById('content_submit').value = '';
-            // console.log(text)
+            console.log(file)
+            console.log(images)
+
 
         } else {
             console.log("confirm_else")
@@ -48,33 +65,42 @@ function close(){
 }
 
 // 팝업창 이미지 올리기
-var images = [1];
+var images = []; 
+// 이미지 미리보기가 생성되는 div의 value
+var img_value = {};
 
 // 이미지 선택
 function image_select() {
-var image = document.getElementById('popup_input_file').files;
-for (i = 0; i < image.length; i++) {
-    if (check_duplicate(image[i].name)) {
-        images.push({
-            "name" : image[i].name,
-            "url" : URL.createObjectURL(image[i]),
-            "file" : image[i],
-        })
-    } else {
+    var image = document.getElementById('popup_input_file').files;
+    for (i = 0; i < image.length; i++) {
+        if (check_duplicate(image[i].name)) {
+            images.push({
+                "name" : image[i].name,
+                "url" : URL.createObjectURL(image[i]),
+                "file" : image[i],
+            })
+        } else {
             alert(image[i].name + "이미 선택한 파일입니다.");
         }
     }
     document.getElementById('file_container').innerHTML = image_show();
-    console.log(typeof(images))
-    console.log(isEmpty(images))
+    // console.log(typeof(images))
+    // console.log(isEmpty(images))
+    console.log(div.childNodes); 
+    console.log(typeof(div_child));
+
+    img_value = document.getElementById('file_preview').getAttribute('value');
+    console.log(img_value)
+
 }
     
+
 // 이미지 미리보기
 function image_show() {
     console.log('image_show')
     var image = "";
     images.forEach((i) => {
-        image += `<div class="file_preview">
+        image += `<div class="file_preview" id="file_preview" value="file">
         <img src="`+ i.url +`" alt="Image">
         <span onclick="delete_image(`+ images.indexOf(i) +`)">&times;</span>
         </div>`;
