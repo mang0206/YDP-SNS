@@ -7,6 +7,8 @@ from . import app, conn
 db = conn.get_database('root')
 bcrypt = Bcrypt()
 
+search = ''
+
 @app.route("/login", methods=['GET',"POST"])
 def login():
     col = db.get_collection('user')
@@ -96,11 +98,20 @@ def search():
     }
     search_user = list(col.find(query))
     print(search_user)
-    search_user_id = [user['user_id'] for user in col.find(query)]
+    search_user_id = {}
+    for user in search_user:
+        search_user_id[user['user_ide']] = user['user_id']
+
+    search_user_id = json.dumps(search_user_id, ensure_ascii = False)
+    
     for i in col.find({'user_id': email}):
         friend_list = i['friend_list']
 
-    session_request_list = [user['user_ide'] for user in col_request_friend.find({'user_id': session['login']})]
+    session_request_list = {}
+    session_request_list[''] = [user['request_user'] for user in col_request_friend.find({'user_id': session['login']})]
+    print(session_request_list)
+    print(list(col_request_friend.find()))
+    session_request_list = json.dumps(session_request_list, ensure_ascii = False)
     return render_template('search.html',session_user=email, search = search, search_user=search_user,\
                 search_user_id = search_user_id, friend_list=friend_list, session_request_list=session_request_list)
 
@@ -114,7 +125,7 @@ def search():
 def append_friend():
     
     print(1234123412341234123412)
-    return redirect(url_for('search'))
+    return redirect(url_for('index'))
 
 # 팝업창 txt와 img를 DB로 전송
 @app.route("/content_submit", methods=["GET", "POST"])
@@ -123,8 +134,6 @@ def content_submit():
         if request.form.get('content_submit') == "content_form":
             content_txt = request.form.get('content_txt')
             content_file = request.form.get('content_file')
-            print(content_txt)
-            print(content_file)
 
         return render_template('user.html')
     return redirect(url_for('user'))
@@ -140,6 +149,29 @@ def friend():
 @app.route("/setting")
 def setting():
     return render_template('setting.html')
+
+@app.route('/ajax', methods=['POST'])
+def ajax():
+    data = request.get_json()
+    col_user = db.get_collection('user')
+    col_request_friend = db.get_collection('request_friend')
+    print(data['user'], data['id'].split('!')[-1], data['val'])
+    user = data['user']
+    request_user = data['id'].split('!')[-1]
+    if data['val'] == '친구 요청':
+        col_request_friend.insert_one({
+            'user_id' : user,
+            'request_user' : request_user
+        })
+    elif data['val'] == '요청 삭제':
+        query = { '$or' : 
+            [ {'user_id': user}, {'request_user' : request_user}
+            ]
+        }
+        col_request_friend.delete_one(query)
+    else:
+        pass
+    return jsonify(result = "success", result2= data)
 
 @app.route('/test')
 def connection_mongodb():

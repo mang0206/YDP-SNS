@@ -77,17 +77,17 @@ a:visited{color: black}
     z-index: -1000;
     opacity: 0;
 }
-    /* 팝업창 활성화 */
+/* 팝업창 활성화 */
 .show{
     opacity: 1;
     z-index: 1000;
     transition: all .5s;
 }
-    /* 팝업창 활성화 시 스크롤 숨김 */
+/* 팝업창 활성화 시 스크롤 숨김 */
 .hidden{
     overflow: hidden;
 }
-    /* 팝업창 비활성화 시 팝업창 영역 숨김 */
+/* 팝업창 비활성화 시 팝업창 영역 숨김 */
 .none{
     display: none;
 }
@@ -329,14 +329,21 @@ a:visited{color: black}
 .user_background{
     width: 100%;
     height: 300px;
-    background-color: lightgray;
     margin-top: -50px;
+
+    background: lightgray;
 }
 .user_profile{
-    width: 30px;
-    height: 30px;
-    border: solid 1px gray;
-    border-radius: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.user_profile_image{
+    display: flex;
+}
+.user_profile_edit{
+    display: flex;
+    flex-direction: row;
 }
 .user_profile_img{
     width: 65px;

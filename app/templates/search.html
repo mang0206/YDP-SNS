@@ -1,6 +1,6 @@
 {% extends 'index_base.html' %}
 {% block search %}
-
+<script src="../static/js/search_test.js" defer="defer"></script>
 <div class="search_container">
     <h2>"{{ search }}" 검색 결과</h2>
 </div>
@@ -13,7 +13,7 @@
     <div class="layout_right friend_list">
         <h4>계정</h4>
         {% for user in search_user %}
-            <div class="search_user">
+            <div class="search_user" id = 'friend_button_area_{{user.user_id}}' data-user=' {{ user.user_id }}' value = "{{ user.user_id }}" > 
                 <div class="user_profile_img">
                     <!-- user 검색 결과 프로필 이미지 -->
                     <a>
@@ -21,16 +21,11 @@
                 </div>
                 <div class="user_name_id">
                     <a class="user_name">
-                        {{user.name}}
+                        {{user.user_ide}}
                     </a>
                     <div class="user_id">
-                        {{ user.user_id }}
+                        {{ user.name }}
                     </div>
-                </div>
-                <div class="friend_button_area" id = "friend_button_area">
-                    <!-- <a href="" id="button_a">
-                        <input class="friend_button" id="friend_button" value="친구 요청">
-                    </a> -->
                 </div>
             </div> 
         {% endfor %}
@@ -42,5 +37,5 @@
 </div>
 
 <!-- <script src="../static/js/search.js" defer="defer"></script> -->
-<script src="../static/js/search_test.js" defer="defer"></script>
+<!-- <script src="../static/js/search_test.js" defer="defer"></script> -->
 {% endblock %}

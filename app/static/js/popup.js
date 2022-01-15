@@ -3,20 +3,33 @@ function plus(){
     document.querySelector(".plus_background").className = "plus_background show";
     document.querySelector(".body").className = "body hidden";
 }
+var test = null;
+
 // 게시물 작성 취소 버튼 및 경고창
 function close(){ 
-    console.log('close')
-    if(document.getElementById('content_submit') != null){
-        console.log('first if')
+    var text = document.querySelector('#content_submit').value;
+    var file = document.querySelector('#popup_input_file').value;
+    console.log(typeof(file));
+
+    if(text == ""){
+        // console.log(text)
+        document.querySelector(".plus_background").className = "plus_background none";
+        document.querySelector(".body").className = "body";
+
+    } else {
+        console.log(typeof(text))
         if(confirm("작성하신 내용이 사라집니다.") == true){
-            console.log('true')
+            console.log("true")
             document.querySelector(".plus_background").className = "plus_background none";
             document.querySelector(".body").className = "body";
-            document.getElementById('plus_container').reset();
-            // document.getElementById("popup_input_file").reset();
-            images.splice(0);
-            document.getElementById('file_container').innerHTML = image_show();
+            document.getElementById("plus_container").reset();
+            // $('#plus_container').clearForm();
+            text = "";
+            file = "";
+            // images.splice(0);
+            // document.getElementById('file_container').innerHTML = image_show();
             
+            // document.getElementById("popup_input_file").reset();
         } else {
             console.log('false')
             return false;

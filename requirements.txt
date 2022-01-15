@@ -9,3 +9,4 @@ pymongo==4.0.1
 Werkzeug==2.0.2
 wincertstore==0.2
 flask-bcrypt==0.7.1
+simplejson==3.17.6
