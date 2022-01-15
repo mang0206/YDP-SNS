@@ -138,6 +138,7 @@ def friend():
 def setting():
     return render_template('setting.html')
 
+# 친구 요청, 요청 삭제, 친구 삭제 처리
 @app.route('/request_friend', methods=['POST'])
 def request_frie():
     data = request.get_json()
@@ -146,6 +147,7 @@ def request_frie():
     print(data['user'], data['id'].split('!')[-1], data['val'])
     user = data['user']
     request_user = data['id'].split('!')[-1]
+    
     if data['val'] == '친구 요청':
         col_request_friend.insert_one({
             'user_id' : user,
@@ -158,6 +160,7 @@ def request_frie():
         col_request_friend.delete_one(query)
     else:
         pass
+    
     return jsonify(result = "success", result2= data)
 
 @app.route('/test')
