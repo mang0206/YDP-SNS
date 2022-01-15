@@ -1,37 +1,33 @@
 // 프로필 이미지 변경
 $(function() {
     $("#profile_image_input").on('change', function(){
-    readURL(this);
+    readURL(this, 1);
     });
-    console.log(this)
-
 });
 // 배경 이미지 변경
 $(function() {
     $("#background_image_input").on('change', function(){
-        readURL(this);
+        readURL(this, 2);
     });
 });
 
-var profile_image = document.getElementById('profile_image_input');
-var background_image = document.getElementById('background_image_input');
-
-function readURL(input) {
-    console.log(typeof(input.id))
-
-    // console.log(document.getElementById('background_image_input').getAttribute('id'))
-    
+function readURL(input, n) {
     if (input.files && input.files[0]) {
         var reader = new FileReader();
-        
-        reader.onload = function (e) {
-        
-        $('.background_image_input').attr('src', e.target.result);
+        // 1 -> 프로필 이미지 변경
+        if (n == 1) {
+            reader.onload = function (e) {
+                $('.profile_image_input').attr('src', e.target.result);
+            }
+            reader.readAsDataURL(input.files[0]);
+        } else {
+        // 2 -> 배경 이미지 변경
+            reader.onload = function (e) {
+                $('.background_image_input').attr('src', e.target.result);
+            }
+            reader.readAsDataURL(input.files[0]);
         }
-        reader.readAsDataURL(input.files[0]);
-
     }
-
 }
 
 
