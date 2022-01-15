@@ -10,7 +10,7 @@
 // 게시물 추가 popup창 
 function plus(){
     document.querySelector(".plus_background").className = "plus_background show";
-    document.querySelector(".body").className = "body hidden";
+    document.querySelector(".body").className = "body scroll_hidden";
 }
 
 

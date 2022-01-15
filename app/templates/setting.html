@@ -2,51 +2,88 @@
 {% block setting %}
 <div>
     <h2>설정</h2>
-    <div>
-        계정
-        <div class="both_layout">
-            <div>
-                닉네임 변경
-            </div>
-            <form action="">
-                <div class="user_id">
-                    <label for="setting_id"></label>
-                    <input type="text" placeholder="새로운 닉네임" id="setting_id" name='setting_id' class="" required>
-                </div>
-                <div class="">
-                    <input type="submit" id="setting_id_submit" name="submit_btn" value="setting_id">
-                    <label for="setting_id_submit">닉네임 저장</label>
-                </div>
-            </form>
+    <div class="setting_container">
+        <div class="setting_nav">
+            <button class="setting_nav_btn">프로필 편집</button>
+            <button class="setting_nav_btn">계정</button>
         </div>
-        <div class="both_layout">
-            <div>
-                비밀번호 변경
+        <div class="setting_area">
+            <div class="setting_nav2" id="profile_setting">
+                <form action="" class="change_profile_image">
+                    <p>프로필 사진 변경</p>
+                    <div class="profile_image" id="profile_image">
+                        <!-- photo area -->
+                    </div>
+                    <input type="file" id="profile_image_input">
+                    <button type="submit">프로필 사진 저장</button>
+                </form>
+                <form action="" class="change_background_image">
+                    <p>배경 사진 변경</p>
+                    <div class="background_image">
+                        <!-- photo area -->
+                        <img src="" alt="" class="background_image_input">
+                    </div>
+                    <input type="file" id="background_image_input">
+                    <button type="submit">배경 사진 저장</button>
+                </form>
+                <form action="">
+                    <p>별명 변경</p>
+                    <input type="text">
+                    <button type="submit">별명 저장</button>
+                </form>
+                <form action="">
+                    <p>소개글 수정</p>
+                    <input type="text">
+                    <button type="submit">소개글 저장</button>
+                </form>
             </div>
-            <form action="">
-                <div class="setting_pw">
-                    <label for="setting_pw"></label>
-                    <input type="password" placeholder="기존 비밀번호" id="setting_pw" name='password' class="" required>
+            <div class="setting_nav2 none" id="account_setting">
+                <div class="both_layout">
+                    <div>
+                        사용자 이름 변경
+                    </div>
+                    <form action="">
+                        <div class="user_id">
+                            <label for="setting_id"></label>
+                            <input type="text" placeholder="새로운 닉네임" id="setting_id" name='setting_id' class="" required>
+                        </div>
+                        <div class="">
+                            <input type="submit" id="setting_id_submit" name="submit_btn" value="setting_id">
+                            <label for="setting_id_submit">사용자 이름 저장</label>
+                        </div>
+                    </form>
                 </div>
-                <div class="setting_pw2">
-                    <label for="setting_pw2"></label>
-                    <input type="password" placeholder="새로운 비밀번호" id="setting_pw2" name='password' class="" required>
+                <div class="both_layout">
+                    <div>
+                        비밀번호 변경
+                    </div>
+                    <form action="">
+                        <div class="setting_pw">
+                            <label for="setting_pw"></label>
+                            <input type="password" placeholder="기존 비밀번호" id="setting_pw" name='password' class="" required>
+                        </div>
+                        <div class="setting_pw2">
+                            <label for="setting_pw2"></label>
+                            <input type="password" placeholder="새로운 비밀번호" id="setting_pw2" name='password' class="" required>
+                        </div>
+                        <div class="">
+                            <input type="submit" id="setting_pw_submit" name="submit_btn" value="setting_pw">
+                            <label for="setting_pw_submit">비밀번호 저장</label>
+                        </div>
+                    </form>
                 </div>
-                <div class="">
-                    <input type="submit" id="setting_pw_submit" name="submit_btn" value="setting_pw">
-                    <label for="setting_pw_submit">비밀번호 저장</label>
+                <div>
+                    로그아웃
                 </div>
-            </form>
+                <div>
+                    탈퇴
+                </div>
+                <div>
+                    버전 정보 Ver.00
+                </div>
+            </div>
         </div>
-    </div>
-    <div>
-        로그아웃
-    </div>
-    <div>
-        탈퇴
-    </div>
-    <div>
-        버전 정보 Ver.00
     </div>
 </div>
+<script src="../static/js/setting.js" defer="defer"></script>
 {% endblock %}

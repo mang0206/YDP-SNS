@@ -5,33 +5,43 @@
         background photo
     </div>
     <div class="user_profile">
-        <div class="user_profile_image">
-            user photo
-            <div class="user_profile_edit">
-                <div>
-                    user id
-                </div>
-                <div>
-                    friend count
-                </div>
-                <div>
-                    edit profile
-                </div>
-                <div><a href="/setting">설정</a></div>
+        <div class="profile_container">
+            <div class="profile_image">
+                user photo
             </div>
-            <div>
-                introduce self
+            <div class="information_container">
+                <div class="user_information">
+                    <div class="user_name_friend">
+                        <div class="user_name">
+                            <h2>사용자</h2>
+                            
+                        </div>
+                        <div>
+                            friend count
+                        </div>
+                    </div>
+                    <div class="user_setting">
+                        <div class="profile_edit">
+                            <!-- 세션에 로그인 된 사용자만 프로필 편집 버튼 활성화 -->
+                            <!-- <a href="/setting">프로필 편집</a> -->
+                        </div>
+                    </div>
+                </div>
+                <div class="user_introduce">
+                    <h4>소개</h4>
+                    <div class="user_introduce_text"></div>
+                </div>
             </div>
         </div>
         <div class="both_layout">
-            <div>
+            <div class="both_layout_friend">
                 친구 목록
             </div>
-            <div>
+            <div class="both_layout_content">
                 content list
             </div>
         </div>
     </div>
 </div>
-<!-- <script src="../static/js/user.js" defer="defer"></script> -->
+<script src="../static/js/user.js" defer="defer"></script>
 {% endblock %}

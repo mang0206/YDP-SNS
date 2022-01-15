@@ -1,20 +1,21 @@
 {% extends 'index_base.html' %}
 {% block search %}
-<script src="../static/js/search_test.js" defer="defer"></script>
-<div class="search_container">
+
+<div class="base_body_margin search_container">
     <h2>"{{ search }}" 검색 결과</h2>
 </div>
 <div class="both_layout" id="search" data-name= '{{ session_user }}' data-search_user = '{{ search_user_id }}'\
         data-friend_list='{{ friend_list }}' data-session_request_list='{{ session_request_list }}'>
-    <div class="content_container">
+    <div class="both_layout_content">
         <h4>게시물</h4>
     </div>
 
-    <div class="layout_right friend_list">
+    <div class="both_layout_friend friend_list">
         <h4>계정</h4>
         {% for user in search_user %}
             <div class="search_user" id = 'friend_button_area_{{user.user_id}}' data-user=' {{ user.user_id }}' value = "{{ user.user_id }}" > 
                 <div class="user_profile_img">
+                <!-- <div class="search_user_image"> -->
                     <!-- user 검색 결과 프로필 이미지 -->
                     <a>
                     </a>
@@ -37,5 +38,5 @@
 </div>
 
 <!-- <script src="../static/js/search.js" defer="defer"></script> -->
-<!-- <script src="../static/js/search_test.js" defer="defer"></script> -->
+<script src="../static/js/search_test.js" defer="defer"></script>
 {% endblock %}
