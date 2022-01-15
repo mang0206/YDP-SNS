@@ -75,14 +75,10 @@ function create_btn(){
 
 window.onload = create_btn();
 
-console.log('ajax')
-// $('.button_area').click(function(){
 $('[id^=_button_area]').click(function(){
     let user = session_user
     var id = $(this).attr("id");
-    // var id = $('.search_user').data().user;
     console.log(id)
-    // var val = $('.friend_button').val();
     var val = document.getElementById(id).firstChild.value;
     console.log(val)
     var postdata = {
@@ -90,7 +86,7 @@ $('[id^=_button_area]').click(function(){
     }
     $.ajax({
         type: 'POST',
-        url: "ajax",
+        url: "request_friend",
         data: JSON.stringify(postdata),
         dataType : 'JSON',
         contentType: "application/json",

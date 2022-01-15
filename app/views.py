@@ -115,18 +115,6 @@ def search():
     return render_template('search.html',session_user=email, search = search, search_user=search_user,\
                 search_user_id = search_user_id, friend_list=friend_list, session_request_list=session_request_list)
 
-
-# @app.route("/request_friend/<f>")
-# def append_friend(f):
-    
-#     print(f)
-#     return redirect(url_for('search'))
-@app.route("/request_friend")
-def append_friend():
-    
-    print(1234123412341234123412)
-    return redirect(url_for('index'))
-
 # 팝업창 txt와 img를 DB로 전송
 @app.route("/content_submit", methods=["GET", "POST"])
 def content_submit():
@@ -150,8 +138,8 @@ def friend():
 def setting():
     return render_template('setting.html')
 
-@app.route('/ajax', methods=['POST'])
-def ajax():
+@app.route('/request_friend', methods=['POST'])
+def request_frie():
     data = request.get_json()
     col_user = db.get_collection('user')
     col_request_friend = db.get_collection('request_friend')
@@ -165,8 +153,7 @@ def ajax():
         })
     elif data['val'] == '요청 삭제':
         query = { '$or' : 
-            [ {'user_id': user}, {'request_user' : request_user}
-            ]
+            [{'user_id': user}, {'request_user' : request_user}]
         }
         col_request_friend.delete_one(query)
     else:
