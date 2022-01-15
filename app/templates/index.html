@@ -1,17 +1,17 @@
 {% extends 'index_base.html' %}
 {% block index %}
-<div class="content_container">
+<div class="both_layout_content">
     <span class="empty_content">아직 게시물이 없습니다</span>
     <div id="content" class="index_content">
         <!-- db로 전송한 게시물 업로드 area -->
     </div>
 </div>
-<div class="layout_right">
+<div class="both_layout_friend">
     <div class="friend_list">
         <h4>친구 목록</h4>
         {% for user in search_user %}
             <div class="search_user">
-                <div class="user_profile_img"></div>
+                <div class="search_user_image"></div>
                 <div class="user_name_id">
                     <div class="user_name">
                         {{ user.name }}

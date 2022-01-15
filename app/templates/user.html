@@ -5,29 +5,41 @@
         background photo
     </div>
     <div class="user_profile">
-        <div class="user_profile_image">
-            user photo
-            <div class="user_profile_edit">
-                <div>
-                    user id
-                </div>
-                <div>
-                    friend count
-                </div>
-                <div>
-                    edit profile
-                </div>
-                <div><a href="/setting">설정</a></div>
+        <div class="profile_container">
+            <div class="profile_image">
+                user photo
             </div>
-            <div>
-                introduce self
+            <div class="information_container">
+                <div class="user_information">
+                    <div class="user_name_friend">
+                        <div class="user_name">
+                            <h2>사용자</h2>
+                            
+                        </div>
+                        <div>
+                            friend count
+                        </div>
+                    </div>
+                    <div class="user_setting">
+                        <div class="profile_edit">
+                            <button>프로필 편집</button>
+                        </div>
+                        <div class="user_setting_btn">
+                            <a href="/setting"><img class="top_bar_icon" src="../static/img/setting.png" alt="setting_icon"></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="user_introduce">
+                    <h4>소개</h4>
+                    <div class="user_introduce_text"></div>
+                </div>
             </div>
         </div>
         <div class="both_layout">
-            <div>
+            <div class="both_layout_friend">
                 친구 목록
             </div>
-            <div>
+            <div class="both_layout_content">
                 content list
             </div>
         </div>
