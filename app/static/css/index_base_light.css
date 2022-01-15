@@ -99,7 +99,7 @@ a:visited{color: black}
     transition: all .5s;
 }
 /* 팝업창 활성화 시 스크롤 숨김 */
-.hidden{
+.scroll_hidden{
     overflow: hidden;
 }
 /* 팝업창 비활성화 시 팝업창 영역 숨김 */
@@ -451,6 +451,47 @@ a:visited{color: black}
 }
 /* setting */
 .setting{
+    padding-right: 100px;
+}
+.setting_container{
     display: flex;
+    flex-direction: row;
     justify-content: left;
+}
+.setting h2{
+    margin-bottom: 30px;
+}
+.setting_nav_btn{
+    width: 200px;
+    height: 80px;
+    padding: 5px;
+    
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    box-sizing: border-box;
+    border: solid 1px lightgray;
+}
+.setting_area{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+.setting_nav2{
+    width: 100%;
+    padding: 10px 10px 10px 50px;
+
+    box-sizing: border-box;
+    border: solid 1px lightgray;
+}
+.setting_nav2 form{
+    margin-bottom: 50px;
+}
+.background_image{
+    width: 300px;
+    height: 150px;
+
+    box-sizing: border-box;
+    border: solid 1px lightgray;
 }
