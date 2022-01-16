@@ -34,19 +34,19 @@
                     <form action="/content_submit" class="plus_container" id="plus_container" name="content_form" method="POST" enctype="multipart/form-data">
                         <div class="plus_popup">
                             <div class="popup_header">
-                                <button id="close_icon_btn"><img class="top_bar_icon close" src="../static/img/close.png" alt="close_icon"></button>
+                                <button type="button" id="close_icon_btn"><img class="top_bar_icon close" src="../static/img/close.png" alt="close_icon"></button>
                                 <span>게시물 작성</span>
                                 <button type="submit" onclick="location.href='/content_submit'" name="content_submit" class="popup_submit_btn" formmethod="post">공유하기</button>
                                 <!-- <label for="popup_submit" class="popup_submit_label"></label> -->
                             </div>
                             <div class="popup_txt">
-                                <textarea id="popup_textarea" name="content_txt" placeholder="내용을 입력 해주세요." required></textarea>
+                                <textarea id="popup_textarea" name="content_txt" placeholder="내용을 입력 해주세요." ></textarea>
                             </div>
                             <span>업로드 할 파일 선택</span>
                             <div class="popup_file">
                                 <div class="popup_file_input">
                                     <input type="file"  id="popup_input_file" name="content_file" onChange="image_select()" multiple >
-                                    <button id="input_file_btn" onClick="document.getElementById('popup_input_file').click()" class="input_file_btn">                                
+                                    <button type="button" id="input_file_btn" onClick="document.getElementById('popup_input_file').click()" class="input_file_btn">                                
                                         파일 선택하기
                                     </button>
                                 </div>
