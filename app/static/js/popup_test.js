@@ -51,6 +51,7 @@ var img_value = {};
 
 // 이미지 선택
 function image_select() {
+    console.log(1)
     var image = document.getElementById('popup_input_file').files;
     for (i = 0; i < image.length; i++) {
         if (check_duplicate(image[i].name)) {
@@ -115,7 +116,7 @@ function check_duplicate(name) {
 
 document.querySelector("#close_icon_btn").addEventListener('click', close);
 document.querySelector("#plus_icon_btn").addEventListener('click', plus);
-
+// document.querySelector("#input_file_btn").addEventListener('click', image_select);
 
 // 파일 업로드 제한
 

@@ -118,14 +118,15 @@ def search():
 # 팝업창 txt와 img를 DB로 전송
 @app.route("/content_submit", methods=["GET", "POST"])
 def content_submit():
-    print(1)
+    print(request.method)
     if request.method == "POST":
         print(2)
-        if request.form.get('content_submit') == "content_form":
-            content_txt = request.form.get('content_txt')
-            content_file = request.form.get('content_file')
-
-        return render_template('user.html')
+        # if request.form.get('content_submit') == "content_form":
+        content_txt = request.form.get('content_txt')
+        content_file = request.form.get('content_file')
+        print(type(content_file))
+        print('-==============================',content_txt, content_file)
+        return redirect(url_for('user'))
     content_txt = request.form.get('content_txt')
     content_file = request.form.get('content_file')
     print('-==============================',content_txt, content_file)
