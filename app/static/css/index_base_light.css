@@ -349,6 +349,10 @@ a:visited{color: black}
     margin: 0;
     overflow: auto;
 }
+.request_status{
+    display: flex;
+    overflow: auto;
+}
 .empty_request_friend{
     height: 160px;
 
@@ -359,11 +363,11 @@ a:visited{color: black}
     justify-content: center;
 }
 .request_friend{
-    overflow: auto;
+    margin-right: 15px;
 }
 .friend_user_container{
     width: 140px;
-    height: 180px;
+    height: fit-content;
     padding: 7px;
 
     display: flex;
@@ -379,6 +383,33 @@ a:visited{color: black}
     margin-bottom: 10px;
 
     border-radius: 50%;
+}
+.friend_user_name{
+    margin-bottom: 10px;
+}
+#request_button{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+
+    background: lightgray;
+
+}
+#request_button button{
+    padding: 5px 20px;
+    cursor: pointer;
+
+    border: solid 1px gray;
+    border-radius: 5px;
+}
+.accept{
+    margin-right: 5px;
+
+    color: #FFFFFF;
+    background: #46A6FF;
+}
+.reject{
+    background: lightgray;
 }
 .friend_recommend{
     min-width: 300px;

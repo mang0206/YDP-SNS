@@ -129,10 +129,25 @@ def content_submit():
 def user():
     return render_template('user.html')
 
-@app.route("/friend")
+@app.route("/friend", methods=["GET", "POST"])
 def friend():
-    request_friend = [1]
+    request_friend = ["test_a", "test_b", "test_c"]
+
     return render_template('friend.html', request_friend=request_friend)
+
+@app.route("/friend_respond", methods=["GET", "POST"])
+def friend_respond():
+    request_friend = ["test_a", "test_b", "test_c"]
+    if request.method == "POST":
+        if request.form.get('accept') == 'request_friend':
+            # 친구목록에 추가, 요청 리스트 삭제
+            request_friend = request.form.get('')
+
+        if request.form.get('reject') == 'request_friend':
+            # 요청 리스트 삭제
+            request_friend = request.form.get('')
+    
+    return redirect()
 
 @app.route("/setting")
 def setting():

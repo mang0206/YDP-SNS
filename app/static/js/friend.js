@@ -6,21 +6,52 @@
 // const request_friend_list = $('#search').data().session_request_list;
 
 // test
-const request_friend_list = [];
-const empty_request = document.querySelector('.request_friend');
-const request_friend = document.querySelector('.empty_request_friend');
+const request_friend_list = [1];
+const request_friend = document.querySelector('.request_friend');
+const user_id = "";
 
-// 친구 요청에 따른 div 영역 display 설정
-document.addEventListener('DOMContentLoaded', function request_status(){
-    console.log('test')
-    if (request_friend_list.length == 0) {
-        empty_request.style.display = 'none';
-        // console.log('else')
+// 요청 수락 or 거절 작동 함수
+// _btn으로 끝나는 id 요소를 클릭한 경우 
+$('[id$=_btn]').click(function(){
+    var id = $(this).attr('id');
+    // var request_button = document.querySelectorAll('.request_button');
+    console.log(id)
+
+    $('.request_button').addClass('none');
+    var create_p = document.createElement('p').innerText;
+    console.log(create_p)
+
+
+    if (id == 'accept_btn'){
+        // 친구 삭제 버튼 생성
+        console.log('accept_btn')
         
-        // empty_request.classList.add('none');
-        // console.log('if')
-    // } else {
-        
-        // request_friend.classList.add('none');
+
+    } else {
+        // 친구 요청 버튼 생성
+        console.log('reject_btn')
+
     }
+    $.ajax({
+        type: 'POST',
+        url: 'friend_respond',
+        data: JSON.stringify(),
+        dataType: 'JSON',
+        contentType: "application/json",
+        success: function(data){
+            // alert('성공! 데이터 값:' + data.result2['user']+' '+data.result2['id']+" " + data.result2['val'])
+            if (id == 'accept_btn') {
+                p_txt = '요청이 수락되었습니다.'
+            }else {
+                p_txt = '요청이 거절됐습니다.'
+            }
+            create_p.innerText = p_txt;
+        },
+        error: function(request, status, error){
+            alert('ajax 통신 실패')
+            alert(error);
+        }
+    })
 });
+console.log('test')
+
