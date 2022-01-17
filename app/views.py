@@ -131,7 +131,8 @@ def user():
 
 @app.route("/friend")
 def friend():
-    return render_template('friend.html')
+    request_friend = [1]
+    return render_template('friend.html', request_friend=request_friend)
 
 @app.route("/setting")
 def setting():

@@ -108,3 +108,5 @@ $('[id^=_button_area]').click(function(){
         }
     })
 })
+
+// console.log(typeof(request_friend_list))

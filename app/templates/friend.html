@@ -3,13 +3,36 @@
 <div class="base_body_margin">
     <h2>친구 목록</h2>
 </div>
-<div class="both_layout">
+<div class="base_body_margin both_layout">
     <!-- js 사용하여 친구추천이 있는 경우만 나타나는 영역 생성 -->
-    <div class="friend_list">
-        친구 목록
+    <div class="both_layout_content friend_list">
+        <h3>새로운 친구 요청</h3>
+        <div class="request_status">
+            {% if request_friend|length == 0 %}
+            <div class="empty_request_friend">
+                <p>새로운 친구 요청이 없습니다.</p>
+            </div>
+            {% else %}
+                {% for friend in request_friend %}
+                <div class="request_friend">
+                    <div class="friend_user_container">
+                        <div class="friend_user_image">image</div>
+                        <div class="friend_user_name">friend_user_name</div>
+                        <!-- js 버튼 영역 -->
+                    </div>
+                </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+        <hr>
+        <h3>친구 목록</h3>
+        <div>
+            기존 친구 목록
+        </div>
     </div>
     <div class="both_layout_friend friend_recommend">
         친구 추천 목록
     </div>
 </div>
+<!-- <script src="../static/js/friend.js" defer=""></script> -->
 {% endblock %}
