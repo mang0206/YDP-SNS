@@ -137,17 +137,32 @@ def friend():
 
 @app.route("/friend_respond", methods=["GET", "POST"])
 def friend_respond():
-    request_friend = ["test_a", "test_b", "test_c"]
-    if request.method == "POST":
-        if request.form.get('accept') == 'request_friend':
-            # 친구목록에 추가, 요청 리스트 삭제
-            request_friend = request.form.get('')
+    data = request.get_json()
+    jsonObject = json.loads(data)
+    jsonArray = jsonObject.get('id')
 
-        if request.form.get('reject') == 'request_friend':
-            # 요청 리스트 삭제
-            request_friend = request.form.get('')
+    col_user = db.get_collection('user')
+    col_request_friend = db.get_collection('request_friend')
+    # print(data['user'], data['id'].split('!')[-1], data['val'])
+    # user = data['user']
+    # request_user = data['id'].split('!')[-1]
     
-    return redirect()
+    if jsonArray == 'accept_btn':
+        # col_request_friend.delete_one({
+        #     'user_id' : user,
+        #     'request_user' : request_user
+        # })
+        print("accept")
+    elif jsonArray == 'reject_btn':
+        # query = { '$or' : 
+        #     [{'user_id': user}, {'request_user' : request_user}]
+        # }
+        # col_request_friend.delete_one(query)
+        print("reject")
+    else:
+        pass
+    
+    return jsonify(result = "success", result2= data)
 
 @app.route("/setting")
 def setting():

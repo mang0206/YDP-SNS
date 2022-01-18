@@ -14,38 +14,32 @@ const user_id = "";
 // _btn으로 끝나는 id 요소를 클릭한 경우 
 $('[id$=_btn]').click(function(){
     var id = $(this).attr('id');
-    // var request_button = document.querySelectorAll('.request_button');
-    console.log(id)
 
+    // request_button에 none class 추가
     $('.request_button').addClass('none');
-    var create_p = document.createElement('p').innerText;
-    console.log(create_p)
+    // p 태그 생성
+    var create_p = document.createElement('p');
+    create_p.innerText('innerText 테스트');
+    document.getElementById('request_button').appendChild(create_p);
 
-
-    if (id == 'accept_btn'){
-        // 친구 삭제 버튼 생성
-        console.log('accept_btn')
-        
-
-    } else {
-        // 친구 요청 버튼 생성
-        console.log('reject_btn')
-
+    var request_data = {
+        "id": id
     }
     $.ajax({
         type: 'POST',
         url: 'friend_respond',
-        data: JSON.stringify(),
+        data: JSON.stringify(request_data),
         dataType: 'JSON',
         contentType: "application/json",
         success: function(data){
-            // alert('성공! 데이터 값:' + data.result2['user']+' '+data.result2['id']+" " + data.result2['val'])
+            alert('성공! 데이터 값:')
+            // id 값에 따른 p태그 innerText 변경
             if (id == 'accept_btn') {
-                p_txt = '요청이 수락되었습니다.'
+                create_p.innerText('요청이 수락되었습니다.');
             }else {
-                p_txt = '요청이 거절됐습니다.'
+                create_p.innerText('요청이 거절됐습니다.');
             }
-            create_p.innerText = p_txt;
+            document.getElementById('request_button').appendChild(create_p);
         },
         error: function(request, status, error){
             alert('ajax 통신 실패')
