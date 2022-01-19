@@ -26,7 +26,7 @@ $('[id$=_btn]').click(function(){
     var request_data = {
         "id": id
     }
-    console.log(request_data)
+    console.log(id, request_data)
     $.ajax({
         type: 'POST',
         url: 'friend_respond',
@@ -34,6 +34,7 @@ $('[id$=_btn]').click(function(){
         dataType: 'JSON',
         contentType: "application/json",
         success: function(data){
+            console.log(id, typeof(id), data)
             // alert('성공! 데이터 값:')
             // id 값에 따른 p태그 innerText 변경
             if (id == 'accept_btn') {
