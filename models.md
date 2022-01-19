@@ -16,7 +16,7 @@
 ## poster 
     - create_user : 작성한 사용자 ID
     - create_time : 작성 시간(24시간 전까지는 ~시간 전, 지난 후에는 일자 표시)
-	- test : test data
+	- text : text data
 	- images : 이미지 리스트
     - hash_tag : 해시 태그 리스트
 

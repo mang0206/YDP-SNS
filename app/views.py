@@ -110,7 +110,7 @@ def search():
     
     print(list(col_request_friend.find()))
     session_request_list = json.dumps(session_request_list, ensure_ascii = False)
-    print(session_request_list, type(session_request_list))
+
     return render_template('search.html',session_user=email, search = search, search_user=search_user,\
                 search_user_id = search_user_id, friend_list=friend_list, session_request_list=session_request_list)
 
@@ -143,8 +143,13 @@ def friend():
     friend_list = []
     for i in col_user.find({'user_id':user}):
         friend_list = i['friend_list']
+    friend_dict = {}
+    for i in friend_list:
+        find_user = col_user.find_one({'user_id':i})
+        friend_dict[i] = find_user['user_ide']
 
-    return render_template('friend.html', request_friend=request_friend, friend_list=friend_list)
+    
+    return render_template('friend.html', request_friend=request_friend, friend_list=friend_dict)
 
 @app.route("/friend_respond", methods=["POST"])
 def friend_respond():
@@ -153,14 +158,10 @@ def friend_respond():
     col_user = db.get_collection('user')
     col_request_friend = db.get_collection('request_friend')
 
-    if data['friend'] == 'accept_btn':
-        # col_user.update({'user_id': session['login']}, {'$push': {'friend': friend}})/
-        print(data)
-    elif data['friend'] == 'reject_btn':
-
-        print("reject")
-    else:
-        pass
+    if data['respond'] == 'accept_btn':
+        col_user.update_one({'user_id': session['login']}, {'$push': {'friend_list': data['friend']}})
+        col_user.update_one({'user_id': data['friend']}, {'$push': {'friend_list': session['login']}})
+    col_request_friend.delete_one({'user_id': data['friend'], 'request_user':session['login']})
     
     return jsonify(result = "success", result2= data)
 
@@ -189,7 +190,9 @@ def request_frie():
         }
         col_request_friend.delete_one(query)
     else:
-        pass
+        print('================친구 삭제',user, request_user)
+        col_user.update_one( {'user_id':user},{'$pull': {'friend_list' : request_user }})
+        col_user.update_one( {'user_id':request_user},{'$pull': {'friend_list' : user }})
     
     return jsonify(result = "success", result2= data)
 
