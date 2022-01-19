@@ -159,7 +159,7 @@ def friend_respond():
         print("reject")
     else:
         pass
-    
+    # coll.update({'user_id': session['login']}, {'$push': {'friend': friend}})
     return jsonify(result = "success", result2= data)
 
 @app.route("/setting")
