@@ -14,7 +14,6 @@ const user_id = "";
 // _btn으로 끝나는 id 요소를 클릭한 경우 
 $('[id$=_btn]').click(function(){
     var id = $(this).attr('id');
-
     // request_button에 none class 추가
     $('.request_button').addClass('none');
     // p 태그 생성
@@ -25,6 +24,7 @@ $('[id$=_btn]').click(function(){
     var request_data = {
         "id": id
     }
+    console.log(request_data)
     $.ajax({
         type: 'POST',
         url: 'friend_respond',

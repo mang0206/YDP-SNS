@@ -84,6 +84,7 @@ $('[id^=_button_area]').click(function(){
     var postdata = {
         'user': user, 'id':id, 'val':val
     }
+    console.log(postdata, typeof(postdata))
     $.ajax({
         type: 'POST',
         url: "request_friend",
