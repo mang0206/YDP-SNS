@@ -13,16 +13,16 @@
                 <p>새로운 친구 요청이 없습니다.</p>
             </div>
             {% else %}
-                {% for friend in request_friend %}
+                {% for friend_key, friend_val in request_friend.items() %}
                 <div>
                 <!-- <form action="/friend_respond" method="post" name="request_friend" class="request_friend"> -->
                     <div class="friend_user_container">
                         <div class="friend_user_image">image</div>
-                        <div class="friend_user_name">friend_user_name</div>
+                        <div class="friend_user_name">{{ friend_val }}</div>
                         <!-- js 요청 수락/거절 버튼 -->
-                        <div id="request_button" class="" div-data-value="{{ friend }}" data-list="{{ request_friend }}">
-                            <button id="accept_btn" btn-data-value="{{ friend }}" name="accept" class="request_btn">수락</button>
-                            <button id="reject_btn" btn-data-value="{{ friend }}" name="reject" class="request_btn">거절</button>
+                        <div id="request_button" class="" div-data-value="{{ friend_key }}" data-list="{{ request_friend }}">
+                            <button id="accept_btn" btn-data-value="{{ friend_key }}" name="accept" class="request_btn">수락</button>
+                            <button id="reject_btn" btn-data-value="{{ friend_key }}" name="reject" class="request_btn">거절</button>
                         </div>
                     </div>
                 <!-- </form> -->
@@ -32,9 +32,11 @@
         </div>
         <hr>
         <h3>친구 목록</h3>
+        {% for my_friend in friend_list %}
         <div>
-            기존 친구 목록
+            {{ my_friend }}
         </div>
+        {% endfor %}
     </div>
     <div class="both_layout_friend friend_recommend">
         친구 추천 목록

@@ -130,36 +130,38 @@ def user():
 
 @app.route("/friend", methods=["GET", "POST"])
 def friend():
-    request_friend = ["test_a", "test_b", "test_c"]
-    return render_template('friend.html', request_friend=request_friend)
+    user = session['login']
+    col_user = db.get_collection('user')
+    col_request_friend = db.get_collection('request_friend')
+    
+    request_friend_id = [user['user_id'] for user in col_request_friend.find({'request_user':user})]
+    request_friend = {}
+    for i in request_friend_id:
+        find_user = col_user.find_one({'user_id':i})
+        request_friend[i] = find_user['user_ide']
+
+    friend_list = []
+    for i in col_user.find({'user_id':user}):
+        friend_list = i['friend_list']
+
+    return render_template('friend.html', request_friend=request_friend, friend_list=friend_list)
 
 @app.route("/friend_respond", methods=["POST"])
 def friend_respond():
     data = request.get_json()
-    # jsonObject = json.loads(data)
-    # jsonArray = jsonObject.get('id')
     print(data, type(data))
     col_user = db.get_collection('user')
     col_request_friend = db.get_collection('request_friend')
-    # print(data['user'], data['id'].split('!')[-1], data['val'])
-    # user = data['user']
-    # request_user = data['id'].split('!')[-1]
-    
-    if data['id'] == 'accept_btn':
-        # col_request_friend.delete_one({
-        #     'user_id' : user,
-        #     'request_user' : request_user
-        # })
-        print("accept")
-    elif data['id'] == 'reject_btn':
-        # query = { '$or' : 
-        #     [{'user_id': user}, {'request_user' : request_user}]
-        # }
-        # col_request_friend.delete_one(query)
+
+    if data['friend'] == 'accept_btn':
+        # col_user.update({'user_id': session['login']}, {'$push': {'friend': friend}})/
+        print(data)
+    elif data['friend'] == 'reject_btn':
+
         print("reject")
     else:
         pass
-    # coll.update({'user_id': session['login']}, {'$push': {'friend': friend}})
+    
     return jsonify(result = "success", result2= data)
 
 @app.route("/setting")

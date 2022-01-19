@@ -34,7 +34,7 @@ $('[id$=_btn]').click(function(){
     // p 태그 생성
     var create_p = document.createElement('p');
     // p 태그 text 출력 test
-    $(create_p).text('innerText 테스트');
+    // $(create_p).text('innerText 테스트');
     // div 영역에 p 태그 추가
     $(div).append(create_p);
     
