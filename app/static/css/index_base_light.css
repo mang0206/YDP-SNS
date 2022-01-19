@@ -106,6 +106,9 @@ a:visited{color: black}
 .none{
     display: none;
 }
+.hidden{
+    display: hidden;
+}
 .plus_container{
     position: relative;
 

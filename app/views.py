@@ -138,7 +138,7 @@ def friend_respond():
     data = request.get_json()
     # jsonObject = json.loads(data)
     # jsonArray = jsonObject.get('id')
-    print(data)
+    print(data, type(data))
     col_user = db.get_collection('user')
     col_request_friend = db.get_collection('request_friend')
     # print(data['user'], data['id'].split('!')[-1], data['val'])
