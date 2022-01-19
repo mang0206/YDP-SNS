@@ -138,22 +138,22 @@ def friend():
 @app.route("/friend_respond", methods=["GET", "POST"])
 def friend_respond():
     data = request.get_json()
-    jsonObject = json.loads(data)
-    jsonArray = jsonObject.get('id')
-
+    # jsonObject = json.loads(data)
+    # jsonArray = jsonObject.get('id')
+    print(data, type(data))
     col_user = db.get_collection('user')
     col_request_friend = db.get_collection('request_friend')
     # print(data['user'], data['id'].split('!')[-1], data['val'])
     # user = data['user']
     # request_user = data['id'].split('!')[-1]
     
-    if jsonArray == 'accept_btn':
+    if data['id'] == 'accept_btn':
         # col_request_friend.delete_one({
         #     'user_id' : user,
         #     'request_user' : request_user
         # })
         print("accept")
-    elif jsonArray == 'reject_btn':
+    elif data['id'] == 'reject_btn':
         # query = { '$or' : 
         #     [{'user_id': user}, {'request_user' : request_user}]
         # }

@@ -19,8 +19,10 @@ $('[id$=_btn]').click(function(){
     $('.request_button').addClass('none');
     // p 태그 생성
     var create_p = document.createElement('p');
-    create_p.innerText('innerText 테스트');
-    document.getElementById('request_button').appendChild(create_p);
+    // p 태그 text 변경
+    $(create_p).text('innerText 테스트');
+    // div 영역에 p 태그 추가
+    $('.request_button').append(create_p);
 
     var request_data = {
         "id": id
@@ -32,14 +34,19 @@ $('[id$=_btn]').click(function(){
         dataType: 'JSON',
         contentType: "application/json",
         success: function(data){
-            alert('성공! 데이터 값:')
+            // alert('성공! 데이터 값:')
             // id 값에 따른 p태그 innerText 변경
             if (id == 'accept_btn') {
-                create_p.innerText('요청이 수락되었습니다.');
+                // create_p.innerText('요청이 수락되었습니다.');
+                $(create_p).text('요청이 수락되었습니다.');
+
             }else {
-                create_p.innerText('요청이 거절됐습니다.');
+                // create_p.innerText('요청이 거절됐습니다.');
+                $(create_p).text('요청이 거절됐습니다.');
+
             }
-            document.getElementById('request_button').appendChild(create_p);
+            $('.request_button').append(create_p);
+            // document.getElementById('request_button').appendChild(create_p);
         },
         error: function(request, status, error){
             alert('ajax 통신 실패')
