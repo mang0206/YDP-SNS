@@ -14,17 +14,17 @@
             </div>
             {% else %}
                 {% for friend in request_friend %}
-                <form action="/friend_respond" method="post" name="request_friend" class="request_friend">
+                <div name="request_friend" class="request_friend">
                     <div class="friend_user_container">
                         <div class="friend_user_image">image</div>
                         <div class="friend_user_name">friend_user_name</div>
                         <!-- js 요청 수락/거절 버튼 -->
-                        <div id="request_button">
+                        <div id="request_button" value="{{ friend }}">
                             <button id="accept_btn" name="accept" class="request_button accept">수락</button>
                             <button id="reject_btn" name="reject" class="request_button reject">거절</button>
                         </div>
                     </div>
-                </form>
+                </div>
                 {% endfor %}
             {% endif %}
         </div>
