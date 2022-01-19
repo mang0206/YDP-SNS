@@ -148,8 +148,8 @@ def friend():
         find_user = col_user.find_one({'user_id':i})
         friend_dict[i] = find_user['user_ide']
 
-    request_friend={'aaa':'aaa', 'bbb':'bbb', 'ccc':'ccc', 'ddd':'ddd'}
-    friend_list = ['aaa', 'bbb', 'ccc', 'ddd', 'eee', 'fff']
+    # request_friend={'aaa':'aaa', 'bbb':'bbb', 'ccc':'ccc', 'ddd':'ddd'}
+    # friend_list = ['aaa', 'bbb', 'ccc', 'ddd', 'eee', 'fff']
     return render_template('friend.html', request_friend=request_friend, friend_list=friend_dict)
 
 @app.route("/friend_respond", methods=["POST"])
@@ -162,6 +162,9 @@ def friend_respond():
     if data['respond'] == 'accept_btn':
         col_user.update_one({'user_id': session['login']}, {'$push': {'friend_list': data['friend']}})
         col_user.update_one({'user_id': data['friend']}, {'$push': {'friend_list': session['login']}})
+    elif data['respond'] == 'delete_btn':
+        col_user.update_one({'user_id': session['login']}, {'$pull': {'friend_list': data['friend']}})
+        col_user.update_one({'user_id': data['friend']}, {'$pull': {'friend_list': session['login']}})
     col_request_friend.delete_one({'user_id': data['friend'], 'request_user':session['login']})
     
     return jsonify(result = "success", result2= data)
@@ -204,9 +207,9 @@ def connection_mongodb():
 
     col = db.get_collection('user')
     # print(* list(col.find({},{'user_id':True, 'user_ide':True})))
-
+    col.update_many({},{"$rename":{"name":"user_name"}})
     lis = col.find({})
-
+    
     json_lis = dumps(lis)
     print(json_lis)
     return jsonify(json_lis)
