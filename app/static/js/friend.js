@@ -6,29 +6,44 @@
 // const request_friend_list = $('#search').data().session_request_list;
 
 // test
-const request_friend_list = [1];
-const request_friend = document.querySelector('.request_friend');
+const request_friend_list = $('#request_button').attr('data-list');
+const request_friend = $('.request_button').attr('data-value');
 const user_id = "";
+
+console.log(request_friend_list)
 
 // 요청 수락 or 거절 작동 함수
 // _btn으로 끝나는 id 요소를 클릭한 경우 
 $('[id$=_btn]').click(function(){
-    var id = $(this).attr('id');
-    // request_button에 none class 추가
-    $('.request_button').addClass('none');
+    // 클릭한 버튼에 해당하는 div 요소를 가져옴
+    var div = $(this).parent()
+    // div의 모든 자식 요소(button)
+    var div_btn = $(this).parent().children();
+
+    // 요청한 유저의 버튼이 맞는지 확인(및 flask data 전송)
+    var btn_data_value = $(this).attr('btn-data-value');
+    // console.log(btn_data_value)
+
+    // (ajax)클릭한 버튼의 id 값으로 p태그 문구 변경
+    var id = $(this).attr("id")
+
+    // 모든 자식 요소(button)에 none class 추가
+    $(div_btn).addClass('none');
+    // console.log(div_btn)
+
     // p 태그 생성
     var create_p = document.createElement('p');
-    // p 태그 text 변경
+    // p 태그 text 출력 test
     $(create_p).text('innerText 테스트');
     // div 영역에 p 태그 추가
-    $('#request_button').append(create_p);
-
-    console.log(create_p)
+    $(div).append(create_p);
+    
+    // console.log(create_p)
 
     var request_data = {
-        "id": id, 
+        "friend": btn_data_value, 
+        "respond" : id
     }
-    console.log(request_data)
     $.ajax({
         type: 'POST',
         url: 'friend_respond',
@@ -38,17 +53,14 @@ $('[id$=_btn]').click(function(){
         success: function(data){
             // alert('성공! 데이터 값:')
             // id 값에 따른 p태그 innerText 변경
-            if (id == 'accept_btn') {
-                // create_p.innerText('요청이 수락되었습니다.');
+            if (id == "accept_btn") {
                 $(create_p).text('요청이 수락되었습니다.');
 
             }else {
-                // create_p.innerText('요청이 거절됐습니다.');
                 $(create_p).text('요청이 거절됐습니다.');
 
             }
-            $('#request_button').append(create_p);
-            // document.getElementById('request_button').appendChild(create_p);
+            // $('#request_button').append(create_p);
         },
         error: function(request, status, error){
             alert('ajax 통신 실패')
