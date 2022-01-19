@@ -1,7 +1,7 @@
 {% extends 'index_base.html' %}
 {% block friend %}
-<div class="base_body_margin">
-    <h2>친구 목록</h2>
+<div class="base_body_margin friend">
+    <h2>친구</h2>
 </div>
 <div class="base_body_margin both_layout">
     <div class="both_layout_content friend_container">
@@ -15,8 +15,7 @@
             {% else %}
                 {% for friend_key, friend_val in request_friend.items() %}
                 <div>
-                <!-- <form action="/friend_respond" method="post" name="request_friend" class="request_friend"> -->
-                    <div class="friend_user_container">
+                    <div class="friend_user_container request_friend">
                         <div class="friend_user_image">image</div>
                         <div class="friend_user_name">{{ friend_val }}</div>
                         <!-- js 요청 수락/거절 버튼 -->
@@ -25,30 +24,28 @@
                             <button id="reject_btn" btn-data-value="{{ friend_key }}" name="reject" class="request_btn">거절</button>
                         </div>
                     </div>
-                <!-- </form> -->
                 </div>
                 {% endfor %}
             {% endif %}
         </div>
         <hr class="friend_hr" noshade="noshade">
-        <div class="friend_list">
+        <div id="friend_list">
             <h3>친구 목록</h3>
             <div class="user_friend">
                 {% for my_friend in friend_list %}
                 <div name="request_friend" class="request_friend">
-                    <div class="friend_user_container">
+                    <div class="friend_user_container ">
                         <div class="friend_user_image">image</div>
                         <div class="friend_user_name">{{ my_friend }}</div>
                         <!-- js 친구 삭제 버튼 -->
-                        <div id="delete_friend" class="">
-                            <button id="delete_btn" btn-data-value="{{ friend }}" name="delete" class="">친구 삭제</button>
+                        <div id="request_button" class="">
+                            <button id="delete_btn" btn-data-value="{{ my_friend }}" name="delete" class="request_btn">친구 삭제</button>
                         </div>
                     </div>
                 </div>
                 {% endfor %}
             </div>
         </div>
-        {% endfor %}
     </div>
     <div class="both_layout_friend friend_recommend">
         친구 추천 목록
