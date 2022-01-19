@@ -148,7 +148,8 @@ def friend():
         find_user = col_user.find_one({'user_id':i})
         friend_dict[i] = find_user['user_ide']
 
-    
+    request_friend={'aaa':'aaa', 'bbb':'bbb', 'ccc':'ccc', 'ddd':'ddd'}
+    friend_list = ['aaa', 'bbb', 'ccc', 'ddd', 'eee', 'fff']
     return render_template('friend.html', request_friend=request_friend, friend_list=friend_dict)
 
 @app.route("/friend_respond", methods=["POST"])
