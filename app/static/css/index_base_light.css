@@ -405,13 +405,13 @@ a:visited{color: black}
     border: solid 1px gray;
     border-radius: 5px;
 }
-.accept{
+#accept_btn{
     margin-right: 5px;
 
     color: #FFFFFF;
     background: #46A6FF;
 }
-.reject{
+#reject_btn{
     background: lightgray;
 }
 .friend_recommend{
