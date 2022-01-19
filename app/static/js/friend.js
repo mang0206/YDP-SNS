@@ -21,10 +21,12 @@ $('[id$=_btn]').click(function(){
     // p 태그 text 변경
     $(create_p).text('innerText 테스트');
     // div 영역에 p 태그 추가
-    $('.request_button').append(create_p);
+    $('#request_button').append(create_p);
+
+    console.log(create_p)
 
     var request_data = {
-        "id": id
+        "id": id, 
     }
     console.log(request_data)
     $.ajax({
@@ -45,7 +47,7 @@ $('[id$=_btn]').click(function(){
                 $(create_p).text('요청이 거절됐습니다.');
 
             }
-            $('.request_button').append(create_p);
+            $('#request_button').append(create_p);
             // document.getElementById('request_button').appendChild(create_p);
         },
         error: function(request, status, error){
