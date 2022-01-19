@@ -107,9 +107,10 @@ def search():
 
     session_request_list = {}
     session_request_list[''] = [user['request_user'] for user in col_request_friend.find({'user_id': session['login']})]
-    print(session_request_list)
+    
     print(list(col_request_friend.find()))
     session_request_list = json.dumps(session_request_list, ensure_ascii = False)
+    print(session_request_list, type(session_request_list))
     return render_template('search.html',session_user=email, search = search, search_user=search_user,\
                 search_user_id = search_user_id, friend_list=friend_list, session_request_list=session_request_list)
 
@@ -130,7 +131,6 @@ def user():
 @app.route("/friend", methods=["GET", "POST"])
 def friend():
     request_friend = ["test_a", "test_b", "test_c"]
-
     return render_template('friend.html', request_friend=request_friend)
 
 @app.route("/friend_respond", methods=["POST"])
