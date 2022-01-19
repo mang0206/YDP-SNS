@@ -10,7 +10,7 @@
         <h4>게시물</h4>
     </div>
 
-    <div class="both_layout_friend friend_list">
+    <div class="both_layout_friend friend_container">
         <h4>계정</h4>
         {% for user in search_user %}
             <div class="search_user" id = 'friend_button_area_{{user.user_id}}' data-user=' {{ user.user_id }}' value = "{{ user.user_id }}" > 

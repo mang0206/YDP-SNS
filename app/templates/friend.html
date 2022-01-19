@@ -4,7 +4,7 @@
     <h2>친구 목록</h2>
 </div>
 <div class="base_body_margin both_layout">
-    <div class="both_layout_content friend_list">
+    <div class="both_layout_content friend_container">
         <h3>새로운 친구 요청</h3>
         <div class="request_status">
             <!-- 친구 요청에 따른 페이지 구성 -->
@@ -20,7 +20,7 @@
                         <div class="friend_user_image">image</div>
                         <div class="friend_user_name">{{ friend_val }}</div>
                         <!-- js 요청 수락/거절 버튼 -->
-                        <div id="request_button" class="" div-data-value="{{ friend_key }}" data-list="{{ request_friend }}">
+                        <div id="request_button" class="">
                             <button id="accept_btn" btn-data-value="{{ friend_key }}" name="accept" class="request_btn">수락</button>
                             <button id="reject_btn" btn-data-value="{{ friend_key }}" name="reject" class="request_btn">거절</button>
                         </div>
@@ -30,11 +30,23 @@
                 {% endfor %}
             {% endif %}
         </div>
-        <hr>
-        <h3>친구 목록</h3>
-        {% for my_friend in friend_list %}
-        <div>
-            {{ my_friend }}
+        <hr class="friend_hr" noshade="noshade">
+        <div class="friend_list">
+            <h3>친구 목록</h3>
+            <div class="user_friend">
+                {% for my_friend in friend_list %}
+                <div name="request_friend" class="request_friend">
+                    <div class="friend_user_container">
+                        <div class="friend_user_image">image</div>
+                        <div class="friend_user_name">{{ my_friend }}</div>
+                        <!-- js 친구 삭제 버튼 -->
+                        <div id="delete_friend" class="">
+                            <button id="delete_btn" btn-data-value="{{ friend }}" name="delete" class="">친구 삭제</button>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
         </div>
         {% endfor %}
     </div>
