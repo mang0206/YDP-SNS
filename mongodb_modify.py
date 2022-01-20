@@ -25,9 +25,13 @@ def modify_user():
 
 def modify_user_one():
     '''유저에 친구 목록 리스트 추가'''
+    # result = col.update_many(
+    #     {},
+    #     {'$set':{'friend_list':[]}}
+    # )
     result = col.update_many(
         {},
-        {'$set':{'friend_list':[]}}
+        {'$unset': {'friend':1}}
     )
     return
 

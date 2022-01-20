@@ -7,8 +7,6 @@ from . import app, conn
 db = conn.get_database('root')
 bcrypt = Bcrypt()
 
-search = ''
-
 @app.route("/login", methods=['GET',"POST"])
 def login():
     col = db.get_collection('user')
@@ -109,9 +107,10 @@ def search():
 
     session_request_list = {}
     session_request_list[''] = [user['request_user'] for user in col_request_friend.find({'user_id': session['login']})]
-    print(session_request_list)
+    
     print(list(col_request_friend.find()))
     session_request_list = json.dumps(session_request_list, ensure_ascii = False)
+
     return render_template('search.html',session_user=email, search = search, search_user=search_user,\
                 search_user_id = search_user_id, friend_list=friend_list, session_request_list=session_request_list)
 
@@ -131,23 +130,44 @@ def user():
 
 @app.route("/friend", methods=["GET", "POST"])
 def friend():
-    request_friend = ["test_a", "test_b", "test_c"]
-
-    return render_template('friend.html', request_friend=request_friend)
-
-@app.route("/friend_respond", methods=["GET", "POST"])
-def friend_respond():
-    request_friend = ["test_a", "test_b", "test_c"]
-    if request.method == "POST":
-        if request.form.get('accept') == 'request_friend':
-            # 친구목록에 추가, 요청 리스트 삭제
-            request_friend = request.form.get('')
-
-        if request.form.get('reject') == 'request_friend':
-            # 요청 리스트 삭제
-            request_friend = request.form.get('')
+    user = session['login']
+    col_user = db.get_collection('user')
+    col_request_friend = db.get_collection('request_friend')
     
-    return redirect()
+    request_friend_id = [user['user_id'] for user in col_request_friend.find({'request_user':user})]
+    request_friend = {}
+    for i in request_friend_id:
+        find_user = col_user.find_one({'user_id':i})
+        request_friend[i] = find_user['user_ide']
+
+    friend_list = []
+    for i in col_user.find({'user_id':user}):
+        friend_list = i['friend_list']
+    friend_dict = {}
+    for i in friend_list:
+        find_user = col_user.find_one({'user_id':i})
+        friend_dict[i] = find_user['user_ide']
+
+    # request_friend={'aaa':'aaa', 'bbb':'bbb', 'ccc':'ccc', 'ddd':'ddd'}
+    # friend_list = ['aaa', 'bbb', 'ccc', 'ddd', 'eee', 'fff']
+    return render_template('friend.html', request_friend=request_friend, friend_list=friend_dict)
+
+@app.route("/friend_respond", methods=["POST"])
+def friend_respond():
+    data = request.get_json()
+    print(data, type(data))
+    col_user = db.get_collection('user')
+    col_request_friend = db.get_collection('request_friend')
+
+    if data['respond'] == 'accept_btn':
+        col_user.update_one({'user_id': session['login']}, {'$push': {'friend_list': data['friend']}})
+        col_user.update_one({'user_id': data['friend']}, {'$push': {'friend_list': session['login']}})
+    elif data['respond'] == 'delete_btn':
+        col_user.update_one({'user_id': session['login']}, {'$pull': {'friend_list': data['friend']}})
+        col_user.update_one({'user_id': data['friend']}, {'$pull': {'friend_list': session['login']}})
+    col_request_friend.delete_one({'user_id': data['friend'], 'request_user':session['login']})
+    
+    return jsonify(result = "success", result2= data)
 
 @app.route("/setting")
 def setting():
@@ -174,7 +194,9 @@ def request_frie():
         }
         col_request_friend.delete_one(query)
     else:
-        pass
+        print('================친구 삭제',user, request_user)
+        col_user.update_one( {'user_id':user},{'$pull': {'friend_list' : request_user }})
+        col_user.update_one( {'user_id':request_user},{'$pull': {'friend_list' : user }})
     
     return jsonify(result = "success", result2= data)
 
@@ -185,9 +207,9 @@ def connection_mongodb():
 
     col = db.get_collection('user')
     # print(* list(col.find({},{'user_id':True, 'user_ide':True})))
-
+    col.update_many({},{"$rename":{"name":"user_name"}})
     lis = col.find({})
-
+    
     json_lis = dumps(lis)
     print(json_lis)
     return jsonify(json_lis)

@@ -10,7 +10,7 @@
         <h4>게시물</h4>
     </div>
 
-    <div class="both_layout_friend friend_list">
+    <div class="both_layout_friend friend_container">
         <h4>계정</h4>
         {% for user in search_user %}
             <div class="search_user" id = 'friend_button_area_{{user.user_id}}' data-user=' {{ user.user_id }}' value = "{{ user.user_id }}" > 
@@ -25,16 +25,13 @@
                         {{user.user_ide}}
                     </a>
                     <div class="user_id">
-                        {{ user.name }}
+                        {{ user.user_name }}
                     </div>
                 </div>
             </div> 
         {% endfor %}
     </div>
     <!-- 검색어 db 필터링, js 조건문 별로 다른 버튼 생성 -->
-</div>
-<div id="friend_button_test">
-    <input type='button' value='createDiv'onclick='create_btn()'/>
 </div>
 
 <!-- <script src="../static/js/search.js" defer="defer"></script> -->

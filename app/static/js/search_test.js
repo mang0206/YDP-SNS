@@ -23,7 +23,7 @@ function create_btn(){
         // const di = document.getElementById('friend_button_area_"+user"')
         if (user == session_user){
             console.log(1)
-            const newText = document.createElement('input');
+            const newText = document.createElement('button');
             $(newText).attr({
                     "type": "button", 
                     "class": "friend_button none",
@@ -33,15 +33,19 @@ function create_btn(){
             document.getElementById(c_url).appendChild(create_div);
         } else if (user_friend_list.includes(user)){
             console.log(2)
-            const newText = document.createElement('input');
-            // input 속성 추가
+            const newText = document.createElement('button');
+            // button 속성 추가
+            // 현재 친구인 상태
             $(newText).attr({
                   "type": "button", 
-                  "class": "friend_button",
+                  "id": "delete_btn",
+                  "class": "request_btn",
                   "value": "친구 삭제"
                 });
+            $(newText).text('친구 삭제');
+
             // a 태그 속성 추가
-            // a 태그에 input 노드 추가
+            // a 태그에 button 노드 추가
             create_div.appendChild(newText);
                 // id값으로 가져온 위치에 a태그 추가
             let c_url = 'friend_button_area_'+user
@@ -49,22 +53,30 @@ function create_btn(){
         } else {
             console.log(3)
             if (request_friend_list[''].includes(user)){
-                const newText = document.createElement('input');
+                const newText = document.createElement('button');
+                // 친구 요청을 보낸 상태
                 $(newText).attr({
                       "type": "button", 
-                      "class": "friend_button",
+                      "id": "reject_btn",
+                      "class": "request_btn",
                       "value": "요청 삭제"
                     });
+                $(newText).text('요청 삭제');
+
                 create_div.appendChild(newText);
                 let c_url = 'friend_button_area_'+user
                 document.getElementById(c_url).appendChild(create_div);
             } else {
-                const newText = document.createElement('input');
+                const newText = document.createElement('button');
+                // 친구 요청을 보낸적 없는 상태
                 $(newText).attr({
-                      "type": "button", 
-                      "class": "friend_button",
+                      "type": "button",
+                      "id": "accept_btn",
+                      "class": "request_btn",
                       "value": "친구 요청"
                     });
+                $(newText).text('친구 요청');
+                
                 create_div.appendChild(newText);
                 let c_url = 'friend_button_area_'+user
                 document.getElementById(c_url).appendChild(create_div);
@@ -81,9 +93,13 @@ $('[id^=_button_area]').click(function(){
     console.log(id)
     var val = document.getElementById(id).firstChild.value;
     console.log(val)
+    var btn = document.getElementById(id).firstChild
+    console.log(btn)
+
     var postdata = {
-        'user': user, 'id':id, 'val':val
+        'user': user, 'id':id, 'val':val,
     }
+    console.log(postdata, typeof(postdata))
     $.ajax({
         type: 'POST',
         url: "request_friend",
@@ -94,11 +110,20 @@ $('[id^=_button_area]').click(function(){
             // alert('성공! 데이터 값:' + data.result2['user']+' '+data.result2['id']+" " + data.result2['val'])
             if (val =='친구 요청') {
                 val = '요청 삭제'
+                $(btn).text('요청 삭제');
+                $(btn).attr('id', 'reject_btn')
+
             } else if (val == '요청 삭제') {
                 val = '친구 요청'
+                $(btn).text('친구 요청');
+                $(btn).attr('id', 'accept_btn')
+
             } else {
                 alert('정말 삭제하겠습니까?')
                 val = '친구 요청'
+                $(btn).text('친구 요청');
+                $(btn).attr('id', 'accept_btn')
+
             }
             document.getElementById(id).firstChild.value = val
         },
