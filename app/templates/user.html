@@ -20,11 +20,11 @@
                             friend count
                         </div>
                     </div>
-                    <div class="user_friend_button">
-                        <button class="friend_button">
-                            친구 추가
-                            <!-- js 친구 추가 버튼 기능 -->
-                        </button>
+                    <div id="request_button" class="user_friend_button">
+                        {{ for friend in friend_list }}
+                        <!-- js 다른 사용자 친구 추가 버튼 기능 -->
+                        <button id="request_btn" btn-data-value="{{ friend }}">친구 요청</button>
+                        {{ endfor }}
                     </div>
                 </div>
                 <div class="user_introduce">
