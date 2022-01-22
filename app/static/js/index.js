@@ -1,8 +1,4 @@
-// 프로필 사진 팝업
-$('.top_bar_user').click(function(){
 
-
-});
 
 
 // // 이미지 중복 체크

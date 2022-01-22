@@ -73,6 +73,7 @@ a:visited{color: black}
     width: 30px;
     height: 30px;
     margin: 0 10px 0 10px;
+    cursor: pointer;
 
     box-sizing: border-box;
     border: solid 1px lightgray;
@@ -538,6 +539,7 @@ a:visited{color: black}
     margin-bottom: 50px;
     
     display: flex;
+    justify-content: space-around;
 }
 .user_information{
     width: 100%;
@@ -613,6 +615,14 @@ a:visited{color: black}
 .setting{
     padding-right: 100px;
 }
+.setting_nav{
+    width: 150px;
+    height: 150px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
 .setting_container{
     display: flex;
     flex-direction: row;
@@ -622,9 +632,7 @@ a:visited{color: black}
     margin-bottom: 30px;
 }
 .setting_nav_btn{
-    width: 150px;
-    height: 65px;
-    padding: 5px;
+    height: 50px;
     cursor: pointer;
     
     display: flex;
@@ -632,7 +640,6 @@ a:visited{color: black}
     align-items: center;
     justify-content: center;
 
-    box-sizing: border-box;
     border: solid 1px lightgray;
     font-size: 15px;
 }
@@ -644,10 +651,6 @@ a:visited{color: black}
 .setting_nav2{
     width: 100%;
     padding: 50px 0 50px 0;
-
-    display: flex;
-    flex-direction: column;
-    align-items: center;
 
     box-sizing: border-box;
     border: solid 1px lightgray;
@@ -662,13 +665,23 @@ a:visited{color: black}
 .setting_nav2 form > *{
     margin-bottom: 10px;
 }
-.profile_image{
+.profile_image_box{
+    width: 250px;
+    height: 250px;
+
+    box-sizing: border-box;
+    border: solid 1px lightgray;
+    border-radius: 50%;
     overflow: hidden;
 }
-.profile_image_input{
+.profile_img{
+    width: 100%;
+    height: 100%;
+
+    display: block;
     object-fit: cover;
 }
-.background_image{
+.background_image_box{
     width: 300px;
     height: 150px;
 
@@ -676,6 +689,10 @@ a:visited{color: black}
     border: solid 1px lightgray;
     overflow: hidden;
 }
-.background_image_input{
+.background_img{
+    width: 100%;
+    height: 100%;
+
+    display: block;
     object-fit: cover;
 }
