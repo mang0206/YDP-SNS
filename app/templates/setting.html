@@ -4,28 +4,31 @@
     <h2>설정</h2>
     <div class="setting_container">
         <div class="setting_nav">
-            <button class="setting_nav_btn">프로필 편집</button>
-            <button class="setting_nav_btn">계정</button>
+            <button id="profile_setting_btn" class="setting_nav_btn">프로필 편집</button>
+            <button id="account_setting_btn" class="setting_nav_btn">계정</button>
         </div>
         <div class="setting_area">
             <div class="setting_nav2" id="profile_setting">
                 <form action="" class="change_profile_image">
                     <p>프로필 사진 변경</p>
-                    <div class="profile_image" id="profile_image">
+                    <div class="profile_image_box" id="profile_image">
                         <!-- setting.js readURL -->
-                        <img src="" alt="" class="profile_image_input">
+                        <!-- 기존에 설정해둔 이미지 표시 -->
+                        <img src="" alt="" class="profile_img">
                     </div>
-                    <input type="file" id="profile_image_input">
-                    <label for="profile_image_input">파일 선택</label>
+                    <input type="file" id="profile_image_input" class="none">
+                    <label for="profile_image_input" class="setting_label">파일 선택</label>
                     <button type="submit">프로필 사진 저장</button>
                 </form>
                 <form action="" class="change_background_image">
                     <p>배경 사진 변경</p>
-                    <div class="background_image">
+                    <div class="background_image_box">
                         <!-- setting.js readURL -->
-                        <img src="" alt="" class="background_image_input">
+                        <!-- 기존에 설정해둔 이미지 표시 -->
+                        <img src="" alt="" class="background_img">
                     </div>
-                    <input type="file" id="background_image_input">
+                    <input type="file" id="background_image_input" class="none">
+                    <label for="background_image_input" class="setting_label">파일 선택</label>
                     <button type="submit">배경 사진 저장</button>
                 </form>
                 <form action="">
@@ -88,5 +91,4 @@
     </div>
 </div>
 <script src="../static/js/setting.js" defer="defer"></script>
-<!-- <script src="../static/js/setting_test.js" defer="defer"></script> -->
 {% endblock %}

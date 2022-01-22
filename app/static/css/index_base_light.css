@@ -73,6 +73,7 @@ a:visited{color: black}
     width: 30px;
     height: 30px;
     margin: 0 10px 0 10px;
+    cursor: pointer;
 
     box-sizing: border-box;
     border: solid 1px lightgray;
@@ -368,6 +369,7 @@ a:visited{color: black}
 }
 .both_layout_friend{
     width: 300px;
+    min-width: fit-content;
 
     margin-left: 15px;
     margin-right: 15px;
@@ -382,6 +384,14 @@ a:visited{color: black}
 
     display: flex;
     align-items: center;
+}
+.user_profile_img{
+    width: 60px;
+    height: 60px;
+    margin-right: 10px;
+
+    border-radius: 50%;
+    border: solid 1px lightgray;
 }
 /* friend */
 .friend{
@@ -452,17 +462,14 @@ a:visited{color: black}
 
     background: lightgray;
 }
-/* .friend_button{
-    cursor: pointer;
-    padding: 5px 10px;
+.button_area{
+    width: 90px;
 
-    color: #FFFFFF;
-    border: solid 1px lightgray;
-    border-radius: 5px;
-    background: #46A6FF;
-} */
+    display: flex;
+    justify-content: center;
+}
 .button_area button{
-    padding: 5px 20px;
+    padding: 5px 10px;
     cursor: pointer;
 
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
@@ -478,8 +485,7 @@ a:visited{color: black}
     border-radius: 5px;
 }
 #accept_btn{
-    margin-right: 5px;
-
+    margin-right: 7px;
     color: #FFFFFF;
     background: #46A6FF;
 }
@@ -538,6 +544,7 @@ a:visited{color: black}
     margin-bottom: 50px;
     
     display: flex;
+    justify-content: space-around;
 }
 .user_information{
     width: 100%;
@@ -585,7 +592,7 @@ a:visited{color: black}
     justify-content: flex-end;
 }
 .user_name_id{
-    width: 160px;
+    width: 150px;
 }
 .user_name{
     font-size: 18px;
@@ -613,6 +620,14 @@ a:visited{color: black}
 .setting{
     padding-right: 100px;
 }
+.setting_nav{
+    width: 150px;
+    height: 150px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
 .setting_container{
     display: flex;
     flex-direction: row;
@@ -622,9 +637,7 @@ a:visited{color: black}
     margin-bottom: 30px;
 }
 .setting_nav_btn{
-    width: 150px;
-    height: 65px;
-    padding: 5px;
+    height: 50px;
     cursor: pointer;
     
     display: flex;
@@ -632,7 +645,6 @@ a:visited{color: black}
     align-items: center;
     justify-content: center;
 
-    box-sizing: border-box;
     border: solid 1px lightgray;
     font-size: 15px;
 }
@@ -644,10 +656,6 @@ a:visited{color: black}
 .setting_nav2{
     width: 100%;
     padding: 50px 0 50px 0;
-
-    display: flex;
-    flex-direction: column;
-    align-items: center;
 
     box-sizing: border-box;
     border: solid 1px lightgray;
@@ -662,13 +670,16 @@ a:visited{color: black}
 .setting_nav2 form > *{
     margin-bottom: 10px;
 }
-.profile_image{
+.profile_image_box{
+    width: 250px;
+    height: 250px;
+
+    box-sizing: border-box;
+    border: solid 1px lightgray;
+    border-radius: 50%;
     overflow: hidden;
 }
-.profile_image_input{
-    object-fit: cover;
-}
-.background_image{
+.background_image_box{
     width: 300px;
     height: 150px;
 
@@ -676,6 +687,20 @@ a:visited{color: black}
     border: solid 1px lightgray;
     overflow: hidden;
 }
-.background_image_input{
+.profile_img{
+    width: 100%;
+    height: 100%;
+
+    display: block;
     object-fit: cover;
+}
+.background_img{
+    width: 100%;
+    height: 100%;
+
+    display: block;
+    object-fit: cover;
+}
+.setting_label{
+    cursor: pointer;
 }
