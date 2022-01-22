@@ -18,6 +18,8 @@ def login():
         find_user = col.find_one({'user_id':email})
         if bcrypt.check_password_hash(find_user['password'], pw):
             session['login'] =  email
+            session['ide'] = find_user['user_ide']
+            session['friend_list'] = find_user['friend_list']
             print('success')
             return redirect(url_for('index'))
         else:
@@ -77,7 +79,7 @@ def index():
         
         print(search)
         return redirect(url_for('search', search = search))
-    return render_template('index.html')
+    return render_template('index.html', user = session['login'])
 
 @app.route("/search", methods=['GET',"POST"])
 def search():
@@ -126,15 +128,20 @@ def content_submit():
     print('-==============================',content_txt, content_file)
     return redirect(url_for('user'))
 
-@app.route("/user")
-def user():
-    return render_template('user.html')
+@app.route("/user/<user>")
+def user(user):
+    col_user = db.get_collection('user')
+    user = col_user.find_one({'user_ide':user})
+    friend_dic = {}
+    for i in user['friend_list']:
+        friend_dic[i] = col_user.find_one({'user_id': i})
+    return render_template('user.html', user=user, friend_dic=friend_dic)
 
 @app.route("/logout")
 def logout():
     flash("로그아웃 되었습니다.")
     session['login'] = NULL
-    return render_template('login.html')
+    return redirect(url_for('login'))
 
 @app.route("/friend", methods=["GET", "POST"])
 def friend():

@@ -13,17 +13,18 @@
                 <div class="user_information">
                     <div class="user_name_friend">
                         <div class="user_name">
-                            <h2>사용자</h2>
-                            
+                            <h2>{{user['user_ide']}}</h2>
                         </div>
                         <div>
-                            friend count
+                            friend count = {{user['friend_list']|length}}
                         </div>
                     </div>
                     <div id="request_button" class="user_friend_button">
-                        친구 추가
-                        <!-- js 다른 사용자 친구 추가 버튼 기능 -->
-                        <!-- <button id="request_btn" btn-data-value="{{ friend }}">친구 요청</button> -->
+                        {% if session['ide'] != user['user_ide'] %}
+                            {% if user['user_id'] not in session['friend_list'] %}   
+                                <button id="request_button" user = "{{user['user_id']}}" freind_list = "{{session['friend_list']}}" > </button>
+                            {% endif %}
+                        {% endif %}
                     </div>
                 </div>
                 <div class="user_introduce">
@@ -35,6 +36,9 @@
         <div class="both_layout">
             <div class="both_layout_friend">
                 친구 목록
+                {% for friend_key, friend_val in friend_dic.items()%}
+                    {{ friend_val['user_ide'] }}
+                {% endfor %}
             </div>
             <div class="both_layout_content">
                 content list
