@@ -59,10 +59,16 @@
                 </div>
             </div>
             <a href="/"><img class="top_bar_icon" src="../static/img/notification.png" alt="notice_icon"></a>
-            <a href="/user">
-                <div class="top_bar_user"></div>
-            </a> <!-- 프로필,로그아웃,설정 팝업창 -->
+            <button id="" class="top_bar_user"></button>
+            <!-- 프로필,로그아웃,설정 팝업창 -->
+            <div id="user_popup" class="user_popup">
+                <a href="/user">프로필 이동</a>
+                <a href="/setting">설정</a>
+                <a href="/logout">로그아웃</a>
+            </div>
+            <div class="triangle"></div>
         </div>
+    </div>
     </div>
     <div class="both_layout">
         {% block index %}

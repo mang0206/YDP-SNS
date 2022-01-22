@@ -1,3 +1,5 @@
+from asyncio.windows_events import NULL
+from multiprocessing import Condition
 import re
 from flask import request, render_template, jsonify, redirect, url_for, session, flash
 from flask_bcrypt import Bcrypt
@@ -127,6 +129,12 @@ def content_submit():
 @app.route("/user")
 def user():
     return render_template('user.html')
+
+@app.route("/logout")
+def logout():
+    flash("로그아웃 되었습니다.")
+    session['login'] = NULL
+    return render_template('login.html')
 
 @app.route("/friend", methods=["GET", "POST"])
 def friend():
