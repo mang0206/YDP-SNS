@@ -1,5 +1,4 @@
-// 사이드 네비게이션 버튼 토글
-
+// 사이드 네비게이션 버튼
 // 1. '프로필 편집' 버튼을 누른 경우
 $('#profile_setting_btn').click(function(){
     $('#profile_setting').removeClass('none');
@@ -11,6 +10,9 @@ $('#account_setting_btn').click(function(){
     $('#profile_setting').addClass('none');
 
 });
+
+// 기존 프로필 이미지 미리보기
+// -- 구현하기 --
 
 
 // 프로필 이미지 변경

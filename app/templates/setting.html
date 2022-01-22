@@ -16,8 +16,8 @@
                         <!-- 기존에 설정해둔 이미지 표시 -->
                         <img src="" alt="" class="profile_img">
                     </div>
-                    <input type="file" id="profile_image_input">
-                    <label for="profile_image_input">파일 선택</label>
+                    <input type="file" id="profile_image_input" class="none">
+                    <label for="profile_image_input" class="setting_label">파일 선택</label>
                     <button type="submit">프로필 사진 저장</button>
                 </form>
                 <form action="" class="change_background_image">
@@ -27,8 +27,8 @@
                         <!-- 기존에 설정해둔 이미지 표시 -->
                         <img src="" alt="" class="background_img">
                     </div>
-                    <input type="file" id="background_image_input">
-                    <label for="background_image_input">파일 선택</label>
+                    <input type="file" id="background_image_input" class="none">
+                    <label for="background_image_input" class="setting_label">파일 선택</label>
                     <button type="submit">배경 사진 저장</button>
                 </form>
                 <form action="">
@@ -91,5 +91,4 @@
     </div>
 </div>
 <script src="../static/js/setting.js" defer="defer"></script>
-<!-- <script src="../static/js/setting_test.js" defer="defer"></script> -->
 {% endblock %}
