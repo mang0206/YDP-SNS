@@ -20,7 +20,6 @@ def login():
             session['login'] =  email
             session['ide'] = find_user['user_ide']
             session['friend_list'] = find_user['friend_list']
-            print('success')
             return redirect(url_for('index'))
         else:
             print('fail')
@@ -131,11 +130,19 @@ def content_submit():
 @app.route("/user/<user>")
 def user(user):
     col_user = db.get_collection('user')
+    col_request_friend = db.get_collection('request_friend')
+
     user = col_user.find_one({'user_ide':user})
+
+    # user의 친구 정보 dictionary
     friend_dic = {}
     for i in user['friend_list']:
         friend_dic[i] = col_user.find_one({'user_id': i})
-    return render_template('user.html', user=user, friend_dic=friend_dic)
+
+    # session 유저가 친구 요청을 보낸 user의 id 리스트
+    session_request_list = [user['request_user'] for user in col_request_friend.find({'user_id': session['login']})]
+    # print(friend_dic)
+    return render_template('user.html', user=user, friend_dic=friend_dic, session_request_list = session_request_list)
 
 @app.route("/logout")
 def logout():

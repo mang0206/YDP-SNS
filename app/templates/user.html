@@ -19,10 +19,15 @@
                             friend count = {{user['friend_list']|length}}
                         </div>
                     </div>
+                    
                     <div id="request_button" class="user_friend_button">
                         {% if session['ide'] != user['user_ide'] %}
                             {% if user['user_id'] not in session['friend_list'] %}   
-                                <button id="request_button" user = "{{user['user_id']}}" freind_list = "{{session['friend_list']}}" > </button>
+                                <button class="request_btn" user = "{{user['user_id']}}" friend_list = "{{ session_request_list }}"\
+                                    value = 'not friend' data-name='{{session["login"]}}'></button>
+                            {% else %}
+                                <button class="request_btn" user = "{{user['user_id']}}" friend_list = "{{session['friend_list']}}"\
+                                     value = 'friend' data-name='{{session["login"]}}'>친구 삭제</button>                                
                             {% endif %}
                         {% endif %}
                     </div>
