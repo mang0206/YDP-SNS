@@ -1,3 +1,20 @@
+// 사이드 네비게이션 버튼
+// 1. '프로필 편집' 버튼을 누른 경우
+$('#profile_setting_btn').click(function(){
+    $('#profile_setting').removeClass('none');
+    $('#account_setting').addClass('none');
+});
+// 2. '계정' 버튼을 누른 경우
+$('#account_setting_btn').click(function(){
+    $('#account_setting').removeClass('none');
+    $('#profile_setting').addClass('none');
+
+});
+
+// 기존 프로필 이미지 미리보기
+// -- 구현하기 --
+
+
 // 프로필 이미지 변경
 $(function() {
     $("#profile_image_input").on('change', function(){
@@ -17,13 +34,13 @@ function readURL(input, n) {
         // 1 -> 프로필 이미지 변경
         if (n == 1) {
             reader.onload = function (e) {
-                $('.profile_image_input').attr('src', e.target.result);
+                $('.profile_img').attr('src', e.target.result);
             }
             reader.readAsDataURL(input.files[0]);
         } else {
         // 2 -> 배경 이미지 변경
             reader.onload = function (e) {
-                $('.background_image_input').attr('src', e.target.result);
+                $('.background_img').attr('src', e.target.result);
             }
             reader.readAsDataURL(input.files[0]);
         }

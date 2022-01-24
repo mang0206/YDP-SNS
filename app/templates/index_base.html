@@ -59,10 +59,16 @@
                 </div>
             </div>
             <a href="/"><img class="top_bar_icon" src="../static/img/notification.png" alt="notice_icon"></a>
-            <a href="/user">
-                <div class="top_bar_user"></div>
-            </a> <!-- 프로필,로그아웃,설정 팝업창 -->
+            <button type="button" id="" class="top_bar_user"></button>
+            <!-- 프로필,로그아웃,설정 팝업창 -->
+            <div id="user_popup" class="user_popup none">
+                <a href="/user/{{session['ide']}}">프로필 이동</a>
+                <a href="/setting">설정</a>
+                <a href="/logout">로그아웃</a>
+            </div>
+            <div class="triangle none"></div>
         </div>
+    </div>
     </div>
     <div class="both_layout">
         {% block index %}
@@ -85,6 +91,5 @@
         {% endblock %}
     </div>
 </body>
-<!-- <script src="../static/js/popup.js?ver=1" defer="defer"></script> -->
-<script src="../static/js/popup_test.js" defer="defer"></script>
-<!-- <script src="https://code.jquery.com/jquery-latest.min.js"></script> -->
+<script src="../static/js/create_content.js" defer="defer"></script>
+<script src="../static/js/index_base.js" defer="defer"></script>
