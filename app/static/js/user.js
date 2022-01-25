@@ -1,12 +1,8 @@
 // 세션에 로그인 된 사용자의 user 페이지가 아닐 경우,
 // 친구 추가, 요청 삭제, 친구 삭제 버튼 활성화
 function create_btn(){
-    // const session_user = $('#search').data().name;
     var request_btn = document.querySelector('.request_btn')
-    var setting_btn = document.querySelector('.setting_btn')
     console.log(request_btn.value)
-
-    // 세션 로그인 유저일 경우 setting 아이콘 표시
 
     if (request_btn.value == 'friend'){
         $(request_btn).attr('id', 'delete_btn');

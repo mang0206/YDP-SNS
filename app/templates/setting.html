@@ -9,76 +9,59 @@
         </div>
         <div class="setting_area">
             <div class="setting_nav2" id="profile_setting">
-                <form action="" class="change_profile_image">
+                <form action="/setting" method="post" class="change_profile_image" name="setting_form_profile">
                     <p>프로필 사진 변경</p>
                     <div class="profile_image_box" id="profile_image">
                         <!-- setting.js readURL -->
                         <!-- 기존에 설정해둔 이미지 표시 -->
                         <img src="../static/img/user_profile_gray.png" alt="" class="profile_img">
                     </div>
-                    <input type="file" id="profile_image_input" class="none">
+                    <input type="file" id="profile_image_input" class="none" name="setting_input_profile">
                     <label for="profile_image_input" class="setting_label">파일 선택</label>
-                    <button type="submit">프로필 사진 저장</button>
+                    <button type="submit" class="setting_submit_btn" name="setting_button_profile">프로필 사진 저장</button>
                 </form>
-                <form action="" class="change_background_image">
+                <form action="/setting" method="post" class="change_background_image" name="setting_form_background">
                     <p>배경 사진 변경</p>
                     <div class="background_image_box">
                         <!-- setting.js readURL -->
                         <!-- 기존에 설정해둔 이미지 표시 -->
-                        <img src="" alt="" class="background_img">
+                        <img src="../static/img/login_background.png" alt="" class="background_img">
                     </div>
-                    <input type="file" id="background_image_input" class="none">
+                    <input type="file" id="background_image_input" class="none" name="setting_input_background">
                     <label for="background_image_input" class="setting_label">파일 선택</label>
-                    <button type="submit">배경 사진 저장</button>
+                    <button type="submit" class="setting_submit_btn" name="setting_button_background">배경 사진 저장</button>
                 </form>
-                <form action="">
-                    <p>별명 변경</p>
-                    <input type="text">
-                    <button type="submit">별명 저장</button>
+                <form action="/setting" method="post" name="setting_form_ide">
+                    <p>닉네임 변경</p>
+                    <input type="text" placeholder="새로운 닉네임" name="setting_input_ide">
+                    <button type="submit" class="setting_submit_btn" name="setting_button_ide">닉네임 저장</button>
                 </form>
-                <form action="">
+                <form action="/setting" method="post" name="setting_form_bio">
                     <p>소개글 수정</p>
-                    <input type="text">
-                    <button type="submit">소개글 저장</button>
+                    <input type="text" placeholder="기존 소개글" name="setting_input_bio">
+                    <button type="submit" class="setting_submit_btn" name="setting_button_bio">소개글 저장</button>
                 </form>
             </div>
             <div class="setting_nav2 none" id="account_setting">
                 <div class="both_layout">
-                    <div>
-                        사용자 이름 변경
-                    </div>
-                    <form action="">
-                        <div class="user_id">
-                            <input type="text" placeholder="새로운 닉네임" id="setting_id" name='setting_id' class="" required>
-                            <label for="setting_id"></label>
-                        </div>
-                        <button type="submit" id="setting_id_submit" name="submit_btn">사용자 이름 저장</button>
+                    <p>사용자 이름 변경</p>
+                    <form action="/setting" method="post" name="setting_form_name">
+                        <input type="text" placeholder="새로운 이름" id="setting_id" name='setting_input_name'>
+                        <button type="submit" id="setting_id_submit" class="setting_submit_btn" name='setting_button_name'>사용자 이름 저장</button>
                     </form>
                 </div>
                 <div class="both_layout">
-                    <div>
-                        비밀번호 변경
-                    </div>
-                    <form action="">
-                        <div class="setting_pw">
-                            <label for="setting_pw"></label>
-                            <input type="password" placeholder="기존 비밀번호" id="setting_pw" name='password' class="" required>
-                        </div>
-                        <div class="setting_pw2">
-                            <label for="setting_pw2"></label>
-                            <input type="password" placeholder="새로운 비밀번호" id="setting_pw2" name='password' class="" required>
-                        </div>
-                        <button type="submit" id="setting_pw_submit" name="submit_btn">비밀번호 저장</button>
+                    <p>비밀번호 변경</p>
+                    <form action="/setting" method="post" name="setting_form_pw">
+                        <input type="password" placeholder="기존 비밀번호" id="setting_pw" name='setting_input_pw'>
+                        <input type="password" placeholder="새로운 비밀번호" id="setting_pw2" name='setting_input_pw2'>
+                        <button type="submit" id="setting_pw_submit" class="setting_submit_btn" name='setting_button_pw'>비밀번호 저장</button>
                     </form>
                 </div>
                 <div class="account_container">
-                    <a href="/logout" class="setting_logout">로그아웃</a>
-                    <div class="withdrawal">
-                        탈퇴
-                    </div>
-                    <div class="setting_version">
-                        버전 정보 Ver 1.0
-                    </div>
+                    <a href="/logout" id="setting_logout">로그아웃</a>
+                    <a class="withdrawal">탈퇴</a>
+                    <a class="setting_version">버전 정보 Ver 1.0</a>
                 </div>
             </div>
         </div>
