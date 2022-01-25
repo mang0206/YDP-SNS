@@ -14,7 +14,7 @@
                     <div class="profile_image_box" id="profile_image">
                         <!-- setting.js readURL -->
                         <!-- 기존에 설정해둔 이미지 표시 -->
-                        <img src="" alt="" class="profile_img">
+                        <img src="../static/img/user_profile_gray.png" alt="" class="profile_img">
                     </div>
                     <input type="file" id="profile_image_input" class="none">
                     <label for="profile_image_input" class="setting_label">파일 선택</label>
@@ -49,13 +49,10 @@
                     </div>
                     <form action="">
                         <div class="user_id">
-                            <label for="setting_id"></label>
                             <input type="text" placeholder="새로운 닉네임" id="setting_id" name='setting_id' class="" required>
+                            <label for="setting_id"></label>
                         </div>
-                        <div class="">
-                            <input type="submit" id="setting_id_submit" name="submit_btn" value="setting_id">
-                            <label for="setting_id_submit">사용자 이름 저장</label>
-                        </div>
+                        <button type="submit" id="setting_id_submit" name="submit_btn">사용자 이름 저장</button>
                     </form>
                 </div>
                 <div class="both_layout">
@@ -71,20 +68,17 @@
                             <label for="setting_pw2"></label>
                             <input type="password" placeholder="새로운 비밀번호" id="setting_pw2" name='password' class="" required>
                         </div>
-                        <div class="">
-                            <input type="submit" id="setting_pw_submit" name="submit_btn" value="setting_pw">
-                            <label for="setting_pw_submit">비밀번호 저장</label>
-                        </div>
+                        <button type="submit" id="setting_pw_submit" name="submit_btn">비밀번호 저장</button>
                     </form>
                 </div>
-                <div>
-                    로그아웃
-                </div>
-                <div>
-                    탈퇴
-                </div>
-                <div>
-                    버전 정보 Ver.00
+                <div class="account_container">
+                    <a href="/logout" class="setting_logout">로그아웃</a>
+                    <div class="withdrawal">
+                        탈퇴
+                    </div>
+                    <div class="setting_version">
+                        버전 정보 Ver 1.0
+                    </div>
                 </div>
             </div>
         </div>

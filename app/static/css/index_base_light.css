@@ -459,8 +459,6 @@ a:visited{color: black}
     display: flex;
     flex-direction: row;
     justify-content: center;
-
-    background: lightgray;
 }
 .button_area{
     width: 90px;
@@ -602,6 +600,9 @@ a:visited{color: black}
     font-size: 13px;
     color: gray;
 }
+.user_setting_btn{
+    display: flex;
+}
 .user_introduce{
     width: 100%;
 }
@@ -678,6 +679,8 @@ a:visited{color: black}
     border: solid 1px lightgray;
     border-radius: 50%;
     overflow: hidden;
+
+    /* background-image: url(../img/user.png); */
 }
 .background_image_box{
     width: 300px;
@@ -703,4 +706,15 @@ a:visited{color: black}
 }
 .setting_label{
     cursor: pointer;
+}
+.account_container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.account_container > * {
+    margin-bottom: 15px;
+}
+.setting_logout{
+    color: red;
 }

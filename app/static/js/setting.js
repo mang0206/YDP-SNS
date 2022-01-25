@@ -29,6 +29,7 @@ $(function() {
 });
 
 function readURL(input, n) {
+    $('.profile_img').attr('src', '../img/user_profile_gray.png');
     if (input.files && input.files[0]) {
         var reader = new FileReader();
         // 1 -> 프로필 이미지 변경
