@@ -1,14 +1,15 @@
 from asyncio.windows_events import NULL
 from multiprocessing import Condition
-import re
 from flask import request, render_template, jsonify, redirect, url_for, session, flash
 from flask_bcrypt import Bcrypt
 from bson.json_util import dumps
 import json
 from . import app, conn
+import gridfs
+
 db = conn.get_database('root')
 bcrypt = Bcrypt()
-
+content_file = None
 @app.route("/login", methods=['GET',"POST"])
 def login():
     col = db.get_collection('user')
@@ -120,12 +121,12 @@ def search():
 # 팝업창 txt와 img를 DB로 전송
 @app.route("/content_submit", methods=["POST"])
 def content_submit():
-    print(request.method)
+    global content_file
     content_txt = request.form.get('content_txt')
-    content_file = request.form.get('content_file')
+    content_file = request.files.get('content_file')    
     print(type(content_file))
     print('-==============================',content_txt, content_file)
-    return redirect(url_for('user'))
+    return redirect(url_for('user', user=session['ide']))
 
 @app.route("/user/<user>")
 def user(user):
@@ -193,7 +194,8 @@ def friend_respond():
 
 @app.route("/setting")
 def setting():
-    return render_template('setting.html')
+    global content_file
+    return render_template('setting.html', content_file=content_file)
 
 # 친구 요청, 요청 삭제, 친구 삭제 처리
 @app.route('/request_friend', methods=['POST'])
