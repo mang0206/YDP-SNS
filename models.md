@@ -39,4 +39,3 @@
     session['login'] : session id
     session['ide'] = session ide(닉네임)
     session['name'] = session name(이름)
-    session['profile_img'] = session profile_img

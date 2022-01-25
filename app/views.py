@@ -25,7 +25,6 @@ def login():
             session['login'] =  email
             session['ide'] = find_user['user_ide']
             session['name'] = find_user['user_name']
-            # session['profile_img'] = find_user['profile_img']
             return redirect(url_for('index'))
         else:
             flash("아이디와 비밀번호를 확인하세요")
