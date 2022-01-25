@@ -90,9 +90,9 @@ def search():
     request_list = col_request_friend.find()
     col = db.get_collection('user')
     # if request.method == "POST":
-    if request.form.get('search_btn') == 'topbar_search':
-        search = request.form.get('search')
-        return redirect(url_for('search', search = search))
+    # if request.form.get('search_btn') == 'topbar_search':
+    #     search = request.form.get('search')
+    #     return redirect(url_for('search', search = search))
     
     search = request.args.get('search')
     query = { '$or' : 
