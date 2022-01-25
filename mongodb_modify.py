@@ -1,6 +1,9 @@
+from email.policy import default
 import pymongo
 from bson.objectid import ObjectId
+from flask_bcrypt import Bcrypt
 
+bcrypt = Bcrypt()
 conn = pymongo.MongoClient("mongodb://root:study111@13.125.71.134:27017/root?authSource=admin")
 db = conn.get_database('root')
 col = db.get_collection('user')
@@ -34,9 +37,12 @@ def modify_user_one():
     #     {'$unset': {'friend':1}}
     # )
     # return
+    id = col.find_one({'user_id':'default'})
+    profile_id = id['profile_img'] 
+    print(profile_id)
     result = col.update_many(
         {},
-        {'$set': {'profile_img': None }}
+        {'$set': {'profile_img': ObjectId(profile_id) }}
     )
 
 def del_user():
@@ -47,7 +53,7 @@ def del_user():
     # print(lst)
     result = col.delete_one({
         # '_id': ObjectId('61d00cdeba8833acb1019a6b')
-        '_id': ObjectId('61dc1006c540a7b3d8829150')
+        '_id': ObjectId('61efc1b8a94321fa3d464725')
     })
     print(result.deleted_count)
 
@@ -61,7 +67,20 @@ def search():
     #      ])
     # print(list(s['_id']))
 
+# def insert():
+#     col.insert_one({ 
+#         'user_id': 'default',
+#         'password': bcrypt.generate_password_hash('default'),
+#         'user_ide': 'default',
+#         'user_name': 'default',
+#         'friend_list': [],
+#         'profile_img': None,
+#         'background_img': None,
+#         'bio' : 'default'
+#     })
+
+
 # del_user()
 # search()
 # modify_user_one()
-# search()
+# insert()

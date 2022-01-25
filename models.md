@@ -34,3 +34,9 @@
     - create_reply_user : 답글을 단 사용자 ID
     - create_time : 작성 시간(24시간 전까지는 ~시간 전, 지난 후에는 일자 표시)
     - reply : 댓글의 답글
+
+## session
+    session['login'] : session id
+    session['ide'] = session ide(닉네임)
+    session['name'] = session name(이름)
+    session['profile_img'] = session profile_img

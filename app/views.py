@@ -1,5 +1,6 @@
 # from asyncio.windows_events import NULL
 # from multiprocessing import Condition
+from bson.objectid import ObjectId
 import re
 from flask import request, render_template, jsonify, redirect, url_for, session, flash
 from flask_bcrypt import Bcrypt
@@ -11,6 +12,7 @@ import codecs
 
 db = conn.get_database('root')
 bcrypt = Bcrypt()
+fs = gridfs.GridFS(db)
 
 @app.route("/login", methods=['GET',"POST"])
 def login():
@@ -23,9 +25,9 @@ def login():
             session['login'] =  email
             session['ide'] = find_user['user_ide']
             session['name'] = find_user['user_name']
+            # session['profile_img'] = find_user['profile_img']
             return redirect(url_for('index'))
         else:
-            print('fail')
             flash("아이디와 비밀번호를 확인하세요")
             return redirect(url_for('login'))
             # return render_template('login.html')
@@ -47,15 +49,22 @@ def join():
         pw = bcrypt.generate_password_hash(request.form.get('password'))
         pw2 = request.form.get('password2')
         if bcrypt.check_password_hash(pw, pw2):
+            _default = col.find_one({'user_id':'default'})
             user_id = request.form.get('user_id')
             user_name = request.form.get('user_name')
             col.insert_one(
                 { 'user_id': email,
                 'password': pw,
                 'user_ide': user_id,
-                'user_name': user_name })
+                'user_name': user_name,
+                'friend_list': [],
+                'profile_img': ObjectId(_default['profile_img']),
+                'background_img': ObjectId(_default['background_img']),
+                'bio': None,
+                })
             return render_template('join_success.html')
-            
+        else:
+            flash('비밀번호를 확인해 주세요.')   
         # print(bcrypt.check_password_hash(pw, pw2))
         return redirect(url_for('join'))
         # return redirect('join.html')
@@ -72,16 +81,19 @@ def join_success():
 
 @app.route("/", methods=['GET',"POST"])
 def index():
+    col_user = db.get_collection('user')
     if session.get('login') is None:
         return redirect(url_for('login'))
 
     if request.form.get('search_btn') == 'topbar_search':
         # input의 name으로 값을 가져옴
         search = request.form.get('search')
-        
-        print(search)
         return redirect(url_for('search', search = search))
-    return render_template('index.html', user = session['login'])
+    
+    for i in col_user.find({'user_id' : session['login']}):
+        friend_list = i['friend_list']
+    
+    return render_template('index.html', friend_list = friend_list)
 
 @app.route("/search", methods=['GET',"POST"])
 def search():
@@ -200,24 +212,23 @@ def friend_respond():
 @app.route("/setting")
 def setting():
     col_user = db.get_collection('user')
-    fs = gridfs.GridFS(db)
-
     session_user = col_user.find_one({'user_id': session['login']})
-    if session_user['profile_img']:
-        img = fs.get(session_user['profile_img'])
-    # print(profile_img)
-        base64_data = codecs.encode(img.read(), 'base64')
-        profile_img = base64_data.decode('utf-8')
-        print(profile_img)
-    else:
-        profile_img = None
-    return render_template('setting.html', profile_img=profile_img)
+
+    # 프로필 이미지
+    img = fs.get(session_user['profile_img'])
+    base64_data = codecs.encode(img.read(), 'base64')
+    profile_img = base64_data.decode('utf-8')
+    # 배경 이미지
+    img = fs.get(session_user['background_img'])
+    base64_data = codecs.encode(img.read(), 'base64')
+    background_img = base64_data.decode('utf-8')
+
+    return render_template('setting.html', profile_img=profile_img, background_img=background_img)
 
 @app.route("/setting", methods= ['POST'])
 def post_setting():
     col_user = db.get_collection('user')
     # gridfs를 사용할 colection
-    fs = gridfs.GridFS(db)
     if 'setting_button_profile' in request.form:
         input_profile = request.files.get('setting_input_profile')
         # colection에 파일 저장 put 함수는 저장된 document id를 반환한다
@@ -227,6 +238,7 @@ def post_setting():
             {'user_id': session['login']},
             {'$set' : {'profile_img': _id}}
         )
+        session['profile_img'] = _id
 
     if 'setting_button_background' in request.form:
         input_background = request.files.get('setting_input_background')
@@ -242,6 +254,7 @@ def post_setting():
             {'user_id': session['login']},
             {'$set' : {'user_ide': input_ide}}
         )
+        session['user_ide'] = input_ide
 
     if 'setting_button_bio' in request.form:
         bio = request.form.get('setting_input_bio')
@@ -256,6 +269,7 @@ def post_setting():
             {'user_id': session['login']},
             {'$set' : {'user_name': input_name}}
         )
+        session['user_name'] = input_name
 
     if 'setting_button_pw' in request.form:
         input_pw = bcrypt.generate_password_hash(request.form.get('setting_input_pw'))
