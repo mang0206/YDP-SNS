@@ -8,6 +8,7 @@
 	- friend_list : 사용자 친구 목록
     - profile_img : 사용자 프로필 이미지
     - background_img : 사용자 백그라운드 이미지
+    - bio : 소개글
 
 ## request_friend
 	- user_id : 요청을 보낸 사용자 ID

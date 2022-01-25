@@ -459,8 +459,6 @@ a:visited{color: black}
     display: flex;
     flex-direction: row;
     justify-content: center;
-
-    background: lightgray;
 }
 .button_area{
     width: 90px;
@@ -602,6 +600,9 @@ a:visited{color: black}
     font-size: 13px;
     color: gray;
 }
+.user_setting_btn{
+    display: flex;
+}
 .user_introduce{
     width: 100%;
 }
@@ -655,7 +656,7 @@ a:visited{color: black}
 }
 .setting_nav2{
     width: 100%;
-    padding: 50px 0 50px 0;
+    padding: 80px 0 80px 0;
 
     box-sizing: border-box;
     border: solid 1px lightgray;
@@ -667,23 +668,49 @@ a:visited{color: black}
     flex-direction: column;
     align-items: center;
 }
+.setting_nav2 form input{
+    width: 200px;
+    height: 25px;
+    padding-left: 10px;
+
+    border: solid 1px lightgray;
+    border-radius: 3px;
+}
 .setting_nav2 form > *{
     margin-bottom: 10px;
+}
+#profile_setting > form > p{
+    margin-bottom: 20px;
+}
+#account_setting > div > p{
+    width: 150px;
+    margin-right: 20px;
+}
+#account_setting > div > form{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+.setting_submit_btn{
+    padding: 3px 13px;
+    
+    border: solid 1px gray;
+    border-radius: 5px;
 }
 .profile_image_box{
     width: 250px;
     height: 250px;
 
-    box-sizing: border-box;
     border: solid 1px lightgray;
     border-radius: 50%;
     overflow: hidden;
+
+    /* background-image: url(../img/user.png); */
 }
 .background_image_box{
     width: 300px;
     height: 150px;
 
-    box-sizing: border-box;
     border: solid 1px lightgray;
     overflow: hidden;
 }
@@ -702,5 +729,21 @@ a:visited{color: black}
     object-fit: cover;
 }
 .setting_label{
+    padding: 3px 13px;
     cursor: pointer;
+
+    border: solid 1px gray;
+    border-radius: 5px;
+}
+.account_container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.account_container > * {
+    margin-bottom: 15px;
+}
+#setting_logout{
+    color: red;
+    opacity: 70%;
 }

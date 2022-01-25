@@ -6,6 +6,8 @@ from flask_bcrypt import Bcrypt
 from bson.json_util import dumps
 import json
 from . import app, conn
+import gridfs
+
 db = conn.get_database('root')
 bcrypt = Bcrypt()
 
@@ -19,7 +21,7 @@ def login():
         if bcrypt.check_password_hash(find_user['password'], pw):
             session['login'] =  email
             session['ide'] = find_user['user_ide']
-            session['friend_list'] = find_user['friend_list']
+            session['name'] = find_user['user_name']
             return redirect(url_for('index'))
         else:
             print('fail')
@@ -120,20 +122,22 @@ def search():
 # 팝업창 txt와 img를 DB로 전송
 @app.route("/content_submit", methods=["POST"])
 def content_submit():
-    print(request.method)
+    global content_file
     content_txt = request.form.get('content_txt')
-    content_file = request.form.get('content_file')
+    content_file = request.files.get('content_file')    
     print(type(content_file))
     print('-==============================',content_txt, content_file)
-    return redirect(url_for('user'))
+    return redirect(url_for('user', user=session['ide']))
 
 @app.route("/user/<user>")
 def user(user):
     col_user = db.get_collection('user')
     col_request_friend = db.get_collection('request_friend')
 
+    for i in col_user.find({'user_id': session['login']}):
+        session_friend_list = i['friend_list']
+    
     user = col_user.find_one({'user_ide':user})
-
     # user의 친구 정보 dictionary
     friend_dic = {}
     for i in user['friend_list']:
@@ -142,12 +146,13 @@ def user(user):
     # session 유저가 친구 요청을 보낸 user의 id 리스트
     session_request_list = [user['request_user'] for user in col_request_friend.find({'user_id': session['login']})]
     # print(friend_dic)
-    return render_template('user.html', user=user, friend_dic=friend_dic, session_request_list = session_request_list)
+    return render_template('user.html', user=user,session_friend_list=session_friend_list,\
+         friend_dic=friend_dic, session_request_list = session_request_list)
 
 @app.route("/logout")
 def logout():
     flash("로그아웃 되었습니다.")
-    session['login'] = NULL
+    session['login'] = None
     return redirect(url_for('login'))
 
 @app.route("/friend", methods=["GET", "POST"])
@@ -194,6 +199,36 @@ def friend_respond():
 @app.route("/setting")
 def setting():
     return render_template('setting.html')
+
+@app.route("/setting", methods= ['POST'])
+def post_setting():
+    print('post')
+    if 'setting_button_profile' in request.form:
+        input_profile = request.files.get('setting_input_profile')
+        
+
+    if 'setting_button_background' in request.form:
+        input_background = request.files.get('setting_input_background')
+        print(input_background)
+
+    if 'setting_button_ide' in request.form:
+        input_ide = request.form.get('setting_input_ide')
+        print(input_ide)
+
+    if 'setting_button_bio' in request.form:
+        bio = request.form.get('setting_input_bio')
+        print(bio)
+
+    if 'setting_button_name' in request.form:
+        input_name = request.form.get('setting_input_name')
+        print(input_name)
+
+    if 'setting_button_pw' in request.form:
+        input_pw = request.form.get('setting_input_pw')
+        input_pw2 = request.form.get('setting_input_pw2')
+        print(input_pw, input_pw2)
+
+    return redirect(url_for('setting'))
 
 # 친구 요청, 요청 삭제, 친구 삭제 처리
 @app.route('/request_friend', methods=['POST'])

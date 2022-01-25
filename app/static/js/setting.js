@@ -29,6 +29,9 @@ $(function() {
 });
 
 function readURL(input, n) {
+    // $('.profile_img').attr('src', '../static/img/user_profile_gray.png');
+    // $('.background_img').attr('src', '../static/img/login_background.png');
+
     if (input.files && input.files[0]) {
         var reader = new FileReader();
         // 1 -> 프로필 이미지 변경
