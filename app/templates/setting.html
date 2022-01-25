@@ -9,24 +9,20 @@
         </div>
         <div class="setting_area">
             <div class="setting_nav2" id="profile_setting">
-                <form action="/setting" method="post" class="change_profile_image" name="setting_form_profile">
+                <form action="/setting" method="post" name="setting_form_profile">
                     <p>프로필 사진 변경</p>
-                    <div class="profile_image_box" id="profile_image">
-                        <!-- setting.js readURL -->
-                        <!-- 기존에 설정해둔 이미지 표시 -->
-                        <img src="../static/img/user_profile_gray.png" alt="" class="profile_img">
-                    </div>
+                    <!-- setting.js readURL -->
+                    <!-- 기존에 설정해둔 이미지 표시 -->
+                    <img src="../static/img/user_profile_gray.png" alt="" class="profile_img">
                     <input type="file" id="profile_image_input" class="none" name="setting_input_profile">
                     <label for="profile_image_input" class="setting_label">파일 선택</label>
                     <button type="submit" class="setting_submit_btn" name="setting_button_profile">프로필 사진 저장</button>
                 </form>
-                <form action="/setting" method="post" class="change_background_image" name="setting_form_background">
+                <form action="/setting" method="post" name="setting_form_background">
                     <p>배경 사진 변경</p>
-                    <div class="background_image_box">
-                        <!-- setting.js readURL -->
-                        <!-- 기존에 설정해둔 이미지 표시 -->
-                        <img src="../static/img/login_background.png" alt="" class="background_img">
-                    </div>
+                    <!-- setting.js readURL -->
+                    <!-- 기존에 설정해둔 이미지 표시 -->
+                    <img src="../static/img/login_background.png" alt="" class="background_img">
                     <input type="file" id="background_image_input" class="none" name="setting_input_background">
                     <label for="background_image_input" class="setting_label">파일 선택</label>
                     <button type="submit" class="setting_submit_btn" name="setting_button_background">배경 사진 저장</button>
@@ -38,7 +34,7 @@
                 </form>
                 <form action="/setting" method="post" name="setting_form_bio">
                     <p>소개글 수정</p>
-                    <input type="text" placeholder="기존 소개글" name="setting_input_bio">
+                    <input type="text"name="setting_input_bio">
                     <button type="submit" class="setting_submit_btn" name="setting_button_bio">소개글 저장</button>
                 </form>
             </div>
@@ -60,8 +56,8 @@
                 </div>
                 <div class="account_container">
                     <a href="/logout" id="setting_logout">로그아웃</a>
-                    <a class="withdrawal">탈퇴</a>
-                    <a class="setting_version">버전 정보 Ver 1.0</a>
+                    <div class="withdrawal">탈퇴</div>
+                    <div class="setting_version">버전 정보 Ver 1.0</div>
                 </div>
             </div>
         </div>

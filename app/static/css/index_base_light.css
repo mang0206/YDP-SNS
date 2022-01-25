@@ -625,11 +625,15 @@ a:visited{color: black}
     width: 150px;
     height: 150px;
 
+    /* border: solid 1px lightgray; */
+
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
 }
 .setting_container{
+    border: solid 1px lightgray;
+
     display: flex;
     flex-direction: row;
     justify-content: left;
@@ -646,8 +650,8 @@ a:visited{color: black}
     align-items: center;
     justify-content: center;
 
-    border: solid 1px lightgray;
-    font-size: 15px;
+    border: none;
+    font-size: 16px;
 }
 .setting_area{
     width: 100%;
@@ -656,10 +660,10 @@ a:visited{color: black}
 }
 .setting_nav2{
     width: 100%;
-    padding: 80px 0 80px 0;
+    padding-top: 80px;
 
     box-sizing: border-box;
-    border: solid 1px lightgray;
+    border-left: solid 1px lightgray;
 }
 .setting_nav2 form{
     margin-bottom: 50px;
@@ -667,6 +671,9 @@ a:visited{color: black}
     display: flex;
     flex-direction: column;
     align-items: center;
+}
+.setting_nav2 form img{
+    margin-bottom: 25px;
 }
 .setting_nav2 form input{
     width: 200px;
@@ -681,10 +688,13 @@ a:visited{color: black}
 }
 #profile_setting > form > p{
     margin-bottom: 20px;
+    font-size: 16px;
 }
 #account_setting > div > p{
     width: 150px;
     margin-right: 20px;
+
+    font-size: 16px;
 }
 #account_setting > div > form{
     display: flex;
@@ -692,12 +702,16 @@ a:visited{color: black}
     align-items: flex-end;
 }
 .setting_submit_btn{
-    padding: 3px 13px;
+    padding: 5px 15px;
+    cursor: pointer;
+
+    background: linear-gradient(90deg, rgba(252, 214, 157, 0.7) 0%, rgba(252, 157, 157, 0.7) 100%);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
     
-    border: solid 1px gray;
-    border-radius: 5px;
+    border: none;
+    border-radius: 3px;
 }
-.profile_image_box{
+.profile_img{
     width: 250px;
     height: 250px;
 
@@ -705,25 +719,15 @@ a:visited{color: black}
     border-radius: 50%;
     overflow: hidden;
 
-    /* background-image: url(../img/user.png); */
-}
-.background_image_box{
-    width: 300px;
-    height: 150px;
-
-    border: solid 1px lightgray;
-    overflow: hidden;
-}
-.profile_img{
-    width: 100%;
-    height: 100%;
-
     display: block;
     object-fit: cover;
 }
 .background_img{
-    width: 100%;
-    height: 100%;
+    width: 500px;
+    height: 250px;
+
+    border: solid 1px lightgray;
+    overflow: hidden;
 
     display: block;
     object-fit: cover;
@@ -731,11 +735,16 @@ a:visited{color: black}
 .setting_label{
     padding: 3px 13px;
     cursor: pointer;
+    font-size: 14px;
 
-    border: solid 1px gray;
-    border-radius: 5px;
+    box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.3);
+
+    /* border: solid 1px gray; */
+    border-radius: 3px;
 }
 .account_container{
+    margin: 35px 0 50px 0;
+
     display: flex;
     flex-direction: column;
     align-items: center;
