@@ -9,16 +9,24 @@
         </div>
         <div class="setting_area">
             <div class="setting_nav2" id="profile_setting">
-                <form action="/setting" method="post" name="setting_form_profile">
+                <form action="/setting" method="post" class="change_profile_image" name="setting_form_profile" enctype="multipart/form-data">
                     <p>프로필 사진 변경</p>
-                    <!-- setting.js readURL -->
-                    <!-- 기존에 설정해둔 이미지 표시 -->
-                    <img src="../static/img/user_profile_gray.png" alt="" class="profile_img">
+                    <div class="profile_image_box" id="profile_image">
+                        <!-- setting.js readURL -->
+                        <!-- 기존에 설정해둔 이미지 표시 -->
+                        {% if profile_img == null %}
+                        <img src="../static/img/user_profile_gray.png" alt="" class="profile_img">
+                        {% else %}
+                        <img src="data:image/png;base64, {{profile_img}}" alt="" class="profile_img">
+                        {% endif %}
+                    </div>
+                    <p>{{ session['ide'] }}</p>
+                    <p>{{ session['name'] }}</p>
                     <input type="file" id="profile_image_input" class="none" name="setting_input_profile">
                     <label for="profile_image_input" class="setting_label">파일 선택</label>
                     <button type="submit" class="setting_submit_btn" name="setting_button_profile">프로필 사진 저장</button>
                 </form>
-                <form action="/setting" method="post" name="setting_form_background">
+                <form action="/setting" method="post" class="change_background_image" name="setting_form_background" enctype="multipart/form-data">
                     <p>배경 사진 변경</p>
                     <!-- setting.js readURL -->
                     <!-- 기존에 설정해둔 이미지 표시 -->

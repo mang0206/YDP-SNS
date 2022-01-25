@@ -29,12 +29,15 @@ def modify_user_one():
     #     {},
     #     {'$set':{'friend_list':[]}}
     # )
+    # result = col.update_many(
+    #     {},
+    #     {'$unset': {'friend':1}}
+    # )
+    # return
     result = col.update_many(
         {},
-        {'$unset': {'friend':1}}
+        {'$set': {'profile_img': None }}
     )
-    return
-
 
 def del_user():
     lst = []
