@@ -125,3 +125,41 @@ h4{
     flex-direction: column;
     align-items: center;
 }
+/* reset password */
+#certification_send{
+    margin: 3px 3px 10px 1px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+#certification_submit{
+    margin: 3px 3px 30px 1px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.certification_input{
+    width: 150px;
+    height: 30px;
+    padding-left: 15px;
+    outline: none;
+
+    background: #FFFFFF;
+    box-shadow: inset 0px 0px 2px 
+        1px rgba(0, 0, 0, 0.15);
+    border: none;
+    border-radius: 5px;
+}
+.certification_btn{
+    padding: 5px 10px;
+    border: solid 1px lightgray;
+    border-radius: 5px;
+}
+.submit{
+    color: #FFFFFF;
+    background: #46A6FF;
+
+    border: solid 1px lightgray;
+}
