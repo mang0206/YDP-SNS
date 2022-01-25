@@ -1,6 +1,4 @@
-# from asyncio.windows_events import NULL
-# from multiprocessing import Condition
-import re
+
 from flask import request, render_template, jsonify, redirect, url_for, session, flash
 from flask_bcrypt import Bcrypt
 from bson.json_util import dumps
@@ -8,6 +6,9 @@ import json
 from . import app, conn
 import gridfs
 import codecs
+
+from flask_mail import Mail, Message
+email = Mail(app)
 
 db = conn.get_database('root')
 bcrypt = Bcrypt()
@@ -309,42 +310,30 @@ def connection_mongodb():
     print(json_lis)
     return jsonify(json_lis)
 
-# def put(self, data, **kwargs):
-#         """Put data in GridFS as a new file.
+# 이메일 인증번호 발송
+@app.route('/send_email', methods=['POST'])
+def send_email():
+    ran_num = "123456"
+    title = "YDP-SNS 비밀번호 변경 인증번호"
+    content = "인증번호 6자리" + ran_num + "를 입력 후 인증해주세요."
+    sender = "YDP-SNS@ydpsns.com"
+    recipients = request.form['email']
 
-#         Equivalent to doing::
+    # msg = Message(
+    #     "YDP-SNS 비밀번호 변경 인증번호", #메일 제목
+    #     body = "인증번호 6자리" + ran_num + "를 입력 후 인증해주세요.", #메일 내용
+    #     sender = "herejddl@gmail.com", #메일을 보낸 계정
+    #     recipients = ["YDP-SNS@ydpsns.com"] #메일을 보낼 계정
+    # )
+    # email.send(msg)
+        # sender=f"{sender}",
 
-#           try:
-#               f = new_file(**kwargs)
-#               f.write(data)
-#           finally:
-#               f.close()
+    msg = Message(
+        f"{title}",
+        body=f"{content}",
+        recipients=["herejddl@gmail.com"]
+    )
+    email.send(msg)
+    
 
-#         `data` can be either an instance of :class:`str` (:class:`bytes`
-#         in python 3) or a file-like object providing a :meth:`read` method.
-#         If an `encoding` keyword argument is passed, `data` can also be a
-#         :class:`unicode` (:class:`str` in python 3) instance, which will
-#         be encoded as `encoding` before being written. Any keyword arguments
-#         will be passed through to the created file - see
-#         :meth:`~gridfs.grid_file.GridIn` for possible arguments. Returns the
-#         ``"_id"`` of the created file.
-
-#         If the ``"_id"`` of the file is manually specified, it must
-#         not already exist in GridFS. Otherwise
-#         :class:`~gridfs.errors.FileExists` is raised.
-
-#         :Parameters:
-#           - `data`: data to be written as a file.
-#           - `**kwargs` (optional): keyword arguments for file creation
-
-#         .. versionchanged:: 3.0
-#            w=0 writes to GridFS are now prohibited.
-#         """
-#         grid_file = gridfs.grid_file.GridIn(
-#             self.__collection, disable_md5=self.__disable_md5, **kwargs)
-#         try:
-#             grid_file.write(data)
-#         finally:
-#             grid_file.close()
-
-#         return grid_file._id
+    return "Sent"
