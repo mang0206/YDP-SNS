@@ -7,6 +7,7 @@ from bson.json_util import dumps
 import json
 from . import app, conn
 import gridfs
+import codecs
 
 db = conn.get_database('root')
 bcrypt = Bcrypt()
@@ -198,36 +199,73 @@ def friend_respond():
 
 @app.route("/setting")
 def setting():
-    return render_template('setting.html')
+    col_user = db.get_collection('user')
+    fs = gridfs.GridFS(db)
+
+    session_user = col_user.find_one({'user_id': session['login']})
+    if session_user['profile_img']:
+        img = fs.get(session_user['profile_img'])
+    # print(profile_img)
+        base64_data = codecs.encode(img.read(), 'base64')
+        profile_img = base64_data.decode('utf-8')
+        print(profile_img)
+    else:
+        profile_img = None
+    return render_template('setting.html', profile_img=profile_img)
 
 @app.route("/setting", methods= ['POST'])
 def post_setting():
-    print('post')
+    col_user = db.get_collection('user')
+    # gridfs를 사용할 colection
+    fs = gridfs.GridFS(db)
     if 'setting_button_profile' in request.form:
         input_profile = request.files.get('setting_input_profile')
-        
+        # colection에 파일 저장 put 함수는 저장된 document id를 반환한다
+        _id = fs.put(input_profile)
+        # 해당 documet id 정보를 현재 session user document에 추가
+        col_user.update_one(
+            {'user_id': session['login']},
+            {'$set' : {'profile_img': _id}}
+        )
 
     if 'setting_button_background' in request.form:
         input_background = request.files.get('setting_input_background')
-        print(input_background)
+        _id = fs.put(input_background)
+        col_user.update_one(
+            {'user_id': session['login']},
+            {'$set' : {'background_img': _id}}
+        )
 
     if 'setting_button_ide' in request.form:
         input_ide = request.form.get('setting_input_ide')
-        print(input_ide)
+        col_user.update_one(
+            {'user_id': session['login']},
+            {'$set' : {'user_ide': input_ide}}
+        )
 
     if 'setting_button_bio' in request.form:
         bio = request.form.get('setting_input_bio')
-        print(bio)
+        col_user.update_one(
+            {'user_id': session['login']},
+            {'$set' : {'bio': bio}}
+        )
 
     if 'setting_button_name' in request.form:
         input_name = request.form.get('setting_input_name')
-        print(input_name)
+        col_user.update_one(
+            {'user_id': session['login']},
+            {'$set' : {'user_name': input_name}}
+        )
 
     if 'setting_button_pw' in request.form:
-        input_pw = request.form.get('setting_input_pw')
+        input_pw = bcrypt.generate_password_hash(request.form.get('setting_input_pw'))
         input_pw2 = request.form.get('setting_input_pw2')
-        print(input_pw, input_pw2)
-
+        if bcrypt.check_password_hash(input_pw, input_pw2):
+            col_user.update_one(
+                {'user_id': session['login']},
+                {'$set' : {'password': input_pw}}
+            )
+            
     return redirect(url_for('setting'))
 
 # 친구 요청, 요청 삭제, 친구 삭제 처리
@@ -271,3 +309,42 @@ def connection_mongodb():
     print(json_lis)
     return jsonify(json_lis)
 
+# def put(self, data, **kwargs):
+#         """Put data in GridFS as a new file.
+
+#         Equivalent to doing::
+
+#           try:
+#               f = new_file(**kwargs)
+#               f.write(data)
+#           finally:
+#               f.close()
+
+#         `data` can be either an instance of :class:`str` (:class:`bytes`
+#         in python 3) or a file-like object providing a :meth:`read` method.
+#         If an `encoding` keyword argument is passed, `data` can also be a
+#         :class:`unicode` (:class:`str` in python 3) instance, which will
+#         be encoded as `encoding` before being written. Any keyword arguments
+#         will be passed through to the created file - see
+#         :meth:`~gridfs.grid_file.GridIn` for possible arguments. Returns the
+#         ``"_id"`` of the created file.
+
+#         If the ``"_id"`` of the file is manually specified, it must
+#         not already exist in GridFS. Otherwise
+#         :class:`~gridfs.errors.FileExists` is raised.
+
+#         :Parameters:
+#           - `data`: data to be written as a file.
+#           - `**kwargs` (optional): keyword arguments for file creation
+
+#         .. versionchanged:: 3.0
+#            w=0 writes to GridFS are now prohibited.
+#         """
+#         grid_file = gridfs.grid_file.GridIn(
+#             self.__collection, disable_md5=self.__disable_md5, **kwargs)
+#         try:
+#             grid_file.write(data)
+#         finally:
+#             grid_file.close()
+
+#         return grid_file._id

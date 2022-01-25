@@ -14,7 +14,11 @@
                     <div class="profile_image_box" id="profile_image">
                         <!-- setting.js readURL -->
                         <!-- 기존에 설정해둔 이미지 표시 -->
+                        {% if profile_img == null %}
                         <img src="../static/img/user_profile_gray.png" alt="" class="profile_img">
+                        {% else %}
+                        <img src="data:image/png;base64, {{profile_img}}" alt="" class="profile_img">
+                        {% endif %}
                     </div>
                     <p>{{ session['ide'] }}</p>
                     <p>{{ session['name'] }}</p>
