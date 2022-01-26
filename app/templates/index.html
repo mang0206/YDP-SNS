@@ -12,13 +12,10 @@
         {% for user in friend_dic %}
             <div class="search_user">
                 <!-- <div class="search_user_image"></div> -->
-                <img src="data:image/png;base64, {{user['profile_img']}}" alt="" class="search_user_image">
+                <img src="data:image/png;base64, {{ friend_dic[user]['profile_img'] }}" alt="" class="search_user_image">
                 <div class="user_name_id">
-                    <div class="user_name">
-                        {{ user['nickname'] }}
-                    </div>
-                    <div class="user_id">
-                        {{ user['user_name'] }}
+                    <div class="nickname">
+                        <p> {{ friend_dic[user]['nickname'] }} </p>
                     </div>
                 </div>
             </div> 
