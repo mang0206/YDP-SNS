@@ -5,13 +5,12 @@ import json
 from . import app, conn
 import gridfs
 import codecs
-
 from flask_mail import Mail, Message
-email = Mail(app)
 
 db = conn.get_database('root')
 bcrypt = Bcrypt()
 fs = gridfs.GridFS(db)
+email = Mail(app)
 
 @app.route("/login", methods=['GET',"POST"])
 def login():
@@ -72,6 +71,22 @@ def join():
 @app.route("/password_reset")
 def password_reset():
     return render_template('password_reset.html')
+
+# 이메일 인증번호 발송
+@app.route('/send_email', methods=['POST'])
+def send_email():
+    ran_num = "123456"
+    recipients = request.form['email']
+
+    # msg = Message(
+    #     "YDP-SNS 비밀번호 변경 인증번호", #메일 제목
+    #     body = "인증번호 6자리 [ " + ran_num + " ] 를 입력 후 인증해주세요.", #메일 내용
+    #     sender = "ydpsns.project@gmail.com", #메일을 보낸 계정
+    #     recipients = [recipients] #메일을 보낼 계정
+    # )
+    # email.send(msg)
+
+    return redirect(url_for('password_reset'))
 
 @app.route("/join_success")
 def join_success():
@@ -323,30 +338,3 @@ def connection_mongodb():
     print(json_lis)
     return jsonify(json_lis)
 
-# 이메일 인증번호 발송
-@app.route('/send_email', methods=['POST'])
-def send_email():
-    ran_num = "123456"
-    title = "YDP-SNS 비밀번호 변경 인증번호"
-    content = "인증번호 6자리" + ran_num + "를 입력 후 인증해주세요."
-    sender = "YDP-SNS@ydpsns.com"
-    recipients = request.form['email']
-
-    # msg = Message(
-    #     "YDP-SNS 비밀번호 변경 인증번호", #메일 제목
-    #     body = "인증번호 6자리" + ran_num + "를 입력 후 인증해주세요.", #메일 내용
-    #     sender = "herejddl@gmail.com", #메일을 보낸 계정
-    #     recipients = ["YDP-SNS@ydpsns.com"] #메일을 보낼 계정
-    # )
-    # email.send(msg)
-        # sender=f"{sender}",
-
-    msg = Message(
-        f"{title}",
-        body=f"{content}",
-        recipients=["herejddl@gmail.com"]
-    )
-    email.send(msg)
-    
-
-    return "Sent"
