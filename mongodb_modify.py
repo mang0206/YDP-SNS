@@ -38,11 +38,11 @@ def modify_user_one():
     # )
     # return
     id = col.find_one({'user_id':'default'})
-    profile_id = id['profile_img'] 
-    print(profile_id)
+    background_img = id['background_img'] 
+    # print(profile_id)
     result = col.update_many(
         {},
-        {'$set': {'profile_img': ObjectId(profile_id) }}
+        {'$set': {'background_img': ObjectId(background_img) }}
     )
 
 def del_user():

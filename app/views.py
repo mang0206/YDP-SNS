@@ -1,6 +1,7 @@
 from flask import request, render_template, jsonify, redirect, url_for, session, flash
 from flask_bcrypt import Bcrypt
 from bson.json_util import dumps
+from bson.objectid import ObjectId
 import json
 from . import app, conn
 import gridfs
@@ -103,12 +104,27 @@ def index():
         search = request.form.get('search')
         return redirect(url_for('search', search = search))
     
-    friend_list =  list(col_user.find({'user_id' : session['login']}, {'friend_list'}))
+    session_friend_list =  col_user.find_one({'user_id' : session['login']}, {'_id':0, 'friend_list':1})['friend_list']
 
-    # for i in col_user.find({'user_id' : session['login']}):
-        # friend_list = i['friend_list']
-    print(friend_list)
-    return render_template('index.html', friend_list = friend_list)
+    friend_dic = {}
+    for user in session_friend_list:
+        friend_dic[user] = col_user.find_one({'user_id': user})
+    
+    for key in friend_dic:
+        img = fs.get(friend_dic[key]['profile_img'])
+        base64_data = codecs.encode(img.read(), 'base64')
+        friend_dic[key]['profile_img'] = base64_data.decode('utf-8')   
+    # # 프로필 이미지
+    # img = fs.get(session_user['profile_img'])
+    # base64_data = codecs.encode(img.read(), 'base64')
+    # profile_img = base64_data.decode('utf-8')
+    # # 배경 이미지
+    # img = fs.get(session_user['background_img'])
+    # base64_data = codecs.encode(img.read(), 'base64')
+    # background_img = base64_data.decode('utf-8')
+
+    
+    return render_template('index.html', friend_dic = friend_dic)
 
 @app.route("/search", methods=['GET',"POST"])
 def search():

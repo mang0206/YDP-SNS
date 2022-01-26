@@ -9,15 +9,16 @@
 <div class="both_layout_friend">
     <div class="friend_container">
         <h4>친구 목록</h4>
-        {% for user in friend_list %}
+        {% for user in friend_dic %}
             <div class="search_user">
-                <div class="search_user_image"></div>
+                <!-- <div class="search_user_image"></div> -->
+                <img src="data:image/png;base64, {{user['profile_img']}}" alt="" class="search_user_image">
                 <div class="user_name_id">
                     <div class="user_name">
-                        {{ user.user_name }}
+                        {{ user['user_ide'] }}
                     </div>
                     <div class="user_id">
-                        {{ user.user_id }}
+                        {{ user['user_name'] }}
                     </div>
                 </div>
                 <div class="friend_button_area">
