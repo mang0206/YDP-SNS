@@ -1,15 +1,14 @@
 {% extends 'login_base.html' %}
 {% block login %}
 <div>
-    <!-- <h2>Log-in</h2> -->
     <form method="POST" action="">
         <div>
-            <label for="id"><h4>E-mail</h4></label>
-            <input type="id" placeholder="E-mail" name='user_id' id="user_id" class="login_base_input_box email_icon" required>
+            <h4>ID</h4>
+            <input type="id" placeholder="ID" name='user_id' class="login_base_input_box user_icon" required>
         </div>
         <div>
-            <label for="password"><h4>Password</h4></label>
-            <input type="password" placeholder="Password" name='password' id="password"  class="login_base_input_box lock_icon" required>
+            <h4>Password</h4>
+            <input type="password" placeholder="Password" name='password' class="login_base_input_box lock_icon" required>
         </div>
         <div>
             <span>비밀번호를 잊으셨나요?</span>
