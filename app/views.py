@@ -19,12 +19,12 @@ email = Mail(app)
 def login():
     col = db.get_collection('user')
     if request.method == 'POST':
-        email = request.form.get('user_id')
+        user_id = request.form.get('user_id')
         pw =  request.form.get('password')
-        find_user = col.find_one({'user_id':email})
+        find_user = col.find_one({'user_id':user_id})
         if bcrypt.check_password_hash(find_user['password'], pw):
-            session['login'] =  email
-            session['ide'] = find_user['user_ide']
+            session['login'] =  user_id
+            session['ide'] = find_user['nickname']
             session['name'] = find_user['user_name']
             return redirect(url_for('index'))
         else:
@@ -37,30 +37,39 @@ def login():
 @app.route('/join', methods=['GET',"POST"])
 def join():
     col = db.get_collection('user')
-    email_list = [user['user_id'] for user in col.find()]
-    ide_list = [user['user_ide'] for user in col.find()]
+    id_list = [user['user_id'] for user in col.find()]
+    nickname_list = [user['nickname'] for user in col.find()]
+    email_list = [user['user_email'] for user in col.find()]
 
     if request.method == "POST":
-        email = request.form.get('email')
+        email = request.form.get('user_email')
         if email in email_list:
-            flash('이미 존재하는 이메일 입니다.')
+            flash('이미 존재하는 이메일입니다.')
+            return redirect(url_for('join'))
+        user_id = request.form.get('user_id')
+        if user_id in id_list:
+            flash('이미 존재하는 아이디입니다.')
+            return redirect(url_for('join'))
+        nickname = request.form.get('nickname')
+        if nickname in nickname_list:
+            flash('이미 존재하는 닉네임입니다.')
             return redirect(url_for('join'))
         
         pw = bcrypt.generate_password_hash(request.form.get('password'))
         pw2 = request.form.get('password2')
         if bcrypt.check_password_hash(pw, pw2):
             _default = col.find_one({'user_id':'default'})
-            user_id = request.form.get('user_id')
             user_name = request.form.get('user_name')
             col.insert_one(
-                { 'user_id': email,
+                { 'user_id': id,
                 'password': pw,
-                'user_ide': user_id,
+                'nickname': nickname,
                 'user_name': user_name,
                 'friend_list': [],
                 'profile_img': ObjectId(_default['profile_img']),
                 'background_img': ObjectId(_default['background_img']),
                 'bio': None,
+                'user_email': email
                 })
             return render_template('join_success.html')
         else:
@@ -69,7 +78,7 @@ def join():
         return redirect(url_for('join'))
         # return redirect('join.html')
     else:
-        return render_template('join.html', email_list=email_list, ide_list=ide_list)
+        return render_template('join.html', email_list=email_list, nickname_list=nickname_list, id_list=id_list)
 
 @app.route("/password_reset")
 def password_reset():
@@ -119,16 +128,7 @@ def index():
     for key in friend_dic:
         img = fs.get(friend_dic[key]['profile_img'])
         base64_data = codecs.encode(img.read(), 'base64')
-        friend_dic[key]['profile_img'] = base64_data.decode('utf-8')   
-    # # 프로필 이미지
-    # img = fs.get(session_user['profile_img'])
-    # base64_data = codecs.encode(img.read(), 'base64')
-    # profile_img = base64_data.decode('utf-8')
-    # # 배경 이미지
-    # img = fs.get(session_user['background_img'])
-    # base64_data = codecs.encode(img.read(), 'base64')
-    # background_img = base64_data.decode('utf-8')
-
+        friend_dic[key]['profile_img'] = base64_data.decode('utf-8') 
     
     return render_template('index.html', friend_dic = friend_dic)
 
@@ -137,7 +137,7 @@ def search():
     email = session['login']
     col_request_friend = db.get_collection('request_friend')
     request_list = col_request_friend.find()
-    col = db.get_collection('user')
+    col_user = db.get_collection('user')
     # if request.method == "POST":
     # if request.form.get('search_btn') == 'topbar_search':
     #     search = request.form.get('search')
@@ -146,20 +146,24 @@ def search():
     search = request.args.get('search')
     query = { '$or' : 
         [ {'name': { '$regex' :  search, '$options': '$i'}},\
-            {'user_ide' :  { '$regex' : search, '$options': '$i'}}
+            {'nickname' :  { '$regex' : search, '$options': '$i'}}
         ]
     }
-    search_user = list(col.find(query))
-    print(search_user)
-    search_user_id = {}
+    search_user = list(col_user.find(query))
+    # 검색한 user 목록 dictionary
+    search_user_dic = {}
     for user in search_user:
-        search_user_id[user['user_ide']] = user['user_id']
-
-    search_user_id = json.dumps(search_user_id, ensure_ascii = False)
+        search_user_dic[user] = col_user.find_one({'user_id': user})
     
-    for i in col.find({'user_id': email}):
-        friend_list = i['friend_list']
+    for key in search_user_dic:
+        img = fs.get(search_user_dic[key]['profile_img'])
+        base64_data = codecs.encode(img.read(), 'base64')
+        search_user_dic[key]['profile_img'] = base64_data.decode('utf-8') 
 
+    #세션 유저의 친구 목록
+    session_friend_list =  col_user.find_one({'user_id' : session['login']}, {'_id':0, 'friend_list':1})['friend_list']
+
+    #세션 유저가 요청한 user 목록
     session_request_list = {}
     session_request_list[''] = [user['request_user'] for user in col_request_friend.find({'user_id': session['login']})]
     
@@ -167,7 +171,7 @@ def search():
     session_request_list = json.dumps(session_request_list, ensure_ascii = False)
 
     return render_template('search.html',session_user=email, search = search, search_user=search_user,\
-                search_user_id = search_user_id, friend_list=friend_list, session_request_list=session_request_list)
+                search_user_dic = search_user_dic, session_friend_list=session_friend_list, session_request_list=session_request_list)
 
 # 팝업창 txt와 img를 DB로 전송
 @app.route("/content_submit", methods=["POST"])
@@ -187,7 +191,7 @@ def user(user):
     for i in col_user.find({'user_id': session['login']}):
         session_friend_list = i['friend_list']
     
-    user = col_user.find_one({'user_ide':user})
+    user = col_user.find_one({'nickname':user})
     # user의 친구 정보 dictionary
     friend_dic = {}
     for i in user['friend_list']:
@@ -215,7 +219,7 @@ def friend():
     request_friend = {}
     for i in request_friend_id:
         find_user = col_user.find_one({'user_id':i})
-        request_friend[i] = find_user['user_ide']
+        request_friend[i] = find_user['nickname']
 
     friend_list = []
     for i in col_user.find({'user_id':user}):
@@ -223,7 +227,7 @@ def friend():
     friend_dict = {}
     for i in friend_list:
         find_user = col_user.find_one({'user_id':i})
-        friend_dict[i] = find_user['user_ide']
+        friend_dict[i] = find_user['nickname']
 
     # request_friend={'aaa':'aaa', 'bbb':'bbb', 'ccc':'ccc', 'ddd':'ddd'}
     # friend_list = ['aaa', 'bbb', 'ccc', 'ddd', 'eee', 'fff']
@@ -289,9 +293,9 @@ def post_setting():
         input_ide = request.form.get('setting_input_ide')
         col_user.update_one(
             {'user_id': session['login']},
-            {'$set' : {'user_ide': input_ide}}
+            {'$set' : {'nickname': input_ide}}
         )
-        session['user_ide'] = input_ide
+        session['nickname'] = input_ide
 
     if 'setting_button_bio' in request.form:
         bio = request.form.get('setting_input_bio')
@@ -352,7 +356,7 @@ def connection_mongodb():
     print(db.list_collection_names())
 
     col = db.get_collection('user')
-    # print(* list(col.find({},{'user_id':True, 'user_ide':True})))
+    # print(* list(col.find({},{'user_id':True, 'nickname':True})))
     col.update_many({},{"$rename":{"name":"user_name"}})
     lis = col.find({})
     

@@ -5,7 +5,7 @@
 ## user
 	- user_id : 로그인 ID
     - password : 로그인 PW
-    - user_ide : 사용자 닉네임
+    - nickname : 사용자 닉네임
 	- user_name : 사용자 이름
 	- friend_list : 사용자 친구 목록
     - profile_img : 사용자 프로필 이미지

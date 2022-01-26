@@ -10,7 +10,7 @@ col = db.get_collection('user')
 def modify_user():
     lst = []
     ''' 유저마다 닉네임 추가'''
-    # for i in col.find({},{'user_id':True, 'user_ide':True}):
+    # for i in col.find({},{'user_id':True, 'nickname':True}):
     #     lst.append(i['user_id'])
     # # print(lst)
     # name = ['test', 'aa', 'bb', 'cc', 'dd', "ee"]
@@ -19,7 +19,7 @@ def modify_user():
     # #         {'user_id':lst[i]},
     # #         {'$set':{'name':name[i]}}
     # #     )
-    # for i in col.find({},{'user_id':True, 'user_ide':True}):
+    # for i in col.find({},{'user_id':True, 'nickname':True}):
     #     print(i)
     '''유저에 친구 목록 리스트 추가'''
     for user in col.find():
@@ -30,7 +30,7 @@ def modify_user_one():
     '''유저에 친구 목록 리스트 추가'''
     # result = col.update_many(
     #     {},
-    #     {'$set':{'friend_list':[]}}
+    #     {'$set':{'user_email':''}}
     # )
     # result = col.update_many(
     #     {},
@@ -40,10 +40,11 @@ def modify_user_one():
     id = col.find_one({'user_id':'default'})
     background_img = id['background_img'] 
     # print(profile_id)
-    result = col.update_many(
-        {},
-        {'$set': {'background_img': ObjectId(background_img) }}
-    )
+    # result = col.update_many(
+        # {},
+        # {'$set': {'background_img': ObjectId(background_img) }}
+    # )
+    # result = col.update_many({}, {'$rename': {'user_ide':'nickname'}})
 
 def del_user():
     lst = []
@@ -71,7 +72,7 @@ def search():
 #     col.insert_one({ 
 #         'user_id': 'default',
 #         'password': bcrypt.generate_password_hash('default'),
-#         'user_ide': 'default',
+#         'nickname': 'default',
 #         'user_name': 'default',
 #         'friend_list': [],
 #         'profile_img': None,
