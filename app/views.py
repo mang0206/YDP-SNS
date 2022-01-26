@@ -1,4 +1,5 @@
 # from crypt import methods
+from enum import Flag
 from flask import request, render_template, jsonify, redirect, url_for, session, flash
 from flask_bcrypt import Bcrypt
 from bson.json_util import dumps
@@ -24,7 +25,7 @@ def login():
         find_user = col.find_one({'user_id':email})
         if bcrypt.check_password_hash(find_user['password'], pw):
             session['login'] =  email
-            session['ide'] = find_user['user_ide']
+            session['ide'] = find_user['nickname']
             session['name'] = find_user['user_name']
             return redirect(url_for('index'))
         else:
@@ -38,7 +39,7 @@ def login():
 def join():
     col = db.get_collection('user')
     email_list = [user['user_id'] for user in col.find()]
-    ide_list = [user['user_ide'] for user in col.find()]
+    ide_list = [user['nickname'] for user in col.find()]
 
     if request.method == "POST":
         email = request.form.get('email')
@@ -55,7 +56,7 @@ def join():
             col.insert_one(
                 { 'user_id': email,
                 'password': pw,
-                'user_ide': user_id,
+                'nickname': user_id,
                 'user_name': user_name,
                 'friend_list': [],
                 'profile_img': ObjectId(_default['profile_img']),
@@ -71,9 +72,28 @@ def join():
     else:
         return render_template('join.html', email_list=email_list, ide_list=ide_list)
 
-@app.route("/password_reset")
+@app.route("/password_reset", methods=["GET", "POST"])
 def password_reset():
-    return render_template('password_reset.html')
+    # input_num = request.form.get('input_num_submit')
+    # ran_num = session['certification_num']
+    flag = ''
+
+    if request.method == 'POST':
+        input_num = request.form.get('input_num')
+        ran_num = session['certification_num']
+
+        if input_num == ran_num:
+            flag += 'True'
+            flash('인증번호가 맞았습니다.')
+            return render_template('password_reset.html', flag=flag)
+        
+        else:
+            flag += 'False'
+            flash('인증번호가 틀렸습니다.')
+            return render_template('password_reset.html', flag=flag)
+        
+    else:
+        return render_template('password_reset.html')
 
 # 이메일 인증번호 발송
 @app.route('/send_email', methods=["GET", "POST"])
@@ -92,8 +112,11 @@ def send_email():
         recipients = [recipients] #메일을 보낼 계정
     )
     email.send(msg)
+    # flash('인증번호 6자리가 전송되었습니다.')
 
-    return redirect(url_for('password_reset', ran_num=ran_num))
+    session['certification_num'] = ran_num
+
+    return redirect(url_for('password_reset'))
 
 @app.route("/join_success")
 def join_success():
@@ -146,14 +169,14 @@ def search():
     search = request.args.get('search')
     query = { '$or' : 
         [ {'name': { '$regex' :  search, '$options': '$i'}},\
-            {'user_ide' :  { '$regex' : search, '$options': '$i'}}
+            {'nickname' :  { '$regex' : search, '$options': '$i'}}
         ]
     }
     search_user = list(col.find(query))
     print(search_user)
     search_user_id = {}
     for user in search_user:
-        search_user_id[user['user_ide']] = user['user_id']
+        search_user_id[user['nickname']] = user['user_id']
 
     search_user_id = json.dumps(search_user_id, ensure_ascii = False)
     
@@ -187,7 +210,7 @@ def user(user):
     for i in col_user.find({'user_id': session['login']}):
         session_friend_list = i['friend_list']
     
-    user = col_user.find_one({'user_ide':user})
+    user = col_user.find_one({'nickname':user})
     # user의 친구 정보 dictionary
     friend_dic = {}
     for i in user['friend_list']:
@@ -215,7 +238,7 @@ def friend():
     request_friend = {}
     for i in request_friend_id:
         find_user = col_user.find_one({'user_id':i})
-        request_friend[i] = find_user['user_ide']
+        request_friend[i] = find_user['nickname']
 
     friend_list = []
     for i in col_user.find({'user_id':user}):
@@ -223,7 +246,7 @@ def friend():
     friend_dict = {}
     for i in friend_list:
         find_user = col_user.find_one({'user_id':i})
-        friend_dict[i] = find_user['user_ide']
+        friend_dict[i] = find_user['nickname']
 
     # request_friend={'aaa':'aaa', 'bbb':'bbb', 'ccc':'ccc', 'ddd':'ddd'}
     # friend_list = ['aaa', 'bbb', 'ccc', 'ddd', 'eee', 'fff']
@@ -289,9 +312,9 @@ def post_setting():
         input_ide = request.form.get('setting_input_ide')
         col_user.update_one(
             {'user_id': session['login']},
-            {'$set' : {'user_ide': input_ide}}
+            {'$set' : {'nickname': input_ide}}
         )
-        session['user_ide'] = input_ide
+        session['nickname'] = input_ide
 
     if 'setting_button_bio' in request.form:
         bio = request.form.get('setting_input_bio')
@@ -352,7 +375,7 @@ def connection_mongodb():
     print(db.list_collection_names())
 
     col = db.get_collection('user')
-    # print(* list(col.find({},{'user_id':True, 'user_ide':True})))
+    # print(* list(col.find({},{'user_id':True, 'nickname':True})))
     col.update_many({},{"$rename":{"name":"user_name"}})
     lis = col.find({})
     

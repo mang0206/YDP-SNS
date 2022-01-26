@@ -559,9 +559,6 @@ a:visited{color: black}
     display: flex;
     align-items: flex-end;
 }
-.user_name{
-    margin-right: 10px;
-}
 .user_setting{
     display: flex;
     align-items: center;

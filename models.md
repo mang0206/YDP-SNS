@@ -3,7 +3,7 @@
 # 모델 스키마
 
 ## user
-	- user_id : 로그인 ID
+	- usenickname그인 ID
     - password : 로그인 PW
     - user_ide : 사용자 닉네임
 	- user_name : 사용자 이름
