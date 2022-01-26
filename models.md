@@ -1,3 +1,5 @@
+# aws -ec2 주소 : 13.125.71.134
+
 # 모델 스키마
 
 ## user
@@ -35,7 +37,8 @@
     - create_time : 작성 시간(24시간 전까지는 ~시간 전, 지난 후에는 일자 표시)
     - reply : 댓글의 답글
 
-## session
+# session
     session['login'] : session id
     session['ide'] = session ide(닉네임)
     session['name'] = session name(이름)
+

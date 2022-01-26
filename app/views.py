@@ -88,9 +88,11 @@ def index():
         search = request.form.get('search')
         return redirect(url_for('search', search = search))
     
-    for i in col_user.find({'user_id' : session['login']}):
-        friend_list = i['friend_list']
-    
+    friend_list =  list(col_user.find({'user_id' : session['login']}, {'friend_list'}))
+
+    # for i in col_user.find({'user_id' : session['login']}):
+        # friend_list = i['friend_list']
+    print(friend_list)
     return render_template('index.html', friend_list = friend_list)
 
 @app.route("/search", methods=['GET',"POST"])
