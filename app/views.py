@@ -1,3 +1,4 @@
+# from crypt import methods
 from flask import request, render_template, jsonify, redirect, url_for, session, flash
 from flask_bcrypt import Bcrypt
 from bson.json_util import dumps
@@ -6,6 +7,7 @@ from . import app, conn
 import gridfs
 import codecs
 from flask_mail import Mail, Message
+import random
 
 db = conn.get_database('root')
 bcrypt = Bcrypt()
@@ -73,20 +75,24 @@ def password_reset():
     return render_template('password_reset.html')
 
 # 이메일 인증번호 발송
-@app.route('/send_email', methods=['POST'])
+@app.route('/send_email', methods=["GET", "POST"])
 def send_email():
-    ran_num = "123456"
-    recipients = request.form['email']
+    number = "0123456789"
+    ran_num = ""  #인증번호 6자리
+    recipients = request.args['email'] #사용자가 입력한 email주소
 
-    # msg = Message(
-    #     "YDP-SNS 비밀번호 변경 인증번호", #메일 제목
-    #     body = "인증번호 6자리 [ " + ran_num + " ] 를 입력 후 인증해주세요.", #메일 내용
-    #     sender = "ydpsns.project@gmail.com", #메일을 보낸 계정
-    #     recipients = [recipients] #메일을 보낼 계정
-    # )
-    # email.send(msg)
+    for i in range(6):
+        ran_num += random.choice(number)
 
-    return redirect(url_for('password_reset'))
+    msg = Message(
+        "YDP-SNS 비밀번호 변경 인증번호", #메일 제목
+        body = "인증번호 6자리 [ " + ran_num + " ] 를 입력 후 인증해주세요.", #메일 내용
+        sender = "ydpsns.project@gmail.com", #메일을 보낸 계정
+        recipients = [recipients] #메일을 보낼 계정
+    )
+    email.send(msg)
+
+    return redirect(url_for('password_reset', ran_num=ran_num))
 
 @app.route("/join_success")
 def join_success():
