@@ -327,7 +327,7 @@ def send_email():
     ran_num = "123456"
     title = "YDP-SNS 비밀번호 변경 인증번호"
     content = "인증번호 6자리" + ran_num + "를 입력 후 인증해주세요."
-    sender = "YDP-SNS@ydpsns.com"
+    sender = "herejddl@gmail.com"
     recipients = request.form['email']
 
     # msg = Message(
@@ -340,11 +340,11 @@ def send_email():
         # sender=f"{sender}",
 
     msg = Message(
-        f"{title}",
-        body=f"{content}",
-        recipients=["herejddl@gmail.com"]
+        "E-mail test",
+        sender = "herejddl@gmail.com",
+        recipients=["hyeon.dyeo.mee@gmail.com"]
     )
+    msg.body="E-mail test content"
     email.send(msg)
-    
 
     return "Sent"
