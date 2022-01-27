@@ -1,5 +1,7 @@
 # from crypt import methods
+from asyncio.windows_events import NULL
 from enum import Flag
+from unittest import result
 from flask import request, render_template, jsonify, redirect, url_for, session, flash
 from flask_bcrypt import Bcrypt
 from bson.json_util import dumps
@@ -15,6 +17,7 @@ db = conn.get_database('root')
 bcrypt = Bcrypt()
 fs = gridfs.GridFS(db)
 email = Mail(app)
+# session['certification_email'] = None
 
 @app.route("/login", methods=['GET',"POST"])
 def login():
@@ -83,33 +86,37 @@ def join():
 
 @app.route("/password_reset", methods=["GET", "POST"])
 def password_reset():
-    # input_num = request.form.get('input_num_submit')
-    # ran_num = session['certification_num']
-    flag = ''
 
-    if request.method == 'POST':
-        input_num = request.form.get('input_num')
+    flag = ''
+    
+    if request.method == 'GET':
+        return render_template('password_reset.html')
+
+    else:
+        data = request.get_json()
+
+        input_num = data['input_num']
+        # ran_num = data['input_num']
         ran_num = session['certification_num']
+
 
         if input_num == ran_num:
             flag += 'True'
-            flash('인증번호가 맞았습니다.')
-            return render_template('password_reset.html', flag=flag)
+            flash('인증번호가 일치합니다.')
         
         else:
             flag += 'False'
             flash('인증번호가 틀렸습니다.')
-            return render_template('password_reset.html', flag=flag)
         
-    else:
-        return render_template('password_reset.html')
 
 # 이메일 인증번호 발송
-@app.route('/send_email', methods=["GET", "POST"])
+@app.route('/send_email', methods=["POST"])
 def send_email():
+    data = request.get_json()
+    send_email = data['send_email'] # 사용자가 입력한 email 주소
+
     number = "0123456789"
     ran_num = ""  #인증번호 6자리
-    recipients = request.args['email'] #사용자가 입력한 email주소
 
     for i in range(6):
         ran_num += random.choice(number)
@@ -117,15 +124,18 @@ def send_email():
     msg = Message(
         "YDP-SNS 비밀번호 변경 인증번호", #메일 제목
         body = "인증번호 6자리 [ " + ran_num + " ] 를 입력 후 인증해주세요.", #메일 내용
-        sender = "ydpsns.project@gmail.com", #메일을 보낸 계정
-        recipients = [recipients] #메일을 보낼 계정
+        sender = "ydpsns.project@gmail.com", #발송인
+        recipients = [send_email] #수신인
     )
     email.send(msg)
-    # flash('인증번호 6자리가 전송되었습니다.')
 
     session['certification_num'] = ran_num
+    session['send_email'] = send_email
 
-    return redirect(url_for('password_reset'))
+    print(session['certification_num'])
+
+    # return redirect(url_for('password_reset'))
+    return jsonify(result = 'success')
 
 @app.route("/join_success")
 def join_success():
