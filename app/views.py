@@ -173,28 +173,35 @@ def search():
         ]
     }
     search_user = list(col_user.find(query))
+
+    #js 연동을 위한 search user의 nickname, id 딕셔너리
+    search_user_id = {}
+    for user in search_user:
+        search_user_id[user['nickname']] = user['user_id']
+
+    search_user_id = json.dumps(search_user_id, ensure_ascii = False)
+
     # 검색한 user 목록 dictionary
     search_user_dic = {}
     for user in search_user:
-        search_user_dic[user] = col_user.find_one({'user_id': user})
-    
+        search_user_dic[user['user_id']] = col_user.find_one({'user_id': user['user_id']})
+
     for key in search_user_dic:
         img = fs.get(search_user_dic[key]['profile_img'])
         base64_data = codecs.encode(img.read(), 'base64')
         search_user_dic[key]['profile_img'] = base64_data.decode('utf-8') 
 
+    # search_user_dic = json.dumps(search_user_dic, ensure_ascii = False)
     #세션 유저의 친구 목록
     session_friend_list =  col_user.find_one({'user_id' : session['login']}, {'_id':0, 'friend_list':1})['friend_list']
 
     #세션 유저가 요청한 user 목록
     session_request_list = {}
     session_request_list[''] = [user['request_user'] for user in col_request_friend.find({'user_id': session['login']})]
-    
-    print(list(col_request_friend.find()))
     session_request_list = json.dumps(session_request_list, ensure_ascii = False)
 
-    return render_template('search.html',session_user=email, search = search, search_user=search_user,\
-                search_user_dic = search_user_dic, session_friend_list=session_friend_list, session_request_list=session_request_list)
+    return render_template('search.html', search = search, search_user_dic=search_user_dic, search_user_id=search_user_id,\
+                 session_friend_list=session_friend_list, session_request_list=session_request_list)
 
 # 팝업창 txt와 img를 DB로 전송
 @app.route("/content_submit", methods=["POST"])

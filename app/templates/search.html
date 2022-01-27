@@ -4,17 +4,19 @@
 <div class="base_body_margin search_container">
     <h2>"{{ search }}" 검색 결과</h2>
 </div>
-<div class="both_layout" id="search" data-name= '{{ session_user }}' data-search_user = '{{ search_user_id }}'\
-        data-friend_list='{{ friend_list }}' data-session_request_list='{{ session_request_list }}'>
+<div class="both_layout" id="search" data-name= '{{ session["login"] }}' data-search_user = '{{ search_user_id }}'\
+        data-friend_list='{{ session_friend_list }}' data-session_request_list='{{ session_request_list }}'>
     <div class="both_layout_content">
         <h4>게시물</h4>
     </div>
 
     <div class="both_layout_friend search_user_container">
         <h4>계정</h4>
-        {% for user in search_user %}
-            <div class="search_user" id = 'friend_button_area_{{user.user_id}}' data-user=' {{ user.user_id }}' value = "{{ user.user_id }}" > 
+        {% for user in search_user_dic %}
+            <div class="search_user" id = 'friend_button_area_{{search_user_dic[user]["user_id"]}}'\
+                             data-user=' {{ search_user_dic[user]["user_id"] }}' value = "{{ search_user_dic[user]['user_id'] }}" > 
                 <div class="user_profile_img">
+                    <img src="data:image/png;base64, {{search_user_dic[user]['profile_img'] }}" alt="" class="user_profile_img">
                 <!-- <div class="search_user_image"> -->
                     <!-- user 검색 결과 프로필 이미지 -->
                     <a>
@@ -22,10 +24,10 @@
                 </div>
                 <div class="user_name_id">
                     <a class="">
-                        {{user.nickname}}
+                        {{search_user_dic[user]['nickname']}}
                     </a>
                     <div class="user_id">
-                        {{ user.user_name }}
+                        {{ search_user_dic[user]['user_name'] }}
                     </div>
                 </div>
             </div> 

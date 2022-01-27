@@ -1,10 +1,10 @@
 // id만 전송 받음
 const session_user = $('#search').data().name;
 const search_result_list = $('#search').data().search_user;
-const user_friend_list = $('#search').data().friend_list;
+const user_friend_list = $('#search').data().friend_list; 
 const request_friend_list = $('#search').data().session_request_list;
 // const user = $('#friend_button_area').data().user;
-console.log(request_friend_list[''])
+console.log(search_result_list)
 const test_list = [1,3,5,6,7]
 let test = 4
 if (test_list.includes(test)){
