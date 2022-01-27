@@ -150,6 +150,9 @@ h4{
     justify-content: space-between;
     align-items: center;
 }
+#count_down{
+    margin: 0;
+}
 .certification_num{
     width: 150px;
     height: 30px;
@@ -166,6 +169,11 @@ h4{
     padding: 5px 10px;
     border: solid 1px lightgray;
     border-radius: 5px;
+}
+.certification_status{
+    width: 35px;
+    height: 35px;
+    margin: 0;
 }
 .send_btn{
     display: flex;
