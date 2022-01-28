@@ -19,6 +19,12 @@ fs = gridfs.GridFS(db)
 email = Mail(app)
 # session['certification_email'] = None
 
+def get_user_image(user, kind_img):
+    user_img = fs.get(user[kind_img])
+    base64_data = codecs.encode(user_img.read(), 'base64')
+    user[kind_img] = base64_data.decode('utf-8')
+     
+
 @app.route("/login", methods=['GET',"POST"])
 def login():
     col = db.get_collection('user')
@@ -160,10 +166,8 @@ def index():
         friend_dic[user] = col_user.find_one({'user_id': user})
     
     for key in friend_dic:
-        img = fs.get(friend_dic[key]['profile_img'])
-        base64_data = codecs.encode(img.read(), 'base64')
-        friend_dic[key]['profile_img'] = base64_data.decode('utf-8') 
-    
+        get_user_image(friend_dic[key], 'profile_img')
+     
     return render_template('index.html', friend_dic = friend_dic)
 
 @app.route("/search", methods=['GET',"POST"])
@@ -198,9 +202,7 @@ def search():
         search_user_dic[user['user_id']] = col_user.find_one({'user_id': user['user_id']})
 
     for key in search_user_dic:
-        img = fs.get(search_user_dic[key]['profile_img'])
-        base64_data = codecs.encode(img.read(), 'base64')
-        search_user_dic[key]['profile_img'] = base64_data.decode('utf-8') 
+        get_user_image(search_user_dic[key], 'profile_img') 
 
     # search_user_dic = json.dumps(search_user_dic, ensure_ascii = False)
     #세션 유저의 친구 목록
@@ -232,16 +234,23 @@ def user(user):
     for i in col_user.find({'user_id': session['login']}):
         session_friend_list = i['friend_list']
     
-    user = col_user.find_one({'nickname':user})
+    search_user = col_user.find_one({'nickname':user})
+    print(user)
+    get_user_image(search_user, 'profile_img')
+    get_user_image(search_user, 'background_img')
+
     # user의 친구 정보 dictionary
     friend_dic = {}
-    for i in user['friend_list']:
-        friend_dic[i] = col_user.find_one({'user_id': i})
+    for user in search_user['friend_list']:
+        friend_dic[user] = col_user.find_one({'user_id': user})
+    
+    for key in friend_dic:
+        get_user_image(friend_dic[key], 'profile_img')
 
     # session 유저가 친구 요청을 보낸 user의 id 리스트
     session_request_list = [user['request_user'] for user in col_request_friend.find({'user_id': session['login']})]
     # print(friend_dic)
-    return render_template('user.html', user=user,session_friend_list=session_friend_list,\
+    return render_template('user.html', user=search_user,session_friend_list=session_friend_list,\
          friend_dic=friend_dic, session_request_list = session_request_list)
 
 @app.route("/logout")
@@ -295,17 +304,10 @@ def friend_respond():
 def setting():
     col_user = db.get_collection('user')
     session_user = col_user.find_one({'user_id': session['login']})
-
-    # 프로필 이미지
-    img = fs.get(session_user['profile_img'])
-    base64_data = codecs.encode(img.read(), 'base64')
-    profile_img = base64_data.decode('utf-8')
-    # 배경 이미지
-    img = fs.get(session_user['background_img'])
-    base64_data = codecs.encode(img.read(), 'base64')
-    background_img = base64_data.decode('utf-8')
-
-    return render_template('setting.html', profile_img=profile_img, background_img=background_img)
+    get_user_image(session_user, 'profile_img')
+    get_user_image(session_user, 'background_img')
+    
+    return render_template('setting.html', session_user=session_user)
 
 @app.route("/setting", methods= ['POST'])
 def post_setting():
