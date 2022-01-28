@@ -31,13 +31,14 @@ $('#send_email_btn').click(function(){
 $('#input_num_submit').click(function(){
     // 사용자가 입력한 6자리
     const input_num = $('#input_num').val();
-    // console.log(input_num)
+    console.log(input_num)
     sessionStorage.setItem('input_num', input_num);
 
     // 메일로 발송한 인증번호
     // const ran_num = sessionStorage.getItem('certification_num');
-    const ran_num = $('#input_num_submit').attr('num-data');
-    console.log(ran_num)
+    // const ran_num = $('#input_num_submit').attr('num-data');
+    // console.log(ran_num)
+    let ran_num = '010101'
 
 
     let certification_status = $('.certification_status');
@@ -45,11 +46,11 @@ $('#input_num_submit').click(function(){
     let flag = '';
 
     let flag_data = {
-        'input_num' : input_num,
-        'ran_num' : ran_num,
-        'flag' : flag,
-        'certification_status' : certification_status
-    };
+        "input_num": input_num,
+        "ran_num": ran_num,
+        "flag": flag,
+        "certification_status": certification_status
+    }
 
     $.ajax({
         type: 'POST',
@@ -58,18 +59,19 @@ $('#input_num_submit').click(function(){
         dataType: 'JSON',
         contentType: "application/json",
         success: function(data){
-            if (data['input_num'] == data['ran_num']) {
-                flag += 'True';
+            if (input_num == ran_num) {
+                flag += "True";
                 certification_status.attr('src','../static/img/protection_color.png');
 
             } else {
-                flag += 'False';
+                flag += "False";
                 certification_status.attr('src','../static/img/unprotected_color.png');
             }
         },
         error: function(request, status, error){
             alert('ajax 통신 실패')
-            alert(error);
+            console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+            // alert(error);
         }
     })
 });

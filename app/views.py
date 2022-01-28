@@ -91,13 +91,12 @@ def password_reset():
     
     if 'input_num_submit' in request.form:
         data = request.get_json()
-
+        print(data)
         input_num = data['input_num']
         print(input_num)
-        # ran_num = data['ran_num']
-        ran_num = session['certification_num']
-
-
+        ran_num = data['ran_num']
+        # ran_num = session['certification_num']
+        print(ran_num)
 
         if input_num == ran_num:
             flag += 'True'
