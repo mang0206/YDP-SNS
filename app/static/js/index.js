@@ -1,6 +1,6 @@
 
-
-
+let login = window.sessionStorage.getItem('login')
+console.log(login)
 // // 이미지 중복 체크
 // function check_duplicate(name) {
 //     var image = true;
