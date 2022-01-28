@@ -12,19 +12,14 @@ import gridfs
 import codecs
 from flask_mail import Mail, Message
 import random
+from .functuion import *
 
 db = conn.get_database('root')
 bcrypt = Bcrypt()
 fs = gridfs.GridFS(db)
 email = Mail(app)
 # session['certification_email'] = None
-
-def get_user_image(user, kind_img):
-    user_img = fs.get(user[kind_img])
-    base64_data = codecs.encode(user_img.read(), 'base64')
-    user[kind_img] = base64_data.decode('utf-8')
      
-
 @app.route("/login", methods=['GET',"POST"])
 def login():
     col = db.get_collection('user')
@@ -235,7 +230,6 @@ def user(user):
         session_friend_list = i['friend_list']
     
     search_user = col_user.find_one({'nickname':user})
-    print(user)
     get_user_image(search_user, 'profile_img')
     get_user_image(search_user, 'background_img')
 
@@ -266,10 +260,13 @@ def friend():
     col_request_friend = db.get_collection('request_friend')
     
     request_friend_id = [user['user_id'] for user in col_request_friend.find({'request_user':user})]
+    print(request_friend_id)
     request_friend = {}
     for i in request_friend_id:
         find_user = col_user.find_one({'user_id':i})
-        request_friend[i] = find_user['nickname']
+        get_user_image(find_user, 'profile_img')
+        get_user_image(find_user, 'background_img')
+        request_friend[i] = find_user
 
     friend_list = []
     for i in col_user.find({'user_id':user}):
@@ -277,7 +274,9 @@ def friend():
     friend_dict = {}
     for i in friend_list:
         find_user = col_user.find_one({'user_id':i})
-        friend_dict[i] = find_user['nickname']
+        get_user_image(find_user, 'profile_img')
+        get_user_image(find_user, 'background_img')
+        friend_dict[i] = find_user
 
     # request_friend={'aaa':'aaa', 'bbb':'bbb', 'ccc':'ccc', 'ddd':'ddd'}
     # friend_list = ['aaa', 'bbb', 'ccc', 'ddd', 'eee', 'fff']

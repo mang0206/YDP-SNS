@@ -16,8 +16,8 @@
                 {% for friend_key, friend_val in request_friend.items() %}
                 <div>
                     <div class="friend_user_container request_friend">
-                        <div class="friend_user_image">image</div>
-                        <div class="friend_user_name">{{ friend_val }}</div>
+                        <img src="data:image/png;base64, {{ friend_val['profile_img'] }}" alt="" class="friend_user_image">
+                        <div class="friend_user_name">{{ friend_val['nickname'] }}</div>
                         <!-- js 요청 수락/거절 버튼 -->
                         <div id="request_button" class="">
                             <button id="accept_btn" btn-data-value="{{ friend_key }}" name="accept" class="request_btn">수락</button>
@@ -35,8 +35,8 @@
                 {% for my_friend_key, my_friend_val in friend_list.items() %}
                 <div name="request_friend" class="request_friend">
                     <div class="friend_user_container ">
-                        <div class="friend_user_image">image</div>
-                        <div class="friend_user_name">{{ my_friend_val }}</div>
+                        <img src="data:image/png;base64, {{ my_friend_val['profile_img'] }}" alt="" class="friend_user_image">
+                        <div class="friend_user_name">{{ my_friend_val['nickname'] }}</div>
                         <!-- js 친구 삭제 버튼 -->
                         <div id="request_button" class="">
                             <button id="delete_btn" btn-data-value="{{ my_friend_key }}" name="delete" class="request_btn">친구 삭제</button>
