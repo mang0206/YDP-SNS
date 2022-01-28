@@ -86,15 +86,12 @@ def join():
 
 @app.route("/password_reset", methods=["GET", "POST"])
 def password_reset():
-    print(request.method)
-    if 'reset_pw_btn' in request.form:
-        pass    
     
     if request.get_json():
         data = request.get_json()
-        print(data)
-        # input_num = data['input_num']
-        # ran_num = session['certification_num']
+        input_num = data['input_num']
+        ran_num = session['certification_num']
+
         return jsonify(result = 'success')
 
     else:

@@ -180,6 +180,9 @@ h4{
     flex-direction: row;
     align-items: center;
 }
+#password_reset{
+    transition: all .5s;
+}
 .certification_img{
     width: 30px;
     height: 30px;
@@ -200,4 +203,7 @@ h4{
 }
 .none{
     display: none;
+}
+.password_rule{
+    font-size: 12px;
 }

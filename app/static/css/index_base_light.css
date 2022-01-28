@@ -191,7 +191,7 @@ a:visited{color: black}
 .plus_popup *{
     background-color: #FFFFFF;
 }
-.show .plus_popup{
+.show.plus_popup{
     transform: translate(-50%, -50%);
     transition: all .5s;
 }
