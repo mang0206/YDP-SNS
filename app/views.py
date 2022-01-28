@@ -96,8 +96,7 @@ def password_reset():
         data = request.get_json()
 
         input_num = data['input_num']
-        # ran_num = data['input_num']
-        ran_num = session['certification_num']
+        ran_num = data['ran_num']
 
 
         if input_num == ran_num:
