@@ -89,14 +89,13 @@ def password_reset():
 
     flag = ''
     
-    if 'input_num_submit' in request.form:
+    if request.method == 'POST':
         data = request.get_json()
         print(data)
         input_num = data['input_num']
         print(input_num)
-        ran_num = data['ran_num']
-        # ran_num = session['certification_num']
-        print(ran_num)
+        # ran_num = data['ran_num']
+        ran_num = session['certification_num']
 
         if input_num == ran_num:
             flag += 'True'
@@ -105,6 +104,7 @@ def password_reset():
         else:
             flag += 'False'
             flash('인증번호가 틀렸습니다.')
+        return jsonify(result = 'success')
 
     else:
         return render_template('password_reset.html')
@@ -136,7 +136,7 @@ def send_email():
     # print(session['certification_num'])
 
     # return redirect(url_for('password_reset'))
-    return jsonify(result = 'success')
+    return jsonify(result = 'success', ran_num=ran_num)
 
 @app.route("/join_success")
 def join_success():
