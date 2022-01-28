@@ -130,27 +130,6 @@ function count_down() {
 };
 
 // 비밀번호 변경 유효성 검사
-// 사용자가 키보드를 눌렀다 뗄 때 마다
-$('.lock_icon').keyup(function(){
-    let pw = $('#reset_pw').val();
-    let pw2 = $('#reset_pw2').val();
-
-    // pw 값과 pw2 값이 같고, 길이 8 이상인 경우 
-    if (pw == pw2 && pw.length > 7) {
-        console.log('true')    
-        // style : border green 
-        $('#reset_pw').attr('style', 'outline:none; border: solid 2px green;');
-        $('#reset_pw2').attr('style', 'outline:none; border: solid 2px green;');
-        // 비밀번호 변경 버튼 disabled 해제
-        $('#reset_pw_btn').attr('disabled', false);
-        // 비밀번호 설정 안내 문구 color red 해제
-        $('.password_rule').removeAttr('style', 'color:red');
-
-    } else {
-        console.log('false')
-        $('#reset_pw').attr('style', 'outline:none; border: solid 2px red;');        
-        $('#reset_pw2').attr('style', 'outline:none; border: solid 2px red;');        
-        $('#reset_pw_btn').attr('disabled', true);
-        $('.password_rule').attr('style', 'color:red');        
-    }
-});
+import { password_validation } from './check_password';
+document.getElementById('pw').addEventListener('keyup', password_validation);
+document.getElementById('pw2').addEventListener('keyup', password_validation);

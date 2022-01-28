@@ -341,15 +341,16 @@ def post_setting():
             {'$set' : {'user_name': input_name}}
         )
         session['user_name'] = input_name
-
-    if 'setting_button_pw' in request.form:
-        input_pw = bcrypt.generate_password_hash(request.form.get('setting_input_pw'))
-        input_pw2 = request.form.get('setting_input_pw2')
-        if bcrypt.check_password_hash(input_pw, input_pw2):
-            col_user.update_one(
-                {'user_id': session['login']},
-                {'$set' : {'password': input_pw}}
-            )
+    
+    # functuion 내부에서 실행
+    # if 'setting_button_pw' in request.form:
+    #     input_pw = bcrypt.generate_password_hash(request.form.get('setting_input_pw'))
+    #     input_pw2 = request.form.get('setting_input_pw2')
+    #     if bcrypt.check_password_hash(input_pw, input_pw2):
+    #         col_user.update_one(
+    #             {'user_id': session['login']},
+    #             {'$set' : {'password': input_pw}}
+    #         )
             
     return redirect(url_for('setting'))
 
