@@ -1,6 +1,8 @@
 // 인증번호 발송
 // send_email
+
 $('#send_email_btn').click(function(){
+    console.log('send email ajax')
     let send_email = $('#send_email').val();
     console.log(send_email)
 
@@ -15,7 +17,10 @@ $('#send_email_btn').click(function(){
         dataType: 'JSON',
         contentType: "application/json",
         success: function(data) {
-            sessionStorage.setItem('send_email', data);
+            console.log(data['ran_num'])
+            // sessionStorage.setItem('send_email', data);
+            // sessionStorage.setItem('ran_num', data);
+            $('#input_num_submit').attr('num-data', data['ran_num'])
             count_down();
             alert('인증번호 발송')
         },
@@ -29,6 +34,7 @@ $('#send_email_btn').click(function(){
 // 인증번호 일치 여부
 // password_reset
 $('#input_num_submit').click(function(){
+    console.log('button ajax')
     // 사용자가 입력한 6자리
     const input_num = $('#input_num').val();
     console.log(input_num)
