@@ -17,7 +17,7 @@ from .functuion import *
 
 db = conn.get_database('root')
 bcrypt = Bcrypt()
-fs = gridfs.GridFS(db)
+# fs = gridfs.GridFS(db)
 email = Mail(app)
 @app.route("/login", methods=['GET',"POST"])
 def login():
@@ -86,11 +86,13 @@ def join():
 
 @app.route("/password_reset", methods=["GET", "POST"])
 def password_reset():
+    print(request.method)
     if 'reset_pw_btn' in request.form:
         pass    
     
-    if 'input_num_submit' in request.form:
-        # data = request.get_json()
+    if request.get_json():
+        data = request.get_json()
+        print(data)
         # input_num = data['input_num']
         # ran_num = session['certification_num']
         return jsonify(result = 'success')
@@ -284,7 +286,8 @@ def friend_respond():
         col_user.update_one({'user_id': session['login']}, {'$pull': {'friend_list': data['friend']}})
         col_user.update_one({'user_id': data['friend']}, {'$pull': {'friend_list': session['login']}})
     col_request_friend.delete_one({'user_id': data['friend'], 'request_user':session['login']})
-    
+    col_request_friend.delete_one({'user_id': session['login'], 'request_user':data['friend']})
+
     return jsonify(result = "success", result2= data)
 
 @app.route("/setting")

@@ -51,9 +51,9 @@ $('#input_num_submit').click(function(){
     let flag_data = {
         "input_num": input_num,
         "ran_num": ran_num,
-        "password_reset": password_reset
+        // "password_reset": password_reset
     }
-
+    console.log(input_num, certification_img, certification_text, password_reset, email_send_container)
     $.ajax({
         type: 'POST',
         url: 'password_reset',
