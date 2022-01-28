@@ -14,12 +14,11 @@ from flask_mail import Mail, Message
 import random
 from .functuion import *
 
+
 db = conn.get_database('root')
 bcrypt = Bcrypt()
 fs = gridfs.GridFS(db)
 email = Mail(app)
-# session['certification_email'] = None
-     
 @app.route("/login", methods=['GET',"POST"])
 def login():
     col = db.get_collection('user')
@@ -87,24 +86,13 @@ def join():
 
 @app.route("/password_reset", methods=["GET", "POST"])
 def password_reset():
-
-    flag = ''
+    if 'reset_pw_btn' in request.form:
+        pass    
     
-    if request.method == 'POST':
-        data = request.get_json()
-        print(data)
-        input_num = data['input_num']
-        print(input_num)
-        # ran_num = data['ran_num']
-        ran_num = session['certification_num']
-
-        if input_num == ran_num:
-            flag += 'True'
-            flash('인증번호가 일치합니다.')
-        
-        else:
-            flag += 'False'
-            flash('인증번호가 틀렸습니다.')
+    if 'input_num_submit' in request.form:
+        # data = request.get_json()
+        # input_num = data['input_num']
+        # ran_num = session['certification_num']
         return jsonify(result = 'success')
 
     else:

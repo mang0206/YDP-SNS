@@ -1,6 +1,5 @@
 // 인증번호 발송
 // send_email
-
 $('#send_email_btn').click(function(){
     console.log('send email ajax')
     let send_email = $('#send_email').val();
@@ -18,8 +17,7 @@ $('#send_email_btn').click(function(){
         contentType: "application/json",
         success: function(data) {
             console.log(data['ran_num'])
-            // sessionStorage.setItem('send_email', data);
-            // sessionStorage.setItem('ran_num', data);
+            // 메일로 발송한 인증번호 flask->js->html
             $('#input_num_submit').attr('num-data', data['ran_num'])
             count_down();
             alert('인증번호 발송')
@@ -35,27 +33,25 @@ $('#send_email_btn').click(function(){
 // password_reset
 $('#input_num_submit').click(function(){
     console.log('button ajax')
-    // 사용자가 입력한 6자리
+    // 사용자가 입력한 6자리 session 전달
     const input_num = $('#input_num').val();
-    console.log(input_num)
     sessionStorage.setItem('input_num', input_num);
+    // 발급된 인증번호
+    const ran_num = $('#input_num_submit').attr('num-data');
 
-    // 메일로 발송한 인증번호
-    // const ran_num = sessionStorage.getItem('certification_num');
-    // const ran_num = $('#input_num_submit').attr('num-data');
-    // console.log(ran_num)
-    let ran_num = '010101'
+    // 인증번호 일치여부
+    let certification_img = $('.certification_img');
+    let certification_text = $('#certification_text');
 
-
-    let certification_status = $('.certification_status');
-
-    let flag = '';
+    // 인증번호 일치 시 비밀번호 변경하는 영역 표시
+    let password_reset = $('#password_reset');
+    // 인증번호 일치 시 인증번호 입력란 가림
+    let email_send_container = $('#email_send_container');
 
     let flag_data = {
         "input_num": input_num,
         "ran_num": ran_num,
-        "flag": flag,
-        "certification_status": certification_status
+        "password_reset": password_reset
     }
 
     $.ajax({
@@ -66,12 +62,23 @@ $('#input_num_submit').click(function(){
         contentType: "application/json",
         success: function(data){
             if (input_num == ran_num) {
-                flag += "True";
-                certification_status.attr('src','../static/img/protection_color.png');
+                // 번호 일치시 img 변경
+                certification_img.attr('src','../static/img/protection_color.png');
+                // 번호 일치시 text 및 style 변경
+                certification_text.text('인증에 성공하였습니다.');
+                certification_text.attr('style','color:green');
+                // 번호 일치시 pw 변경 영역 표시
+                password_reset.removeClass('none');
+                // 번호 일치시 email 입력 영역 가림
+                email_send_container.addClass('none');
 
             } else {
-                flag += "False";
-                certification_status.attr('src','../static/img/unprotected_color.png');
+                // 번호 불일치 시
+                certification_img.attr('src','../static/img/unprotected_color.png');
+                certification_text.text('인증에 실패하였습니다.');
+                certification_text.attr('style','color:red');
+                password_reset.addClass('none');
+                email_send_container.removeClass('none');
             }
         },
         error: function(request, status, error){
@@ -119,15 +126,48 @@ function count_down() {
     startCountDown(--duration, element);
 };
 
+// 비밀번호 유효성 검사
+$('#reset_pw_btn').click(function(){
+    
 
+    var request_data = {
+        "friend": btn_data_value, 
+        "respond" : id
+    }
+    $.ajax({
+        type: 'POST',
+        url: 'friend_respond',
+        data: JSON.stringify(request_data),
+        dataType: 'JSON',
+        contentType: "application/json",
+        success: function(data){
+            console.log(id, typeof(id), data)
+            // alert('성공! 데이터 값:')
+            // id 값에 따른 p태그 innerText 변경
+            if (id == "accept_btn") {
+                $(create_p).text('요청이 수락됐습니다.');
 
+            } else if (id == "reject_btn") {
+                $(create_p).text('요청이 거절됐습니다.');
 
-// 비밀번호 일치 여부 검사
+            }else{
+                var del = $(create_p).text('친구 목록에서\n삭제됐습니다.');
+                del.html(del.html().replace(/\n/g, '<br/>'));
+            }
+        },
+        error: function(request, status, error){
+            alert('ajax 통신 실패')
+            alert(error);
+        }
+    })
+});
+
 
 // 사용자가 키보드를 눌렀다 뗄 때 마다
 $('.lock_icon').keyup(function(){
     let pw = $('#reset_pw').val();
     let pw2 = $('#reset_pw2').val();
+
     // pw 값과 pw2 값이 같으면 border green 스타일 지정
     if (pw == pw2) {
         console.log('true')        

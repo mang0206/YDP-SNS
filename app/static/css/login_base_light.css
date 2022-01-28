@@ -143,6 +143,9 @@ h4{
     align-items: center;
 }
 /* reset password */
+#certification_send{
+    margin-bottom: 10px;
+}
 #certification_submit{
     margin: 3px 3px 10px 1px;
 
@@ -171,11 +174,20 @@ h4{
     border-radius: 5px;
 }
 .certification_status{
-    width: 35px;
-    height: 35px;
-    margin: 0;
+    margin-bottom: 15px;
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+.certification_img{
+    width: 30px;
+    height: 30px;
+    margin: 0 5px;
 }
 .send_btn{
+    margin-bottom: 10px;
+
     display: flex;
     justify-content: space-around;
     align-items: center;
@@ -186,6 +198,6 @@ h4{
 
     border: solid 1px lightgray;
 }
-.certification_status{
-    margin-bottom: 30px;
+.none{
+    display: none;
 }
