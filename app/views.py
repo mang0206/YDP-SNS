@@ -132,7 +132,6 @@ def join_success():
 
 @app.route("/", methods=['GET',"POST"])
 def index():
-    col_user = db.get_collection('user')
     if session.get('login') is None:
         return redirect(url_for('login'))
 
@@ -141,14 +140,9 @@ def index():
         search = request.form.get('search')
         return redirect(url_for('search', search = search))
     
-    session_friend_list =  col_user.find_one({'user_id' : session['login']}, {'_id':0, 'friend_list':1})['friend_list']
-
-    friend_dic = {}
-    for user in session_friend_list:
-        friend_dic[user] = col_user.find_one({'user_id': user})
-    
-    for key in friend_dic:
-        get_user_image(friend_dic[key], 'profile_img')
+    session_friend_list = get_friend_list(session['login'])
+    # 친구 정보 딕셔너리 
+    friend_dic = get_friend_dic(session_friend_list)
      
     return render_template('index.html', friend_dic = friend_dic)
 
@@ -170,7 +164,7 @@ def search():
         ]
     }
     search_user = list(col_user.find(query))
-
+    print('----------------', search_user)
     #js 연동을 위한 search user의 nickname, id 딕셔너리
     search_user_id = {}
     for user in search_user:
@@ -179,16 +173,10 @@ def search():
     search_user_id = json.dumps(search_user_id, ensure_ascii = False)
 
     # 검색한 user 목록 dictionary
-    search_user_dic = {}
-    for user in search_user:
-        search_user_dic[user['user_id']] = col_user.find_one({'user_id': user['user_id']})
+    search_user_dic = get_friend_dic([user['user_id'] for user in search_user])
 
-    for key in search_user_dic:
-        get_user_image(search_user_dic[key], 'profile_img') 
-
-    # search_user_dic = json.dumps(search_user_dic, ensure_ascii = False)
     #세션 유저의 친구 목록
-    session_friend_list =  col_user.find_one({'user_id' : session['login']}, {'_id':0, 'friend_list':1})['friend_list']
+    session_friend_list =  get_friend_list(session['login'])
 
     #세션 유저가 요청한 user 목록
     session_request_list = {}
@@ -213,20 +201,14 @@ def user(user):
     col_user = db.get_collection('user')
     col_request_friend = db.get_collection('request_friend')
 
-    for i in col_user.find({'user_id': session['login']}):
-        session_friend_list = i['friend_list']
+    session_friend_list = get_friend_list(session['login'])
     
     search_user = col_user.find_one({'nickname':user})
     get_user_image(search_user, 'profile_img')
     get_user_image(search_user, 'background_img')
 
     # user의 친구 정보 dictionary
-    friend_dic = {}
-    for user in search_user['friend_list']:
-        friend_dic[user] = col_user.find_one({'user_id': user})
-    
-    for key in friend_dic:
-        get_user_image(friend_dic[key], 'profile_img')
+    friend_dic = get_friend_dic(session_friend_list)
 
     # session 유저가 친구 요청을 보낸 user의 id 리스트
     session_request_list = [user['request_user'] for user in col_request_friend.find({'user_id': session['login']})]
@@ -247,23 +229,10 @@ def friend():
     col_request_friend = db.get_collection('request_friend')
     
     request_friend_id = [user['user_id'] for user in col_request_friend.find({'request_user':user})]
-    print(request_friend_id)
-    request_friend = {}
-    for i in request_friend_id:
-        find_user = col_user.find_one({'user_id':i})
-        get_user_image(find_user, 'profile_img')
-        get_user_image(find_user, 'background_img')
-        request_friend[i] = find_user
+    request_friend = get_friend_dic(request_friend_id)
 
-    friend_list = []
-    for i in col_user.find({'user_id':user}):
-        friend_list = i['friend_list']
-    friend_dict = {}
-    for i in friend_list:
-        find_user = col_user.find_one({'user_id':i})
-        get_user_image(find_user, 'profile_img')
-        get_user_image(find_user, 'background_img')
-        friend_dict[i] = find_user
+    friend_list = get_friend_list(user)
+    friend_dict = get_friend_dic(friend_list)
 
     # request_friend={'aaa':'aaa', 'bbb':'bbb', 'ccc':'ccc', 'ddd':'ddd'}
     # friend_list = ['aaa', 'bbb', 'ccc', 'ddd', 'eee', 'fff']

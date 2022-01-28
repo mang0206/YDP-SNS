@@ -28,10 +28,10 @@ def modify_user():
 
 def modify_user_one():
     '''유저에 친구 목록 리스트 추가'''
-    # result = col.update_many(
-    #     {},
-    #     {'$set':{'user_email':''}}
-    # )
+    result = col.update_one(
+        {'nickname': 'dyeo._.mee'},
+        {'$set':{'user_email':'hyeon.dyeo.mee@gmail.com'}}
+    )
     # result = col.update_many(
     #     {},
     #     {'$unset': {'friend':1}}

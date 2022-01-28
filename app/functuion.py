@@ -17,6 +17,22 @@ def get_user_image(user, kind_img):
     base64_data = codecs.encode(user_img.read(), 'base64')
     user[kind_img] = base64_data.decode('utf-8')
      
+def get_friend_list(user):
+    col_user = db.get_collection('user')
+    return col_user.find_one({'user_id' : user}, {'_id':0, 'friend_list':1})['friend_list']
+
+def get_friend_dic(search_list, background=False):
+    friend_dic = {}
+    col_user = db.get_collection('user')
+    for _user in search_list:
+        friend_dic[_user] = col_user.find_one({'user_id': _user})
+    
+    for key in friend_dic:
+        get_user_image(friend_dic[key], 'profile_img')
+        if background:
+            get_user_image(friend_dic[key], 'background_img')
+    return friend_dic
+
 @app.route('/check_password', methods=['POST'])
 def check_password():
     if request.method == 'POST':
