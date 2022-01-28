@@ -69,6 +69,10 @@ $('#input_num_submit').click(function(){
                 certification_text.attr('style','color:green');
                 // 번호 일치시 pw 변경 영역 표시
                 password_reset.removeClass('none');
+                password_reset.css({
+                    "transition" : "all .5s"
+                });
+
                 // 번호 일치시 email 입력 영역 가림
                 email_send_container.addClass('none');
 
@@ -96,7 +100,6 @@ function paddedFormat(num) {
 }
 
 function startCountDown(duration, element) {
-
     let secondsRemaining = duration;
     let min = 0;
     let sec = 0;
@@ -126,58 +129,28 @@ function count_down() {
     startCountDown(--duration, element);
 };
 
-// 비밀번호 유효성 검사
-$('#reset_pw_btn').click(function(){
-    
-
-    var request_data = {
-        "friend": btn_data_value, 
-        "respond" : id
-    }
-    $.ajax({
-        type: 'POST',
-        url: 'friend_respond',
-        data: JSON.stringify(request_data),
-        dataType: 'JSON',
-        contentType: "application/json",
-        success: function(data){
-            console.log(id, typeof(id), data)
-            // alert('성공! 데이터 값:')
-            // id 값에 따른 p태그 innerText 변경
-            if (id == "accept_btn") {
-                $(create_p).text('요청이 수락됐습니다.');
-
-            } else if (id == "reject_btn") {
-                $(create_p).text('요청이 거절됐습니다.');
-
-            }else{
-                var del = $(create_p).text('친구 목록에서\n삭제됐습니다.');
-                del.html(del.html().replace(/\n/g, '<br/>'));
-            }
-        },
-        error: function(request, status, error){
-            alert('ajax 통신 실패')
-            alert(error);
-        }
-    })
-});
-
-
+// 비밀번호 변경 유효성 검사
 // 사용자가 키보드를 눌렀다 뗄 때 마다
 $('.lock_icon').keyup(function(){
     let pw = $('#reset_pw').val();
     let pw2 = $('#reset_pw2').val();
 
-    // pw 값과 pw2 값이 같으면 border green 스타일 지정
-    if (pw == pw2) {
-        console.log('true')        
+    // pw 값과 pw2 값이 같고, 길이 8 이상인 경우 
+    if (pw == pw2 && pw.length > 7) {
+        console.log('true')    
+        // style : border green 
         $('#reset_pw').attr('style', 'outline:none; border: solid 2px green;');
         $('#reset_pw2').attr('style', 'outline:none; border: solid 2px green;');
+        // 비밀번호 변경 버튼 disabled 해제
+        $('#reset_pw_btn').attr('disabled', false);
+        // 비밀번호 설정 안내 문구 color red 해제
+        $('.password_rule').removeAttr('style', 'color:red');
 
-    // pw 값과 pw2 값이 다르면 border red 스타일 지정
     } else {
         console.log('false')
         $('#reset_pw').attr('style', 'outline:none; border: solid 2px red;');        
         $('#reset_pw2').attr('style', 'outline:none; border: solid 2px red;');        
+        $('#reset_pw_btn').attr('disabled', true);
+        $('.password_rule').attr('style', 'color:red');        
     }
 });
