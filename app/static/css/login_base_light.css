@@ -94,7 +94,7 @@ h4{
 .login_base_button input{
     visibility: hidden;
 }
-.login_base_button label{
+.login_base_button button{
     display: flex;
     align-items: center;
     justify-content: center;
@@ -102,6 +102,8 @@ h4{
 
     width: 350px;
     height: 50px;
+    font-size: 15px;
+    font-weight: 500;
 
     background: linear-gradient(90deg, rgba(252, 214, 157, 0.7) 0%, rgba(252, 157, 157, 0.7) 100%);
     box-shadow: inset 0px 0px 5px 
@@ -201,9 +203,15 @@ h4{
 
     border: solid 1px lightgray;
 }
+#reset_pw2{
+    margin-bottom: 0;
+}
 .none{
     display: none;
 }
 .password_rule{
     font-size: 12px;
+}
+#change_pw_btn{
+    margin-top: 15px;
 }
