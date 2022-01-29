@@ -60,10 +60,10 @@
             </div>
             <a href="/"><img class="top_bar_icon" src="../static/img/notification.png" alt="notice_icon"></a>
             <!-- <button type="button" id="" class="top_bar_user"></button> -->
-            <img src="{{ session['profile_img'][1] }}" class='top_bar_user' alt="">
+            <img src="{{ session['profile_img'] }}" class='top_bar_user' alt="">
             <!-- 프로필,로그아웃,설정 팝업창 -->
             <div id="user_popup" class="user_popup none">
-                <a href="/user/{{session['ide']}}">프로필 이동</a>
+                <a href="/user/{{session['nickname']}}">프로필 이동</a>
                 <a href="/setting">설정</a>
                 <a href="/logout">로그아웃</a>
             </div>

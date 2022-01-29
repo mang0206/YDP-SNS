@@ -32,7 +32,7 @@ def login():
             session['login'] =  user_id
             session['nickname'] = find_user['nickname']
             session['name'] = find_user['user_name']
-            session['profile_img'] = find_user['profile_img']
+            session['profile_img'] = find_user['profile_img'][1]
             return redirect(url_for('index'))
         else:
             flash("아이디와 비밀번호를 확인하세요")
@@ -73,8 +73,8 @@ def join():
                 'nickname': nickname,
                 'user_name': user_name,
                 'friend_list': [],
-                'profile_img': ObjectId(_default['profile_img']),
-                'background_img': ObjectId(_default['background_img']),
+                'profile_img': _default['profile_img'],
+                'background_img': _default['background_img'],
                 'bio': None,
                 'user_email': email
                 })
@@ -211,7 +211,8 @@ def user(user):
     # get_user_image(search_user, 'background_img')
 
     # user의 친구 정보 dictionary
-    friend_dic = get_friend_dic(session_friend_list)
+    user_friend_list = get_friend_list(search_user['user_id']) 
+    friend_dic = get_friend_dic(user_friend_list)
 
     # session 유저가 친구 요청을 보낸 user의 id 리스트
     session_request_list = [user['request_user'] for user in col_request_friend.find({'user_id': session['login']})]
@@ -293,6 +294,7 @@ def post_setting():
             {'user_id': session['login']},
             {'$set' : {'profile_img': [img_name, s3_get_image_url(s3, img_name)]}}
         )
+        session['profile_img'] = [img_name, s3_get_image_url(s3, img_name)][1]
 
     if 'setting_button_background' in request.form:
         input_background = request.files.get('setting_input_background')
@@ -302,7 +304,7 @@ def post_setting():
         img_name = dt.datetime.now().strftime(f"{session['nickname']}-{filename}-%Y-%m-%d-%H-%M-%S.{ext}")
         s3_put_object(s3,'ydpsns',input_background,img_name)
         _delete = col_user.find_one({'user_id':session['login']}, {'_id':0, 'background_img':1})['background_img']
-        if _delete and col_user.find_one({'user_id': 'default'}, {'_id':0, 'background_img':1})['background_img']:
+        if _delete != col_user.find_one({'user_id': 'default'}, {'_id':0, 'background_img':1})['background_img']:
             s3_delete_image(_delete[0])
         col_user.update_one(
             {'user_id': session['login']},
