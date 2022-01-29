@@ -283,7 +283,8 @@ def post_setting():
         # session['profile_img'] = _id
         filename = input_profile.filename.split('.')[0]
         ext = input_profile.filename.split('.')[-1]
-        img_name = dt.datetime.now().strftime(f"{session['nickname']}-{filename}-%Y-%m-%d-%H-%M-%S.{ext}")
+        nickname = session['nickname']
+        img_name = dt.datetime.now().strftime(f"{nickname}-{filename}-%Y-%m-%d-%H-%M-%S.{ext}")
 
         _delete = col_user.find_one({'user_id':session['login']}, {'_id':0, 'profile_img':1})['profile_img']
         if _delete != col_user.find_one({'user_id': 'default'}, {'_id':0, 'profile_img':1})['profile_img']:

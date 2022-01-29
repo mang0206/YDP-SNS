@@ -1,5 +1,6 @@
 ### 이미지 지정 함수 
 # from crypt import methods
+from asyncio.windows_events import NULL
 import gridfs
 import codecs
 import re
@@ -95,6 +96,7 @@ def check_password():
                 {'$set' : {'password': reset_pw}}
             )
 
+        session['login'] = None
         # 비밀번호 유효성 검사
         # if not re.findall('[a-z]', reset_pw) or \
         # not re.findall('[A-Z]', reset_pw) or \
