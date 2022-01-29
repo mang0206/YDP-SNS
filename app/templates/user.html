@@ -4,13 +4,13 @@
     <!-- <div class="user_background">
         background photo
     </div> -->
-    <img src="data:image/png;base64, {{ user['background_img'] }}" alt="" class="user_background">
+    <img src="{{ user['background_img'][1] }}" alt="" class="user_background">
     <div class="user_profile">
         <div class="profile_container">
             <!-- <div class="profile_image">
                 user photo
             </div> -->
-            <img src="data:image/png;base64, {{ user['profile_img'] }}" alt="" class="profile_image">            
+            <img src="{{ user['profile_img'][1] }}" alt="" class="profile_image">            
             <div class="information_container">
                 <div class="user_information">
                     <div class="user_name_friend">
@@ -51,7 +51,7 @@
                 {% for friend in friend_dic %}
                 <div class="search_user"> 
                    <div class="user_profile_img">
-                       <img src="data:image/png;base64, {{friend_dic[friend]['profile_img'] }}"  class="user_profile_img">
+                       <img src="{{friend_dic[friend]['profile_img'][1] }}"  class="user_profile_img">
                    <!-- <div class="search_user_image"> -->
                        <!-- user 검색 결과 프로필 이미지 -->
                    </div>

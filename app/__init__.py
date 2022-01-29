@@ -1,5 +1,6 @@
 from flask import Flask
 import pymongo
+import boto3
 
 app = Flask(__name__)
 
@@ -14,3 +15,5 @@ app.config["MAIL_USE_TLS"] = True
 
 conn = pymongo.MongoClient("mongodb://root:study111@13.125.71.134:27017/root?authSource=admin")
 from app import views
+
+

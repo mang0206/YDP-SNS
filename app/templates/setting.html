@@ -13,7 +13,8 @@
                     <p>프로필 사진 변경</p>
                     <div class="profile_image_box" id="profile_image">
                         <!-- setting.js readURL -->
-                        <img src="data:image/png;base64, {{session_user['profile_img']}}" alt="" class="profile_img">
+                        <!-- <img src="data:image/png;base64, {{session_user['profile_img']}}" alt="" class="profile_img"> -->
+                        <img src="{{session_user['profile_img'][1]}}" alt="" class="profile_img">
                     </div>
                     <p>{{ session['ide'] }}</p>
                     <p>{{ session['name'] }}</p>
@@ -25,7 +26,7 @@
                     <p>배경 사진 변경</p>
                     <!-- setting.js readURL -->
                     <!-- 기존에 설정해둔 이미지 표시 -->
-                    <img src="data:image/png;base64, {{session_user['background_img']}}" alt="" class="background_img">
+                    <img src="{{session_user['background_img'][1]}}" alt="" class="background_img">
                     <input type="file" id="background_image_input" class="none" name="setting_input_background">
                     <label for="background_image_input" class="setting_label">파일 선택</label>
                     <button type="submit" class="setting_submit_btn" name="setting_button_background">배경 사진 저장</button>

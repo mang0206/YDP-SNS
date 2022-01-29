@@ -1,6 +1,8 @@
 # from crypt import methods
 from asyncio.windows_events import NULL
 from enum import Flag
+import profile
+from time import strftime
 from unittest import result
 from flask import request, render_template, jsonify, redirect, url_for, session, flash
 from flask_bcrypt import Bcrypt
@@ -13,7 +15,7 @@ import codecs
 from flask_mail import Mail, Message
 import random
 from .functuion import *
-
+import datetime as dt
 
 db = conn.get_database('root')
 bcrypt = Bcrypt()
@@ -28,7 +30,7 @@ def login():
         find_user = col.find_one({'user_id':user_id})
         if bcrypt.check_password_hash(find_user['password'], pw):
             session['login'] =  user_id
-            session['ide'] = find_user['nickname']
+            session['nickname'] = find_user['nickname']
             session['name'] = find_user['user_name']
             return redirect(url_for('index'))
         else:
@@ -204,8 +206,8 @@ def user(user):
     session_friend_list = get_friend_list(session['login'])
     
     search_user = col_user.find_one({'nickname':user})
-    get_user_image(search_user, 'profile_img')
-    get_user_image(search_user, 'background_img')
+    # get_user_image(search_user, 'profile_img')
+    # get_user_image(search_user, 'background_img')
 
     # user의 친구 정보 dictionary
     friend_dic = get_friend_dic(session_friend_list)
@@ -260,8 +262,7 @@ def friend_respond():
 def setting():
     col_user = db.get_collection('user')
     session_user = col_user.find_one({'user_id': session['login']})
-    get_user_image(session_user, 'profile_img')
-    get_user_image(session_user, 'background_img')
+    # get_user_image(session_user, 'background_img')
     
     return render_template('setting.html', session_user=session_user)
 
@@ -272,20 +273,39 @@ def post_setting():
     if 'setting_button_profile' in request.form:
         input_profile = request.files.get('setting_input_profile')
         # colection에 파일 저장 put 함수는 저장된 document id를 반환한다
-        _id = fs.put(input_profile)
+        # _id = fs.put(input_profile)
         # 해당 documet id 정보를 현재 session user document에 추가
+        # col_user.update_one(
+            # {'user_id': session['login']},
+            # {'$set' : {'profile_img': _id}}
+        # )
+        # session['profile_img'] = _id
+        filename = input_profile.filename.split('.')[0]
+        ext = input_profile.filename.split('.')[-1]
+        img_name = dt.datetime.now().strftime(f"{session['nickname']}-{filename}-%Y-%m-%d-%H-%M-%S.{ext}")
+
+        _delete = col_user.find_one({'user_id':session['login']}, {'_id':0, 'profile_img':1})['profile_img']
+        if _delete:
+            s3_delete_image(_delete[0])
+        s3_put_object(s3,'ydpsns',input_profile,img_name)
         col_user.update_one(
             {'user_id': session['login']},
-            {'$set' : {'profile_img': _id}}
+            {'$set' : {'profile_img': [img_name, s3_get_image_url(s3, img_name)]}}
         )
-        session['profile_img'] = _id
 
     if 'setting_button_background' in request.form:
         input_background = request.files.get('setting_input_background')
-        _id = fs.put(input_background)
+
+        filename = input_background.filename.split('.')[0]
+        ext = input_background.filename.split('.')[-1]
+        img_name = dt.datetime.now().strftime(f"{session['nickname']}-{filename}-%Y-%m-%d-%H-%M-%S.{ext}")
+        s3_put_object(s3,'ydpsns',input_background,img_name)
+        _delete = col_user.find_one({'user_id':session['login']}, {'_id':0, 'background_img':1})['background_img']
+        if _delete:
+            s3_delete_image(_delete[0])
         col_user.update_one(
             {'user_id': session['login']},
-            {'$set' : {'background_img': _id}}
+            {'$set' : {'background_img': [img_name, s3_get_image_url(s3, img_name)]}}
         )
 
     if 'setting_button_ide' in request.form:

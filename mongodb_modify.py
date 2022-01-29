@@ -28,10 +28,10 @@ def modify_user():
 
 def modify_user_one():
     '''유저에 친구 목록 리스트 추가'''
-    result = col.update_one(
-        {'nickname': 'dyeo._.mee'},
-        {'$set':{'user_email':'hyeon.dyeo.mee@gmail.com'}}
-    )
+    # result = col.update_one(
+        # {'nickname': 'dyeo._.mee'},
+        # {'$set':{'user_email':'hyeon.dyeo.mee@gmail.com'}}
+    # )
     # result = col.update_many(
     #     {},
     #     {'$unset': {'friend':1}}
@@ -40,10 +40,10 @@ def modify_user_one():
     id = col.find_one({'user_id':'default'})
     background_img = id['background_img'] 
     # print(profile_id)
-    # result = col.update_many(
-        # {},
-        # {'$set': {'background_img': ObjectId(background_img) }}
-    # )
+    result = col.update_many(
+        {},
+        {'$set': {'profile_img': [] }}
+    )
     # result = col.update_many({}, {'$rename': {'user_ide':'nickname'}})
 
 def del_user():
@@ -83,5 +83,5 @@ def search():
 
 # del_user()
 # search()
-# modify_user_one()
+modify_user_one()
 # insert()
