@@ -16,7 +16,7 @@
                         <!-- <img src="data:image/png;base64, {{session_user['profile_img']}}" alt="" class="profile_img"> -->
                         <img src="{{session_user['profile_img'][1]}}" alt="" class="profile_img">
                     </div>
-                    <p>{{ session['ide'] }}</p>
+                    <p>{{ session['nickname'] }}</p>
                     <p>{{ session['name'] }}</p>
                     <input type="file" id="profile_image_input" class="none" name="setting_input_profile">
                     <label for="profile_image_input" class="setting_label">파일 선택</label>

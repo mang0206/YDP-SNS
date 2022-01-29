@@ -16,7 +16,7 @@
             <div class="search_user" id = 'friend_button_area_{{search_user_dic[user]["user_id"]}}'\
                              data-user=' {{ search_user_dic[user]["user_id"] }}' value = "{{ search_user_dic[user]['user_id'] }}" > 
                 <div class="user_profile_img">
-                    <img src="data:image/png;base64, {{search_user_dic[user]['profile_img'] }}" alt="" class="user_profile_img">
+                    <img src="{{search_user_dic[user]['profile_img'][1] }}" alt="" class="user_profile_img">
                 <!-- <div class="search_user_image"> -->
                     <!-- user 검색 결과 프로필 이미지 -->
                     <a>

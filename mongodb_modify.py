@@ -38,11 +38,11 @@ def modify_user_one():
     # )
     # return
     id = col.find_one({'user_id':'default'})
-    background_img = id['background_img'] 
+    profile_img = id['profile_img'] 
     # print(profile_id)
     result = col.update_many(
-        {},
-        {'$set': {'profile_img': [] }}
+        {'$nor': [{'user_id':'aaa@aaa.com' ,'user_id':'testHG@ydpsns.com'}]},
+        {'$set': {'profile_img': profile_img }}
     )
     # result = col.update_many({}, {'$rename': {'user_ide':'nickname'}})
 

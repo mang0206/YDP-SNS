@@ -59,7 +59,8 @@
                 </div>
             </div>
             <a href="/"><img class="top_bar_icon" src="../static/img/notification.png" alt="notice_icon"></a>
-            <button type="button" id="" class="top_bar_user"></button>
+            <!-- <button type="button" id="" class="top_bar_user"></button> -->
+            <img src="{{ session['profile_img'][1] }}" class='top_bar_user' alt="">
             <!-- 프로필,로그아웃,설정 팝업창 -->
             <div id="user_popup" class="user_popup none">
                 <a href="/user/{{session['ide']}}">프로필 이동</a>

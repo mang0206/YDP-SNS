@@ -32,6 +32,7 @@ def login():
             session['login'] =  user_id
             session['nickname'] = find_user['nickname']
             session['name'] = find_user['user_name']
+            session['profile_img'] = find_user['profile_img']
             return redirect(url_for('index'))
         else:
             flash("아이디와 비밀번호를 확인하세요")
@@ -285,7 +286,7 @@ def post_setting():
         img_name = dt.datetime.now().strftime(f"{session['nickname']}-{filename}-%Y-%m-%d-%H-%M-%S.{ext}")
 
         _delete = col_user.find_one({'user_id':session['login']}, {'_id':0, 'profile_img':1})['profile_img']
-        if _delete:
+        if _delete != col_user.find_one({'user_id': 'default'}, {'_id':0, 'profile_img':1})['profile_img']:
             s3_delete_image(_delete[0])
         s3_put_object(s3,'ydpsns',input_profile,img_name)
         col_user.update_one(
@@ -301,7 +302,7 @@ def post_setting():
         img_name = dt.datetime.now().strftime(f"{session['nickname']}-{filename}-%Y-%m-%d-%H-%M-%S.{ext}")
         s3_put_object(s3,'ydpsns',input_background,img_name)
         _delete = col_user.find_one({'user_id':session['login']}, {'_id':0, 'background_img':1})['background_img']
-        if _delete:
+        if _delete and col_user.find_one({'user_id': 'default'}, {'_id':0, 'background_img':1})['background_img']:
             s3_delete_image(_delete[0])
         col_user.update_one(
             {'user_id': session['login']},
