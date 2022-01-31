@@ -68,7 +68,7 @@ def join():
             _default = col.find_one({'user_id':'default'})
             user_name = request.form.get('user_name')
             col.insert_one(
-                { 'user_id': id,
+                { 'user_id': user_id,
                 'password': pw,
                 'nickname': nickname,
                 'user_name': user_name,
