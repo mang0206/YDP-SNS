@@ -284,7 +284,8 @@ def post_setting():
         # session['profile_img'] = _id
         filename = input_profile.filename.split('.')[0]
         ext = input_profile.filename.split('.')[-1]
-        img_name = dt.datetime.now().strftime(f"{session['nickname']}-{filename}-%Y-%m-%d-%H-%M-%S.{ext}")
+        nickname = session['nickname']
+        img_name = dt.datetime.now().strftime(f"{nickname}-{filename}-%Y-%m-%d-%H-%M-%S.{ext}")
 
         _delete = col_user.find_one({'user_id':session['login']}, {'_id':0, 'profile_img':1})['profile_img']
         if _delete != col_user.find_one({'user_id': 'default'}, {'_id':0, 'profile_img':1})['profile_img']:
@@ -333,18 +334,31 @@ def post_setting():
             {'$set' : {'user_name': input_name}}
         )
         session['user_name'] = input_name
-    
-    # functuion 내부에서 실행
-    # if 'setting_button_pw' in request.form:
-    #     input_pw = bcrypt.generate_password_hash(request.form.get('setting_input_pw'))
-    #     input_pw2 = request.form.get('setting_input_pw2')
-    #     if bcrypt.check_password_hash(input_pw, input_pw2):
-    #         col_user.update_one(
-    #             {'user_id': session['login']},
-    #             {'$set' : {'password': input_pw}}
-    #         )
-            
+
     return redirect(url_for('setting'))
+
+# setting 기존 비밀번호 일치 여부 반환
+@app.route('/change_pw', methods=['POST'])
+def change_pw():
+    col_user = db.get_collection('user')
+
+    # print(request.get_json())
+    # 사용자가 입력한 기존 pw와 세션 pw가 일치하면 check_password 함수 실행
+    if request.get_json():
+        # print('first_if')
+        data = request.get_json()
+        origin_pw = data['origin_pw']
+        db_pw = col_user.find_one({ "user_id" : session['login'] })
+
+        if bcrypt.check_password_hash(db_pw['password'], origin_pw):
+            flag = 1
+            # print('true')
+            # print(flag)
+            return jsonify(result="success", flag=flag)
+        else:
+            flag = 0
+            return jsonify(result="success", flag=flag)
+
 
 # 친구 요청, 요청 삭제, 친구 삭제 처리
 @app.route('/request_friend', methods=['POST'])

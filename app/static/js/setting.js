@@ -1,18 +1,20 @@
-// 사이드 네비게이션 버튼
-// 1. '프로필 편집' 버튼을 누른 경우
+// 사이드 네비게이션
+// 1. '프로필 편집' 버튼
 $('#profile_setting_btn').click(function(){
     $('#profile_setting').removeClass('none');
     $('#account_setting').addClass('none');
+    $('#profile_setting_btn').addClass('nav_btn_focus');
+    $('#account_setting_btn').removeClass('nav_btn_focus');
 });
-// 2. '계정' 버튼을 누른 경우
+
+// 2. '계정' 버튼
+// click
 $('#account_setting_btn').click(function(){
     $('#account_setting').removeClass('none');
     $('#profile_setting').addClass('none');
-
+    $('#account_setting_btn').addClass('nav_btn_focus');
+    $('#profile_setting_btn').removeClass('nav_btn_focus');
 });
-
-// 기존 프로필 이미지 미리보기
-// -- 구현하기 --
 
 
 // 프로필 이미지 변경
@@ -50,32 +52,52 @@ function readURL(input, n) {
     }
 }
 
+// change_pw
+// 사용자가 입력한 기존 pw를 ajax로 전달
+$('#origin_pw_btn').click(function(){
+    let origin_pw = $('#origin_pw').val();
+
+    var input_pw = {
+        "origin_pw": origin_pw
+    }
+
+    $.ajax({
+        type: 'POST',
+        url: 'change_pw',
+        data: JSON.stringify(input_pw),
+        dataType: 'JSON',
+        contentType: "application/json",
+        success: function(data){
+            if (data['flag'] == 1) {
+                // 사용자 입력 허용 disabled false
+                $('#change_pw_btn').attr('disabled', false);
+                $('.lock_icon').attr('disabled', false);
+                // 영역 흐림 해제
+                $('#setting_pw_form').removeClass('opacity');
+                // 비밀번호 틀림 문구 해제
+                $('.wrong_origin_pw').addClass('none');
+                $('#origin_pw').removeAttr('style', 'outline:none; border: solid 2px red;');        
+                
+            } else {
+                // 사용자 입력 차단 disabled true
+                $('#change_pw_btn').attr('disabled', true);
+                $('.lock_icon').attr('disabled', true);
+                // 영역 흐림 표시
+                $('#setting_pw_form').addClass('opacity');
+                // 비밀번호 틀림 문구 표시 및 border:red
+                $('.wrong_origin_pw').removeClass('none');
+                $('#origin_pw').attr('style', 'outline:none; border: solid 2px red;');        
+            }
+            
+        },
+        error: function(request, status, error){
+            alert('ajax 통신 실패')
+            console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+        }
+    })
+});
+
 // 비밀번호 변경 유효성 검사
 import {password_validation} from './check_password.js';
-document.getElementById('pw').addEventListener('keyup', password_validation);
 document.getElementById('pw2').addEventListener('keyup', password_validation);
-
-// var profile_image = [];
-
-// function change_image(){
-//     image = document.getElementById('profile_image_input').files;
-//     profile_image.push({
-//         "name" : image.name,
-//         "url" : URL.createObjectURL(image[0]),
-//         "file" : image[0]
-//     })
-//     console.log(profile_image)
-//     document.getElementById('profile_image').innerHTML = image_preview();
-// }
-// console.log(profile_image)
-
-// function image_preview(){
-//     console.log("image")
-//     var image = "";
-//     profile_image((i) => {
-//      image += `<div class="file_preview" id="file_preview">
-//      <img src="`+ i.url +`" alt="Image">
-//      </div>`;
-//     })
-//     return image;
-// }
+document.getElementById('pw').addEventListener('keyup', password_validation);

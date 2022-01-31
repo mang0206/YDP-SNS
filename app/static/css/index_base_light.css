@@ -4,9 +4,6 @@
     background-color: #F6F6F6;
 }
 /* topbar position: sticky; 테스트 */
-body{
-    height: 2000px;
-}
 .base_body_margin{
     margin: 0 100px;
 }
@@ -537,6 +534,16 @@ a:visited{color: black}
     justify-content: space-around;
     align-items: center;
 }
+#setting_ide{
+    margin: 0;
+    font-size: 20px;
+    font-weight: 500;
+}
+#setting_name{
+    color: gray;
+    font-size: 15px;
+    font-weight: 300;
+}
 .profile_container{
     width: 100%;
     margin-bottom: 50px;
@@ -622,14 +629,12 @@ a:visited{color: black}
     width: 150px;
     height: 150px;
 
-    /* border: solid 1px lightgray; */
-
     display: flex;
     flex-direction: column;
-    justify-content: space-evenly;
 }
 .setting_container{
     border: solid 1px lightgray;
+    border-radius: 5px;
 
     display: flex;
     flex-direction: row;
@@ -639,21 +644,38 @@ a:visited{color: black}
     margin-bottom: 30px;
 }
 .setting_nav_btn{
-    height: 50px;
+    height: 70px;
+    font-size: 16px;
     cursor: pointer;
+    border: none;
+    box-sizing: border-box;
     
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-
-    border: none;
-    font-size: 16px;
+}
+.setting_nav_btn:hover{
+    background: rgba(194, 194, 194, 0.1);
+    border-left: solid 4px rgba(194, 194, 194, 0.5);
+    border-radius: 3px;
+}
+.nav_btn_focus{
+    border-left: solid 4px rgba(0, 0, 0, 0.7);
+    border-radius: 3px;
 }
 .setting_area{
     width: 100%;
     display: flex;
     flex-direction: column;
+    border-radius: 5px;
+
+}
+#profile_setting{
+    transition: 0.5s ease;
+}
+#account_setting{
+    transition: 0.5s ease;
 }
 .setting_nav2{
     width: 100%;
@@ -661,44 +683,74 @@ a:visited{color: black}
 
     box-sizing: border-box;
     border-left: solid 1px lightgray;
+    border-radius: 5px;
 }
-.setting_nav2 form{
+#profile_setting form{
     margin-bottom: 50px;
 
     display: flex;
     flex-direction: column;
     align-items: center;
 }
-.setting_nav2 form img{
-    margin-bottom: 25px;
-}
 .setting_nav2 form input{
-    width: 200px;
-    height: 25px;
+    width: 230px;
+    height: 35px;
     padding-left: 10px;
 
     border: solid 1px lightgray;
-    border-radius: 3px;
+    border-radius: 5px;
 }
 .setting_nav2 form > *{
-    margin-bottom: 10px;
+    margin-bottom: 13px;
 }
-#profile_setting > form > p{
-    margin-bottom: 20px;
-    font-size: 16px;
+.setting_header{
+    font-size: 18px;
 }
-#account_setting > div > p{
-    width: 150px;
-    margin-right: 20px;
-
-    font-size: 16px;
+#change_name{
+    margin-bottom: 40px;
 }
-#account_setting > div > form{
+.change_pw{
     display: flex;
     flex-direction: column;
     align-items: flex-end;
 }
+#account_setting > div > p{
+    width: 150px;
+    font-size: 16px;
+}
+.account_form{
+    width: 370px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+.wrong_origin_pw{
+    color: red;
+    font-size: 12px;
+
+}
+.opacity{
+    opacity: 0.5;
+}
+.password_rule{
+    font-size: 12px;
+}
+#pw{
+    margin-bottom: 3px;
+}
+.origin_pw_btn{
+    height: 33px;
+    padding: 5px 15px;
+    cursor: pointer;
+
+    background: rgba(125, 125, 125, 0.2);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+    
+    border: none;
+    border-radius: 5px;
+}
 .setting_submit_btn{
+    height: 33px;
     padding: 5px 15px;
     cursor: pointer;
 
@@ -706,7 +758,7 @@ a:visited{color: black}
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
     
     border: none;
-    border-radius: 3px;
+    border-radius: 5px;
 }
 .profile_img{
     width: 250px;
