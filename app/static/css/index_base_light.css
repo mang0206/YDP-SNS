@@ -685,7 +685,7 @@ a:visited{color: black}
     border-left: solid 1px lightgray;
     border-radius: 5px;
 }
-.setting_nav2 form{
+#profile_setting form{
     margin-bottom: 50px;
 
     display: flex;
@@ -706,6 +706,9 @@ a:visited{color: black}
 .setting_header{
     font-size: 18px;
 }
+#change_name{
+    margin-bottom: 40px;
+}
 .change_pw{
     display: flex;
     flex-direction: column;
@@ -715,17 +718,36 @@ a:visited{color: black}
     width: 150px;
     font-size: 16px;
 }
-#account_setting > div > form{
+.account_form{
     width: 370px;
     display: flex;
     flex-direction: column;
     align-items: flex-end;
+}
+.wrong_origin_pw{
+    color: red;
+    font-size: 12px;
+
+}
+.opacity{
+    opacity: 0.5;
 }
 .password_rule{
     font-size: 12px;
 }
 #pw{
     margin-bottom: 3px;
+}
+.origin_pw_btn{
+    height: 33px;
+    padding: 5px 15px;
+    cursor: pointer;
+
+    background: rgba(125, 125, 125, 0.2);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+    
+    border: none;
+    border-radius: 5px;
 }
 .setting_submit_btn{
     height: 33px;

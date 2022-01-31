@@ -6,7 +6,7 @@ $('#send_email_btn').click(function(){
     console.log(send_email)
 
     let input_email = {
-        'send_email' : send_email
+        "send_email" : send_email
     };
 
     $.ajax({
@@ -123,13 +123,13 @@ function count_down() {
 
     let duration = time_minutes * 60 + time_seconds;
 
-    element = document.querySelector('#count_down');
+    element = document.getElementById('#count_down');
     element.textContent = `${paddedFormat(time_minutes)}:${paddedFormat(time_seconds)}`;
 
     startCountDown(--duration, element);
 };
 
 // 비밀번호 변경 유효성 검사
-import { password_validation } from './check_password';
+import { password_validation } from './check_password.js';
 document.getElementById('pw').addEventListener('keyup', password_validation);
 document.getElementById('pw2').addEventListener('keyup', password_validation);

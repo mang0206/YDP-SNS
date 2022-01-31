@@ -82,38 +82,25 @@ def s3_delete_image(filename):
     print('delete =', f'images/{filename}')
     s3.delete_object(Bucket='ydpsns',Key=f'images/{filename}')
 
-@app.route('/check_password', methods=['POST'])
+@app.route('/check_password', methods=['GET','POST'])
 def check_password():
-    if request.method == 'POST':
+    if 'password' in request.form:
+        print('request post!')
         # data = request.get_json()
         col_user = db.get_collection('user')        
-
+        
         reset_pw = request.form['password']
+        print(reset_pw)
+
         reset_pw = bcrypt.generate_password_hash(reset_pw)
 
         col_user.update_one(
                 {'user_email': session['send_email']},
                 {'$set' : {'password': reset_pw}}
             )
-
+        flash('비밀번호가 정상적으로 변경되었습니다! 새로운 비밀번호로 로그인 해주세요 :)')
+        
         session['login'] = None
-        # 비밀번호 유효성 검사
-        # if not re.findall('[a-z]', reset_pw) or \
-        # not re.findall('[A-Z]', reset_pw) or \
-        # not re.findall('[0-9]+', reset_pw):
-            # 통과하지 못 할 경우 false 전달
-            # check_password = False
-            # return jsonify(result = "success", check_password=check_password)
 
-        # else:
-            # check_password = True
- 
-            # col_user.update_one(
-                # {'user_id': session['login']},
-                # {'$set' : {'password': reset_pw}}
-            # )
-            # print(reset_pw)
-            # return jsonify(result = "success", check_password=check_password)
-            
         return redirect(url_for('login'))
     

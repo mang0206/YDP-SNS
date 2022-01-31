@@ -16,13 +16,8 @@
                         <!-- <img src="data:image/png;base64, {{session_user['profile_img']}}" alt="" class="profile_img"> -->
                         <img src="{{session_user['profile_img'][1]}}" alt="" class="profile_img">
                     </div>
-<<<<<<< Updated upstream
-                    <p>{{ session['nickname'] }}</p>
-                    <p>{{ session['name'] }}</p>
-=======
                     <p id="setting_ide">{{ session['ide'] }}</p>
                     <p id="setting_name">{{ session['name'] }}</p>
->>>>>>> Stashed changes
                     <input type="file" id="profile_image_input" class="none" name="setting_input_profile">
                     <label for="profile_image_input" class="setting_label">파일 선택</label>
                     <button type="submit" class="setting_submit_btn" name="setting_button_profile">프로필 사진 저장</button>
@@ -48,9 +43,9 @@
                 </form>
             </div>
             <div class="setting_nav2 " id="account_setting">
-                <div class="both_layout">
+                <div id="change_name" class="both_layout">
                     <p class="setting_header">사용자 이름 변경</p>
-                    <form action="/setting" method="post" name="setting_form_name">
+                    <form action="/setting" method="post" name="setting_form_name" class="account_form">
                         <input type="text" placeholder="새로운 이름" id="setting_id" name='setting_input_name'>
                         <button type="submit" id="setting_id_submit" class="setting_submit_btn" name='setting_button_name'>사용자 이름 저장</button>
                     </form>
@@ -58,15 +53,16 @@
                 <div class="both_layout">
                     <p class="setting_header">비밀번호 변경</p>
                     <div class="change_pw">
-                        <form action="">
+                        <div class="account_form">
                             <input type="password" placeholder="기존 비밀번호" id="origin_pw" name='origin_password' class="">
-                            <button type="submit" id="origin_pw_btn" class="setting_submit_btn" name='origin_pw_btn'>비밀번호 확인</button>
-                        </form>
-                        <form action="/check_password" method="post" name="setting_form_pw">
-                            <input type="password" placeholder="새로운 비밀번호" id="pw" name='password' class="lock_icon">
-                            <input type="password" placeholder="새로운 비밀번호 확인" id="pw2" name='password2' class="lock_icon">
+                            <span class="wrong_origin_pw none">비밀번호가 다릅니다</span>
+                            <button type="submit" id="origin_pw_btn" class="origin_pw_btn" name='origin_pw_btn'>비밀번호 확인</button>
+                        </div>
+                        <form action="/check_password" method="post" name="setting_form_pw" id="setting_pw_form" class="account_form opacity">
+                            <input type="password" placeholder="새로운 비밀번호" id="pw" name='password' class="lock_icon" disabled>
+                            <input type="password" placeholder="새로운 비밀번호 확인" id="pw2" name='password2' class="lock_icon" disabled>
                             <span class="password_rule">비밀번호는 8자리 이상의 영문(대/소문자), 숫자를 포함시켜주세요.</span>
-                            <button type="submit" id="change_pw_btn" class="setting_submit_btn" name='setting_button_pw'>비밀번호 저장</button>
+                            <button type="submit" id="change_pw_btn" class="setting_submit_btn" name='setting_button_pw' disabled>비밀번호 저장</button>
                         </form>
                     </div>
                 </div>

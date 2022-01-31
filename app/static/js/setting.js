@@ -52,7 +52,52 @@ function readURL(input, n) {
     }
 }
 
+// change_pw
+// 사용자가 입력한 기존 pw를 ajax로 전달
+$('#origin_pw_btn').click(function(){
+    let origin_pw = $('#origin_pw').val();
+
+    var input_pw = {
+        "origin_pw": origin_pw
+    }
+
+    $.ajax({
+        type: 'POST',
+        url: 'change_pw',
+        data: JSON.stringify(input_pw),
+        dataType: 'JSON',
+        contentType: "application/json",
+        success: function(data){
+            if (data['flag'] == 1) {
+                // 사용자 입력 허용 disabled false
+                $('#change_pw_btn').attr('disabled', false);
+                $('.lock_icon').attr('disabled', false);
+                // 영역 흐림 해제
+                $('#setting_pw_form').removeClass('opacity');
+                // 비밀번호 틀림 문구 해제
+                $('.wrong_origin_pw').addClass('none');
+                $('#origin_pw').removeAttr('style', 'outline:none; border: solid 2px red;');        
+                
+            } else {
+                // 사용자 입력 차단 disabled true
+                $('#change_pw_btn').attr('disabled', true);
+                $('.lock_icon').attr('disabled', true);
+                // 영역 흐림 표시
+                $('#setting_pw_form').addClass('opacity');
+                // 비밀번호 틀림 문구 표시 및 border:red
+                $('.wrong_origin_pw').removeClass('none');
+                $('#origin_pw').attr('style', 'outline:none; border: solid 2px red;');        
+            }
+            
+        },
+        error: function(request, status, error){
+            alert('ajax 통신 실패')
+            console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+        }
+    })
+});
+
 // 비밀번호 변경 유효성 검사
 import {password_validation} from './check_password.js';
-document.getElementById('pw').addEventListener('keyup', password_validation);
 document.getElementById('pw2').addEventListener('keyup', password_validation);
+document.getElementById('pw').addEventListener('keyup', password_validation);
