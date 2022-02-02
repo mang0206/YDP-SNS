@@ -13,7 +13,6 @@
                             친구 {{user['friend_list']|length}}명
                         </div>
                     </div>
-                    
                     <div id="request_button" class="user_friend_button">
                         {% if session['ide'] != user['nickname'] %}
                             {% if user['user_id'] not in session_friend_list %}   
@@ -44,9 +43,9 @@
             </div>
         </div>
         <div class="both_layout user">
-            <div class="both_layout_friend">
+            <div class="both_layout_friend user_friend_list">
                 <div class="friend_container_header">
-                    <span>친구 목록</span>
+                    <h3>친구 목록</h3>
                     {% if session['ide'] == user['nickname'] %}
                     <a href="/friend" id="view_more">더보기</a>
                     {% endif %}
