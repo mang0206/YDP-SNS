@@ -67,11 +67,25 @@
                 </div> 
                 {% endfor %}
             </div>
-            <div class="both_layout_content">
-                content list
+            <div class="both_layout_content user_content">
+                {% if session['ide'] == user['nickname'] %}
+                    <div class="user_create_content">
+                        <div class="user_create_content_header">
+                            <div class="user_img_nickname">
+                                <img src="{{ user['profile_img'][1] }}" alt="" class="content_profile_image">            
+                                <span class="content_nickname">{{user['nickname']}}</span>
+                            </div>
+                            <img src="../static/img/camera.png" alt="" class="create_content_icon" onclick="plus();">
+                        </div>
+                        <button type="button" class="create_content_btn" onclick="plus();">새로운 게시물 작성하기</button>
+                    </div>
+                {% else %}
+                    <!-- session user 아닐 경우 나타나는 user content -->
+                {% endif %}
             </div>
         </div>
     </div>
 </div>
 <script src="../static/js/user.js" defer="defer"></script>
+<script src="../static/js/create_content.js" defer="defer"></script>
 {% endblock %}
