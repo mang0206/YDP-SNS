@@ -13,20 +13,16 @@
     <div class="both_layout_friend search_user_container">
         <h4>계정</h4>
         {% for user in search_user_dic %}
-            <div class="search_user" id = 'friend_button_area_{{search_user_dic[user]["user_id"]}}'\
+            <div class="user_list" id = 'friend_button_area_{{search_user_dic[user]["user_id"]}}'\
                              data-user=' {{ search_user_dic[user]["user_id"] }}' value = "{{ search_user_dic[user]['user_id'] }}" > 
-                <div class="user_profile_img">
+                <a href="/user/{{search_user_dic[user]['nickname']}}">
                     <img src="{{search_user_dic[user]['profile_img'][1] }}" alt="" class="user_profile_img">
-                <!-- <div class="search_user_image"> -->
-                    <!-- user 검색 결과 프로필 이미지 -->
-                    <a>
-                    </a>
-                </div>
-                <div class="user_name_id">
-                    <a class="" href ="/user/{{search_user_dic[user]['nickname']}}" >
+                </a>
+                <div class="user_list_name_area">
+                    <a class="user_nickname" href ="/user/{{search_user_dic[user]['nickname']}}" >
                         {{search_user_dic[user]['nickname']}}
                     </a>
-                    <div class="user_id">
+                    <div class="user_name">
                         {{ search_user_dic[user]['user_name'] }}
                     </div>
                 </div>

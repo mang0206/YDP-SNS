@@ -8,14 +8,23 @@
 </div>
 <div class="both_layout_friend">
     <div class="friend_container">
-        <h4>친구 목록</h4>
+        <div class="friend_container_header">
+            <span>친구 목록</span>
+            {% if session['ide'] == session['nickname'] %}
+            <a href="/friend" id="view_more">더보기</a>
+            {% endif %}
+        </div>
         {% for user in friend_dic %}
-            <div class="search_user">
-                <!-- <div class="search_user_image"></div> -->
-                <img src="{{ friend_dic[user]['profile_img'][1] }}" alt="" class="search_user_image">
-                <div class="user_name_id">
-                    <div class="nickname">
-                        <p> {{ friend_dic[user]['nickname'] }} </p>
+            <div class="user_list">
+                <a href="/user/{{friend_dic[user]['nickname']}}">
+                    <img src="{{ friend_dic[user]['profile_img'][1] }}" alt="" class="search_user_image">
+                </a>
+                <div class="user_list_name_area">
+                    <a class="user_nickname" href="/user/{{friend_dic[user]['nickname']}}">
+                        {{ friend_dic[user]['nickname'] }}
+                    </a>
+                    <div class="user_name">
+                        {{ friend_dic[user]['user_name'] }}
                     </div>
                 </div>
             </div> 

@@ -16,10 +16,14 @@
                 {% for friend_key, friend_val in request_friend.items() %}
                 <div>
                     <div class="friend_user_container request_friend">
-                        <img src="{{ friend_val['profile_img'][1] }}" alt="" class="friend_user_image">
-                        <div class="friend_user_name">{{ friend_val['nickname'] }}</div>
+                        <a href="/user/{{friend_val['nickname']}}">
+                            <img src="{{ friend_val['profile_img'][1] }}" alt="" class="friend_user_image">
+                        </a>
+                        <a href="/user/{{friend_val['nickname']}}">
+                            <div class="friend_user_name">{{ friend_val['nickname'] }}</div>
+                        </a>
                         <!-- js 요청 수락/거절 버튼 -->
-                        <div id="request_button" class="">
+                        <div id="request_button" style="background-color: #EDEDED;">
                             <button id="accept_btn" btn-data-value="{{ friend_key }}" name="accept" class="request_btn">수락</button>
                             <button id="reject_btn" btn-data-value="{{ friend_key }}" name="reject" class="request_btn">거절</button>
                         </div>
@@ -35,10 +39,14 @@
                 {% for my_friend_key, my_friend_val in friend_list.items() %}
                 <div name="request_friend" class="request_friend">
                     <div class="friend_user_container ">
-                        <img src="{{ my_friend_val['profile_img'][1] }}" alt="" class="friend_user_image">
-                        <div class="friend_user_name">{{ my_friend_val['nickname'] }}</div>
+                        <a href="/user/{{my_friend_val['nickname']}}">
+                            <img src="{{ my_friend_val['profile_img'][1] }}" alt="" class="friend_user_image">
+                        </a>
+                        <a href="/user/{{my_friend_val['nickname']}}">
+                            <div class="friend_user_name">{{ my_friend_val['nickname'] }}</div>
+                        </a>
                         <!-- js 친구 삭제 버튼 -->
-                        <div id="request_button" class="">
+                        <div id="request_button" style="background-color: #EDEDED;">
                             <button id="delete_btn" btn-data-value="{{ my_friend_key }}" name="delete" class="request_btn">친구 삭제</button>
                         </div>
                     </div>

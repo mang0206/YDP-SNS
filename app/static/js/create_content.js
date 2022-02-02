@@ -13,7 +13,6 @@ function plus(){
     document.querySelector(".body").className = "body scroll_hidden";
 }
 
-
 // 게시물 작성 취소 버튼 및 경고창
 function close(){ 
     // textarea의 value를 가져옴
@@ -102,16 +101,6 @@ function check_duplicate(name) {
     }
     return image;
 }
-
-// image 데이터 전송?
-// function get_image_data() {
-//     var form = new FormData()
-//     for (let index = 0; index < images.length; index++) {
-//         form.append("file[" + index + "]", images[index]['file']);
-//     }
-//     return form;
-// }
-
 
 
 document.querySelector("#close_icon_btn").addEventListener('click', close);

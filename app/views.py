@@ -35,7 +35,7 @@ def login():
             session['profile_img'] = find_user['profile_img'][1]
             return redirect(url_for('index'))
         else:
-            flash("아이디와 비밀번호를 확인하세요")
+            flash("아이디 혹은 비밀번호가 틀렸습니다.")
             return redirect(url_for('login'))
             # return render_template('login.html')
     else:
@@ -167,7 +167,7 @@ def search():
         ]
     }
     search_user = list(col_user.find(query))
-    print('----------------', search_user)
+    # print('----------------', search_user)
     #js 연동을 위한 search user의 nickname, id 딕셔너리
     search_user_id = {}
     for user in search_user:

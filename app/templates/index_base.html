@@ -18,8 +18,10 @@
             <a href="/"><h2>SNS Project</h2></a>
         </div>
         <div>
-            <form method="POST" action="/" name="topbar_search" novalidate class="topbar_search">
-                <input type="text" name='search' placeholder="검색">
+            <form method="POST" action="/" name="topbar_search" novalidate>
+                <div class="search_input_border">
+                    <input type="text" name='search' placeholder="검색"  class="search_input">
+                </div>
                 <button type="submit" class="search_btn" name="search_btn" value="topbar_search">
                     <img class="top_bar_icon" src="../static/img/search.png" alt="search_icon">
                 </button>

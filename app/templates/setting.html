@@ -38,11 +38,11 @@
                 </form>
                 <form action="/setting" method="post" name="setting_form_bio">
                     <p class="setting_header">소개글 수정</p>
-                    <input type="text"placeholder="새로운 소개글" name="setting_input_bio">
+                    <input type="text"placeholder="새로운 소개글" name="setting_input_bio" maxlength="140">
                     <button type="submit" class="setting_submit_btn" name="setting_button_bio">소개글 저장</button>
                 </form>
             </div>
-            <div class="setting_nav2 " id="account_setting">
+            <div class="setting_nav2 none" id="account_setting">
                 <div id="change_name" class="both_layout">
                     <p class="setting_header">사용자 이름 변경</p>
                     <form action="/setting" method="post" name="setting_form_name" class="account_form">
@@ -53,7 +53,7 @@
                 <div class="both_layout">
                     <p class="setting_header">비밀번호 변경</p>
                     <div class="change_pw">
-                        <div class="account_form">
+                        <div id="origin_pw_check" class="account_form">
                             <input type="password" placeholder="기존 비밀번호" id="origin_pw" name='origin_password' class="">
                             <span class="wrong_origin_pw none">비밀번호가 다릅니다</span>
                             <button type="submit" id="origin_pw_btn" class="origin_pw_btn" name='origin_pw_btn'>비밀번호 확인</button>
