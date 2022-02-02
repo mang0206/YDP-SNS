@@ -163,7 +163,7 @@ a:visited{color: black}
     width: 100%;
     height: 100vh;
 
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.7);
 
     /* 숨기기 */
     z-index: -1000;
@@ -191,8 +191,6 @@ a:visited{color: black}
 
     width: 100%;
     height: 100%;
-
-    background-color: rgba(0, 0, 0, 0.5);
 }
 .plus_popup{
     position: absolute;
@@ -402,6 +400,9 @@ a:visited{color: black}
     width: 45px;
     height: 45px;
     margin-right: 10px;
+
+    border-radius: 50%;
+    border: solid 1px lightgray;
 }
 .author_nickname{
     font-weight: 500;
@@ -409,6 +410,9 @@ a:visited{color: black}
 .create_time{
     font-size: 12px;
     color: gray;
+}
+.content_text{
+    resize: none;
 }
 .content_image{
     width: 400px;
@@ -421,57 +425,165 @@ a:visited{color: black}
     display: flex;
     align-items: center;
 }
-.content_reaction div{
+.content_reaction p{
+    font-size: 14px;
     text-decoration: underline;
     text-underline-position: under;
+
+    cursor: pointer;
 }
 .content_icon{
     width: 25px;
     height: 25px;
     padding-right: 5px;
+
+    cursor: pointer;
+}
+.more_icon_popup_back{
+    position: fixed;
+    top: 0;
+    left: 0;
+    
+    width: 100%;
+    height: 100vh;
+
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 1000;
 }
 .more_icon_popup{
-    top: 60px;
-    right: 20px;
+    top: 35%;
+    left: 35%;
 
-    width: 120px;
+    width: 300px;
     height: 90px;
-    padding: 10px;
+    padding: 5px;
 
     position: fixed;
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-    justify-content: space-between;
 
     background: #FFFFFF;
     border-radius: 5px;
     box-shadow: 0 1px 10px rgba(0, 0, 0, 0.2);
-    z-index: 1;
-}
-.more_icon_triangle{
-    width: 15px;
-    height: 15px;
-
-    top: 57px;
-    right: 43px;
-    position: fixed;
-    /* border: solid 1px gray; */
-    transform: rotate(45deg);
-    box-shadow: 0 0px 10px rgba(0, 0, 0, 0.2);
 }
 /* @media (max-width: 767px) {
     .triangle{
         right: 115px;
     }
 } */
+.more_icon_popup button{
+    width: 100%;
+    height: 30px;
+
+    border: none;
+    cursor: pointer;
+    background: #FFFFFF;
+}
+.more_icon_popup button:hover{
+    background: #EDEDED;
+}
+.more_icon_cancel{
+    color: red;
+}
 .content_footer{
-    padding: 5px 10px;
+    padding: 8px 15px;
 
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+}
+.like_container_back{
+    position: fixed;
+    top: 0;
+    left: 0;
+    
+    width: 100%;
+    height: 100vh;
+
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 1000;
+}
+.like_container{
+    top: 35%;
+    left: 35%;
+
+    width: 250px;
+    height: 300px;
+    padding: 5px;
+
+    position: fixed;
+
+    background: #FFFFFF;
+    border-radius: 5px;
+    box-shadow: 0 1px 10px rgba(0, 0, 0, 0.2);
+}
+.like_container_header{
+    padding: 5px 10px;
+    margin-bottom: 10px;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+}
+.like_container_header div{
+    position: absolute;
+
+    top: 10px;
+    left: 35%;
+}
+.content_icon.like_close{
+    padding: 0;
+}
+.like_user_list_container{
+    padding: 0 10px;
+    display: flex;
+}
+.like_user_list{
+    display: flex;
+    align-items: center;
+}
+.like_user_list a{
+    display: flex;
+}
+.like_user_img{
+    width: 45px;
+    height: 45px;
+    margin-right: 10px;
+
+    border-radius: 50%;
+    border: solid 1px lightgray;
+}
+.content_comment_container{
+    padding: 0 10px;
+
+    /* display: flex; */
+    flex-direction: column;
+}
+.user_comment{
+    display: flex;
+    flex-direction: column;
+}
+.comment_nickname_time{
+    display: flex;
+    align-items: flex-end;
+}
+.comment_nickname{
+    margin-right: 10px;
+}
+.comment_time{
+    font-size: 12px;
+    color: gray;
+}
+.comment_txt{
+    font-size: 14px;
+}
+.comment_form{
+    margin: 10px;
+
+    display: flex;
+    justify-content: center;
+}
+.comment_input{
+    margin-right: 10px;
 }
 /* index */
 .index_container{
@@ -882,11 +994,6 @@ a:visited{color: black}
     align-items: center;
     justify-content: space-between;
 }
-.user_img_nickname{
-    display: flex;
-    flex-direction: row;
-    align-items: center;   
-}
 .content_profile_image{
     width: 45px;
     height: 45px;
@@ -917,6 +1024,8 @@ a:visited{color: black}
 .user_img_nickname{
     display: flex;
     flex-direction: row;
+    align-items: center;
+
     height: 65px;
 }
 .create_content_icon{

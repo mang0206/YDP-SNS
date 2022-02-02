@@ -2,8 +2,12 @@
 
 // session user 더보기 btn
 $('.more_icon').click(function(){
-    
-    $('.more_icon_popup').toggleClass('none');
-    $('.more_icon_triangle').toggleClass('none');
+    document.querySelector(".more_icon_popup_back").className = "more_icon_popup_back";
+    document.querySelector(".body").className = "body scroll_hidden";
+});
+
+$('.more_icon_cancel').click(function(){
+    document.querySelector(".more_icon_popup_back").className = "more_icon_popup_back none";
+    document.querySelector(".body").className = "body";
 
 });
