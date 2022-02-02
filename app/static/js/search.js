@@ -33,7 +33,7 @@ function create_btn(){
             document.getElementById(c_url).appendChild(create_div);
         } else if (user_friend_list.includes(user)){
             console.log(2)
-            // const newText = document.createElement('button');
+            const newText = document.createElement('button');
             // button 속성 추가
             // 현재 친구인 상태
             // $(newText).attr({
@@ -48,8 +48,8 @@ function create_btn(){
             // a 태그에 button 노드 추가
             // create_div.appendChild(newText);
                 // id값으로 가져온 위치에 a태그 추가
-            // let c_url = 'friend_button_area_'+user
-            // document.getElementById(c_url).appendChild(create_div);
+            let c_url = 'friend_button_area_'+user
+            document.getElementById(c_url).appendChild(create_div);
         } else {
             console.log(3)
             if (request_friend_list[''].includes(user)){

@@ -7,7 +7,11 @@
 .base_body_margin{
     margin: 0 100px 50px 100px;
 }
-
+@media (max-width: 767px) {
+    .base_body_margin{
+    margin: 0 80px 50px 80px;
+    }
+}
 a:link{color: black; text-decoration: none;}
 a:visited{color: black}
 /* top_bar */
@@ -27,10 +31,36 @@ a:visited{color: black}
     position: sticky;
     z-index: 1000;
 }
-.index_base_topbar form{
+/* Desktop First */
+@media (max-width: 767px) {
+    .index_base_topbar{
+        top: 0;
+        height: 85px;
+        padding: 10px 20px;
+        background-color: #FFFFFF;
+        box-shadow: 0 0px 5px rgba(0, 0, 0, 0.3);
+        margin-bottom: 50px;
+    
+        display: flex;
+        flex-direction: row;
+        align-items: flex-start;
+        justify-content: space-around;
+    
+        position: sticky;
+        z-index: 1000;
+    }
+}
+.top_bar_search_form{
     display: flex;
     flex-direction: row;
     align-items: center;
+}
+@media (max-width: 767px) {
+    .top_bar_search_form{
+        position: absolute;
+        top: 55px;
+        left: 30%;
+    }
 }
 /* 검색창 border-radius */
 .search_input_border{
@@ -85,12 +115,17 @@ a:visited{color: black}
     width: 15px;
     height: 15px;
 
-    top: 55px;
-    right: 37px;
+    top: 57px;
+    right: 43px;
     position: fixed;
     /* border: solid 1px gray; */
     transform: rotate(45deg);
     box-shadow: 0 0px 10px rgba(0, 0, 0, 0.2);
+}
+@media (max-width: 767px) {
+    .triangle{
+        right: 115px;
+    }
 }
 .user_popup{
     top: 60px;
@@ -111,19 +146,11 @@ a:visited{color: black}
     box-shadow: 0 1px 10px rgba(0, 0, 0, 0.2);
     z-index: 1;
 }
-/* .user_popup:after {
-	content: '';
-	position: absolute;
-	top: 0;
-	left: 50%;
-	width: 0;
-	height: 0;
-	border: 15px solid transparent;
-	border-bottom-color: #ffffff;
-	border-top: 0;
-	margin-left: -15px;
-	margin-top: -15px;
-} */
+@media (max-width: 767px) {
+    .user_popup{
+        right: 55px;
+    }
+}
 .user_popup button{
     border: none;
 }
@@ -378,10 +405,33 @@ a:visited{color: black}
     margin-left: 15px;
     margin-right: 15px;
 }
+@media (max-width: 767px) {
+    .both_layout_friend{
+        width: 450px;
+        height: 300px;
+        min-width: fit-content;
+
+        margin: 15px;
+
+        overflow: auto;
+    }
+}
+@media (max-width: 767px) {
+    #index_friend_list{
+        display: none;
+    }
+}
 .friend_container_header{
     display: flex;
     align-items: flex-end;
     justify-content: space-between;
+}
+@media (max-width: 767px) {
+    .friend_container_header{
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-around;
+    }
 }
 #view_more{
     font-size: 15px;
@@ -389,8 +439,19 @@ a:visited{color: black}
     text-underline-position: under;
 }
 /* search */
+@media (max-width: 767px) {
+    #search{
+        display: flex;
+        flex-direction: column;
+    }
+}
 .search_container{
     margin-bottom: 70px;
+}
+@media (max-width: 767px) {
+    .search_container{
+        margin-bottom: 30px;
+    }
 }
 .user_list{
     height: 70px;
@@ -398,6 +459,17 @@ a:visited{color: black}
     
     display: flex;
     align-items: center;
+}
+@media (max-width: 767px) {
+    .user_list{
+        height: 70px;
+        margin: 7px 0;
+        padding: 0 50px;
+        
+        display: flex;
+        align-items: center;
+        justify-content: space-evenly;
+    }
 }
 .user_list a{
     display: flex;
@@ -445,6 +517,12 @@ a:visited{color: black}
 .friend_hr{
     margin: 50px 0;
     background: gray;
+}
+@media (max-width: 767px) {
+    .friend_hr{
+        margin: 30px 0;
+        background: gray;
+    }
 }
 .user_friend{
     display: flex;
@@ -531,7 +609,19 @@ a:visited{color: black}
     
     margin-left: 40px
 }
+@media (max-width: 767px) {
+    .friend_recommend{
+        display: none;
+    }
+}
 /* user */
+@media (max-width: 767px) {
+    .user{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+}
 .user_container{
     display: flex;
     flex-direction: column;
@@ -584,6 +674,16 @@ a:visited{color: black}
     
     display: flex;
     justify-content: space-around;
+}
+@media (max-width: 767px) {
+    .profile_container{
+        width: 100%;
+        margin-bottom: 30px;
+        
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+    }
 }
 .user_information{
     width: 100%;
@@ -729,6 +829,11 @@ a:visited{color: black}
 .setting{
     padding-right: 100px;
 }
+@media (max-width: 767px) {
+    .setting{
+        padding-right: 0;
+    }
+}
 .setting_nav{
     width: 150px;
     height: 150px;
@@ -737,6 +842,17 @@ a:visited{color: black}
     flex-direction: column;
     border-radius: 5px;
 }
+@media (max-width: 767px) {
+    .setting_nav{
+        width: 100%;
+        height: 45px;
+    
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        border-radius: 5px;
+    }
+}
 .setting_container{
     border: solid 1px lightgray;
     border-radius: 5px;
@@ -744,6 +860,16 @@ a:visited{color: black}
     display: flex;
     flex-direction: row;
     justify-content: left;
+}
+@media (max-width: 767px) {
+    .setting_container{
+        border: solid 1px lightgray;
+        border-radius: 5px;
+    
+        display: flex;
+        flex-direction: column;
+        justify-content: left;
+    }
 }
 .setting h2{
     margin-bottom: 30px;
@@ -760,6 +886,22 @@ a:visited{color: black}
     flex-direction: column;
     align-items: center;
     justify-content: center;
+}
+@media (max-width: 767px) {
+    .setting_nav_btn{
+        width: inherit;
+        height: 45px;
+        font-size: 16px;
+        cursor: pointer;
+        border: none;
+        box-sizing: border-box;
+        background-color: #FFFFFF;
+        
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
 }
 .setting_nav_btn:hover{
     background: rgba(194, 194, 194, 0.1);
@@ -796,6 +938,16 @@ a:visited{color: black}
     border-left: solid 1px lightgray;
     border-radius: 5px;
 }
+@media (max-width: 767px) {
+    .setting_nav2{
+        width: 100%;
+        padding-top: 80px;
+    
+        box-sizing: border-box;
+        border-left: none;
+        border-radius: 5px;
+    }
+}
 #profile_setting form{
     margin-bottom: 50px;
 
@@ -829,11 +981,25 @@ a:visited{color: black}
     width: 150px;
     font-size: 16px;
 }
+@media (max-width: 767px) {
+    #account_setting > div > p{
+        width: 200px;
+        font-size: 16px;
+    }
+}
 .account_form{
     width: 370px;
     display: flex;
     flex-direction: column;
     align-items: flex-end;
+}
+@media (max-width: 767px) {
+    .account_form{
+        width: 220px;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+    }
 }
 #origin_pw_check > *{
     margin-bottom: 10px;

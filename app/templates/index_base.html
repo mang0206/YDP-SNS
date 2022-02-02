@@ -17,16 +17,14 @@
         <div class="top_bar_logo">
             <a href="/"><h2>SNS Project</h2></a>
         </div>
-        <div>
-            <form method="POST" action="/" name="topbar_search" novalidate>
-                <div class="search_input_border">
-                    <input type="text" name='search' placeholder="검색"  class="search_input">
-                </div>
-                <button type="submit" class="search_btn" name="search_btn" value="topbar_search">
-                    <img class="top_bar_icon" src="../static/img/search.png" alt="search_icon">
-                </button>
-            </form>
-        </div>
+        <form method="POST" action="/" name="topbar_search" novalidate class="top_bar_search_form">
+            <div class="search_input_border">
+                <input type="text" name='search' placeholder="검색"  class="search_input">
+            </div>
+            <button type="submit" class="search_btn" name="search_btn" value="topbar_search">
+                <img class="top_bar_icon" src="../static/img/search.png" alt="search_icon">
+            </button>
+        </form>
         <div class="navigation_icon">
             <a href="/"><img class="top_bar_icon" src="../static/img/home.png" alt="home_icon"></a>
             <a href="/friend"><img class="top_bar_icon" src="../static/img/friends.png" alt="friend_icon"></a>

@@ -4,30 +4,29 @@
 <div class="base_body_margin search_container">
     <h2>"{{ search }}" 검색 결과</h2>
 </div>
-<div class="both_layout" id="search" data-name= '{{ session["login"] }}' data-search_user = '{{ search_user_id }}'\
+<div class="base_body_margin both_layout" id="search" data-name= '{{ session["login"] }}' data-search_user = '{{ search_user_id }}'\
         data-friend_list='{{ session_friend_list }}' data-session_request_list='{{ session_request_list }}'>
+        <h4>계정</h4>
+        <div class="both_layout_friend search_user_container">
+            {% for user in search_user_dic %}
+            <div class="user_list" id = 'friend_button_area_{{search_user_dic[user]["user_id"]}}'\
+            data-user=' {{ search_user_dic[user]["user_id"] }}' value = "{{ search_user_dic[user]['user_id'] }}" > 
+            <a href="/user/{{search_user_dic[user]['nickname']}}">
+                <img src="{{search_user_dic[user]['profile_img'][1] }}" alt="" class="user_profile_img">
+            </a>
+            <div class="user_list_name_area">
+                <a class="user_nickname" href ="/user/{{search_user_dic[user]['nickname']}}" >
+                    {{search_user_dic[user]['nickname']}}
+                </a>
+                <div class="user_name">
+                    {{ search_user_dic[user]['user_name'] }}
+                </div>
+            </div>
+        </div> 
+        {% endfor %}
+    </div>
     <div class="both_layout_content">
         <h4>게시물</h4>
-    </div>
-
-    <div class="both_layout_friend search_user_container">
-        <h4>계정</h4>
-        {% for user in search_user_dic %}
-            <div class="user_list" id = 'friend_button_area_{{search_user_dic[user]["user_id"]}}'\
-                             data-user=' {{ search_user_dic[user]["user_id"] }}' value = "{{ search_user_dic[user]['user_id'] }}" > 
-                <a href="/user/{{search_user_dic[user]['nickname']}}">
-                    <img src="{{search_user_dic[user]['profile_img'][1] }}" alt="" class="user_profile_img">
-                </a>
-                <div class="user_list_name_area">
-                    <a class="user_nickname" href ="/user/{{search_user_dic[user]['nickname']}}" >
-                        {{search_user_dic[user]['nickname']}}
-                    </a>
-                    <div class="user_name">
-                        {{ search_user_dic[user]['user_name'] }}
-                    </div>
-                </div>
-            </div> 
-        {% endfor %}
     </div>
     <!-- 검색어 db 필터링, js 조건문 별로 다른 버튼 생성 -->
 </div>
