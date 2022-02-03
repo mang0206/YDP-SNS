@@ -1,26 +1,15 @@
-// like list btn
-$('.content_like').click(function(){
-    document.querySelector(".like_container_back").className = "like_container_back";
-    document.querySelector(".body").className = "body scroll_hidden";
-});
+// let like_change = false;
+// $('.content_like').click(function(){
+//     if (like_change) {
+//         like_change = false;        
+//     } else {
+//         like_change = true;
+//     }
+//     $('.like_container_back').toggle(function(){
+//         $(this).className = "content_comment_container none"
+//         $(this).className = "body scroll_hidden"
+//         // $(this).removeAttr('display')
+//     });
+// });
 
-$('.like_close').click(function(){
-    document.querySelector(".like_container_back").className = "like_container_back none";
-    document.querySelector(".body").className = "body";
-});
-
-
-// comment list btn
-let change = false;
-$('.content_comment').click(function(){
-    if (change) {
-        change = false;        
-    } else {
-        change = true;
-    }
-    $('.content_comment_container').toggle(function(){
-        $(this).className = "content_comment_container none"
-        $(this).removeAttr('display')
-    });
-    // document.querySelector(".content_comment_container").className = "content_comment_container";
-});
+// animation 전환 테스트 해봄
