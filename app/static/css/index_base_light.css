@@ -544,6 +544,11 @@ a:visited{color: black}
     /* display: flex; */
     flex-direction: column;
 }
+.comment_list{
+    min-height: fit-content;
+    max-height: 200px;
+    overflow: auto;
+}
 .user_comment{
     display: flex;
     flex-direction: column;
@@ -578,8 +583,13 @@ a:visited{color: black}
     border-radius: 50%;
     border: solid 1px lightgray;
 }
-.comment_input{
+.comment_textarea{
+    width: 200px;
+    height: 20px;
     margin-right: 10px;
+
+    resize: none;
+    overflow: hidden;
 }
 /* index */
 .index_container{

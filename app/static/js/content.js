@@ -37,3 +37,15 @@ $('.content_comment').click(function(){
         $(this).removeAttr('display')
     });
 });
+
+// 댓글 입력란 높이 조절
+function auto_height(){
+    let textarea = $('.comment_textarea');
+    // 높이가 줄어들 경우 height값 초기화
+    textarea[0].style.height = 'auto';
+
+    // prop, 스크롤 높이 계산
+    let textarea_height = textarea.prop('scrollHeight');
+    // 계산한 높이를 textarea의 css style로 지정
+    textarea.css('height', textarea_height);
+};
