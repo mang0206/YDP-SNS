@@ -240,7 +240,23 @@ def friend():
 
     # request_friend={'aaa':'aaa', 'bbb':'bbb', 'ccc':'ccc', 'ddd':'ddd'}
     # friend_list = ['aaa', 'bbb', 'ccc', 'ddd', 'eee', 'fff']
-    return render_template('friend.html', request_friend=request_friend, friend_list=friend_dict)
+    recommend_frined_dic = {}
+    for friend in friend_list:
+        print('friend = ', friend)
+        friend_friend_list = get_friend_list(friend)
+        friend_friend_dict = get_friend_dic(friend_friend_list)
+        for f, recommend_friend in friend_friend_dict.items():
+            print('f = ', f)
+            if f != session['login'] and f not in friend_list:
+                if f in recommend_frined_dic.keys():
+                    recommend_frined_dic[f]['count'] += 1
+                else:
+                    recommend_frined_dic[f] = recommend_friend
+                    recommend_frined_dic[f]['count'] = 0
+    for k, v in recommend_frined_dic.items():
+        print(k, v['count'])
+
+    return render_template('friend.html', request_friend=request_friend, friend_list=friend_dict, recommend_frined_dic=recommend_frined_dic)
 
 @app.route("/friend_respond", methods=["POST"])
 def friend_respond():
