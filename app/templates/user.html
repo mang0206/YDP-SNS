@@ -14,7 +14,7 @@
                         </div>
                     </div>
                     <div id="request_button" class="user_friend_button">
-                        {% if session['ide'] != user['nickname'] %}
+                        {% if session['nickname'] != user['nickname'] %}
                             {% if user['user_id'] not in session_friend_list %}   
                                 <button class="request_btn" user = "{{user['user_id']}}" friend_list = "{{ session_request_list }}"\
                                     value = 'not friend' data-name='{{session["login"]}}'></button>
