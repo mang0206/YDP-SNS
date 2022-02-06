@@ -84,6 +84,7 @@ def s3_delete_image(filename):
 
 @app.route('/check_password', methods=['GET','POST'])
 def check_password():
+
     if 'password' in request.form:
         print('request post!')
         # data = request.get_json()
@@ -94,10 +95,19 @@ def check_password():
 
         reset_pw = bcrypt.generate_password_hash(reset_pw)
 
-        col_user.update_one(
-                {'user_email': session['send_email']},
-                {'$set' : {'password': reset_pw}}
-            )
+        try:
+            #password_reset 비밀번호 변경
+            col_user.update_one(
+                    {'user_email': session['send_email']},
+                    {'$set' : {'password': reset_pw}}
+                )
+        except:
+            #setting 비밀번호 변경
+            col_user.update_one(
+                    {'user_id': session['login']},
+                    {'$set' : {'password': reset_pw}}
+                )
+
         flash('비밀번호가 정상적으로 변경되었습니다! 새로운 비밀번호로 로그인 해주세요 :)')
         
         session['login'] = None
