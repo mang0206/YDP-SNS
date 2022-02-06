@@ -1,26 +1,46 @@
 <!doctype html>
-
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+        <script>
+            alert("{{messages[-1]}}")
+        </script>
+    {% endif %}
+{% endwith %}
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
     <title>YDP-SNS</title>
 
+    <link rel="stylesheet" href="../static/css/login_base_light.css">
+    <!-- favicon -->
+    <link rel="shortcut icon" href="../static/img/favicon-32x32.png">
+    <link rel="icon" href="../static/img/favicon-32x32.png">
+    <!-- font -->
+    <link href="https://fonts.googleapis.com/css2?family=M+PLUS+1:wght@100;200;300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href='//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css' rel='stylesheet' type='text/css'>
+    <!-- jquery -->
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>    
 </head>
-<body>
-    <div>
-        {% block login %}
-        {% endblock %}
-    </div>
-    <div>
-        {% block password_reset %}
-        {% endblock %}
-    </div>
-    <div>
-        {% block join %}
-        {% endblock %}
-    </div>
-    <div>
-        {% block join_success %}
-        {% endblock %}
+<body class="login_base">
+    <div class="login_base_container">
+        <h1 class="login_base_logo">SNS<br>Project</h1>
+        <div class="login_base_right">
+            <div name="login">
+                {% block login %}
+                {% endblock %}
+            </div>
+            <div name="password_reset">
+                {% block password_reset %}
+                {% endblock %}
+            </div>
+            <div name="join">
+                {% block join %}
+                {% endblock %}
+            </div>
+            <div name="join_success">
+                {% block join_success %}
+                {% endblock %}
+            </div>
+        </div>
     </div>
 </body>

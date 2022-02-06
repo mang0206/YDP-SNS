@@ -1,0 +1,260 @@
+*{
+    margin: 0;
+    font-family: 'M PLUS 1', 'Spoqa Han Sans Neo', 'sans-serif';
+    overflow: auto;
+}
+h4{
+    font-weight: 500;
+}
+.login_base{
+    height: 100vh;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    background: url(../img/login_background.png);
+    background-size: cover;
+}
+.login_base_container{
+    width: 900px;
+    height: 600px;
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+
+    background: #FFFFFF;
+    box-shadow: 0px 0px 10px 3px rgba(0, 0, 0, 0.25);
+    border-radius: 30px;
+}
+@media (max-width: 767px) {
+    .login_base_container{
+        width: 500px;
+    
+        flex-direction: column;
+        justify-content: space-around;
+
+        overflow: hidden;
+    }
+}
+.login_base_logo{
+    width: 500px;
+
+    font-size: 64px;
+    text-align: right;
+
+    margin-right: 10px;
+}
+@media (max-width: 767px) {
+    .login_base_logo{
+        font-size: 55px;
+        margin-right: 150px;
+    }
+}
+.login_base_right{
+    width: 500px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.login_base_right form div{
+    margin-bottom: 15px;
+}
+@media (max-width: 767px) {
+    .login_base_right form div{
+        margin-bottom: 8px;
+    }
+}
+.login_base_input_box{
+    width: 300px;
+    height: 50px;
+    padding-left: 50px;
+    margin: 5px 1px 1px 1px;
+
+    background: #FFFFFF;
+    box-shadow: inset 0px 0px 10px 
+        1px rgba(0, 0, 0, 0.15);
+    border: none;
+    border-radius: 15px;
+}
+/* input 이메일 icon */
+.login_base_input_box.email_icon{
+    background: url(../img/email.png);
+    opacity: 0.5;
+    background-position: 10px center;
+    background-size: 30px 30px;
+    background-repeat: no-repeat;
+}
+/* input 자물쇠(pw) icon */
+.login_base_input_box.lock_icon{
+    background: url(../img/lock.png);
+    opacity: 0.5;
+    background-position: 10px center;
+    background-size: 30px 30px;
+    background-repeat: no-repeat;
+}
+/* input 사용자(user) icon */
+.login_base_input_box.user_icon{
+    background: url(../img/user.png);
+    opacity: 0.5;
+    background-position: 10px center;
+    background-size: 30px 30px;
+    background-repeat: no-repeat;
+}
+.login_base_button{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.login_base_button input{
+    visibility: hidden;
+}
+.login_base_button button{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+
+    width: 350px;
+    height: 50px;
+    font-size: 15px;
+    font-weight: 500;
+
+    background: linear-gradient(90deg, rgba(252, 214, 157, 0.7) 0%, rgba(252, 157, 157, 0.7) 100%);
+    box-shadow: inset 0px 0px 5px 
+        1px rgba(0, 0, 0, 0.15);
+    border-radius: 15px;
+    border: none;
+}
+.login_base_icon{
+    width: 30px;
+    height: 30px;
+    opacity: 50%;
+}
+/* join */
+.join_information{
+    height: 350px;
+    padding: 1px;
+    overflow: auto;
+}
+@media (max-width: 767px) {
+    .join_information{
+        height: 300px;
+    }
+}
+.join_email_info{
+    right: 0;
+    font-size: 13px;
+    color: gray;
+}
+@media (max-width: 767px) {
+    #join_pw2{
+        margin-bottom: 0;
+    }
+}
+@media (max-width: 767px) {
+    .join_nickname{
+        margin-top: 8px;
+    }
+}
+#nickname{
+    padding: 0 25px;
+    text-align: center;
+
+    box-shadow: inset 0px 0px 10px rgba(0, 0, 0, 0.08);
+}
+#user_name{
+    padding: 0 25px;
+    text-align: center;
+
+    box-shadow: inset 0px 0px 10px rgba(0, 0, 0, 0.08);
+}
+.join_success_container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+@media (max-width: 767px) {
+    .join_success_container{
+        position: absolute;
+        top: 350px;
+        left: 28%;
+    }
+}
+/* reset password */
+#certification_send{
+    margin-bottom: 10px;
+}
+#certification_submit{
+    margin: 3px 3px 10px 1px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+#count_down{
+    margin: 0;
+}
+.certification_num{
+    width: 150px;
+    height: 30px;
+    padding-left: 15px;
+    outline: none;
+
+    background: #FFFFFF;
+    box-shadow: inset 0px 0px 2px 
+        1px rgba(0, 0, 0, 0.15);
+    border: none;
+    border-radius: 5px;
+}
+.certification_btn{
+    padding: 5px 10px;
+    border: solid 1px lightgray;
+    border-radius: 5px;
+}
+.certification_status{
+    margin-bottom: 15px;
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+#password_reset{
+    transition: all .5s;
+}
+.certification_img{
+    width: 30px;
+    height: 30px;
+    margin: 0 5px;
+}
+.send_btn{
+    margin-bottom: 10px;
+
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+.submit{
+    color: #FFFFFF;
+    background: #46A6FF;
+
+    border: solid 1px lightgray;
+}
+#reset_pw2{
+    margin-bottom: 0;
+}
+.none{
+    display: none;
+}
+.password_rule{
+    font-size: 12px;
+}
+#change_pw_btn{
+    margin-top: 15px;
+}
