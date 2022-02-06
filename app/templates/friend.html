@@ -63,6 +63,24 @@
     </div>
     <div class="both_layout_friend friend_recommend">
         <p class="friend_recommend_header">친구 추천 목록</p>
+        {% for friend in recommend_frined_dic %}
+        <div class="user_list">
+            <a href="/user/{{recommend_frined_dic[friend]['nickname']}}">
+                <img src="{{ recommend_frined_dic[friend]['profile_img'][1] }}" alt="" class="search_user_image">
+            </a>
+            <div class="user_list_name_area">
+                <a class="user_nickname" href="/user/{{recommend_frined_dic[friend]['nickname']}}">
+                    {{ recommend_frined_dic[friend]['nickname'] }}
+                </a>
+                <div class="user_name">
+                    {{ recommend_frined_dic[friend]['user_name'] }}
+                </div>
+                {% if recommend_frined_dic[friend]['count'] != 0 %}
+                <p> 함께아는 친구 {{ recommend_frined_dic[friend]['count'] }}</p>
+                {% endif %}
+            </div>
+        </div> 
+        {% endfor %}
     </div>
 </div>
 <script src="../static/js/friend.js" defer="defer"></script>
