@@ -192,12 +192,37 @@ def search():
 # 팝업창 txt와 img를 DB로 전송
 @app.route("/content_submit", methods=["POST"])
 def content_submit():
-    global content_file
+    col_post = db.get_collection('post')
     content_txt = request.form.get('content_txt')
-    content_file = request.files.get('content_file')    
-    print(type(content_file))
+    # content_file = request.files.getlist("file[]")    
+    content_file = request.files.getlist("content_file[]")    
     print('-==============================',content_txt, content_file)
-    return redirect(url_for('user', user=session['ide']))
+    # for i in range (1, len(request.files)+1):
+    #         file = request.files[f'filename{i}']
+    #         print(file)
+    time = dt.datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
+    if content_file:
+        for i in content_file:
+            filename = i.filename.split('.')[0]
+            ext = i.filename.split('.')[-1]
+            nickname = session['nickname']
+            img_name = dt.datetime.now().strftime(f"{nickname}-{filename}-%Y-%m-%d-%H-%M-%S.{ext}")
+            img_name = content_file
+            print(filename)
+        # s3_put_object(s3,'ydpsns',content_file,img_name)
+    if content_txt:
+        hash_tag = [h[1:] for h in content_txt.split(' ') if h[0] == '#']
+    # s3_put_object(s3,'ydpsns',content_file,img_name)
+    # col_post.update_one(
+    #     {'create_user': session['login']},
+    #     {'create_time': time},
+    #     {'text': content_txt},
+    #     {'images': s3_get_image_url(s3, img_name)},
+    #     {'hashtag' : content_txt.split(' ')},
+    #     {'like' : []}
+    # )
+    # print(hash_tag)
+    return redirect(url_for('user', user=session['nickname']))
 
 @app.route("/user/<user>")
 def user(user):
@@ -248,11 +273,12 @@ def friend():
         for f, recommend_friend in friend_friend_dict.items():
             print('f = ', f)
             if f != session['login'] and f not in friend_list:
+                friend_dic = col_user.find_one({'user_id':friend})
                 if f in recommend_frined_dic.keys():
-                    recommend_frined_dic[f]['count'] += 1
+                    recommend_frined_dic[f]['count'].append(friend_dic)
                 else:
                     recommend_frined_dic[f] = recommend_friend
-                    recommend_frined_dic[f]['count'] = 0
+                    recommend_frined_dic[f]['count'] = [friend_dic]
     for k, v in recommend_frined_dic.items():
         print(k, v['count'])
 

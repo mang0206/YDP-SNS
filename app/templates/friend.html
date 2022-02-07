@@ -76,7 +76,7 @@
                     {{ recommend_frined_dic[friend]['user_name'] }}
                 </div>
                 {% if recommend_frined_dic[friend]['count'] != 0 %}
-                <p> 함께아는 친구 {{ recommend_frined_dic[friend]['count'] }}</p>
+                <p> 함께아는 친구 {{ recommend_frined_dic[friend]['count']|length }}</p>
                 {% endif %}
             </div>
         </div> 

@@ -47,11 +47,21 @@ function close(){
 var images = []; 
 // 이미지 미리보기가 생성되는 div의 value
 var img_value = {};
+var fileBuffer = [];
+// 이미지 동적 업로드
+// $('#popup_input_file').change(function(){
+    
+//     const target = document.getElementsByName('content_file[]');
+    
+//     Array.prototype.push.apply(fileBuffer, target[0].files);
+//     console.log(fileBuffer)
+// });
 
 // 이미지 선택
+let dt = new DataTransfer();
 function image_select() {
-    console.log(1)
     var image = document.getElementById('popup_input_file').files;
+    Array.prototype.push.apply(fileBuffer, image)
     for (i = 0; i < image.length; i++) {
         if (check_duplicate(image[i].name)) {
             images.push({
@@ -63,7 +73,20 @@ function image_select() {
             alert(image[i].name + "이미 선택한 파일입니다.");
         }
     }
+    console.log(image)
+    console.log(fileBuffer)
+    console.log(images)
+    // image = fileBuffer
+    // Array.from(image)
+    // .forEach(image => {
+    //     dataTranster.items.add(image);
+    // });
+    dt.items.add(image[0]);
+    console.log(dt)
     document.getElementById('file_container').innerHTML = image_show();
+    document.querySelector('#file-file_container').files = dt.files;
+    var image = document.getElementById('popup_input_file').files;
+    console.log(image)
 
     // img를 선택하면 생성되는 div의 value를 할당
     img_value = document.getElementById('file_preview').getAttribute('value');
