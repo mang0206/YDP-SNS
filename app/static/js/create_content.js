@@ -47,43 +47,31 @@ function close(){
 var images = []; 
 // 이미지 미리보기가 생성되는 div의 value
 var img_value = {};
-var fileBuffer = [];
-// 이미지 동적 업로드
-// $('#popup_input_file').change(function(){
-    
-//     const target = document.getElementsByName('content_file[]');
-    
-//     Array.prototype.push.apply(fileBuffer, target[0].files);
-//     console.log(fileBuffer)
-// });
 
 // 이미지 선택
 let dt = new DataTransfer();
 function image_select() {
     var image = document.getElementById('popup_input_file').files;
     for (i = 0; i < image.length; i++) {
+        console.log(image[i])
         if (check_duplicate(image[i].name)) {
+            // 미리보기 목록에 추가
             images.push({
                 "name" : image[i].name,
                 "url" : URL.createObjectURL(image[i]),
-                "file" : image[i],
+                // "file" : image[i],
             })
+            // input FileList 목록에 추가
+            dt.items.add(image[i]);
+            console.log(dt)
         } else {
             alert(image[i].name + "이미 선택한 파일입니다.");
         }
     }
-    // image = fileBuffer
-    // Array.from(image)
-    // .forEach(image => {
-    //     dataTranster.items.add(image);
-    // });
-    dt.items.add(image[0]);
-    console.log(image)
-    console.log(dt)
+
     document.getElementById('file_container').innerHTML = image_show();
+    // input FileList 업데이트
     document.querySelector('#popup_input_file').files = dt.files;
-    // var image = document.getElementById('popup_input_file').files;
-    // console.log(image)
 
     // img를 선택하면 생성되는 div의 value를 할당
     img_value = document.getElementById('file_preview').getAttribute('value');
@@ -104,8 +92,15 @@ function image_show() {
     
 // 이미지 삭제
 function delete_image(e) {
+
+    // 삭제한 이미지 -> 미리보기 및 FileList 에서 삭제
     images.splice(e, 1);
+    dt.items.remove(e);
+
+    // 이미지 삭제 후 미리보기 및 input FileList 동기화
     document.getElementById('file_container').innerHTML = image_show();
+    document.querySelector('#popup_input_file').files = dt.files;
+
 }
     
 // 이미지 중복 체크

@@ -9,13 +9,8 @@ from . import app, conn
 from flask import request, render_template, jsonify, redirect, url_for, session, flash
 from flask_bcrypt import Bcrypt
 import boto3
-<<<<<<< HEAD
 
 import datetime as dt
-=======
-import datetime as dt
-from bs4 import BeautifulSoup as bs
->>>>>>> 97ae048e7af66e15ba0d4aa6bf57a292508f9060
 
 bcrypt = Bcrypt()
 db = conn.get_database('root')
