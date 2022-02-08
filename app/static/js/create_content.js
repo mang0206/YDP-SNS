@@ -68,6 +68,7 @@ function image_select() {
                 "url" : URL.createObjectURL(image[i]),
                 "file" : image[i],
             })
+            dt.items.add(image[i]);           
         } else {
             alert(image[i].name + "이미 선택한 파일입니다.");
         }
@@ -77,7 +78,7 @@ function image_select() {
     // .forEach(image => {
     //     dataTranster.items.add(image);
     // });
-    dt.items.add(image[0]);
+    // dt.items.add(image[0]);
     console.log(image)
     console.log(dt)
     document.getElementById('file_container').innerHTML = image_show();
@@ -105,7 +106,10 @@ function image_show() {
 // 이미지 삭제
 function delete_image(e) {
     images.splice(e, 1);
+    dt.items.remove(e)
+    
     document.getElementById('file_container').innerHTML = image_show();
+    document.querySelector('#popup_input_file').files = dt.files;
 }
     
 // 이미지 중복 체크
