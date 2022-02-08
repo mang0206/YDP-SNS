@@ -10,7 +10,7 @@ from flask import request, render_template, jsonify, redirect, url_for, session,
 from flask_bcrypt import Bcrypt
 import boto3
 
-from bs4 import BeautifulSoup as bs
+import datetime as dt
 
 bcrypt = Bcrypt()
 db = conn.get_database('root')
@@ -125,59 +125,27 @@ def imgtest():
 @app.route("/img_submit", methods=["GET", "POST"])
 def img_submit():
     col_post = db.get_collection('post')
-    # content_txt = request.form.get('content_txt')
+    content_txt = request.form.get('content_txt')
     # print(content_txt)
-    # content_file = request.files.getlist("file[]") 
+    content_file = request.files.getlist("content_file[]") 
 
-    #test
-    # json으로 가져온 image data
-    data = request.get_json()
-    ajax_img = data['images']
-    ajax_txt = data['textarea']
-
-    for i in ajax_img:
-        print(i)
-
-    print(ajax_txt)
-
-    # print('-==============================',content_txt, content_file)
-    # for i in range (1, len(request.files)+1):
-    #         file = request.files[f'filename{i}']
-    #         print(file)
-
-    # time = dt.datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
-    if len(ajax_txt) == 0:
+    time = dt.datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
+    if content_file:
         print("img")
-        for i in ajax_img:
-            filename = i['name'].split('.')[0]
-            ext = i['name'].split('.')[-1]
+        for i in content_file:
+            filename = i.filename.split('.')[0]
+            ext = i.filename.split('.')[-1]
             nickname = session['nickname']
 
             # img_name = dt.datetime.now().strftime(f"{nickname}-{filename}-%Y-%m-%d-%H-%M-%S.{ext}")
             # img_name = content_file
             print(filename)
 
-        return jsonify(result = "success")
         # s3_put_object(s3,'ydpsns',content_file,img_name)
 
-    elif len(ajax_img) == 0:
-        hash_tag = [h[1:] for h in ajax_txt.split(' ') if h[0] == '#']
-        print("form textarea")
-        return jsonify(result = "success")
-
-    else:
-        print("img & txt")
-        for i in ajax_img:
-            filename = i['name'].split('.')[0]
-            ext = i['name'].split('.')[-1]
-            nickname = session['nickname']
-
-            # img_name = dt.datetime.now().strftime(f"{nickname}-{filename}-%Y-%m-%d-%H-%M-%S.{ext}")
-            # img_name = content_file
-            print(filename)
-
-        hash_tag = [h[1:] for h in ajax_txt.split(' ') if h[0] == '#']
-        print(hash_tag)        
+    if content_txt:
+        hash_tag = [h[1:] for h in content_txt.split(' ') if h[0] == '#']
+        print("form", content_txt)
 
     # s3_put_object(s3,'ydpsns',content_file,img_name)
     # col_post.update_one(
@@ -189,4 +157,6 @@ def img_submit():
     #     {'like' : []}
     # )
     # print(hash_tag)
-    return jsonify(result = "success")
+    flash("게시물이 업로드 되었습니다.")
+
+    return redirect(url_for('user'), user=session['nickname'])
