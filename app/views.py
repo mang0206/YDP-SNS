@@ -207,8 +207,9 @@ def content_submit():
             nickname = session['nickname']
             img_name = dt.datetime.now().strftime(f"{nickname}-{filename}-%Y-%m-%d-%H-%M-%S.{ext}")
             s3_put_object(s3,'ydpsns',img,img_name,'postimages')
-            img_list.append(s3_get_image_url(s3, img_name, 'postimages'))
+            img_list.append(s3_get_image_url(s3, img_name, 'postimages')) 
 
+    hash_tag = []
     if content_txt:
         hash_tag = [h[1:] for h in content_txt.split(' ') if h[0] == '#']
 

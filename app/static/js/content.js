@@ -39,11 +39,11 @@ $('[id$=_icon]').click(function(){
         contentType: "application/json",
         success: function(data){
             if (btn_value == "cancel") {
-                $("#like_icon").attr('value', 'plus')
-                $("#like_icon").attr('src', '../static/img/plus.png')
+                $(this).attr('value', 'plus')
+                $(this).attr('src', '../static/img/plus.png')
             }else{ // '친구 삭제' button
-                $("#like_icon").attr('value', 'cancel')
-                $("#like_icon").attr('src', '../static/img/like.png')
+                $(this).attr('value', 'cancel')
+                $(this).attr('src', '../static/img/like.png')
             }
         },
         error: function(request, status, error){

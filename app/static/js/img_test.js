@@ -48,14 +48,6 @@ var images = [];
 // 이미지 미리보기가 생성되는 div의 value
 var img_value = {};
 var fileBuffer = [];
-// 이미지 동적 업로드
-// $('#popup_input_file').change(function(){
-    
-//     const target = document.getElementsByName('content_file[]');
-    
-//     Array.prototype.push.apply(fileBuffer, target[0].files);
-//     console.log(fileBuffer)
-// });
 
 // 이미지 선택
 let dt = new DataTransfer();
@@ -77,11 +69,12 @@ function image_select() {
     // .forEach(image => {
     //     dataTranster.items.add(image);
     // });
-    dt.items.add(image[0]);
-    console.log(image)
-    console.log(dt)
+    // dt.items.add(image[0]);
+    // console.log(image)
+    // console.log(images.files)
+
     document.getElementById('file_container').innerHTML = image_show();
-    document.querySelector('#popup_input_file').files = dt.files;
+    // document.querySelector('#popup_input_file').files = dt.files;
     // var image = document.getElementById('popup_input_file').files;
     // console.log(image)
 
@@ -99,11 +92,25 @@ function image_show() {
         <span onclick="delete_image(`+ images.indexOf(i) +`)">&times;</span>
         </div>`;
     })
+    console.log(images)
+    // document.getElementById('popup_input_file').setAttribute('images_array', images)
+    // console.log(document.getElementById('popup_input_file').getAttribute('images_array'))
+    for (let i = 0; i < images.length; i++) {
+        console.log(i)
+        document.getElementById('popup_input_file').setAttribute('images_array', images[i])
+        
+        console.log(document.getElementById('popup_input_file').getAttribute('images_array'))
+    }
+    console.log(images)
+    // console.log(document.getElementById('popup_input_file').images_array())
+
     return image;
 }
     
 // 이미지 삭제
 function delete_image(e) {
+    console.log(e.files)
+
     images.splice(e, 1);
     document.getElementById('file_container').innerHTML = image_show();
 }
@@ -126,6 +133,51 @@ function check_duplicate(name) {
 document.querySelector("#close_icon_btn").addEventListener('click', close);
 document.querySelector("#plus_icon_btn").addEventListener('click', plus);
 // document.querySelector("#input_file_btn").addEventListener('click', image_select);
+
+$('.popup_submit_btn').click(function(){
+    // ajax 파일 전송
+    let textarea = $('#popup_textarea').val();
+    console.log(textarea)
+
+    let ajax_data = {
+        "images" : images,
+        "textarea" : textarea
+    };
+
+    console.log(ajax_data)
+
+    $.ajax({
+        type: 'POST',
+        url: 'img_submit',
+        data: JSON.stringify(ajax_data),
+        dataType: 'JSON',
+        contentType: "application/json",
+        success: function(data){
+            // 게시물 작성 완료 후 초기화
+            document.querySelector(".plus_background").className = "plus_background none";
+            document.querySelector(".body").className = "body";
+
+            // 이미지 영역 초기화
+            images.splice(0);
+            document.getElementById('file_container').innerHTML = image_show();
+
+            // textarea 초기화
+            document.getElementById('popup_textarea').value = '';
+            img_value = {}
+
+            alert('게시물이 업로드 되었습니다.')
+        },
+        error: function(request, status, error){
+            alert('ajax 통신 실패');
+            console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+            // alert(error);
+        }
+    });
+})
+
+
+
+
 
 // 파일 업로드 제한
 

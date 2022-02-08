@@ -1,0 +1,106 @@
+<!doctype html>
+
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>YDP-SNS</title>
+
+    <link rel="stylesheet" href="../static/css/index_base_light.css?ver=1">
+    <!-- favicon -->
+    <link rel="shortcut icon" href="../static/img/favicon-32x32.png">
+    <link rel="icon" href="../static/img/favicon-32x32.png">
+
+    <!-- <link rel="shortcut icon" href="../static/img/favicon_dark1.ico"> -->
+    <!-- <link rel="icon" href="../static/img/favicon_dark1.ico"> -->
+    <!-- font -->
+    <link href="https://fonts.googleapis.com/css2?family=M+PLUS+1:wght@100;200;300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href='//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css' rel='stylesheet' type='text/css'>
+    <!-- jquery -->
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+</head>
+<body class="body">
+    <div class="index_base_topbar">
+        <div class="top_bar_logo">
+            <a href="/"><h2>SNS Project</h2></a>
+        </div>
+        <form method="POST" action="/" name="topbar_search" novalidate class="top_bar_search_form">
+            <div class="search_input_border">
+                <input type="text" name='search' placeholder="검색"  class="search_input">
+            </div>
+            <button type="submit" class="search_btn" name="search_btn" value="topbar_search">
+                <img class="top_bar_icon" src="../static/img/search.png" alt="search_icon">
+            </button>
+        </form>
+        <div class="navigation_icon">
+            <a href="/"><img class="top_bar_icon" src="../static/img/home.png" alt="home_icon"></a>
+            <a href="/friend"><img class="top_bar_icon" src="../static/img/friends.png" alt="friend_icon"></a>
+            <div class="content_popup">
+                <button id="plus_icon_btn"><img class="top_bar_icon" src="../static/img/plus.png" alt="plus_icon"></button>
+                <div class="plus_background none">
+                    <div class="plus_container" id="plus_container" name="content_form" method="POST" enctype="multipart/form-data">
+                        <div class="plus_popup">
+                            <div class="popup_header">
+                                <button type="button" id="close_icon_btn">
+                                    <img class="top_bar_icon close" src="../static/img/close.png" alt="close_icon">
+                                </button>
+                                <span>게시물 작성</span>
+                                <button type="submit" name="content_submit" class="popup_submit_btn"> <!--form="content_txt_form"-->
+                                    공유하기
+                                </button>
+                                <!-- <label for="popup_submit" class="popup_submit_label"></label> -->
+                            </div>
+                            <div action="/img_submit" id="content_txt_form" class="popup_txt" method="POST">
+                                <textarea id="popup_textarea" name="content_txt" placeholder="내용을 입력 해주세요."></textarea>
+                            </div>
+                            <span>업로드 할 파일 선택</span>
+                            <div class="popup_file">
+                                <div class="popup_file_input">
+                                    <input type="file" multiple="'multiple" id="popup_input_file" name="content_file[]" onChange="image_select()">
+                                    <button type="button" id="input_file_btn" onClick="document.getElementById('popup_input_file').click()" class="input_file_btn">                                
+                                        파일 선택하기
+                                    </button>
+                                </div>
+                                <div class="" id="file_container">
+                                    <!-- 이미지 미리보기 구역 -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <a href="/"><img class="top_bar_icon" src="../static/img/notification.png" alt="notice_icon"></a>
+            <!-- <button type="button" id="" class="top_bar_user"></button> -->
+            <img src="{{ session['profile_img'] }}" class='top_bar_user' alt="">
+            <!-- 프로필,로그아웃,설정 팝업창 -->
+            <div id="user_popup" class="user_popup none">
+                <a href="/user/{{session['nickname']}}">프로필 이동</a>
+                <a href="/setting">설정</a>
+                <a href="/logout">로그아웃</a>
+            </div>
+            <div class="triangle none"></div>
+        </div>
+    </div>
+    </div>
+    <div class="both_layout">
+        {% block index %}
+        {% endblock %}
+    </div>
+    <div class="">
+        {% block user %}
+        {% endblock %}
+    </div>
+    <div class="">
+        {% block friend %}
+        {% endblock %}
+    </div>
+    <div class="">
+        {% block search %}
+        {% endblock %}
+    </div>
+    <div class="">
+        {% block setting %}
+        {% endblock %}
+    </div>
+</body>
+<script src="../static/js/img_test.js" defer="defer"></script>
+<script src="../static/js/index_base.js" defer="defer"></script>
