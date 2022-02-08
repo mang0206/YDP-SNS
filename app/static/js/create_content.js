@@ -61,7 +61,6 @@ var fileBuffer = [];
 let dt = new DataTransfer();
 function image_select() {
     var image = document.getElementById('popup_input_file').files;
-    Array.prototype.push.apply(fileBuffer, image)
     for (i = 0; i < image.length; i++) {
         if (check_duplicate(image[i].name)) {
             images.push({
@@ -73,9 +72,6 @@ function image_select() {
             alert(image[i].name + "이미 선택한 파일입니다.");
         }
     }
-    console.log(image)
-    console.log(fileBuffer)
-    console.log(images)
     // image = fileBuffer
     // Array.from(image)
     // .forEach(image => {
@@ -84,9 +80,9 @@ function image_select() {
     dt.items.add(image[0]);
     console.log(dt)
     document.getElementById('file_container').innerHTML = image_show();
-    document.querySelector('#file-file_container').files = dt.files;
-    var image = document.getElementById('popup_input_file').files;
-    console.log(image)
+    document.querySelector('#popup_input_file').files = dt.files;
+    // var image = document.getElementById('popup_input_file').files;
+    // console.log(image)
 
     // img를 선택하면 생성되는 div의 value를 할당
     img_value = document.getElementById('file_preview').getAttribute('value');
