@@ -194,40 +194,51 @@ def search():
 def content_submit():
     col_post = db.get_collection('post')
     content_txt = request.form.get('content_txt')
-    # content_file = request.files.getlist("file[]")    
     content_file = request.files.getlist("content_file[]")    
     print('-==============================',content_txt, content_file)
-    # for i in range (1, len(request.files)+1):
-    #         file = request.files[f'filename{i}']
-    #         print(file)
+
     time = dt.datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
-    if content_file:
-        for i in content_file:
-            filename = i.filename.split('.')[0]
-            ext = i.filename.split('.')[-1]
+    
+    img_list = []
+    if len(content_file) > 0:
+        for img in content_file:
+            filename = img.filename.split('.')[0]
+            ext = img.filename.split('.')[-1]
             nickname = session['nickname']
             img_name = dt.datetime.now().strftime(f"{nickname}-{filename}-%Y-%m-%d-%H-%M-%S.{ext}")
-            img_name = content_file
-            print(filename)
-        # s3_put_object(s3,'ydpsns',content_file,img_name)
+            s3_put_object(s3,'ydpsns',img,img_name,'postimages')
+            img_list.append(s3_get_image_url(s3, img_name, 'postimages'))
+
     if content_txt:
         hash_tag = [h[1:] for h in content_txt.split(' ') if h[0] == '#']
-    # s3_put_object(s3,'ydpsns',content_file,img_name)
-    # col_post.update_one(
-    #     {'create_user': session['login']},
-    #     {'create_time': time},
-    #     {'text': content_txt},
-    #     {'images': s3_get_image_url(s3, img_name)},
-    #     {'hashtag' : content_txt.split(' ')},
-    #     {'like' : []}
-    # )
+
+    col_post.insert_one(
+        {'create_user': session['login'],
+        'create_user_nickname': session['nickname'],
+        'create_time': time,
+        'text': content_txt,
+        'images': img_list,
+        'hashtag' : hash_tag,
+        'like' : []}
+    )
     # print(hash_tag)
     return redirect(url_for('user', user=session['nickname']))
+
+@app.route("/content_like_submit", methods=["POST"])
+def like_submit():
+    col_user = db.get_collection('user')
+    col_post = db.get_collection('post')
+
+    data = request.get_json()    
+    print(data)
+    
+    return jsonify(result = "success", result2= data)
 
 @app.route("/user/<user>")
 def user(user):
     col_user = db.get_collection('user')
     col_request_friend = db.get_collection('request_friend')
+    col_post = db.get_collection('post')
 
     session_friend_list = get_friend_list(session['login'])
     
@@ -242,8 +253,10 @@ def user(user):
     # session 유저가 친구 요청을 보낸 user의 id 리스트
     session_request_list = [user['request_user'] for user in col_request_friend.find({'user_id': session['login']})]
     # print(friend_dic)
+    post_dic = col_post.find({'create_user_nickname': user})
+    # print(list(post_dic))
     return render_template('user.html', user=search_user,session_friend_list=session_friend_list,\
-         friend_dic=friend_dic, session_request_list = session_request_list)
+         friend_dic=friend_dic, session_request_list = session_request_list, post_dic=post_dic)
 
 @app.route("/logout")
 def logout():
@@ -435,11 +448,15 @@ def connection_mongodb():
     print(db.list_collection_names())
 
     col = db.get_collection('user')
+    col_post = db.get_collection('post')
     # print(* list(col.find({},{'user_id':True, 'nickname':True})))
-    col.update_many({},{"$rename":{"name":"user_name"}})
+    # col.update_many({},{"$rename":{"name":"user_name"}})
     lis = col.find({})
     
     json_lis = dumps(lis)
     print(json_lis)
+    print('\n\n\n')
+    for i in col_post.find({}):
+        print(i)
     return jsonify(json_lis)
 

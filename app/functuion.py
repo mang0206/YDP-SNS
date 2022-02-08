@@ -50,7 +50,7 @@ def get_friend_dic(search_list, background=False):
     #         get_user_image(friend_dic[key], 'background_img')
     return friend_dic
 
-def s3_put_object(s3, bucket, file, filename):
+def s3_put_object(s3, bucket, file, filename, file_kind = 'images'):
     """
     s3 bucket에 지정 파일 업로드
     :param s3: 연결된 s3 객체(boto3 client)
@@ -63,20 +63,20 @@ def s3_put_object(s3, bucket, file, filename):
         s3.put_object(
             Body = file,
 	        Bucket = bucket,
-            Key = f'images/{filename}',
+            Key = f'{file_kind}/{filename}',
             ContentType = file.content_type
         )
     except Exception as e:
         return False
     return True
 
-def s3_get_image_url(s3, filename):
+def s3_get_image_url(s3, filename, file_kind = 'images'):
     """
     s3 : 연결된 s3 객체(boto3 client)
     filename : s3에 저장된 파일 명
     """
     location = s3.get_bucket_location(Bucket='ydpsns')["LocationConstraint"]
-    return f"https://{'ydpsns'}.s3.{location}.amazonaws.com/images/{filename}"
+    return f"https://{'ydpsns'}.s3.{location}.amazonaws.com/{file_kind}/{filename}"
 
 def s3_delete_image(filename):
     print('delete =', f'images/{filename}')

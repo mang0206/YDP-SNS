@@ -23,6 +23,36 @@ $('.like_close').click(function(){
     document.querySelector(".body").className = "body";
 });
 
+//like btn ajax
+$('[id$=_icon]').click(function(){
+    let btn_value = $(this).attr('value');
+    let post_id = $(this).attr('post_id');
+    var request_data = {
+        "flag": btn_value,
+        "post_id": post_id
+    }
+    $.ajax({
+        type: 'POST',
+        url: "/content_like_submit",
+        data: JSON.stringify(request_data),
+        dataType: 'JSON',
+        contentType: "application/json",
+        success: function(data){
+            if (btn_value == "cancel") {
+                $("#like_icon").attr('value', 'plus')
+                $("#like_icon").attr('src', '../static/img/plus.png')
+            }else{ // '친구 삭제' button
+                $("#like_icon").attr('value', 'cancel')
+                $("#like_icon").attr('src', '../static/img/like.png')
+            }
+        },
+        error: function(request, status, error){
+            alert('ajax 통신 실패')
+            alert(error);
+        }
+    })
+});
+
 
 // comment list btn
 let change = false;
