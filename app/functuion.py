@@ -9,7 +9,7 @@ from . import app, conn
 from flask import request, render_template, jsonify, redirect, url_for, session, flash
 from flask_bcrypt import Bcrypt
 import boto3
-
+import datetime as dt
 from bs4 import BeautifulSoup as bs
 
 bcrypt = Bcrypt()
@@ -145,7 +145,7 @@ def img_submit():
     #         file = request.files[f'filename{i}']
     #         print(file)
 
-    # time = dt.datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
+    time = dt.datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
     if len(ajax_txt) == 0:
         print("img")
         for i in ajax_img:
