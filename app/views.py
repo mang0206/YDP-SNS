@@ -223,6 +223,8 @@ def content_submit():
         'like' : []}
     )
     # print(hash_tag)
+    flash("게시물이 업로드 되었습니다.")
+    
     return redirect(url_for('user', user=session['nickname']))
 
 @app.route("/content_like_submit", methods=["POST"])
