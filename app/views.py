@@ -209,6 +209,10 @@ def content_submit():
             img_name = dt.datetime.now().strftime(f"{nickname}-{filename}-%Y-%m-%d-%H-%M-%S.{ext}")
             img_name = content_file
             print(filename)
+            print(i)
+            for n in i:
+                print(n)
+
         # s3_put_object(s3,'ydpsns',content_file,img_name)
     if content_txt:
         hash_tag = [h[1:] for h in content_txt.split(' ') if h[0] == '#']
