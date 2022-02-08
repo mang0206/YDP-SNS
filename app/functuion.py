@@ -9,8 +9,13 @@ from . import app, conn
 from flask import request, render_template, jsonify, redirect, url_for, session, flash
 from flask_bcrypt import Bcrypt
 import boto3
+<<<<<<< HEAD
 
 import datetime as dt
+=======
+import datetime as dt
+from bs4 import BeautifulSoup as bs
+>>>>>>> 97ae048e7af66e15ba0d4aa6bf57a292508f9060
 
 bcrypt = Bcrypt()
 db = conn.get_database('root')
@@ -54,7 +59,7 @@ def get_friend_dic(search_list, background=False):
     #         get_user_image(friend_dic[key], 'background_img')
     return friend_dic
 
-def s3_put_object(s3, bucket, file, filename):
+def s3_put_object(s3, bucket, file, filename, file_kind = 'images'):
     """
     s3 bucket에 지정 파일 업로드
     :param s3: 연결된 s3 객체(boto3 client)
@@ -67,20 +72,20 @@ def s3_put_object(s3, bucket, file, filename):
         s3.put_object(
             Body = file,
 	        Bucket = bucket,
-            Key = f'images/{filename}',
+            Key = f'{file_kind}/{filename}',
             ContentType = file.content_type
         )
     except Exception as e:
         return False
     return True
 
-def s3_get_image_url(s3, filename):
+def s3_get_image_url(s3, filename, file_kind = 'images'):
     """
     s3 : 연결된 s3 객체(boto3 client)
     filename : s3에 저장된 파일 명
     """
     location = s3.get_bucket_location(Bucket='ydpsns')["LocationConstraint"]
-    return f"https://{'ydpsns'}.s3.{location}.amazonaws.com/images/{filename}"
+    return f"https://{'ydpsns'}.s3.{location}.amazonaws.com/{file_kind}/{filename}"
 
 def s3_delete_image(filename):
     print('delete =', f'images/{filename}')
@@ -137,9 +142,9 @@ def img_submit():
             ext = i.filename.split('.')[-1]
             nickname = session['nickname']
 
-            # img_name = dt.datetime.now().strftime(f"{nickname}-{filename}-%Y-%m-%d-%H-%M-%S.{ext}")
-            # img_name = content_file
-            print(filename)
+            img_name = dt.datetime.now().strftime(f"{nickname}-{filename}-%Y-%m-%d-%H-%M-%S.{ext}")
+            s3_put_object(s3,'ydpsns',img,img_name,'postimages')
+            img_list.append(s3_get_image_url(s3, img_name, 'postimages'))
 
         # s3_put_object(s3,'ydpsns',content_file,img_name)
 
@@ -159,4 +164,4 @@ def img_submit():
     # print(hash_tag)
     flash("게시물이 업로드 되었습니다.")
 
-    return redirect(url_for('user'), user=session['nickname'])
+    return redirect(url_for('user', user=session['nickname']))

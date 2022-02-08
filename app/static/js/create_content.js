@@ -78,6 +78,7 @@ function image_select() {
     //     dataTranster.items.add(image);
     // });
     dt.items.add(image[0]);
+    console.log(image)
     console.log(dt)
     document.getElementById('file_container').innerHTML = image_show();
     document.querySelector('#popup_input_file').files = dt.files;

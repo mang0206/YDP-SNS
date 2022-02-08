@@ -7,6 +7,7 @@ bcrypt = Bcrypt()
 conn = pymongo.MongoClient("mongodb://root:study111@13.125.71.134:27017/root?authSource=admin")
 db = conn.get_database('root')
 col = db.get_collection('user')
+col_post = db.get_collection('post')
 def modify_user():
     lst = []
     ''' 유저마다 닉네임 추가'''
@@ -58,6 +59,13 @@ def del_user():
     })
     print(result.deleted_count)
 
+def del_post():
+    result = col_post.delete_many({
+        # '_id': ObjectId('61d00cdeba8833acb1019a6b')
+        # '_id': ObjectId('61efc1b8a94321fa3d464725')
+    })
+    print(result.deleted_count)
+
 def search():
     search_user = col.find({})
     for i in search_user:
@@ -82,7 +90,7 @@ def search():
 
 
 # del_user()
+# del_post()
 # search()
 # modify_user_one()
 # insert()
-print([1,2][1])
