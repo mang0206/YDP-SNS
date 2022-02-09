@@ -231,9 +231,16 @@ def content_submit():
 def like_submit():
     col_user = db.get_collection('user')
     col_post = db.get_collection('post')
+    session_user = col_user.find_one({'user_id':session['login']})
+    data = request.get_json()
+    print(session_user)
+    if data['flag'] == 'plus':
+        col_user.update_one({'user_id':session['login']}, {'$push': {'like': data['post_id']}})
+        col_post.update_one({'_id':ObjectId(data['post_id'])}, {'$push': {'like': session_user}})
+    else:
+        col_user.update_one({'user_id':session['login']}, {'$pull': {'like': data['post_id']}})
+        col_post.update_one({'_id':ObjectId(data['post_id'])}, {'$pull': {'like': { 'user_id' : session['login']}}})
 
-    data = request.get_json()    
-    print(data)
     
     return jsonify(result = "success", result2= data)
 
@@ -454,7 +461,7 @@ def connection_mongodb():
     col_post = db.get_collection('post')
     # print(* list(col.find({},{'user_id':True, 'nickname':True})))
     # col.update_many({},{"$rename":{"name":"user_name"}})
-    lis = col.find({})
+    lis = col.find({'nickname':'aa'})
     
     json_lis = dumps(lis)
     print(json_lis)

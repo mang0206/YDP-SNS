@@ -27,10 +27,12 @@ $('.like_close').click(function(){
 $('[id$=_icon]').click(function(){
     let btn_value = $(this).attr('value');
     let post_id = $(this).attr('post_id');
+    let btn = $(this)
     var request_data = {
         "flag": btn_value,
         "post_id": post_id
     }
+    let like_count = Number($('#content_like').text().slice(0,1))
     $.ajax({
         type: 'POST',
         url: "/content_like_submit",
@@ -39,11 +41,15 @@ $('[id$=_icon]').click(function(){
         contentType: "application/json",
         success: function(data){
             if (btn_value == "cancel") {
-                $(this).attr('value', 'plus')
-                $(this).attr('src', '../static/img/plus.png')
-            }else{ // '친구 삭제' button
-                $(this).attr('value', 'cancel')
-                $(this).attr('src', '../static/img/like.png')
+                $(btn).attr('value', 'plus')
+                $(btn).attr('src', '../static/img/plus.png')
+                like_count -= 1
+                $('#content_like').text(String(like_count) + '개')
+            }else{ 
+                $(btn).attr('value', 'cancel')
+                $(btn).attr('src', '../static/img/like.png')
+                like_count += 1
+                $('#content_like').text(String(like_count) + '개')
             }
         },
         error: function(request, status, error){

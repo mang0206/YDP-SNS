@@ -95,7 +95,7 @@
                                     </div>
                                 </div>
                                 <!-- ver 1.0에선 session user만 버튼 노출 -->
-                                {% if session['ide'] == session['nickname'] %}
+                                {% if session['nickname'] %}
                                 <img src="../static/img/more.png" alt="" class="content_icon more_icon">
                                 <div class="more_icon_popup_back none">
                                     <div class="more_icon_popup">
@@ -113,14 +113,14 @@
                             <div class="content_footer">
                                 <div class="content_reaction">
                                     <!-- 하트 클릭 여부에 따라 count +1, -1 -->
-                                    {% if session['login'] in post['like'] %}
+                                    {% if post['_id'] in user['like'] %}
                                     <img src="../static/img/like.png" alt="" class="content_icon" id="like_icon" value="cancel"\
                                         post_id = "{{ post['_id']}}">
                                     {% else %}
                                     <img src="../static/img/plus.png" alt="" class="content_icon" id="like_icon" value="plus"\
                                         post_id = "{{ post['_id']}}">
                                     {% endif %}
-                                    <p class="content_like">{{ post['like']|length }}개</p>
+                                    <p class="content_like" id="content_like">{{ post['like']|length }}개</p>
                                     <!-- 좋아요 갯수 클릭하면 나타나는 영역 -->
                                     <div class="like_container_back none">
                                         <div class="like_container">
@@ -177,5 +177,5 @@
 </div>
 <script src="../static/js/user.js" defer="defer"></script>
 <script src="../static/js/create_content.js" defer="defer"></script>
-<script src="../static/js/content.js" defer="defer"></script>
+<script src="../static/js/post.js" defer="defer"></script>
 {% endblock %}
