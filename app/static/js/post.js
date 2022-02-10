@@ -45,11 +45,13 @@ $('[id$=_icon]').click(function(){
                 $(btn).attr('src', '../static/img/plus.png')
                 like_count -= 1
                 $('#content_like').text(String(like_count) + '개')
+                console.log(data['session_user'])
             }else{ 
                 $(btn).attr('value', 'cancel')
                 $(btn).attr('src', '../static/img/like.png')
                 like_count += 1
                 $('#content_like').text(String(like_count) + '개')
+                console.log(data['session_user'])
             }
         },
         error: function(request, status, error){

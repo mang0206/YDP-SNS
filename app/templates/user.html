@@ -113,7 +113,7 @@
                             <div class="content_footer">
                                 <div class="content_reaction">
                                     <!-- 하트 클릭 여부에 따라 count +1, -1 -->
-                                    {% if post['_id'] in user['like'] %}
+                                    {% if post['_id']|string in user['like'] %}
                                     <img src="../static/img/like.png" alt="" class="content_icon" id="like_icon" value="cancel"\
                                         post_id = "{{ post['_id']}}">
                                     {% else %}
