@@ -43,7 +43,9 @@ function close(){
     }
 }
 
+
 // 팝업창 이미지 올리기
+
 var images = []; 
 // 이미지 미리보기가 생성되는 div의 value
 var img_value = {};
@@ -64,6 +66,9 @@ function image_select() {
             // input FileList 목록에 추가
             dt.items.add(image[i]);
             console.log(dt)
+
+            
+
         } else {
             alert(image[i].name + "이미 선택한 파일입니다.");
         }
@@ -155,5 +160,3 @@ document.querySelector("#plus_icon_btn").addEventListener('click', plus);
 // }
 
 // $('#popup_input_file').on('change',readInputFile);
-
-
