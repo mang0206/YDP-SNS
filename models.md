@@ -26,7 +26,8 @@
     - hash_tag : 해시 태그 리스트
     - like : 좋아요 누른 user 딕셔너리 리스트
 
-## response
+## comment
+    - post_id : 기준 post 
     - create_comment_user : 댓글을 단 사용자 
     - create_time : 작성 시간(24시간 전까지는 ~시간 전, 지난 후에는 일자 표시)
     - comment : 댓글
@@ -35,8 +36,11 @@
     - create_time : 작성 시간(24시간 전까지는 ~시간 전, 지난 후에는 일자 표시)
     - reply : 댓글의 답글
 
-# session
-    session['login'] : session id
-    session['ide'] = session ide(닉네임)
-    session['name'] = session name(이름)
+# session 정보
+    session['login'] : id(로그인 id)
+    session['nickname'] = nickname
+    session['name'] = name
+    session['profile_img'] = 프로필 사진
+    session['like'] = user가 좋아요 누른 post id 리스트 
+
 
