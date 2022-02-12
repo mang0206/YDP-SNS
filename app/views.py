@@ -231,9 +231,10 @@ def content_submit():
 def like_submit():
     col_user = db.get_collection('user')
     col_post = db.get_collection('post')
+    # 세션 유저 정보 document에서 nickname, profile_img, like 정보만 가져온 변수
     session_user = col_user.find_one({'user_id':session['login']},{'_id':0, 'nickname':1 ,'profile_img':1, 'like':1})
     data = request.get_json()
-    print(session_user)
+
     if data['flag'] == 'plus':
         col_user.update_one({'user_id':session['login']}, {'$push': {'like': data['post_id']}})
         session_user = col_user.find_one({'user_id':session['login']},{'_id':0, 'nickname':1 ,'profile_img':1, 'like':1})
@@ -242,7 +243,6 @@ def like_submit():
         col_user.update_one({'user_id':session['login']}, {'$pull': {'like': data['post_id']}})
         col_post.update_one({'_id':ObjectId(data['post_id'])}, {'$pull': {'like': { 'nickname' : session['nickname']}}})
 
-    
     return jsonify(result = "success", session_user=session_user)
 
 @app.route("/user/<user>")
@@ -468,6 +468,6 @@ def connection_mongodb():
     print(json_lis)
     print('\n\n\n')
     for i in col_post.find({}):
-        print(i)
+        print(i, end='\n-------------------------\n')
     return jsonify(json_lis)
 

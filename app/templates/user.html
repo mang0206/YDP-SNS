@@ -46,7 +46,7 @@
             <div class="both_layout_friend user_friend_list">
                 <div class="friend_container_header">
                     <h3>친구 목록</h3>
-                    {% if session['ide'] == user['nickname'] %}
+                    {% if session['nickname'] == user['nickname'] %}
                     <a href="/friend" id="view_more">더보기</a>
                     {% endif %}
                 </div>
@@ -67,7 +67,7 @@
                 {% endfor %}
             </div>
             <div class="both_layout_content user_content">
-                {% if session['ide'] == user['nickname'] %}
+                {% if session['nickname'] == user['nickname'] %}
                     <div class="user_create_content">
                         <div class="user_create_content_header">
                             <div class="user_img_nickname comment">
@@ -130,13 +130,14 @@
                                             </div>
                                             <div class="like_user_list_container">
                                                 <!-- jinja for -->
-                                                <div class="like_user_list">
-                                                    <a href="">
-                                                        <img src="../static/img/user_profile_gray.png" alt="" class="content_user_img">
+                                                {% for user in post['like']%}
+                                                <div class="like_user_list" value= "{{user['nickname']}}">
+                                                    <a href="/user/{{user['nickname']}}">
+                                                        <img src="{{ user['profile_img'][1] }}" alt="" class="content_user_img">
                                                     </a>
-                                                    <a href="" class="like_user_nickname">nickname</a>
+                                                    <a href="/user/{{user['nickname']}}" class="like_user_nickname">{{ user['nickname'] }}</a>
                                                 </div>
-                                                <!-- endfor -->
+                                                {% endfor %}
                                             </div>
                                         </div>
                                     </div>
