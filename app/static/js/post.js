@@ -21,7 +21,7 @@ $('.content_like').click(function(){
 });
 
 $('.like_close').click(function(){
-    let like_contaiber = $(this).parent().parent()
+    let like_contaiber = $(this).parent().parent().parent()
     // let like_contaiber = $(this).parent().children('.like_container_back');
     // document.querySelector(".like_container_back").className = "like_container_back none";
     $(like_contaiber).addClass('none')
