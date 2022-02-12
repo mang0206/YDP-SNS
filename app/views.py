@@ -231,11 +231,19 @@ def content_submit():
 def like_submit():
     col_user = db.get_collection('user')
     col_post = db.get_collection('post')
+    # 세션 유저 정보 document에서 nickname, profile_img, like 정보만 가져온 변수
+    session_user = col_user.find_one({'user_id':session['login']},{'_id':0, 'nickname':1 ,'profile_img':1, 'like':1})
+    data = request.get_json()
 
-    data = request.get_json()    
-    print(data)
-    
-    return jsonify(result = "success", result2= data)
+    if data['flag'] == 'plus':
+        col_user.update_one({'user_id':session['login']}, {'$push': {'like': data['post_id']}})
+        session_user = col_user.find_one({'user_id':session['login']},{'_id':0, 'nickname':1 ,'profile_img':1, 'like':1})
+        col_post.update_one({'_id':ObjectId(data['post_id'])}, {'$push': {'like': session_user}})
+    else:
+        col_user.update_one({'user_id':session['login']}, {'$pull': {'like': data['post_id']}})
+        col_post.update_one({'_id':ObjectId(data['post_id'])}, {'$pull': {'like': { 'nickname' : session['nickname']}}})
+
+    return jsonify(result = "success", session_user=session_user)
 
 @app.route("/user/<user>")
 def user(user):
@@ -248,7 +256,7 @@ def user(user):
     search_user = col_user.find_one({'nickname':user})
     # get_user_image(search_user, 'profile_img')
     # get_user_image(search_user, 'background_img')
-
+    print('user page print search user',search_user)
     # user의 친구 정보 dictionary
     user_friend_list = get_friend_list(search_user['user_id']) 
     friend_dic = get_friend_dic(user_friend_list)
@@ -454,12 +462,12 @@ def connection_mongodb():
     col_post = db.get_collection('post')
     # print(* list(col.find({},{'user_id':True, 'nickname':True})))
     # col.update_many({},{"$rename":{"name":"user_name"}})
-    lis = col.find({})
+    lis = col.find({'nickname':'aa'})
     
     json_lis = dumps(lis)
     print(json_lis)
     print('\n\n\n')
     for i in col_post.find({}):
-        print(i)
+        print(i, end='\n-------------------------\n')
     return jsonify(json_lis)
 

@@ -30,13 +30,17 @@ def modify_user():
 def modify_user_one():
     '''유저에 친구 목록 리스트 추가'''
     # result = col.update_one(
-        # {'nickname': 'dyeo._.mee'},
-        # {'$set':{'user_email':'hyeon.dyeo.mee@gmail.com'}}
+        # {'nickname': 'aa'},
+        # {'$set':{'like':[]}}
     # )
     # result = col.update_many(
     #     {},
     #     {'$unset': {'friend':1}}
     # )
+    result = col_post.update_one(
+        {'_id':ObjectId('6201d33f299b641572be24b9')},
+        {'$set': {'like':[]}}
+    )
     # return
     id = col.find_one({'user_id':'default'})
     background_img = id['background_img'] 
@@ -92,5 +96,5 @@ def search():
 # del_user()
 # del_post()
 # search()
-# modify_user_one()
+modify_user_one()
 # insert()
