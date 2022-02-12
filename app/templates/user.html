@@ -111,7 +111,7 @@
                             <div class="content_footer">
                                 <div class="content_reaction">
                                     <!-- 하트 클릭 여부에 따라 count +1, -1 -->
-                                    {% if post['_id']|string in session['like'] %}
+                                    {% if post['_id']|string not in session['like'] %}
                                     <img src="../static/img/empty_like.png" alt="" class="content_icon" id="like_icon" value="empty"\
                                         post_id = "{{ post['_id']}}">
                                     {% else %}
