@@ -33,6 +33,7 @@ def login():
             session['nickname'] = find_user['nickname']
             session['name'] = find_user['user_name']
             session['profile_img'] = find_user['profile_img'][1]
+            session['like'] = find_user['like']
             return redirect(url_for('index'))
         else:
             flash("아이디 혹은 비밀번호가 틀렸습니다.")
@@ -239,9 +240,11 @@ def like_submit():
         col_user.update_one({'user_id':session['login']}, {'$push': {'like': data['post_id']}})
         session_user = col_user.find_one({'user_id':session['login']},{'_id':0, 'nickname':1 ,'profile_img':1, 'like':1})
         col_post.update_one({'_id':ObjectId(data['post_id'])}, {'$push': {'like': session_user}})
+        session['like'] = col_user.find_one({'user_id':session['login']},{'_id':0, 'like':1})['like']
     else:
         col_user.update_one({'user_id':session['login']}, {'$pull': {'like': data['post_id']}})
         col_post.update_one({'_id':ObjectId(data['post_id'])}, {'$pull': {'like': { 'nickname' : session['nickname']}}})
+        session['like'] = col_user.find_one({'user_id':session['login']},{'_id':0, 'like':1})['like']
 
     return jsonify(result = "success", session_user=session_user)
 
@@ -265,6 +268,7 @@ def user(user):
     # print(friend_dic)
     post_dic = col_post.find({'create_user_nickname': user})
     # print(list(post_dic))
+    print(col_user.find_one({'user_id':session['login']},{'_id':0, 'like':1})['like'])
     return render_template('user.html', user=search_user,session_friend_list=session_friend_list,\
          friend_dic=friend_dic, session_request_list = session_request_list, post_dic=post_dic)
 
