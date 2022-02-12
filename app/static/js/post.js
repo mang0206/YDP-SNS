@@ -52,7 +52,7 @@ $('[id$=_icon]').click(function(){
         contentType: "application/json",
         success: function(data){
             // session user가 이미 좋아요를 누른 상태
-            if (btn_value == "color") {
+            if (btn_value == "empty") {
                 $(btn).attr('value', 'empty')
                 $(btn).attr('src', '../static/img/empty_like.png')
                 like_count -= 1

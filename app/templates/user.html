@@ -110,12 +110,14 @@
                             <img src="{{post['images'][0]}}" alt="" class="content_image">
                             <div class="content_footer">
                                 <div class="content_reaction">
-                                    <!-- 하트 클릭 여부에 따라 count +1, -1 -->
-                                    {% if post['_id']|string not in session['like'] %}
-                                    <img src="../static/img/empty_like.png" alt="" class="content_icon" id="like_icon" value="empty"\
+                                    <!-- session 유저가 좋아요를 누른 상태일 경우 -->
+                                    {% if post['_id']|string in session['like'] %}
+                                    <!-- 해당 이미지를 클릭하면 empty_like로 변경 -->
+                                    <img src="../static/img/color_like.png" alt="" class="content_icon" id="like_icon" value="empty"\
                                         post_id = "{{ post['_id']}}">
                                     {% else %}
-                                    <img src="../static/img/color_like.png" alt="" class="content_icon" id="like_icon" value="color"\
+                                    <!-- 해당 이미지를 클릭하면 color_like로 변경 -->
+                                    <img src="../static/img/empty_like.png" alt="" class="content_icon" id="like_icon" value="color"\
                                         post_id = "{{ post['_id']}}">
                                     {% endif %}
                                     <p class="content_like" id="content_like">{{ post['like']|length }}개</p>
