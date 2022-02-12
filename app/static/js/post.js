@@ -21,7 +21,7 @@ $('.content_like').click(function(){
 });
 
 $('.like_close').click(function(){
-    let like_contaiber = $(this).parent().parent()
+    let like_contaiber = $(this).parent().parent().parent()
     // let like_contaiber = $(this).parent().children('.like_container_back');
     // document.querySelector(".like_container_back").className = "like_container_back none";
     $(like_contaiber).addClass('none')
@@ -52,9 +52,9 @@ $('[id$=_icon]').click(function(){
         contentType: "application/json",
         success: function(data){
             // session user가 이미 좋아요를 누른 상태
-            if (btn_value == "cancel") {
-                $(btn).attr('value', 'plus')
-                $(btn).attr('src', '../static/img/plus.png')
+            if (btn_value == "color") {
+                $(btn).attr('value', 'empty')
+                $(btn).attr('src', '../static/img/empty_like.png')
                 like_count -= 1
                 $(content_like).text(String(like_count) + '개')
 
@@ -68,10 +68,10 @@ $('[id$=_icon]').click(function(){
                         $(chiled[i]).remove();
                     }
                 }
-            // session user가 좋아요를 누른지 않은 상태
+            // session user가 좋아요를 누르지 않은 상태
             }else{ 
-                $(btn).attr('value', 'cancel')
-                $(btn).attr('src', '../static/img/like.png')
+                $(btn).attr('value', 'color')
+                $(btn).attr('src', '../static/img/color_like.png')
                 like_count += 1
                 $(content_like).text(String(like_count) + '개')
                 

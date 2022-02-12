@@ -107,17 +107,15 @@
                                 {% endif %}
                             </div>
                             <textarea class="content_text" id="" disabled>{{ post['text'] }}</textarea>
-                            <div class="content_image">
-                                <img src="{{post['images'][0]}}" alt="" class="content_image">
-                            </div>
+                            <img src="{{post['images'][0]}}" alt="" class="content_image">
                             <div class="content_footer">
                                 <div class="content_reaction">
                                     <!-- 하트 클릭 여부에 따라 count +1, -1 -->
                                     {% if post['_id']|string in user['like'] %}
-                                    <img src="../static/img/like.png" alt="" class="content_icon" id="like_icon" value="cancel"\
+                                    <img src="../static/img/empty_like.png" alt="" class="content_icon" id="like_icon" value="empty"\
                                         post_id = "{{ post['_id']}}">
                                     {% else %}
-                                    <img src="../static/img/plus.png" alt="" class="content_icon" id="like_icon" value="plus"\
+                                    <img src="../static/img/color_like.png" alt="" class="content_icon" id="like_icon" value="color"\
                                         post_id = "{{ post['_id']}}">
                                     {% endif %}
                                     <p class="content_like" id="content_like">{{ post['like']|length }}개</p>
