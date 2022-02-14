@@ -12,6 +12,86 @@ $('.more_icon_cancel').click(function(){
 });
 
 // 이미지 슬라이드
+$(function(){
+    let img_index = 0; //이미지 index
+    let translate = 0; //이미지 이동 거리(x축)
+    let img_width = 401; // 이미지 너비
+
+    //img 태그 중 클래스가 content_image인 두 번째 요소의 value 속성
+    let images = $("img.content_image:eq(2)").attr("value");
+    //index 번호이기 때문에 -1
+    // let total_image = images -1
+    console.log("총 이미지 개수", images)
+
+    //이미지의 가장 처음 상태
+    if (img_index == 0) {
+        //왼쪽 버튼 비활성화
+        $(".left_arrow").css({"display":"none"});
+        console.log(img_index)
+    };
+
+    //img_transform 실행 
+    //right 버튼을 눌렀을 때
+    if ($(".right_arrow").click(function(){
+        console.log("right")
+        img_index += 1;
+        console.log(img_index)
+    
+        //총 이미지 개수보다 index 번호가 작으면
+        if (img_index < images) {
+            //display:none 되돌림
+            $(".img_arrow_btn").css({"display":""});
+    
+            //x축 거리(-) 추가 & 이동(가려진 오른쪽 방향)
+            translate -= img_width
+            $(".img_album").css({
+                "transform":`translateX(${translate}px)`
+            });
+            console.log(translate)
+        };
+    })) {
+    };
+    
+    //left 버튼을 눌렀을 때
+    if ($(".left_arrow").click(function(){
+        console.log("left")
+        img_index -= 1;
+        console.log(img_index)
+    
+        //총 이미지 개수보다 index 번호가 작으면
+        if (img_index < images) {
+            //display:none 되돌림
+            $(".img_arrow_btn").css({"display":""});
+    
+            //x축 거리(+) 추가 & 이동(가려진 왼쪽 방향)
+            translate += img_width
+            $(".img_album").css({
+                "transform":`translateX(${translate}px)`
+            });
+            console.log(translate)
+        };
+    })) {
+    };
+
+    //image의 처음과 끝에 버튼 display:none 설정
+    //img_album의 x축 이동 animation이 끝났을 때
+    $(".img_album").on("transitionend", function(){
+        console.log("transition")
+        //index 번호와 images 개수가 같다면
+        if (img_index == (images -1)) {
+            console.log(img_index, "right end")
+            //right 버튼 비활성화
+            $(".right_arrow").css({"display":"none"});
+        }
+        //index 번호가 0이면
+        if (img_index == 0) {
+            console.log(img_index, "left end")
+            //left 버튼 비활성화
+            $(".left_arrow").css({"display":"none"});  
+        }
+    });
+
+});
 
 
 // like list btn

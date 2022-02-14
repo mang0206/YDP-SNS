@@ -415,9 +415,40 @@ a:visited{color: black}
     flex-direction: row;
 }
 .content_image_container{
-    width: fit-content;
-    
     display: flex;
+    align-items: center;
+}
+.img_arrow_btn{
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    margin: 5px;
+    padding: 0;
+
+    cursor: pointer;
+    border: none;
+    border-radius: 50%;
+    opacity: 50%;
+}
+.img_arrow_btn.right_arrow{
+    left: 755px;
+}
+@media (max-width: 767px) {
+    .img_arrow_btn.right_arrow{
+        left: 460px;
+    }
+}
+.img_arrow_btn img{
+    width: 30px;
+    height: 30px;
+    opacity: 70%;
+}
+.img_album{
+    width: fit-content;
+    display: flex;
+    z-index: -1;
+
+    transition: ease-in-out 0.5s;
 }
 .content_image{
     width: 401px;
@@ -427,8 +458,6 @@ a:visited{color: black}
     border-top: solid 1px lightgray;
     border-bottom: solid 1px lightgray;
 
-    overflow: hidden;
-    display: block;
     object-fit: cover;
 }
 .content_reaction{
