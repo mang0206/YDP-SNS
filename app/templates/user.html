@@ -107,7 +107,13 @@
                                 {% endif %}
                             </div>
                             <textarea class="content_text" id="" disabled>{{ post['text'] }}</textarea>
-                            <img src="{{post['images'][0]}}" alt="" class="content_image">
+                            <div class="content_image_viewer">
+                                <div class="content_image_container">
+                                    {% for i in post['images'] %}
+                                    <img src="{{ i }}" alt="" class="content_image">
+                                    {% endfor %}
+                                </div>
+                            </div>
                             <div class="content_footer">
                                 <div class="content_reaction">
                                     <!-- session 유저가 좋아요를 누른 상태일 경우 -->
@@ -143,8 +149,8 @@
                                     </div>
                                 </div>
                                 <div class="content_reaction">
-                                    <img src="../static/img/chat.png" alt="" class="content_icon">
-                                    <p class="content_comment">00개</p>
+                                    <img src="../static/img/chat.png" alt="" class="content_icon" onclick="comment_btn();">
+                                    <p class="content_comment" onclick="comment_btn();">00개</p>
                                 </div>
                             </div>
                             <!-- 댓글 클릭하면 나타나는 영역 -->

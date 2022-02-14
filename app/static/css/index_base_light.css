@@ -405,8 +405,19 @@ a:visited{color: black}
     padding: 0 15px;
     color: #000;
     font-size: 15px;
+    background: #FFF;
     resize: none;
     border: none;
+}
+.content_image_viewer{
+    overflow: hidden;
+    display: flex;
+    flex-direction: row;
+}
+.content_image_container{
+    width: fit-content;
+    
+    display: flex;
 }
 .content_image{
     width: 401px;
@@ -415,6 +426,10 @@ a:visited{color: black}
     box-sizing: border-box;
     border-top: solid 1px lightgray;
     border-bottom: solid 1px lightgray;
+
+    overflow: hidden;
+    display: block;
+    object-fit: cover;
 }
 .content_reaction{
     display: flex;

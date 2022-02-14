@@ -11,6 +11,9 @@ $('.more_icon_cancel').click(function(){
     document.querySelector(".body").className = "body";
 });
 
+// 이미지 슬라이드
+
+
 // like list btn
 $('.content_like').click(function(){
     let like_contaiber = $(this).parent().children('.like_container_back');
@@ -118,7 +121,7 @@ $('[id$=_icon]').click(function(){
 
 // comment list btn
 let change = false;
-$('.content_comment').click(function(){
+function comment_btn(){
     if (change) {
         change = false;        
     } else {
@@ -128,7 +131,7 @@ $('.content_comment').click(function(){
         $(this).className = "content_comment_container none"
         $(this).removeAttr('display')
     });
-});
+};
 
 // 댓글 입력란 높이 조절
 function auto_height(){
