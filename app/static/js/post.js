@@ -18,10 +18,17 @@ $(function(){
     let img_width = 401; // 이미지 너비
 
     //img 태그 중 클래스가 content_image인 두 번째 요소의 value 속성
-    let images = $("img.content_image:eq(2)").attr("value");
-    //index 번호이기 때문에 -1
-    // let total_image = images -1
+    let images = $("img.content_image:eq(4)").attr("value");
+    // let images = $("img.content_image:eq(3)")
+
     console.log("총 이미지 개수", images)
+
+    //업로드한 이미지가 한 장일 경우 화살표 & img_num 표시 X
+    if (images == 1) {
+        $(".img_arrow_btn").css({"display":"none"});
+        $(".img_number").css({"display":"none"});
+        console.log("one image")
+    }
 
     //이미지의 가장 처음 상태
     if (img_index == 0) {
