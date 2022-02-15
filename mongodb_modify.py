@@ -96,5 +96,7 @@ def search():
 # del_user()
 # del_post()
 # search()
-modify_user_one()
+# modify_user_one()
 # insert()
+a= '#aaaa '
+print([h[1:] for h in a.split(' ') if len(h) and h[0] == '#'])

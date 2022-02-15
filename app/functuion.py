@@ -21,8 +21,10 @@ def s3_connection():
         s3 = boto3.client(
             service_name="s3",
             region_name="ap-northeast-2", # 자신이 설정한 bucket region
-            aws_access_key_id='AKIAYFTWJFXVINK7YLUL',
-            aws_secret_access_key='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',
+            # aws_access_key_id='AKIAYFTWJFXVINK7YLUL',
+            aws_access_key_id = 'AKIAYFTWJFXVGDTGFTY3',
+            # aws_secret_access_key='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',
+            aws_secret_access_key = 'l1o5eYtPm/fx1fD7/ShmW42pm9FWScihC2BKeK3o'
         )
     except Exception as e:
         print(e)
@@ -82,9 +84,13 @@ def s3_get_image_url(s3, filename, file_kind = 'images'):
     location = s3.get_bucket_location(Bucket='ydpsns')["LocationConstraint"]
     return f"https://{'ydpsns'}.s3.{location}.amazonaws.com/{file_kind}/{filename}"
 
-def s3_delete_image(filename):
-    print('delete =', f'images/{filename}')
-    s3.delete_object(Bucket='ydpsns',Key=f'images/{filename}')
+def s3_delete_image(filename, file_kind ='images'):
+    print('delete =', f'{file_kind}/{filename}')
+    # try:
+        # s3.delete_object(Bucket='ydpsns',Key=f'{file_kind}/{filename}')
+    # except Exception as e:
+        # return False
+    s3.delete_object(Bucket='ydpsns', Key=f'{file_kind}/{filename}')
 
 @app.route('/check_password', methods=['GET','POST'])
 def check_password():

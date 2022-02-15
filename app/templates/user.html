@@ -100,7 +100,7 @@
                                 <div class="more_icon_popup_back none">
                                     <div class="more_icon_popup">
                                         <button>게시글 수정</button>
-                                        <button>게시글 삭제</button>
+                                        <button id="post_delete_btn" value='{{post["_id"]}}'>게시글 삭제</button>
                                         <button class="more_icon_cancel">취소</button>
                                     </div>
                                 </div>
@@ -130,7 +130,7 @@
                                             </div>
                                             <div class="like_user_list_container">
                                                 <!-- jinja for -->
-                                                {% for like_user in post['like']%}
+                                                {% for like_user in post['like'] %}
                                                 <div class="like_user_list" value= "{{like_user['nickname']}}">
                                                     <a href="/user/{{like_user['nickname']}}">
                                                         <img src="{{ like_user['profile_img'][1] }}" alt="" class="content_user_img">

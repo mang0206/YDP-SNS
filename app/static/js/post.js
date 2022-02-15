@@ -2,12 +2,14 @@
 
 // session user 더보기 btn
 $('.more_icon').click(function(){
-    document.querySelector(".more_icon_popup_back").className = "more_icon_popup_back";
+    // document.querySelector(".more_icon_popup_back").className = "more_icon_popup_back";
+    $(this).next().removeClass('none')
     document.querySelector(".body").className = "body scroll_hidden";
 });
 
 $('.more_icon_cancel').click(function(){
-    document.querySelector(".more_icon_popup_back").className = "more_icon_popup_back none";
+    // document.querySelector(".more_icon_popup_back").className = "more_icon_popup_back none";
+    $(this).parent().parent().addClass('none')
     document.querySelector(".body").className = "body";
 });
 
@@ -27,6 +29,55 @@ $('.like_close').click(function(){
     $(like_contaiber).addClass('none')
     document.querySelector(".body").className = "body";
 });
+
+$('[id$=_delete_btn]').click(function(){
+    let post_id = $(this).attr('value');
+    close_div = $(this).parent().parent().parent().parent().parent();
+    console.log(close_div)
+    $.ajax({
+        type: 'DELETE',
+        url: "/content_submit",
+        data: JSON.stringify(post_id),
+        dataType: 'JSON',
+        contentType: "application/json",
+        success: function(data){
+            // $(close_div).addClass('none')
+            $(close_div).css("display" ,"none");
+            document.querySelector(".body").className = "body";
+        },
+        error: function(request, status, error){
+            alert('ajax 통신 실패')
+            alert(error);
+        }
+    })
+});
+
+
+// comment list btn
+let change = false;
+$('.content_comment').click(function(){
+    if (change) {
+        change = false;        
+    } else {
+        change = true;
+    }
+    $('.content_comment_container').toggle(function(){
+        $(this).className = "content_comment_container none"
+        $(this).removeAttr('display')
+    });
+});
+
+// 댓글 입력란 높이 조절
+function auto_height(){
+    let textarea = $('.comment_textarea');
+    // 높이가 줄어들 경우 height값 초기화
+    textarea[0].style.height = 'auto';
+
+    // prop, 스크롤 높이 계산
+    let textarea_height = textarea.prop('scrollHeight');
+    // 계산한 높이를 textarea의 css style로 지정
+    textarea.css('height', textarea_height);
+};
 
 //like btn ajax
 $('[id$=_icon]').click(function(){
@@ -53,7 +104,7 @@ $('[id$=_icon]').click(function(){
         success: function(data){
             // session user가 이미 좋아요를 누른 상태
             if (btn_value == "empty") {
-                $(btn).attr('value', 'empty')
+                $(btn).attr('value', 'color')
                 $(btn).attr('src', '../static/img/empty_like.png')
                 like_count -= 1
                 $(content_like).text(String(like_count) + '개')
@@ -70,7 +121,7 @@ $('[id$=_icon]').click(function(){
                 }
             // session user가 좋아요를 누르지 않은 상태
             }else{ 
-                $(btn).attr('value', 'color')
+                $(btn).attr('value', 'empty')
                 $(btn).attr('src', '../static/img/color_like.png')
                 like_count += 1
                 $(content_like).text(String(like_count) + '개')
@@ -117,7 +168,7 @@ $('[id$=_icon]').click(function(){
 
 
 // comment list btn
-let change = false;
+// let change = false;
 $('.content_comment').click(function(){
     if (change) {
         change = false;        

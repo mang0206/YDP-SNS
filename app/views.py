@@ -212,7 +212,7 @@ def content_submit():
 
     hash_tag = []
     if content_txt:
-        hash_tag = [h[1:] for h in content_txt.split(' ') if h[0] == '#']
+        hash_tag = [h[1:] for h in content_txt.split(' ') if len(h) and h[0] == '#']
 
     col_post.insert_one(
         {'create_user': session['login'],
@@ -227,6 +227,23 @@ def content_submit():
     flash("게시물이 업로드 되었습니다.")
     
     return redirect(url_for('user', user=session['nickname']))
+
+@app.route("/content_submit", methods=["DELETE"])
+def delete_post():
+    col_user = db.get_collection('user')
+    col_post = db.get_collection('post')
+    data = request.get_json()
+    img_list = col_post.find_one({'_id':ObjectId(data)}, {'_id':0, 'images':1})['images']
+    for img in img_list:
+        tmp_img = img.split('/')[-1]
+        if 'pistimages' in tmp_img :
+            tmp_img = tmp_img.split('/')[-1]
+        print(tmp_img)
+        s3_delete_image(img.split('/')[-1], file_kind='postimages')
+
+    col_post.delete_one({'_id':ObjectId(data)})
+
+    return jsonify(result = "success")
 
 @app.route("/content_like_submit", methods=["POST"])
 def like_submit():
@@ -268,7 +285,6 @@ def user(user):
     # print(friend_dic)
     post_dic = col_post.find({'create_user_nickname': user})
     # print(list(post_dic))
-    print(col_user.find_one({'user_id':session['login']},{'_id':0, 'like':1})['like'])
     return render_template('user.html', user=search_user,session_friend_list=session_friend_list,\
          friend_dic=friend_dic, session_request_list = session_request_list, post_dic=post_dic)
 
