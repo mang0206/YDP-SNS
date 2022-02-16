@@ -280,16 +280,19 @@ $(function(){
                 $(comment).removeAttr('display');
             });
         })
+
         // 해당 게시글의 댓글 입력란 높이 조절
-        function auto_height(){
-            let textarea = $('.comment_textarea');
+        let comment_textarea = $(comment).children(".comment_form").children(".comment_textarea");
+        //댓글 입력란에서 keyup이 일어날 때 마다 실행
+        $(comment_textarea).on('keyup',function(){
+            console.log("typing")
             // 높이가 줄어들 경우 height값 초기화
-            textarea[0].style.height = 'auto';
+            comment_textarea[0].style.height = 'auto';
         
             // prop, 스크롤 높이 계산
-            let textarea_height = textarea.prop('scrollHeight');
+            let textarea_height = $(comment_textarea).prop('scrollHeight');
             // 계산한 높이를 textarea의 css style로 지정
-            textarea.css('height', textarea_height);
-        };
+            $(comment_textarea).css('height', textarea_height);
+        });
     });
 });
