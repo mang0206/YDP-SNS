@@ -21,8 +21,9 @@ $(".popup_submit_btn").on("click", function(){
     
     if (text != '' || image.length != 0) {
         $(".popup_submit_btn").attr('type','submit');  
+        console.log(image.length)
     } else {
-        alert('내용을 입력해주세요.')  
+        alert('내용을 입력해주세요.');
     };
 });
 

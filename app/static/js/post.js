@@ -1,7 +1,7 @@
 // 동일한 content 구조가 들어가는 page에 export
 
 // session user 더보기 btn
-$(function(){
+$(function(){    
     let more_icon = document.querySelectorAll(".more_icon");
     more_icon.forEach(more => {
         $(more).click(function(index){
@@ -33,9 +33,9 @@ $(function(){
         let total_img_val = $(img_num).attr('value');
         //해당 P 태그의 양쪽 화살표 버튼
         let img_arrow_btn = $(img_num).parent().siblings('.content_image_viewer').children().children('.img_arrow_btn');
-        
-        //업로드한 이미지가 한 장이거나 없을 경우 화살표 & img_num 표시 X
-        if (total_img_val == "1" || total_img_val == "0") {
+
+        //업로드한 이미지가 한 장일 경우 화살표 & img_num 표시 X
+        if (total_img_val == "1") {
             $(img_arrow_btn).css({"display":"none"});
             $(img_num).css({"display":"none"});
         };
@@ -51,10 +51,8 @@ $(function(){
     let img_albums = document.querySelectorAll('.img_album');
     //각 이미지 앨범마다 다른 변수를 지정
     img_albums.forEach(img_album => {
-        // console.log(typeof(img_album), img_album)
         //해당 게시물의 총 이미지 개수
         let total_img_num = $(img_album).children().attr('value');
-        // console.log("게시물 이미지 개수",total_img_num)
 
         let img_index = 0; // 이미지 index
         let translate = 0; //이미지 이동 거리(x축)
@@ -64,7 +62,22 @@ $(function(){
         let arrow_btn = $(img_album).siblings(".img_arrow_btn"); 
         //현재 게시물의 p태그
         let p_tag = $(img_album).parent().parent().siblings(".content_footer").children('.img_number');
-        
+        //현재 게시물의 textarea
+        let content_text = $(img_album).parent().parent().siblings(".content_text");
+        //img의 src 마지막 문자열 추출 
+        let image_type = p_tag.attr('img').slice(-3, -2);
+
+        //img null인 경우(마지막 문자열이 dot)
+        if (image_type == ".") {
+            //image 영역 숨김
+            let img_area = $(img_album).parent().parent();
+            img_area.css({"display":"none"});
+        };
+        //text null인 경우
+        if (content_text.val() == "") {
+            content_text.css({"display":"none"});
+        };
+
         $(arrow_btn).click(function(){
             //해당 게시물에서 누른 버튼이 right인 경우
             if ($(this).attr("class") == "img_arrow_btn right_arrow") {

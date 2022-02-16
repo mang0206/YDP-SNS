@@ -197,6 +197,7 @@ def content_submit():
     content_txt = request.form.get('content_txt')
     content_file = request.files.getlist("content_file[]")    
     print('-==============================',content_txt, content_file)
+    # print("get list",len(content_file))
 
     time = dt.datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
     
