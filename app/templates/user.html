@@ -106,7 +106,9 @@
                                 </div>
                                 {% endif %}
                             </div>
+                            <!-- 게시글 text area -->
                             <textarea class="content_text" id="" disabled>{{ post['text'] }}</textarea>
+                            <!-- 게시글 image area -->
                             <div class="content_image_viewer">
                                 <div class="content_image_container">
                                     <button class="img_arrow_btn left_arrow"><img id="left_arrow" src="../static/img/left_arrow.png" alt=""></button>
@@ -119,6 +121,7 @@
                                 </div>
                             </div>
                             <div class="content_footer">
+                                <!-- 좋아요 기능 -->
                                 <div class="content_reaction">
                                     <!-- session 유저가 좋아요를 누른 상태일 경우 -->
                                     {% if post['_id']|string in session['like'] %}
@@ -152,7 +155,9 @@
                                         </div>
                                     </div>
                                 </div>
-                                <p class="img_number"> 1 / {{ post['images']|length }}</p>
+                                <!-- 이미지 번호 -->
+                                <p class="img_number" value="{{ post['images']|length }}">1 / {{ post['images']|length }}</p>
+                                <!-- 댓글 기능 -->
                                 <div class="content_reaction">
                                     <img src="../static/img/chat.png" alt="" class="content_icon" onclick="comment_btn();">
                                     <p class="content_comment" onclick="comment_btn();">00개</p>
