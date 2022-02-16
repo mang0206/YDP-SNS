@@ -239,15 +239,12 @@ def delete_post():
     # 해당 게시물에 해당하는 s3의 이미지 파일들 삭제
     for img in del_post['images']:
         tmp_img = img.split('/')[-1]
-        print(tmp_img)
-        # if 'postimages' in tmp_img :
-        #     tmp_img = tmp_img.split('/')[-1]
-        # s3_delete_image(img.split('/')[-1], file_kind='postimages')
+        if 'postimages' in tmp_img :
+            tmp_img = tmp_img.split('/')[-1]
+        s3_delete_image(img.split('/')[-1], file_kind='postimages')
 
     # 해당 게시물 좋아요 누른 사용자에 대한 document 정리
     for user in del_post['like']:
-        print('like', user)
-        print('id', del_post['_id'], data)
         col_user.update_one({'nickname': user['nickname']}, {'$pull' : {'like': data}})
         print(col_user.find_one({'nickname': user['nickname']}, {'_id':0, 'like':1})['like'])
 
