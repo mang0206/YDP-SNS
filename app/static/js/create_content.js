@@ -12,6 +12,19 @@ function plus(){
     document.querySelector(".plus_background").className = "plus_background show";
     document.querySelector(".body").className = "body scroll_hidden";
 }
+// null type 게시물 공유하기 버튼 disable
+$(".popup_submit_btn").on("click", function(){
+    let text = $('#popup_textarea').val();
+    let image = $('#file_container').children();
+    console.log(text)
+    console.log(image.length)
+    
+    if (text != '' || image.length != 0) {
+        $(".popup_submit_btn").attr('type','submit');  
+    } else {
+        alert('내용을 입력해주세요.')  
+    };
+});
 
 // 게시물 작성 취소 버튼 및 경고창
 function close(){ 
