@@ -233,16 +233,28 @@ def delete_post():
     col_user = db.get_collection('user')
     col_post = db.get_collection('post')
     data = request.get_json()
-    img_list = col_post.find_one({'_id':ObjectId(data)}, {'_id':0, 'images':1})['images']
-    for img in img_list:
+
+    del_post = col_post.find_one({'_id':ObjectId(data)})
+
+    # 해당 게시물에 해당하는 s3의 이미지 파일들 삭제
+    for img in del_post['images']:
         tmp_img = img.split('/')[-1]
-        if 'pistimages' in tmp_img :
-            tmp_img = tmp_img.split('/')[-1]
         print(tmp_img)
-        s3_delete_image(img.split('/')[-1], file_kind='postimages')
+        # if 'postimages' in tmp_img :
+        #     tmp_img = tmp_img.split('/')[-1]
+        # s3_delete_image(img.split('/')[-1], file_kind='postimages')
 
+    # 해당 게시물 좋아요 누른 사용자에 대한 document 정리
+    for user in del_post['like']:
+        print('like', user)
+        print('id', del_post['_id'], data)
+        col_user.update_one({'nickname': user['nickname']}, {'$pull' : {'like': data}})
+        print(col_user.find_one({'nickname': user['nickname']}, {'_id':0, 'like':1})['like'])
+
+    # 해당 게시물 댓글 및 답글단 사용자에 대한 document 정리
+
+    # 최종 해당 post 삭제 
     col_post.delete_one({'_id':ObjectId(data)})
-
     return jsonify(result = "success")
 
 @app.route("/content_like_submit", methods=["POST"])
