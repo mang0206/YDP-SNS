@@ -44,6 +44,7 @@ $(function(){
     let img_albums = document.querySelectorAll('.img_album');
     //각 이미지 앨범마다 다른 변수를 지정
     img_albums.forEach(img_album => {
+        // console.log(typeof(img_album), img_album)
         //해당 게시물의 총 이미지 개수
         let total_img_num = $(img_album).children().attr('value');
         // console.log("게시물 이미지 개수",total_img_num)
@@ -54,7 +55,6 @@ $(function(){
 
         //현재 게시물의 버튼
         let arrow_btn = $(img_album).siblings(".img_arrow_btn"); 
-        console.log(typeof(arrow_btn))
         //현재 게시물의 p태그
         let p_tag = $(img_album).parent().parent().siblings(".content_footer").children('.img_number');
         
@@ -167,33 +167,6 @@ $('[id$=_delete_btn]').click(function(){
     })
 });
 
-
-// comment list btn
-let change = false;
-$('.content_comment').click(function(){
-    if (change) {
-        change = false;        
-    } else {
-        change = true;
-    }
-    $('.content_comment_container').toggle(function(){
-        $(this).className = "content_comment_container none"
-        $(this).removeAttr('display')
-    });
-});
-
-// 댓글 입력란 높이 조절
-function auto_height(){
-    let textarea = $('.comment_textarea');
-    // 높이가 줄어들 경우 height값 초기화
-    textarea[0].style.height = 'auto';
-
-    // prop, 스크롤 높이 계산
-    let textarea_height = textarea.prop('scrollHeight');
-    // 계산한 높이를 textarea의 css style로 지정
-    textarea.css('height', textarea_height);
-};
-
 //like btn ajax
 $('[id$=_icon]').click(function(){
     let btn_value = $(this).attr('value');
@@ -283,27 +256,40 @@ $('[id$=_icon]').click(function(){
 
 
 // comment list btn
-// let change = false;
-$('.content_comment').click(function(){
-    if (change) {
-        change = false;        
-    } else {
-        change = true;
-    }
-    $('.content_comment_container').toggle(function(){
-        $(this).className = "content_comment_container none"
-        $(this).removeAttr('display')
+$(function(){
+    //모든 댓글 영역
+    let comment_area = document.querySelectorAll(".content_comment_container");
+    //각 게시물의 댓글 영역
+    comment_area.forEach(comment => {
+        //각 게시물의 댓글 버튼
+        let comment_btn = $(comment).siblings(".content_footer").children(".comment").children();
+        //toggle 상태
+        let change = false;
+        //해당 게시물의 comment_btn 클릭 시
+        $(comment_btn).click(function(){
+            if (change) {
+                change = false; 
+                console.log("false")       
+            } else {
+                change = true;
+                console.log("true")       
+            };
+            //댓글 영역에 toggle 효과를 줌
+            $(comment).toggle(function(){
+                $(comment).attr("class","content_comment_container none");
+                $(comment).removeAttr('display');
+            });
+        })
+        // 해당 게시글의 댓글 입력란 높이 조절
+        function auto_height(){
+            let textarea = $('.comment_textarea');
+            // 높이가 줄어들 경우 height값 초기화
+            textarea[0].style.height = 'auto';
+        
+            // prop, 스크롤 높이 계산
+            let textarea_height = textarea.prop('scrollHeight');
+            // 계산한 높이를 textarea의 css style로 지정
+            textarea.css('height', textarea_height);
+        };
     });
 });
-
-// 댓글 입력란 높이 조절
-function auto_height(){
-    let textarea = $('.comment_textarea');
-    // 높이가 줄어들 경우 height값 초기화
-    textarea[0].style.height = 'auto';
-
-    // prop, 스크롤 높이 계산
-    let textarea_height = textarea.prop('scrollHeight');
-    // 계산한 높이를 textarea의 css style로 지정
-    textarea.css('height', textarea_height);
-};
