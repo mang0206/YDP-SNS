@@ -1,16 +1,23 @@
 // 동일한 content 구조가 들어가는 page에 export
 
 // session user 더보기 btn
-$('.more_icon').click(function(){
-    // document.querySelector(".more_icon_popup_back").className = "more_icon_popup_back";
-    $(this).next().removeClass('none')
-    document.querySelector(".body").className = "body scroll_hidden";
-});
-
-$('.more_icon_cancel').click(function(){
-    // document.querySelector(".more_icon_popup_back").className = "more_icon_popup_back none";
-    $(this).parent().parent().addClass('none')
-    document.querySelector(".body").className = "body";
+$(function(){
+    let more_icon = document.querySelectorAll(".more_icon");
+    more_icon.forEach(more => {
+        $(more).click(function(index){
+            console.log("length",more_icon.length)
+            console.log("index",index)
+            $(more).next().removeClass('none');
+            document.querySelector(".body").className = "body scroll_hidden";    
+        });
+    });
+    let more_icon_cancel = document.querySelectorAll(".more_icon_cancel");
+    more_icon_cancel.forEach(cancel => {
+        $(cancel).click(function(){
+            $(cancel).parent().parent().addClass('none');
+            document.querySelector(".body").className = "body";    
+        });
+    });
 });
 
 // 이미지 슬라이드
@@ -287,7 +294,7 @@ $(function(){
         $(comment_textarea).on('keyup',function(){
             console.log("typing")
             // 높이가 줄어들 경우 height값 초기화
-            comment_textarea[0].style.height = 'auto';
+            $(comment_textarea)[0].style.height = 'auto';
         
             // prop, 스크롤 높이 계산
             let textarea_height = $(comment_textarea).prop('scrollHeight');
