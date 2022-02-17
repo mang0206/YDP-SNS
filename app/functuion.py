@@ -21,9 +21,11 @@ def s3_connection():
         s3 = boto3.client(
             service_name="s3",
             region_name="ap-northeast-2", # 자신이 설정한 bucket region
-            aws_access_key_id='AKIAYFTWJFXVNZRYDQAU ',
+            aws_access_key_id='AKIAYFTWJFXVNLXYHWV3 ',
+            # aws_access_key_id='AKIAYFTWJFXVNZRYDQAU ',
             # aws_access_key_id = 'AKIAYFTWJFXVGDTGFTY3',
-            aws_secret_access_key='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',
+            aws_secret_access_key='HiD+S5nbbaeEigpA9I8SXBMFucod+9rxQTpc18OO',
+            # aws_secret_access_key='VysV1beByKAd9/ThO66bw4/1z8vI8Gkicbre/ZTn',
             # aws_secret_access_key = 'l1o5eYtPm/fx1fD7/ShmW42pm9FWScihC2BKeK3o'
         )
     except Exception as e:

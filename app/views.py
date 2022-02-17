@@ -200,7 +200,11 @@ def content_submit():
     # print("get list",len(content_file))
 
     time = dt.datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
-    
+    now_time = dt.datetime.now()
+    print(now_time)
+    print(type(now_time))
+
+
     img_list = []
     if len(content_file) > 0:
         for img in content_file:
