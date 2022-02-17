@@ -5,8 +5,6 @@ $(function(){
     let more_icon = document.querySelectorAll(".more_icon");
     more_icon.forEach(more => {
         $(more).click(function(index){
-            console.log("length",more_icon.length)
-            console.log("index",index)
             $(more).next().removeClass('none');
             document.querySelector(".body").className = "body scroll_hidden";    
         });
@@ -19,6 +17,49 @@ $(function(){
         });
     });
 });
+
+//Post Update-area show Button
+$('[id$=_update_btn]').click(function(){
+    let post_id = $(this).attr('value');
+    $(this).siblings(".update_form").attr('class',"update_form");
+    //게시글 삭제 영역 숨김
+    $(this).siblings(".post_delete_container").css('display',"");
+});
+//Post Update cancel Button
+$('[id$=_cancel_btn]').click(function(){
+    $(this).parent().parent().attr('class',"update_form none");
+});
+
+//Post Delete-area show Button
+$('[id$=t_delete]').click(function(){
+    $(this).siblings(".post_delete_container").css('display',"flex");
+    $(this).siblings(".update_form").attr('class',"update_form none");
+});
+//Post Delete Button
+$('[id$=_delete_btn]').click(function(){
+    let post_id = $(this).attr('value');
+    // close_div = $(this).parent().parent().parent().parent().parent();
+    // console.log(close_div)
+
+    $.ajax({
+        type: 'DELETE',
+        url: "/content_submit",
+        data: JSON.stringify(post_id),
+        dataType: 'JSON',
+        contentType: "application/json",
+        success: function(data){
+            // $(close_div).addClass('none')
+            $(close_div).css("display" ,"none");
+            document.querySelector(".body").className = "body";
+            alert('게시글이 삭제되었습니다.')
+        },
+        error: function(request, status, error){
+            alert('ajax 통신 실패')
+            alert(error);
+        }
+    });
+});
+
 
 // 이미지 슬라이드
 //1.페이지 처음 로드 시 이미지의 개수에 따라 화살표 버튼 및 이미지 번호 표시를 구분 함
@@ -172,8 +213,6 @@ $(function(){
 
         //업로드 시간 - 현재 시간
         let post_time = new Date(js_time) - new Date(jinja_time);
-        console.log(post_time)
-        console.log(typeof(post_time))
 
         //밀리초인 시간 차를 정수형으로 바꿈
         let day_seconds = 24*60*60*1000;
@@ -187,27 +226,21 @@ $(function(){
         //변환된 시간은 int 단위로 계속 변경되므로 누적 값인 밀리초로 조건 설정
         if (post_time < 60000) { //59초 까지만 초 단위
             $(time).text(sec+"초 전");
-            console.log(sec)
         }
         else if (post_time < 3600000) { //59분 까지만 분 단위
             $(time).text(min+"분 전");
-            console.log(min)
         }
         else if (post_time < 86400000) { //23시 까지만 시간 단위
             $(time).text(hr+"시간 전");
-            console.log(hr)
         }
         else if (post_time < 604800000){ //6일 까지만 일 단위
             $(time).text(d+"일 전");
-            console.log(d)
         }
         else if (y = 0){ //일주일 이후 부터 업로드 월,일 단위
             $(time).text(split_time[1]+"월 "+split_time[2]+"일");
-            console.log(m)
         }
         else if (y >= 1){ //해가 바뀌면 업로드 년,월,일 단위
             $(time).text(split_time[0]+"년 "+split_time[1]+"월 "+split_time[2]+"일");
-            console.log(y)
         }
     });
 });
@@ -227,28 +260,6 @@ $('.like_close').click(function(){
     // document.querySelector(".like_container_back").className = "like_container_back none";
     $(like_contaiber).addClass('none')
     document.querySelector(".body").className = "body";
-});
-
-$('[id$=_delete_btn]').click(function(){
-    let post_id = $(this).attr('value');
-    close_div = $(this).parent().parent().parent().parent().parent();
-    console.log(close_div)
-    $.ajax({
-        type: 'DELETE',
-        url: "/content_submit",
-        data: JSON.stringify(post_id),
-        dataType: 'JSON',
-        contentType: "application/json",
-        success: function(data){
-            // $(close_div).addClass('none')
-            $(close_div).css("display" ,"none");
-            document.querySelector(".body").className = "body";
-        },
-        error: function(request, status, error){
-            alert('ajax 통신 실패')
-            alert(error);
-        }
-    })
 });
 
 //like btn ajax
@@ -380,3 +391,4 @@ $(function(){
         });
     });
 });
+
