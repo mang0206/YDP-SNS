@@ -29,26 +29,26 @@ def modify_user():
 
 def modify_user_one():
     '''유저에 친구 목록 리스트 추가'''
-    # result = col.update_one(
-        # {'nickname': 'aa'},
-        # {'$set':{'like':[]}}
-    # )
+    result = col.update_one(
+        {'nickname': 'fff'},
+        {'$set':{'like':[]}}
+    )
     # result = col.update_many(
     #     {},
     #     {'$unset': {'friend':1}}
     # )
-    result = col_post.update_one(
-        {'_id':ObjectId('6201d33f299b641572be24b9')},
-        {'$set': {'like':[]}}
-    )
+    # result = col_post.update_one(
+    #     {'_id':ObjectId('6201d33f299b641572be24b9')},
+    #     {'$set': {'like':[]}}
+    # )
     # return
-    id = col.find_one({'user_id':'default'})
-    background_img = id['background_img'] 
+    # id = col.find_one({'user_id':'default'})
+    # background_img = id['background_img'] 
     # print(profile_id)
-    result = col.update_many(
-        {},
-        {'$set': {'background_img': background_img }}
-    )
+    # result = col.update_many(
+    #     {},
+    #     {'$set': {'background_img': background_img }}
+    # )
     # result = col.update_many({}, {'$rename': {'user_ide':'nickname'}})
 
 def del_user():
@@ -98,5 +98,3 @@ def search():
 # search()
 # modify_user_one()
 # insert()
-a= '#aaaa '
-print([h[1:] for h in a.split(' ') if len(h) and h[0] == '#'])

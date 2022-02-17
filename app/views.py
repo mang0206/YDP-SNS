@@ -16,6 +16,7 @@ from flask_mail import Mail, Message
 import random
 from .functuion import *
 import datetime as dt
+import pymongo
 
 db = conn.get_database('root')
 bcrypt = Bcrypt()
@@ -77,7 +78,8 @@ def join():
                 'profile_img': _default['profile_img'],
                 'background_img': _default['background_img'],
                 'bio': None,
-                'user_email': email
+                'user_email': email,
+                'like': []
                 })
             return render_template('join_success.html')
         else:
@@ -292,7 +294,7 @@ def user(user):
     # session 유저가 친구 요청을 보낸 user의 id 리스트
     session_request_list = [user['request_user'] for user in col_request_friend.find({'user_id': session['login']})]
     # print(friend_dic)
-    post_dic = col_post.find({'create_user_nickname': user})
+    post_dic = col_post.find({'create_user_nickname': user}).sort("create_time", pymongo.DESCENDING)  
     # print(list(post_dic))
     return render_template('user.html', user=search_user,session_friend_list=session_friend_list,\
          friend_dic=friend_dic, session_request_list = session_request_list, post_dic=post_dic)
