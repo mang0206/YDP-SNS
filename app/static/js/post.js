@@ -1,16 +1,23 @@
 // 동일한 content 구조가 들어가는 page에 export
 
 // session user 더보기 btn
-$('.more_icon').click(function(){
-    // document.querySelector(".more_icon_popup_back").className = "more_icon_popup_back";
-    $(this).next().removeClass('none')
-    document.querySelector(".body").className = "body scroll_hidden";
-});
-
-$('.more_icon_cancel').click(function(){
-    // document.querySelector(".more_icon_popup_back").className = "more_icon_popup_back none";
-    $(this).parent().parent().addClass('none')
-    document.querySelector(".body").className = "body";
+$(function(){    
+    let more_icon = document.querySelectorAll(".more_icon");
+    more_icon.forEach(more => {
+        $(more).click(function(index){
+            console.log("length",more_icon.length)
+            console.log("index",index)
+            $(more).next().removeClass('none');
+            document.querySelector(".body").className = "body scroll_hidden";    
+        });
+    });
+    let more_icon_cancel = document.querySelectorAll(".more_icon_cancel");
+    more_icon_cancel.forEach(cancel => {
+        $(cancel).click(function(){
+            $(cancel).parent().parent().addClass('none');
+            document.querySelector(".body").className = "body";    
+        });
+    });
 });
 
 // 이미지 슬라이드
@@ -26,9 +33,9 @@ $(function(){
         let total_img_val = $(img_num).attr('value');
         //해당 P 태그의 양쪽 화살표 버튼
         let img_arrow_btn = $(img_num).parent().siblings('.content_image_viewer').children().children('.img_arrow_btn');
-        
-        //업로드한 이미지가 한 장이거나 없을 경우 화살표 & img_num 표시 X
-        if (total_img_val == "1" || total_img_val == "0") {
+
+        //업로드한 이미지가 한 장일 경우 화살표 & img_num 표시 X
+        if (total_img_val == "1") {
             $(img_arrow_btn).css({"display":"none"});
             $(img_num).css({"display":"none"});
         };
@@ -46,7 +53,6 @@ $(function(){
     img_albums.forEach(img_album => {
         //해당 게시물의 총 이미지 개수
         let total_img_num = $(img_album).children().attr('value');
-        // console.log("게시물 이미지 개수",total_img_num)
 
         let img_index = 0; // 이미지 index
         let translate = 0; //이미지 이동 거리(x축)
@@ -54,10 +60,24 @@ $(function(){
 
         //현재 게시물의 버튼
         let arrow_btn = $(img_album).siblings(".img_arrow_btn"); 
-        console.log(typeof(arrow_btn))
         //현재 게시물의 p태그
         let p_tag = $(img_album).parent().parent().siblings(".content_footer").children('.img_number');
-        
+        //현재 게시물의 textarea
+        let content_text = $(img_album).parent().parent().siblings(".content_text");
+        //img의 src 마지막 문자열 추출 
+        let image_type = p_tag.attr('img').slice(-3, -2);
+
+        //img null인 경우(마지막 문자열이 dot)
+        if (image_type == ".") {
+            //image 영역 숨김
+            let img_area = $(img_album).parent().parent();
+            img_area.css({"display":"none"});
+        };
+        //text null인 경우
+        if (content_text.val() == "") {
+            content_text.css({"display":"none"});
+        };
+
         $(arrow_btn).click(function(){
             //해당 게시물에서 누른 버튼이 right인 경우
             if ($(this).attr("class") == "img_arrow_btn right_arrow") {
@@ -128,6 +148,70 @@ $(function(){
     });
 });
 
+// upload time
+$(function(){
+    let create_time = document.querySelectorAll('.create_time');
+    //각 게시물 별 업로드 시간
+    create_time.forEach(time => {
+        //jinja로 받아온 시간 
+        let jinja = $(time).attr("value");
+        let split_time = jinja.split('-');
+        // Date 형식에 맞게 변환 (년,월,일,시,분,초 순서)
+        let jinja_time = split_time[0]+"-"+split_time[1]+"-"+split_time[2]+" "+split_time[3]+":"+split_time[4]+":"+split_time[5];
+
+        //현재 시간
+        let now = new Date();
+        let year = now.getFullYear();
+        let month = now.getMonth()+1;// month는 0~11이기 때문에 +1 필요
+        let date = now.getDate();
+        let hours = now.getHours();
+        let minutes = now.getMinutes();
+        let seconds = now.getSeconds();
+        // Date 형식에 맞게 변환
+        let js_time = year+"-"+month+"-"+date+" "+hours+":"+minutes+":"+seconds;
+
+        //업로드 시간 - 현재 시간
+        let post_time = new Date(js_time) - new Date(jinja_time);
+        console.log(post_time)
+        console.log(typeof(post_time))
+
+        //밀리초인 시간 차를 정수형으로 바꿈
+        let day_seconds = 24*60*60*1000;
+        let y = parseInt(post_time/(day_seconds*30*12));
+        let m = parseInt(post_time/(day_seconds*30));
+        let d = parseInt(post_time/day_seconds);
+        let hr = Math.floor((post_time %(1000*60*60*24))/(1000*60*60));
+        let min = Math.floor((post_time %(1000*60*60))/(1000*60));
+        let sec = Math.floor((post_time %(1000*60))/1000);
+        //최종 변환된 시간을 text로 입력
+        //변환된 시간은 int 단위로 계속 변경되므로 누적 값인 밀리초로 조건 설정
+        if (post_time < 60000) { //59초 까지만 초 단위
+            $(time).text(sec+"초 전");
+            console.log(sec)
+        }
+        else if (post_time < 3600000) { //59분 까지만 분 단위
+            $(time).text(min+"분 전");
+            console.log(min)
+        }
+        else if (post_time < 86400000) { //23시 까지만 시간 단위
+            $(time).text(hr+"시간 전");
+            console.log(hr)
+        }
+        else if (post_time < 604800000){ //6일 까지만 일 단위
+            $(time).text(d+"일 전");
+            console.log(d)
+        }
+        else if (y = 0){ //일주일 이후 부터 업로드 월,일 단위
+            $(time).text(split_time[1]+"월 "+split_time[2]+"일");
+            console.log(m)
+        }
+        else if (y >= 1){ //해가 바뀌면 업로드 년,월,일 단위
+            $(time).text(split_time[0]+"년 "+split_time[1]+"월 "+split_time[2]+"일");
+            console.log(y)
+        }
+    });
+});
+
 // like list btn
 $('.content_like').click(function(){
     let like_contaiber = $(this).parent().children('.like_container_back');
@@ -166,33 +250,6 @@ $('[id$=_delete_btn]').click(function(){
         }
     })
 });
-
-
-// comment list btn
-let change = false;
-$('.content_comment').click(function(){
-    if (change) {
-        change = false;        
-    } else {
-        change = true;
-    }
-    $('.content_comment_container').toggle(function(){
-        $(this).className = "content_comment_container none"
-        $(this).removeAttr('display')
-    });
-});
-
-// 댓글 입력란 높이 조절
-function auto_height(){
-    let textarea = $('.comment_textarea');
-    // 높이가 줄어들 경우 height값 초기화
-    textarea[0].style.height = 'auto';
-
-    // prop, 스크롤 높이 계산
-    let textarea_height = textarea.prop('scrollHeight');
-    // 계산한 높이를 textarea의 css style로 지정
-    textarea.css('height', textarea_height);
-};
 
 //like btn ajax
 $('[id$=_icon]').click(function(){
@@ -283,27 +340,43 @@ $('[id$=_icon]').click(function(){
 
 
 // comment list btn
-// let change = false;
-$('.content_comment').click(function(){
-    if (change) {
-        change = false;        
-    } else {
-        change = true;
-    }
-    $('.content_comment_container').toggle(function(){
-        $(this).className = "content_comment_container none"
-        $(this).removeAttr('display')
+$(function(){
+    //모든 댓글 영역
+    let comment_area = document.querySelectorAll(".content_comment_container");
+    //각 게시물의 댓글 영역
+    comment_area.forEach(comment => {
+        //각 게시물의 댓글 버튼
+        let comment_btn = $(comment).siblings(".content_footer").children(".comment").children();
+        //toggle 상태
+        let change = false;
+        //해당 게시물의 comment_btn 클릭 시
+        $(comment_btn).click(function(){
+            if (change) {
+                change = false; 
+                console.log("false")       
+            } else {
+                change = true;
+                console.log("true")       
+            };
+            //댓글 영역에 toggle 효과를 줌
+            $(comment).toggle(function(){
+                $(comment).attr("class","content_comment_container none");
+                $(comment).removeAttr('display');
+            });
+        })
+
+        // 해당 게시글의 댓글 입력란 높이 조절
+        let comment_textarea = $(comment).children(".comment_form").children(".comment_textarea");
+        //댓글 입력란에서 keyup이 일어날 때 마다 실행
+        $(comment_textarea).on('keyup',function(){
+            console.log("typing")
+            // 높이가 줄어들 경우 height값 초기화
+            $(comment_textarea)[0].style.height = 'auto';
+        
+            // prop, 스크롤 높이 계산
+            let textarea_height = $(comment_textarea).prop('scrollHeight');
+            // 계산한 높이를 textarea의 css style로 지정
+            $(comment_textarea).css('height', textarea_height);
+        });
     });
 });
-
-// 댓글 입력란 높이 조절
-function auto_height(){
-    let textarea = $('.comment_textarea');
-    // 높이가 줄어들 경우 height값 초기화
-    textarea[0].style.height = 'auto';
-
-    // prop, 스크롤 높이 계산
-    let textarea_height = textarea.prop('scrollHeight');
-    // 계산한 높이를 textarea의 css style로 지정
-    textarea.css('height', textarea_height);
-};

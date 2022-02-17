@@ -91,7 +91,7 @@
                                     </a>
                                     <div>
                                         <a href="" class="author_nickname">{{ post['create_user_nickname'] }}</a>
-                                        <p class="create_time">00시간 전 {{ post['create_time'] }}</p>
+                                        <p class="create_time" value="{{ post['create_time'] }}"></p>
                                     </div>
                                 </div>
                                 <!-- ver 1.0에선 session user만 버튼 노출 -->
@@ -156,11 +156,11 @@
                                     </div>
                                 </div>
                                 <!-- 이미지 번호 -->
-                                <p class="img_number" value="{{ post['images']|length }}">1 / {{ post['images']|length }}</p>
+                                <p class="img_number" value="{{ post['images']|length }}" img="{{ post['images'] }}">1 / {{ post['images']|length }}</p>
                                 <!-- 댓글 기능 -->
-                                <div class="content_reaction">
-                                    <img src="../static/img/chat.png" alt="" class="content_icon" onclick="comment_btn();">
-                                    <p class="content_comment" onclick="comment_btn();">00개</p>
+                                <div class="content_reaction comment">
+                                    <img src="../static/img/chat.png" alt="" class="content_icon">
+                                    <p class="content_comment">00개</p>
                                 </div>
                             </div>
                             <!-- 댓글 클릭하면 나타나는 영역 -->
@@ -180,7 +180,7 @@
                                     <!-- endfor -->
                                 </div>
                                 <form action="" class="comment_form">
-                                    <textarea class="comment_textarea" onkeyup="auto_height();" style="height: 20px;"></textarea>
+                                    <textarea class="comment_textarea"></textarea>
                                     <button type="submit">댓글 달기</button>
                                 </form>
                             </div>
