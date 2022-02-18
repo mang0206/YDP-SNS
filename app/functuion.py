@@ -82,14 +82,6 @@ def s3_get_image_url(s3, filename, file_kind = 'images'):
     location = s3.get_bucket_location(Bucket='ydpsns')["LocationConstraint"]
     return f"https://{'ydpsns'}.s3.{location}.amazonaws.com/{file_kind}/{filename}"
 
-def s3_delete_image(filename, file_kind ='images'):
-    print('delete =', f'{file_kind}/{filename}')
-    # try:
-        # s3.delete_object(Bucket='ydpsns',Key=f'{file_kind}/{filename}')
-    # except Exception as e:
-        # return False
-    s3.delete_object(Bucket='ydpsns', Key=f'{file_kind}/{filename}')
-
 @app.route('/check_password', methods=['GET','POST'])
 def check_password():
 

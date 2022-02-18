@@ -206,7 +206,6 @@ def content_submit():
     print(now_time)
     print(type(now_time))
 
-
     img_list = []
     if len(content_file) > 0:
         for img in content_file:
@@ -252,7 +251,7 @@ def delete_post():
             tmp_img = tmp_img.split('/')[-1]
         col_delete.insert_one({
             'file_route' : 'postimages',
-            'file_name' : 'tmp_img'
+            'file_name' : tmp_img
         })
         # s3_delete_image(tmp_img, file_kind='postimages')
 
@@ -501,14 +500,18 @@ def connection_mongodb():
 
     col = db.get_collection('user')
     col_post = db.get_collection('post')
+    col_delete = db.get_collection('deleteFile')
     # print(* list(col.find({},{'user_id':True, 'nickname':True})))
     # col.update_many({},{"$rename":{"name":"user_name"}})
-    lis = col.find({'nickname':'aa'})
+    lis = col.find_one({'nickname':'bbb'})
     
     json_lis = dumps(lis)
     print(json_lis)
     print('\n\n\n')
-    for i in col_post.find({}):
+    for i in lis['like']:
+        f = col_post.find_one({'_id': ObjectId(i)})
+        print(f, end='\n-------------------------\n')
+    for i in col_delete.find({}):
         print(i, end='\n-------------------------\n')
     return jsonify(json_lis)
 
