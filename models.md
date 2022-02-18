@@ -36,6 +36,10 @@
     - create_time : 작성 시간(24시간 전까지는 ~시간 전, 지난 후에는 일자 표시)
     - reply : 댓글의 답글
 
+## deleteFile
+    - file_route : s3의 파일 경로
+    - file_name : 삭제할 이미지 파일 명
+
 # session 정보
     session['login'] : id(로그인 id)
     session['nickname'] = nickname

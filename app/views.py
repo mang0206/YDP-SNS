@@ -239,6 +239,8 @@ def content_submit():
 def delete_post():
     col_user = db.get_collection('user')
     col_post = db.get_collection('post')
+    col_delete = db.get_collection('deleteFile')
+
     data = request.get_json()
 
     del_post = col_post.find_one({'_id':ObjectId(data)})
@@ -248,7 +250,11 @@ def delete_post():
         tmp_img = img.split('/')[-1]
         if 'postimages' in tmp_img :
             tmp_img = tmp_img.split('/')[-1]
-        s3_delete_image(img.split('/')[-1], file_kind='postimages')
+        col_delete.insert_one({
+            'file_route' : 'postimages',
+            'file_name' : 'tmp_img'
+        })
+        # s3_delete_image(tmp_img, file_kind='postimages')
 
     # 해당 게시물 좋아요 누른 사용자에 대한 document 정리
     for user in del_post['like']:
