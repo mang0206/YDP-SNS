@@ -584,15 +584,27 @@ a:visited{color: black}
     margin: 10px 0;
     font-size: 13px;
 }
-#post_delete_btn{
+.delete_btn_container{
+    width: 150px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-around;
+}
+.delete_btn{
     width: 50px;
     height: 25px;
-    margin-bottom: 10px;
-
-    color: #FFF;
-    font-weight: 300;
-    background-color: #46A6FF;
-    border-radius: 5px;
+    background: #FFF;
+}
+.delete_btn:hover{
+    background: lightgray;
+    color: black;
+    font-weight: 400;
+}
+#post_delete_btn{
+    background: #ffcccc;
+}
+#post_delete_btn:hover{
+    background: #ffa4a4;
 }
 .content_footer{
     padding: 8px 15px;
@@ -711,6 +723,13 @@ a:visited{color: black}
 
     resize: none;
     overflow: hidden;
+}
+.comment_submit{
+    padding: 0 10px;
+    font-size: 12px;
+    background: #dcdcdc;
+    border: none;
+    border-radius: 3px;
 }
 /* index */
 .index_container{

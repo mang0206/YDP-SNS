@@ -131,7 +131,10 @@
                                         <button id="post_delete" class="more_popup_btn">게시글 삭제</button>
                                         <div class="post_delete_container none">
                                             <p>선택한 게시글이 삭제됩니다.</p>
-                                            <button id="post_delete_btn" value='{{post["_id"]}}'>확인</button>
+                                            <div class="delete_btn_container">
+                                                <button id="delete_cancel_btn" class="delete_btn">취소</button>
+                                                <button id="post_delete_btn" class="delete_btn" value='{{post["_id"]}}'>확인</button>
+                                            </div>
                                         </div>
                                         <button class="more_icon_cancel more_popup_btn">취소</button>
                                     </div>
@@ -213,7 +216,7 @@
                                 </div>
                                 <form action="" class="comment_form">
                                     <textarea class="comment_textarea"></textarea>
-                                    <button type="submit">댓글 달기</button>
+                                    <button class="comment_btn" type="submit">댓글 달기</button>
                                 </form>
                             </div>
                         </div>

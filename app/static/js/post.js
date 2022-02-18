@@ -25,21 +25,29 @@ $('[id$=_update_btn]').click(function(){
     //게시글 삭제 영역 숨김
     $(this).siblings(".post_delete_container").css({"max-height":"0"});
 });
-//게시글 수정 취소 버튼을 눌렀을 때
+
+//취소 버튼을 눌렀을 때
 $('[id$=_cancel_btn]').click(function(){
-    let textarea = $(this).parent().siblings();
-    //기존 post text에서 변경된 내용이 있는 경우
-    if (textarea.val() != textarea.attr("value")){
-        //수정 초기화하고 창 닫힘
-        if (confirm("작성하신 내용이 초기화됩니다.") == true) {
-            textarea.val(textarea.attr("value"));
+    //update 수정 취소 버튼일 경우
+    if ($(this).attr('id') == 'update_cancel_btn') {
+        let textarea = $(this).parent().siblings();
+        //기존 post text에서 변경된 내용이 있으면
+        if (textarea.val() != textarea.attr("value")){
+            //수정 초기화하고 창 닫힘
+            if (confirm("작성하신 내용이 초기화됩니다.") == true) {
+                textarea.val(textarea.attr("value"));
+                $(this).parent().parent().css({"max-height":"0"});
+            } else{
+                return false
+            };
+        }else{
             $(this).parent().parent().css({"max-height":"0"});
-        } else{
-            return false
-        };
-    }else{
-        $(this).parent().parent().css({"max-height":"0"});
+        }
     }
+    //delete 취소 버튼일 경우
+    else if($(this).attr('id') == 'delete_cancel_btn'){
+        $(this).parent().parent().css({"max-height":"0"});
+    };
 });
 
 //게시글 삭제 메뉴 버튼을 눌렀을 때
