@@ -21,25 +21,61 @@ $(function(){
 //Post Update-area show Button
 $('[id$=_update_btn]').click(function(){
     let post_id = $(this).attr('value');
-    $(this).siblings(".update_form").attr('class',"update_form");
+    $(this).siblings(".update_form").css({"max-height":"95px"});
     //게시글 삭제 영역 숨김
-    $(this).siblings(".post_delete_container").css('display',"");
+    $(this).siblings(".post_delete_container").css({"max-height":"0"});
 });
-//Post Update cancel Button
+//게시글 수정 취소 버튼을 눌렀을 때
 $('[id$=_cancel_btn]').click(function(){
-    $(this).parent().parent().attr('class',"update_form none");
+    let textarea = $(this).parent().siblings();
+    //기존 post text에서 변경된 내용이 있는 경우
+    if (textarea.val() != textarea.attr("value")){
+        //수정 초기화하고 창 닫힘
+        if (confirm("작성하신 내용이 초기화됩니다.") == true) {
+            textarea.val(textarea.attr("value"));
+            $(this).parent().parent().css({"max-height":"0"});
+        } else{
+            return false
+        };
+    }else{
+        $(this).parent().parent().css({"max-height":"0"});
+    }
 });
 
-//Post Delete-area show Button
+//게시글 삭제 메뉴 버튼을 눌렀을 때
 $('[id$=t_delete]').click(function(){
-    $(this).siblings(".post_delete_container").css('display',"flex");
-    $(this).siblings(".update_form").attr('class',"update_form none");
+    let textarea = $(this).siblings('.update_form').children('#update_textarea');
+    //게시글 수정 이력이 존재하는 경우
+    if (textarea.val() != textarea.attr("value")){
+        console.log("change")
+        //수정 취소
+        if (confirm("작성하신 내용이 초기화됩니다.") == true) {
+            console.log("update reset")
+            //기존 내용으로 되돌리고 update hide
+            textarea.val(textarea.attr("value"));
+            $(this).siblings('.update_form').css({"max-height":"0"});
+            //delete show
+            $(this).siblings('.post_delete_container').css({"max-height":"80px"});
+            console.log('delete height 80')
+        }
+        //계속 수정
+        else{
+            console.log("keep update")
+            $(this).siblings('.update_form').css({"max-height":"95px"});
+            $(this).siblings('.post_delete_container').css({"max-height":"0"});
+        };
+    }
+    //게시글 수정 이력이 없으면
+    else{
+        console.log("nothing change")
+        $(this).siblings('.post_delete_container').css({"max-height":"80px"});
+        $(this).siblings('.update_form').css({"max-height":"0"});
+    };
 });
+
 //Post Delete Button
 $('[id$=_delete_btn]').click(function(){
     let post_id = $(this).attr('value');
-    // close_div = $(this).parent().parent().parent().parent().parent();
-    // console.log(close_div)
 
     $.ajax({
         type: 'DELETE',
@@ -133,7 +169,7 @@ $(function(){
                     //해당 게시물 왼쪽 화살표 display 되돌림
                     $(img_album).siblings('.left_arrow').css({"display":""});
                     //앨범 x축 이동 거리(-) 추가 & 이동
-                    translate -= 401;
+                    translate -= 402;
                     $(img_album).css({
                         "transform":`translateX(${translate}px)`
                     });
@@ -156,7 +192,7 @@ $(function(){
                     //해당 게시물 오른쪽 화살표 display 되돌림
                     $(img_album).siblings('.right_arrow').css({"display":""});
                     //앨범 x축 이동 거리(+) 추가 & 이동
-                    translate += 401;
+                    translate += 402;
                     $(img_album).css({
                         "transform":`translateX(${translate}px)`
                     });
