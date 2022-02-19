@@ -12,8 +12,30 @@ $(function(){
     let more_icon_cancel = document.querySelectorAll(".more_icon_cancel");
     more_icon_cancel.forEach(cancel => {
         $(cancel).click(function(){
-            $(cancel).parent().parent().addClass('none');
-            document.querySelector(".body").className = "body";    
+            let post_text = $(cancel).siblings('.update_form').children('#update_textarea');
+            //수정한 이력이 존재하면
+            if (post_text.val() != post_text.attr('value')) {
+                if (confirm('작성하신 내용이 초기화됩니다.')==true) {
+                    //팝업창 닫힘
+                    $(cancel).parent().parent().addClass('none');
+                    document.querySelector(".body").className = "body";    
+                    //게시물 삭제 영역 닫힘
+                    $(cancel).siblings('.post_delete_container').css({"max-height":"0"});
+                    //게시물 수정 영역 닫힘
+                    $(cancel).siblings('.update_form').css({"max-height":"0"});
+                    //수정하기 전 내용으로 초기화
+                    post_text.val(post_text.attr('value'));
+                } else{
+                    return false
+                };
+            } 
+            //수정한 이력이 없다면 창닫힘
+            else{
+                $(cancel).parent().parent().addClass('none');
+                document.querySelector(".body").className = "body";    
+                $(cancel).siblings('.post_delete_container').css({"max-height":"0"});
+                $(cancel).siblings('.update_form').css({"max-height":"0"});
+            };
         });
     });
 });
@@ -22,7 +44,7 @@ $(function(){
 $('[id$=_update_btn]').click(function(){
     console.log("update")
     let post_id = $(this).attr('value');
-    $(this).siblings(".update_form").css({"max-height":"95px"});
+    $(this).siblings(".update_form").css({"max-height":"fit-content"});
     //게시글 삭제 영역 숨김
     $(this).siblings(".post_delete_container").css({"max-height":"0"});
 });
@@ -70,7 +92,7 @@ $('[id$=t_delete]').click(function(){
         //계속 수정
         else{
             console.log("keep update")
-            $(this).siblings('.update_form').css({"max-height":"95px"});
+            $(this).siblings('.update_form').css({"max-height":"fit-content"});
             $(this).siblings('.post_delete_container').css({"max-height":"0"});
         };
     }
@@ -85,7 +107,7 @@ $('[id$=t_delete]').click(function(){
 //Post Delete Button
 $('[id$=_delete_btn]').click(function(){
     let post_id = $(this).attr('value');
-    let close_div = $(this).parent().parent().parent().parent().parent();
+    let close_div = $(this).parent().parent().parent().parent().parent().parent();
     $.ajax({
         type: 'DELETE',
         url: "/content_submit",
@@ -104,73 +126,6 @@ $('[id$=_delete_btn]').click(function(){
         }
     });
 });
-
-
-// 해시태그
-// $(function(){
-//     let text = document.querySelectorAll('.content_text');
-//     //모든 content text를 돌며
-//     text.forEach(textarea => {
-//         let txt = $(textarea).attr('value');
-//         console.log(txt)
-//         console.log(typeof(txt))
-
-//         // 공백을 기준으로 text split array 생성
-//         // let split_txt = txt.split(' ');
-//         // console.log(split_txt)
-//         //array의 단어들을 돌며
-//         txt.forEach(word => {
-//             console.log(word)
-//             //'#' 해시태그를 찾아
-//             if (word.includes(`\#`)) {
-//                 //a 태그를 생성하고 해당 단어를 text로 추가
-//                 let hashtag = document.createElement('a');
-                // $(hashtag).attr('href',`{{ url_for('search', search = ${word}) }}`)
-//                 $(hashtag).text(word);
-//                 //content text영역에 a 태그 추가
-//                 $(textarea).append(hashtag);
-//                 console.log("hashtag")
-//             } 
-//             //'@' 멘션을 찾아
-//             else if (word.includes(`\\@`)) {
-//                 //a 태그를 생성하고 해당 단어를 text로 추가
-//                 let mention = document.createElement('a');
-//                 $(mention).attr('href',`/user/${word}`)
-//                 $(mention).text(word);
-//                 //content text영역에 a 태그 추가
-//                 $(textarea).append(mention);
-//                 console.log("mention")
-//             }
-//             //줄바꿈 기호를 찾아
-//             else if (word == `/n`) {
-//                 let br_tag = document.createElement('br')
-//                 $(textarea).append(br_tag);
-//                 console.log("line change")
-//             }
-//             else{  //string 타입 단어라면 p 태그를 생성하고 text 추가
-//                 let string = document.createElement('span');
-//                 $(string).text(word);
-//                 $(textarea).append(string);
-//                 console.log("string")
-//             };
-//         });
-//         // console.log(typeof(txt))
-//     });
-// }); 
-// hashtag(value){
-//     let text = $(value).val();
-//     let blank = text.split(` `);
-//     // let br = blank.split(`\n`);
-//     console.log(text)    
-
-//     blank.forEach(word => {
-//         if (word.includes('#')) {
-//             console.log("hashtag")    
-//             $(word).css({'color':'blue'});
-//         };
-//     });
-// };
-    
 
 // 이미지 슬라이드
 //1.페이지 처음 로드 시 이미지의 개수에 따라 화살표 버튼 및 이미지 번호 표시를 구분 함
@@ -228,7 +183,7 @@ $(function(){
             img_area.css({"display":"none"});
         }
         //text null인 경우
-        else if (content_text.val() == "") {
+        else if (content_text.children() == null) {
             let content_text = $(img_album).parent().parent().siblings('.content_text');
             content_text.css({"display":"none"});
         };
