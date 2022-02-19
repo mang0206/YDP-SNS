@@ -302,18 +302,17 @@ def like_submit():
         col_comment = db.get_collection('comment')
         time = dt.datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
         session_user = col_user.find_one({'user_id':session['login']},{'_id':0, 'nickname':1 ,'profile_img':1})
-        # col_comment.insert_one({
-            # 'post_id' : data['post_id'],
-            # 'comment_user' : session_user,
-            # 'comment_time' : time,
-            # 'comment' : data['text'],
-            # 'reply_list' : []
-        # })
+        col_comment.insert_one({
+            'post_id' : data['post_id'],
+            'comment_user' : session_user,
+            'comment_time' : time,
+            'comment' : data['text'].split(' '),
+            'reply_list' : []
+        })
         col_user.update_one({
             {'user_id': session['login']},
-            {'$push': {'comment': data['post_id']}}
+            {'$push': {'comment': {'comment': data['post_id']}}}
         })
-        print(data)
         return jsonify(result = "success", session_user=session_user)
 
 @app.route("/user/<user>")
