@@ -23,18 +23,19 @@
     - create_user_nickname : 작성한 사용자 nickname
     - create_time : 작성 시간(24시간 전까지는 ~시간 전, 지난 후에는 일자 표시)
 	- text : text data
+    - split_text : 개행문자 \n 처리 및 split한 text list
 	- images : 이미지 리스트
     - hash_tag : 해시 태그 리스트
     - like : 좋아요 누른 user 딕셔너리 리스트
 
 ## comment
     - post_id : 기준 post 
-    - create_comment_user : 댓글을 단 사용자 
-    - create_time : 작성 시간(24시간 전까지는 ~시간 전, 지난 후에는 일자 표시)
+    - comment_user : 댓글을 단 사용자 
+    - comment_time : 작성 시간(24시간 전까지는 ~시간 전, 지난 후에는 일자 표시)
     - comment : 댓글
     - reply_list : 답글 리스트
-        - create_reply_user : 답글을 단 사용자 ID
-        - create_time : 작성 시간(24시간 전까지는 ~시간 전, 지난 후에는 일자 표시)
+        - reply_user : 답글을 단 사용자 ID
+        - reply_time : 작성 시간(24시간 전까지는 ~시간 전, 지난 후에는 일자 표시)
         - reply : 답글
 
 ## deleteFile

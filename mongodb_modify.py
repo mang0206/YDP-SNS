@@ -29,14 +29,14 @@ def modify_user():
 
 def modify_user_one():
     '''유저에 친구 목록 리스트 추가'''
-    result = col.update_one(
-        {'nickname': 'fff'},
-        {'$set':{'like':[]}}
-    )
-    # result = col.update_many(
-    #     {},
-    #     {'$unset': {'friend':1}}
+    # result = col.update_one(
+        # {'nickname': 'fff'},
+        # {'$set':{'like':[]}}
     # )
+    result = col.update_many(
+        {},
+        {'$set': {'comment':[]}}
+    )
     # result = col_post.update_one(
     #     {'_id':ObjectId('6201d33f299b641572be24b9')},
     #     {'$set': {'like':[]}}
