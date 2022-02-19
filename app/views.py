@@ -216,9 +216,19 @@ def content_submit():
             s3_put_object(s3,'ydpsns',img,img_name,'postimages')
             img_list.append(s3_get_image_url(s3, img_name, 'postimages')) 
 
-    hash_tag = []
-    if content_txt:
-        hash_tag = [h[1:] for h in content_txt.split(' ') if len(h) and h[0] == '#']
+    tmp = content_txt.splitlines(True)
+    text = []
+    for t in tmp:
+        text.extend(t.split(' '))
+        if '\n' in text[-1]:
+            text[-1] = text[-1][:-1]
+            text.append('\n')
+
+    # hash_tag = []
+    # if content_txt:
+    #     hash_tag = [h[1:] for h in content_txt.split(' ') if len(h) and h[0] == '#']
+    hash_tag = [h[1:] for h in tmp if len(h) and h[0] == '#']
+        
 
     col_post.insert_one(
         {'create_user': session['login'],
@@ -266,25 +276,40 @@ def delete_post():
     col_post.delete_one({'_id':ObjectId(data)})
     return jsonify(result = "success")
 
-@app.route("/content_like_submit", methods=["POST"])
+@app.route("/content_reaction_submit", methods=["POST"])
 def like_submit():
     col_user = db.get_collection('user')
     col_post = db.get_collection('post')
-    # 세션 유저 정보 document에서 nickname, profile_img, like 정보만 가져온 변수
-    session_user = col_user.find_one({'user_id':session['login']},{'_id':0, 'nickname':1 ,'profile_img':1, 'like':1})
     data = request.get_json()
-
-    if data['flag'] == 'color':
-        col_user.update_one({'user_id':session['login']}, {'$push': {'like': data['post_id']}})
+    # like 버튼을 눌렀을 때에 대한 ajax 통신
+    if data['kind'] == 'like':
+        # 세션 유저 정보 document에서 nickname, profile_img, like 정보만 가져온 변수
         session_user = col_user.find_one({'user_id':session['login']},{'_id':0, 'nickname':1 ,'profile_img':1, 'like':1})
-        col_post.update_one({'_id':ObjectId(data['post_id'])}, {'$push': {'like': session_user}})
-        session['like'] = col_user.find_one({'user_id':session['login']},{'_id':0, 'like':1})['like']
-    else:
-        col_user.update_one({'user_id':session['login']}, {'$pull': {'like': data['post_id']}})
-        col_post.update_one({'_id':ObjectId(data['post_id'])}, {'$pull': {'like': { 'nickname' : session['nickname']}}})
-        session['like'] = col_user.find_one({'user_id':session['login']},{'_id':0, 'like':1})['like']
+        if data['flag'] == 'color':
+            col_user.update_one({'user_id':session['login']}, {'$push': {'like': data['post_id']}})
+            session_user = col_user.find_one({'user_id':session['login']},{'_id':0, 'nickname':1 ,'profile_img':1, 'like':1})
+            col_post.update_one({'_id':ObjectId(data['post_id'])}, {'$push': {'like': session_user}})
+            session['like'] = col_user.find_one({'user_id':session['login']},{'_id':0, 'like':1})['like']
+        else:
+            col_user.update_one({'user_id':session['login']}, {'$pull': {'like': data['post_id']}})
+            col_post.update_one({'_id':ObjectId(data['post_id'])}, {'$pull': {'like': { 'nickname' : session['nickname']}}})
+            session['like'] = col_user.find_one({'user_id':session['login']},{'_id':0, 'like':1})['like']
 
-    return jsonify(result = "success", session_user=session_user)
+        return jsonify(result = "success", session_user=session_user)
+    # 댓글 달기 버튼을 눌렀을 때에 대한 ajax 통신
+    else:
+        col_comment = db.get_collection('comment')
+        time = dt.datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
+        col_comment.insert_one({
+            'post_id' : data['post_id'],
+            'create_comment_user' : session['nickname'],
+            'create_time' : time,
+            'comment' : data['text'],
+            'reply_list' : []
+        })
+        session_user = col_user.find_one({'user_id':session['login']},{'_id':0, 'nickname':1 ,'profile_img':1})
+        print(data)
+        return jsonify(result = "success", session_user=session_user)
 
 @app.route("/user/<user>")
 def user(user):

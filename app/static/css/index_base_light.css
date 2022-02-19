@@ -748,6 +748,7 @@ a:visited{color: black}
     background: #dcdcdc;
     border: none;
     border-radius: 3px;
+    cursor: pointer;
 }
 /* index */
 .index_container{
