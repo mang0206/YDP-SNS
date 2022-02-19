@@ -234,7 +234,7 @@ def content_submit():
         {'create_user': session['login'],
         'create_user_nickname': session['nickname'],
         'create_time': time,
-        'text': content_txt,
+        'text': text,
         'images': img_list,
         'hashtag' : hash_tag,
         'like' : []}
