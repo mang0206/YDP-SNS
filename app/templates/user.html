@@ -143,8 +143,8 @@
                                 {% endif %}
                             </div>
                             <!-- 게시글 text area -->
-                            <div class="content_text" id="" value="{{ post['text'] }}">
-                                {% for text in post['text'] %}
+                            <div class="content_text" id="" value="{{ post['split_text'] }}">
+                                {% for text in post['split_text'] %}
                                     {% if '#' in text %}
                                     <a href="{{ url_for('search', search = text ) }}" id="hashtag">{{ text }}</a>
                                     {% elif '@' in text %}
@@ -225,6 +225,7 @@
                                             <p class="comment_txt">유저가 남긴 댓글</p>
                                         </div>
                                     </div>
+                                    <button class="recomment">답글 달기</button>
                                     <!-- endfor -->
                                 </div>
                                 <!-- 댓글 ajax 전송 부분 -->
