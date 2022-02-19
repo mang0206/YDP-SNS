@@ -526,62 +526,7 @@ $('.comment_submit').click(function(){
         dataType: 'JSON',
         contentType: "application/json",
         success: function(data){
-            // session user가 이미 좋아요를 누른 상태
-            // if (btn_value == "empty") {
-            //     $(btn).attr('value', 'color')
-            //     $(btn).attr('src', '../static/img/empty_like.png')
-            //     like_count -= 1
-            //     $(content_like).text(String(like_count) + '개')
-
-            //     let chiled = $(like_div).children()
-            //     //해당 div의 모든 자식 요소를 돌며
-            //     for (let i = 0; i < chiled.length; i++) {
-            //         console.log($(chiled[i]).attr('value'))
-            //         //입력한 값과 일치하는 속성 값을 가진 자식요소를 찾고
-            //         if ($(chiled[i]).attr('value') == data['session_user']['nickname']) {
-            //             // 해당 요소를 지움
-            //             $(chiled[i]).remove();
-            //         }
-            //     }
-            // session user가 좋아요를 누르지 않은 상태
-            // }else{ 
-            //     $(btn).attr('value', 'empty')
-            //     $(btn).attr('src', '../static/img/color_like.png')
-            //     like_count += 1
-            //     $(content_like).text(String(like_count) + '개')
-                
-            //     // 좋아요 누른 user 리스트에 추가할 user 태그들 생성
-            //     const create_div = document.createElement('div');
-            //     const create_a_img = document.createElement('a');
-            //     const create_a_nickname = document.createElement('a');
-            //     const create_img = document.createElement('img');
-            //     // 좋아요 리스트에 추가할 div 태그
-            //     $(create_div).attr({
-            //         'class': 'like_user_list',
-            //         'value': data['session_user']['nickname']
-            //     });
-            //     // 이미지를 감쌀 a 테그
-            //     $(create_a_img).attr({
-            //         'href': '/user/'+data['session_user']['nickname']
-            //     });
-            //     // 닉네임 태그
-            //     $(create_a_nickname).attr({
-            //         'href': '/user/'+data['session_user']['nickname'],
-            //         'class': 'like_user_nickname',
-            //     });
-            //     $(create_a_nickname).text(data['session_user']['nickname'])
-            //     // 이미지 테그
-            //     $(create_img).attr({
-            //         'src': data['session_user']['profile_img'][1],
-            //         'class': 'content_user_img'
-            //     });
-                // 생성한 태그들 구조에 맞게 append
-                // create_a_img.appendChild(create_img);
-                // create_div.appendChild(create_a_img);
-                // create_div.appendChild(create_a_nickname);
-                // 좋아요 리스트에 최종적으로 div 태그 append
-                // like_div.appendChild(create_div);
-            // }
+            
         },
         error: function(request, status, error){
             alert('ajax 통신 실패')

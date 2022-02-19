@@ -34,14 +34,18 @@ def modify_user_one():
         # {'nickname': 'fff'},
         # {'$set':{'like':[]}}
     # )
-    result = col.update_many(
-        {},
-        {'$set': {'like':[]}}
-    )
+    # result = col.update_many(
+    #     {},
+    #     {'$set': {'like':[]}}
+    # )
     # result = col_post.update_one(
     #     {'_id':ObjectId('6201d33f299b641572be24b9')},
     #     {'$set': {'like':[]}}
     # )
+    result = col_post.update_many(
+        {},
+        {'$set': {'comment':0}}
+    )
     # return
     # id = col.find_one({'user_id':'default'})
     # background_img = id['background_img'] 
@@ -95,7 +99,7 @@ def search():
 
 
 # del_user()
-del_post()
+# del_post()
 # search()
 # modify_user_one()
 # insert()

@@ -239,8 +239,9 @@ def content_submit():
         'split_text' : text,
         'images': img_list,
         'hashtag' : hash_tag,
-        'like' : []}
-    )
+        'like' : [],
+        'comment' : 0
+    })
     # print(hash_tag)
     flash("게시물이 업로드 되었습니다.")
     
@@ -303,18 +304,21 @@ def like_submit():
         col_comment = db.get_collection('comment')
         time = dt.datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
         session_user = col_user.find_one({'user_id':session['login']},{'_id':0, 'nickname':1 ,'profile_img':1})
+        comment = data['text'].split(' ')
         col_comment.insert_one({
             'post_id' : data['post_id'],
             'comment_user' : session_user,
             'comment_time' : time,
-            'comment' : data['text'].split(' '),
+            'comment' : comment,
             'reply_list' : []
         })
         col_user.update_one(
             {'user_id': session['login']},
             {'$push': {'comment': ['comment', data['post_id']]}}
         )
-        return jsonify(result = "success", session_user=session_user)
+        col_post.update_one({'_id': ObjectId(data['post_id'])}, {'$inc': {'comment': 1}})
+        
+        return jsonify(result = "success", session_user=session_user, comment=comment)
 
 @app.route("/user/<user>")
 def user(user):
@@ -423,9 +427,9 @@ def post_setting():
         nickname = session['nickname']
         img_name = dt.datetime.now().strftime(f"{nickname}-{filename}-%Y-%m-%d-%H-%M-%S.{ext}")
 
-        _delete = col_user.find_one({'user_id':session['login']}, {'_id':0, 'profile_img':1})['profile_img']
-        if _delete != col_user.find_one({'user_id': 'default'}, {'_id':0, 'profile_img':1})['profile_img']:
-            s3_delete_image(_delete[0])
+        # _delete = col_user.find_one({'user_id':session['login']}, {'_id':0, 'profile_img':1})['profile_img']
+        # if _delete != col_user.find_one({'user_id': 'default'}, {'_id':0, 'profile_img':1})['profile_img']:
+            # s3_delete_image(_delete[0])
         s3_put_object(s3,'ydpsns',input_profile,img_name)
         col_user.update_one(
             {'user_id': session['login']},
@@ -440,9 +444,9 @@ def post_setting():
         ext = input_background.filename.split('.')[-1]
         img_name = dt.datetime.now().strftime(f"{session['nickname']}-{filename}-%Y-%m-%d-%H-%M-%S.{ext}")
         s3_put_object(s3,'ydpsns',input_background,img_name)
-        _delete = col_user.find_one({'user_id':session['login']}, {'_id':0, 'background_img':1})['background_img']
-        if _delete != col_user.find_one({'user_id': 'default'}, {'_id':0, 'background_img':1})['background_img']:
-            s3_delete_image(_delete[0])
+        # _delete = col_user.find_one({'user_id':session['login']}, {'_id':0, 'background_img':1})['background_img']
+        # if _delete != col_user.find_one({'user_id': 'default'}, {'_id':0, 'background_img':1})['background_img']:
+            # s3_delete_image(_delete[0])
         col_user.update_one(
             {'user_id': session['login']},
             {'$set' : {'background_img': [img_name, s3_get_image_url(s3, img_name)]}}
