@@ -28,7 +28,7 @@ $('[id$=_update_btn]').click(function(){
 
 //취소 버튼을 눌렀을 때
 $('[id$=_cancel_btn]').click(function(){
-    //update 수정 취소 버튼일 경우
+    //update 취소 버튼일 경우
     if ($(this).attr('id') == 'update_cancel_btn') {
         let textarea = $(this).parent().siblings();
         //기존 post text에서 변경된 내용이 있으면
@@ -103,7 +103,6 @@ $('[id$=_delete_btn]').click(function(){
         }
     });
 });
-
 
 // 이미지 슬라이드
 //1.페이지 처음 로드 시 이미지의 개수에 따라 화살표 버튼 및 이미지 번호 표시를 구분 함

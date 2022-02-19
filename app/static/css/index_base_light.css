@@ -93,6 +93,7 @@ a:visited{color: black}
 }
 .top_bar_icon:hover{
     background: lightgray;
+    transition: east 0.5s;
 }
 .search_btn{
     cursor: pointer;

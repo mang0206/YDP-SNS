@@ -122,7 +122,7 @@
                                     <div class="more_icon_popup">
                                         <button id="post_update_btn" class="more_popup_btn" value='{{post["_id"]}}'>게시글 수정</button>
                                         <form action="/content_submit" class="update_form none" method="post">
-                                            <textarea id="update_textarea" name="update_textarea" value="{{ post['text'] }}">{{ post['text'] }}</textarea>
+                                            <textarea id="update_textarea" class="hashtag" name="update_textarea" value="{{ post['text'] }}">{{ post['text'] }}</textarea>
                                             <div class="update_btn_container">
                                                 <button class="update_btn" type="submit">저장</button>
                                                 <button id="update_cancel_btn" class="update_btn" type="button">작성 취소</button>
@@ -215,7 +215,7 @@
                                     <!-- endfor -->
                                 </div>
                                 <form action="" class="comment_form">
-                                    <textarea class="comment_textarea"></textarea>
+                                    <textarea class="comment_textarea hashtag"></textarea>
                                     <button class="comment_submit" type="submit">댓글 달기</button>
                                 </form>
                             </div>
