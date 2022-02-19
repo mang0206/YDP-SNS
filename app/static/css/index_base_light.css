@@ -533,6 +533,38 @@ a:visited{color: black}
         left: 25%;
     }
 }
+.more_icon_popup.popup_friend{
+    top: 25%;
+    width: 270px;
+    height: 335px;
+    padding-bottom: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.popup_friend_header{
+    width: 100%;
+    padding-bottom: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+}
+.popup_friend_header div{
+    font-weight: 500;
+    padding: 5px;
+}
+.popup_friend_header img{
+    margin-left: 65px;
+    cursor: pointer;
+}
+.popup_friend_list{
+    height: 70px;
+    margin: 5px;
+    
+    display: flex;
+    align-items: center;
+}
 .more_popup_btn{
     width: 100%;
     height: 40px;
@@ -826,9 +858,18 @@ a:visited{color: black}
     }
 }
 #view_more{
+    font-size: 14px;
+    text-decoration: underline;
+    text-underline-position: under;
+}
+.other_user_friend{
     font-size: 15px;
     text-decoration: underline;
     text-underline-position: under;
+
+    border: none;
+    background: none;
+    cursor: pointer;
 }
 /* search */
 @media (max-width: 767px) {
