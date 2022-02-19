@@ -115,21 +115,22 @@
                                         <p class="create_time" value="{{ post['create_time'] }}"></p>
                                     </div>
                                 </div>
+                                <!-- more icon -->
                                 <!-- ver 1.0에선 session user만 버튼 노출 -->
                                 {% if session['nickname'] == user['nickname'] %}
                                 <img src="../static/img/more.png" alt="" class="content_icon more_icon">
                                 <div class="more_icon_popup_back none">
                                     <div class="more_icon_popup">
                                         <button id="post_update_btn" class="more_popup_btn" value='{{post["_id"]}}'>게시글 수정</button>
-                                        <form action="/content_submit" class="update_form none" method="post">
+                                        <form action="/content_submit" class="update_form" method="post">
                                             <textarea id="update_textarea" class="hashtag" name="update_textarea" value="{{ post['text'] }}">{{ post['text'] }}</textarea>
                                             <div class="update_btn_container">
                                                 <button class="update_btn" type="submit">저장</button>
-                                                <button id="update_cancel_btn" class="update_btn" type="button">작성 취소</button>
+                                                <button class="update_btn" id="update_cancel_btn" type="button">작성 취소</button>
                                             </div>
                                         </form>
                                         <button id="post_delete" class="more_popup_btn">게시글 삭제</button>
-                                        <div class="post_delete_container none">
+                                        <div class="post_delete_container">
                                             <p>선택한 게시글이 삭제됩니다.</p>
                                             <div class="delete_btn_container">
                                                 <button id="delete_cancel_btn" class="delete_btn">취소</button>
@@ -142,7 +143,19 @@
                                 {% endif %}
                             </div>
                             <!-- 게시글 text area -->
-                            <div class="content_text" id="" value="{{ post['text'] }}"></div>
+                            <div class="content_text" id="" value="{{ post['text'] }}">
+                                {% for text in post['text'] %}
+                                    {% if '#' in text %}
+                                    <a href="{{ url_for('search', search = text ) }}" id="hashtag">{{ text }}</a>
+                                    {% elif '@' in text %}
+                                    <a href="" id="mention">{{ text }}</a>
+                                    {% elif '\n' in text %}
+                                    <br>
+                                    {% else %}
+                                    <span>{{ text }}</span>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
                             <!-- 게시글 image area -->
                             <div class="content_image_viewer">
                                 <div class="content_image_container">
