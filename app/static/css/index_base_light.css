@@ -449,7 +449,7 @@ a:visited{color: black}
 }
 @media (max-width: 767px) {
     .img_arrow_btn.right_arrow{
-        left: 460px;
+        left: 410px;
     }
 }
 .img_arrow_btn img{
@@ -517,9 +517,8 @@ a:visited{color: black}
 .more_icon_popup{
     top: 35%;
     left: 35%;
-
     width: 300px;
-    height: 90px;
+    height: fit-content;
     padding: 5px;
 
     position: fixed;
@@ -528,24 +527,99 @@ a:visited{color: black}
     border-radius: 5px;
     box-shadow: 0 1px 10px rgba(0, 0, 0, 0.2);
 }
-/* @media (max-width: 767px) {
-    .triangle{
-        right: 115px;
+@media (max-width: 767px) {
+    .more_icon_popup{
+        left: 25%;
     }
-} */
-.more_icon_popup button{
-    width: 100%;
-    height: 30px;
-
-    border: none;
-    cursor: pointer;
-    background: #FFF;
 }
-.more_icon_popup button:hover{
+.more_popup_btn{
+    width: 100%;
+    height: 40px;
+    font-size: 14px;
+
+    background: #FFF;
+    cursor: pointer;
+}
+.more_popup_btn:hover{
     background: #EDEDED;
 }
-.more_icon_cancel{
+.more_icon_popup button{
+    border: none;
+    border-radius: 3px;
+}
+.update_form{
+    max-height: 0;
+    display: block;
+    overflow: hidden;
+    background-color: #f1f1f1;
+    transition: max-height 0.5s;
+}
+#update_textarea{
+    width: 320px;
+    margin-top: 10px;
+    resize: none;
+    transform: translateX(12px);
+}
+.update_btn_container{
+    margin-bottom: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    background-color: #f1f1f1;
+}
+.update_btn{
+    width: 145px;
+    height: 30px;
+    font-size: 13px;
+    background-color: #FFF;
+}
+.update_btn:hover{
+    background-color: lightgray;
+}
+#post_delete{
     color: red;
+}
+.post_delete_container{
+    background: #f1f1f1;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.5s;
+}
+.post_delete_container p{
+    margin: 10px 0;
+}
+.delete_btn_container{
+    width: 150px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-around;
+}
+.delete_btn{
+    width: 50px;
+    height: 25px;
+    background: #FFF;
+}
+.delete_btn:hover{
+    background: lightgray;
+    color: black;
+    font-weight: 400;
+}
+#post_delete_btn{
+    width: 50px;
+    height: 25px;
+    margin-bottom: 10px;
+
+    background: #ffcccc;
+    border-radius: 5px;
+}
+#post_delete_btn:hover{
+    background: #ffa4a4;
 }
 .content_footer{
     padding: 8px 15px;

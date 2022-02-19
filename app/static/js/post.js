@@ -20,6 +20,7 @@ $(function(){
 
 //Post Update-area show Button
 $('[id$=_update_btn]').click(function(){
+    console.log("update")
     let post_id = $(this).attr('value');
     $(this).siblings(".update_form").css({"max-height":"95px"});
     //게시글 삭제 영역 숨김
@@ -215,7 +216,7 @@ $(function(){
         let p_tag = $(img_album).parent().parent().siblings(".content_footer").children('.img_number');
         //현재 게시물의 textarea
         let content_text = $(img_album).parent().parent().siblings(".content_text");
-        console.log(content_text.val())
+        // console.log(content_text.text())
         
         //img의 src 마지막 문자열 추출 
         let image_type = p_tag.attr('img').slice(-3, -2);
