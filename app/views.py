@@ -233,6 +233,7 @@ def content_submit():
     col_post.insert_one(
         {'create_user': session['login'],
         'create_user_nickname': session['nickname'],
+        'create_user_profile' : session['profile_img'],
         'create_time': time,
         'text': content_txt,
         'split_text' : text,
@@ -309,10 +310,10 @@ def like_submit():
             'comment' : data['text'].split(' '),
             'reply_list' : []
         })
-        col_user.update_one({
+        col_user.update_one(
             {'user_id': session['login']},
-            {'$push': {'comment': {'comment': data['post_id']}}}
-        })
+            {'$push': {'comment': ['comment', data['post_id']]}}
+        )
         return jsonify(result = "success", session_user=session_user)
 
 @app.route("/user/<user>")
@@ -530,6 +531,7 @@ def connection_mongodb():
     col = db.get_collection('user')
     col_post = db.get_collection('post')
     col_delete = db.get_collection('deleteFile')
+    col_comment = db.get_collection('comment')
     # print(* list(col.find({},{'user_id':True, 'nickname':True})))
     # col.update_many({},{"$rename":{"name":"user_name"}})
     lis = col.find_one({'nickname':'bbb'})
@@ -540,7 +542,9 @@ def connection_mongodb():
     for i in lis['like']:
         f = col_post.find_one({'_id': ObjectId(i)})
         print(f, end='\n-------------------------\n')
-    for i in col_delete.find({}):
+    for i in col_post.find({}):
+        print(i, end='\n-------------------------\n')
+    for i in col_comment.find({}):
         print(i, end='\n-------------------------\n')
     return jsonify(json_lis)
 

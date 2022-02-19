@@ -41,4 +41,6 @@ def delete_file():
 if __name__ == "__main__" :
     s3 = s3_connection()
     delete_file()
+    col_delete = db.get_collection('deleteFile')
+    col_delete.delete_many({})
 

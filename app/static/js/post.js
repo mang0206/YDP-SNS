@@ -85,7 +85,7 @@ $('[id$=t_delete]').click(function(){
 //Post Delete Button
 $('[id$=_delete_btn]').click(function(){
     let post_id = $(this).attr('value');
-
+    let close_div = $(this).parent().parent().parent().parent().parent();
     $.ajax({
         type: 'DELETE',
         url: "/content_submit",

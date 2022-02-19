@@ -21,6 +21,7 @@
 ## post
     - create_user : 작성한 사용자 ID
     - create_user_nickname : 작성한 사용자 nickname
+    - create_user_profile : 작성한 사용자 profile  
     - create_time : 작성 시간(24시간 전까지는 ~시간 전, 지난 후에는 일자 표시)
 	- text : text data
     - split_text : 개행문자 \n 처리 및 split한 text list

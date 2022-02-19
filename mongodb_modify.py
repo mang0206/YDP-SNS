@@ -8,6 +8,7 @@ conn = pymongo.MongoClient("mongodb://root:study111@13.125.71.134:27017/root?aut
 db = conn.get_database('root')
 col = db.get_collection('user')
 col_post = db.get_collection('post')
+col_comment = db.get_collection('comment')
 def modify_user():
     lst = []
     ''' 유저마다 닉네임 추가'''
@@ -35,7 +36,7 @@ def modify_user_one():
     # )
     result = col.update_many(
         {},
-        {'$set': {'comment':[]}}
+        {'$set': {'like':[]}}
     )
     # result = col_post.update_one(
     #     {'_id':ObjectId('6201d33f299b641572be24b9')},
@@ -94,7 +95,7 @@ def search():
 
 
 # del_user()
-# del_post()
+del_post()
 # search()
 # modify_user_one()
 # insert()
