@@ -48,6 +48,27 @@
                     <h3>친구 목록</h3>
                     {% if session['nickname'] == user['nickname'] %}
                     <a href="/friend" id="view_more">더보기</a>
+                    {% else %}
+                    <!-- 세션 유저가 아닌 사용자의 user 페이지 친구 목록 -->
+                    <a id="view_more">더보기</a>
+                    <!-- 친구 목록 팝업창 -->
+                    <div class="more_icon_popup_back none">
+                        <div class="more_icon_popup">
+                            <!-- jinja for -->
+                            <div class="user_list"> 
+                                <a href="">
+                                    <img src="" class="user_profile_img">
+                                </a>
+                                <div class="user_list_name_area">
+                                    <a class="user_nickname" href ="">
+                                    </a>
+                                    <div class="user_name">
+                                    </div>
+                                </div>
+                            </div> 
+                            <!-- endfor -->
+                        </div>
+                    </div>
                     {% endif %}
                 </div>
                 {% for friend in friend_dic %}
@@ -99,9 +120,23 @@
                                 <img src="../static/img/more.png" alt="" class="content_icon more_icon">
                                 <div class="more_icon_popup_back none">
                                     <div class="more_icon_popup">
-                                        <button>게시글 수정</button>
-                                        <button id="post_delete_btn" value='{{post["_id"]}}'>게시글 삭제</button>
-                                        <button class="more_icon_cancel">취소</button>
+                                        <button id="post_update_btn" class="more_popup_btn" value='{{post["_id"]}}'>게시글 수정</button>
+                                        <form action="/content_submit" class="update_form none" method="post">
+                                            <textarea id="update_textarea" name="update_textarea" value="{{ post['text'] }}">{{ post['text'] }}</textarea>
+                                            <div class="update_btn_container">
+                                                <button class="update_btn" type="submit">저장</button>
+                                                <button id="update_cancel_btn" class="update_btn" type="button">작성 취소</button>
+                                            </div>
+                                        </form>
+                                        <button id="post_delete" class="more_popup_btn">게시글 삭제</button>
+                                        <div class="post_delete_container none">
+                                            <p>선택한 게시글이 삭제됩니다.</p>
+                                            <div class="delete_btn_container">
+                                                <button id="delete_cancel_btn" class="delete_btn">취소</button>
+                                                <button id="post_delete_btn" class="delete_btn" value='{{post["_id"]}}'>확인</button>
+                                            </div>
+                                        </div>
+                                        <button class="more_icon_cancel more_popup_btn">취소</button>
                                     </div>
                                 </div>
                                 {% endif %}
@@ -181,7 +216,7 @@
                                 </div>
                                 <form action="" class="comment_form">
                                     <textarea class="comment_textarea"></textarea>
-                                    <button type="submit">댓글 달기</button>
+                                    <button class="comment_submit" type="submit">댓글 달기</button>
                                 </form>
                             </div>
                         </div>
