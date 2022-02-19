@@ -142,7 +142,19 @@
                                 {% endif %}
                             </div>
                             <!-- 게시글 text area -->
-                            <div class="content_text" id="" value="{{ post['text'] }}"></div>
+                            <div class="content_text" id="" value="{{ post['text'] }}">
+                                {% for text in post['text'] %}
+                                    {% if '#' in text %}
+                                    <a href="{{ url_for('search', search = text ) }}" id="hashtag">{{ text }}</a>
+                                    {% elif '@' in text %}
+                                    <a href="" id="mention">{{ text }}</a>
+                                    {% elif '\n' in text %}
+                                    <br>
+                                    {% else %}
+                                    <span>{{ text }}</span>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
                             <!-- 게시글 image area -->
                             <div class="content_image_viewer">
                                 <div class="content_image_container">

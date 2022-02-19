@@ -414,6 +414,15 @@ a:visited{color: black}
     color: #000;
     font-size: 14px;
 }
+#hashtag{
+    color: #0084ff;
+    text-decoration: underline;
+    text-underline-position: under;   
+}
+#mention{
+    color: #0084ff;
+
+}
 .content_image_viewer{
     overflow: hidden;
     display: flex;
