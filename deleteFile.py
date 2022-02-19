@@ -8,8 +8,6 @@ import boto3
 
 delete_access_key_id = os.environ['AWS_ACCESS_KEY_ID']
 delete_secret_access_key_id = os.environ['AWS_SECREAT_ACCESS_KEY']
-print(delete_access_key_id)
-print(delete_secret_access_key_id)
 
 db = conn.get_database('root')
 
