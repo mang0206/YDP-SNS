@@ -49,19 +49,6 @@ function close(){
     }
 }
 
-// 해시태그
-function hashtag(value){
-    let text = $(value).val();
-    let space = text.split(` `);
-    let br = space.split('\n');
-
-    if (text[0] == '#') {
-        text.css({'color':'blue'});
-    }
-    console.log(split_txt)    
-};
-
-
 // 팝업창 이미지 올리기
 var images = []; 
 // 이미지 미리보기가 생성되는 div의 value

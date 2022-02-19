@@ -104,6 +104,64 @@ $('[id$=_delete_btn]').click(function(){
     });
 });
 
+
+// 해시태그
+$(function(){
+    let text = document.querySelectorAll('.content_text');
+    //모든 content text를 돌며
+    text.forEach(textarea => {
+        let txt = $(textarea).attr('value');
+        // 공백을 기준으로 text split array 생성
+        let split_txt = txt.split(' ');
+        console.log(split_txt)
+        //array의 단어들을 돌며
+        split_txt.forEach(word => {
+            console.log(word)
+            //'#' 해시태그를 찾아
+            if (word.includes(`\#`)) {
+                //a 태그를 생성하고 해당 단어를 text로 추가
+                let hashtag = document.createElement('a');
+                $(hashtag).attr('href',`{{ url_for('search', search = ${word}) }}`)
+                $(hashtag).text(word);
+                //content text영역에 a 태그 추가
+                $(textarea).append(hashtag);
+                console.log("hashtag")
+            } 
+            //'@' 멘션을 찾아
+            else if (word.includes(`\\@`)) {
+                //a 태그를 생성하고 해당 단어를 text로 추가
+                let mention = document.createElement('a');
+                $(mention).attr('href',`/user/${word}`)
+                $(mention).text(word);
+                //content text영역에 a 태그 추가
+                $(textarea).append(mention);
+                console.log("mention")
+            }
+            else{  //string 타입 단어라면 p 태그를 생성하고 text 추가
+                let string = document.createElement('span');
+                $(string).text(word);
+                $(textarea).append(string);
+                console.log("string")
+            };
+        });
+        // console.log(typeof(txt))
+    });
+}); 
+// hashtag(value){
+//     let text = $(value).val();
+//     let blank = text.split(` `);
+//     // let br = blank.split(`\n`);
+//     console.log(text)    
+
+//     blank.forEach(word => {
+//         if (word.includes('#')) {
+//             console.log("hashtag")    
+//             $(word).css({'color':'blue'});
+//         };
+//     });
+// };
+    
+
 // 이미지 슬라이드
 //1.페이지 처음 로드 시 이미지의 개수에 따라 화살표 버튼 및 이미지 번호 표시를 구분 함
 $(function(){   
@@ -148,17 +206,20 @@ $(function(){
         let p_tag = $(img_album).parent().parent().siblings(".content_footer").children('.img_number');
         //현재 게시물의 textarea
         let content_text = $(img_album).parent().parent().siblings(".content_text");
+        console.log(content_text.val())
+        
         //img의 src 마지막 문자열 추출 
         let image_type = p_tag.attr('img').slice(-3, -2);
 
         //img null인 경우(마지막 문자열이 dot)
         if (image_type == ".") {
             //image 영역 숨김
-            let img_area = $(img_album).parent().parent();
+            let img_area = $(img_album).parent().parent('.content_image_viewer');
             img_area.css({"display":"none"});
-        };
+        }
         //text null인 경우
-        if (content_text.val() == "") {
+        else if (content_text.val() == "") {
+            let content_text = $(img_album).parent().parent().siblings('.content_text');
             content_text.css({"display":"none"});
         };
 

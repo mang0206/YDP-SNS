@@ -73,8 +73,8 @@ function startCountDown(duration, element) {
 }
 
 function count_down() {
-    let time_minutes = 0; // Value in minutes
-    let time_seconds = 10; // Value in seconds
+    let time_minutes = 3; // Value in minutes
+    let time_seconds = 0; // Value in seconds
     let duration = time_minutes * 60 + time_seconds;
 
     let element = $('#count_down');
