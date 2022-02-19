@@ -1,11 +1,3 @@
-// object형 데이터 null 확인
-// function isEmpty(obj){
-//     if (obj === Object && Object.keys(obj).length === 0){
-//         return true;
-//     } else {
-//         return false;
-//     }
-// }
 
 // 게시물 추가 popup창 
 function plus(){

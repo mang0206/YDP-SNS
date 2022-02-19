@@ -4,29 +4,88 @@ $('#send_email_btn').click(function(){
     console.log('send email ajax')
     let send_email = $('#send_email').val();
     console.log(send_email)
-
-    let input_email = {
-        "send_email" : send_email
+    if (send_email == '') {
+        alert('인증번호를 받을 이메일을 입력해주세요.')
+    }else{
+        let input_email = {
+            "send_email" : send_email
+        };
+    
+        $.ajax({
+            type: 'POST',
+            url: 'send_email',
+            data: JSON.stringify(input_email),
+            dataType: 'JSON',
+            contentType: "application/json",
+            success: function(data) {
+                console.log(data['ran_num'])
+                // 메일로 발송한 인증번호 flask->js->html
+                $('#input_num_submit').attr('num-data', data['ran_num'])
+                count_down();
+                //인증번호 확인 요청 문구
+                $(".certification_status").attr("class","certification_status");
+            },
+            error: function(request, status, error){
+                alert('ajax 통신 실패')
+                alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+            }
+        })
     };
 
-    $.ajax({
-        type: 'POST',
-        url: 'send_email',
-        data: JSON.stringify(input_email),
-        dataType: 'JSON',
-        contentType: "application/json",
-        success: function(data) {
-            console.log(data['ran_num'])
-            // 메일로 발송한 인증번호 flask->js->html
-            $('#input_num_submit').attr('num-data', data['ran_num'])
-            count_down();
-            alert('인증번호 발송')
-        },
-        error: function(request, status, error){
-            alert('ajax 통신 실패')
-            alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
-        }
-    })
+});
+
+// 인증 유효시간 count-down
+function paddedFormat(num) {
+    //시간 00:00으로 표기
+    return num < 10 ? "0" + num : num; 
+}
+
+function startCountDown(duration, element) {
+    let secondsRemaining = duration;
+    let min = 0;
+    let sec = 0;
+
+    let countInterval = setInterval(function () {
+        min = parseInt(secondsRemaining / 60);
+        sec = parseInt(secondsRemaining % 60);
+
+        element.text(`${paddedFormat(min)}:${paddedFormat(sec)}`);
+
+        secondsRemaining = secondsRemaining - 1;
+        //인증 유효시간 만료 시
+        if (secondsRemaining < 0) { 
+            let certification_img = $('.certification_img');
+            let certification_text = $('#certification_text');
+        
+            clearInterval(countInterval);
+            $('.certification_status').animate({opacity:'1'}, 500);
+
+            //안내문구 표시
+            certification_img.attr('src','../static/img/unprotected_color.png');
+            certification_text.text('인증 유효시간이 만료되었습니다.');
+            certification_text.attr('style','color:red');
+            //인증번호 초기화
+            let certification_num = $('#input_num_submit').attr('num-data',`{{ session[''] }}`);
+            console.log(certification_num.attr('num-data'))
+        };
+
+    }, 1000);
+}
+
+function count_down() {
+    let time_minutes = 0; // Value in minutes
+    let time_seconds = 10; // Value in seconds
+    let duration = time_minutes * 60 + time_seconds;
+
+    let element = $('#count_down');
+    element.text(`${paddedFormat(time_minutes)}:${paddedFormat(time_seconds)}`);
+    startCountDown(--duration, element);
+};
+
+//css animation
+$('#input_num_submit').click(function(){
+    console.log("css status")
+    $('.certification_status').animate({opacity:'1'}, 500);
 });
 
 // 인증번호 일치 여부
@@ -62,6 +121,9 @@ $('#input_num_submit').click(function(){
         contentType: "application/json",
         success: function(data){
             if (input_num == ran_num) {
+                //animation 적용
+                $('.certification_status').animate({opacity:'1'}, 500);
+                // $('.certification_status').attr('class',"certification_status status_btn")
                 // 번호 일치시 img 변경
                 certification_img.attr('src','../static/img/protection_color.png');
                 // 번호 일치시 text 및 style 변경
@@ -76,8 +138,13 @@ $('#input_num_submit').click(function(){
                 // 번호 일치시 email 입력 영역 가림
                 email_send_container.addClass('none');
 
-            } else {
-                // 번호 불일치 시
+            } 
+            // 번호 불일치 시
+            else {
+                //animation 및 css 적용
+                $('.certification_status').animate({opacity:'1'}, 500);
+
+                // $('.certification_status').attr('class',"certification_status status_btn")
                 certification_img.attr('src','../static/img/unprotected_color.png');
                 certification_text.text('인증에 실패하였습니다.');
                 certification_text.attr('style','color:red');
@@ -92,42 +159,6 @@ $('#input_num_submit').click(function(){
         }
     })
 });
-
-
-// 인증 유효시간 count-down
-function paddedFormat(num) {
-    return num < 10 ? "0" + num : num; 
-}
-
-function startCountDown(duration, element) {
-    let secondsRemaining = duration;
-    let min = 0;
-    let sec = 0;
-
-    let countInterval = setInterval(function () {
-
-        min = parseInt(secondsRemaining / 60);
-        sec = parseInt(secondsRemaining % 60);
-
-        element.textContent = `${paddedFormat(min)}:${paddedFormat(sec)}`;
-
-        secondsRemaining = secondsRemaining - 1;
-        if (secondsRemaining < 0) { clearInterval(countInterval) };
-
-    }, 1000);
-}
-
-function count_down() {
-    let time_minutes = 3; // Value in minutes
-    let time_seconds = 0; // Value in seconds
-
-    let duration = time_minutes * 60 + time_seconds;
-
-    element = document.getElementById('#count_down');
-    element.textContent = `${paddedFormat(time_minutes)}:${paddedFormat(time_seconds)}`;
-
-    startCountDown(--duration, element);
-};
 
 // 비밀번호 변경 유효성 검사
 import { password_validation } from './check_password.js';
