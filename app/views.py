@@ -305,20 +305,20 @@ def like_submit():
         time = dt.datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
         session_user = col_user.find_one({'user_id':session['login']},{'_id':0, 'nickname':1 ,'profile_img':1})
         comment = data['text'].split(' ')
-        col_comment.insert_one({
-            'post_id' : data['post_id'],
-            'comment_user' : session_user,
-            'comment_time' : time,
-            'comment' : comment,
-            'reply_list' : []
-        })
-        col_user.update_one(
-            {'user_id': session['login']},
-            {'$push': {'comment': ['comment', data['post_id']]}}
-        )
-        col_post.update_one({'_id': ObjectId(data['post_id'])}, {'$inc': {'comment': 1}})
-        
-        return jsonify(result = "success", session_user=session_user, comment=comment)
+        # col_comment.insert_one({
+        #     'post_id' : data['post_id'],
+        #     'comment_user' : session_user,
+        #     'comment_time' : time,
+        #     'comment' : comment,
+        #     'reply_list' : []
+        # })
+        # col_user.update_one(
+        #     {'user_id': session['login']},
+        #     {'$push': {'comment': ['comment', data['post_id']]}}
+        # )
+        # col_post.update_one({'_id': ObjectId(data['post_id'])}, {'$inc': {'comment': 1}})
+        print(comment)
+        return jsonify(result = "success", session_user=session_user, comment=comment, time=time)
 
 @app.route("/user/<user>")
 def user(user):

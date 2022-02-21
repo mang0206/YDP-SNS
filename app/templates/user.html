@@ -223,6 +223,15 @@
                                                 <p class="comment_time">00시간 전</p>
                                             </div>
                                             <p class="comment_txt">유저가 남긴 댓글</p>
+                                            <!-- <div class="comment_txt" id="" value="{{ post['split_text'] }}">
+                                                {% for text in post['split_text'] %}
+                                                    {% if '@' in text %}
+                                                    <a href="" id="mention">{{ text }}</a>
+                                                    {% else %}
+                                                    <span>{{ text }}</span>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </div> -->
                                         </div>
                                     </div>
                                     <button class="recomment">답글 달기</button>
