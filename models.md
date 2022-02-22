@@ -28,6 +28,7 @@
 	- images : 이미지 리스트
     - hash_tag : 해시 태그 리스트
     - like : 좋아요 누른 user 딕셔너리 리스트
+    - comment : 댓글 개수
 
 ## comment
     - post_id : 기준 post 

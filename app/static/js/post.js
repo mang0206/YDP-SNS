@@ -258,59 +258,63 @@ $(function(){
     });
 });
 
+// upload time function
+function indicate_time(time) {
+    // jinja로 받아온 시간 
+    let jinja = $(time).attr("value");
+    let split_time = jinja.split('-');
+    // Date 형식에 맞게 변환 (년,월,일,시,분,초 순서)
+    let jinja_time = split_time[0]+"-"+split_time[1]+"-"+split_time[2]+" "+split_time[3]+":"+split_time[4]+":"+split_time[5];
+
+    //현재 시간
+    let now = new Date();
+    let year = now.getFullYear();
+    let month = now.getMonth()+1;// month는 0~11이기 때문에 +1 필요
+    let date = now.getDate();
+    let hours = now.getHours();
+    let minutes = now.getMinutes();
+    let seconds = now.getSeconds();
+    // Date 형식에 맞게 변환
+    let js_time = year+"-"+month+"-"+date+" "+hours+":"+minutes+":"+seconds;
+
+    //업로드 시간 - 현재 시간
+    let post_time = new Date(js_time) - new Date(jinja_time);
+
+    //밀리초인 시간 차를 정수형으로 바꿈
+    let day_seconds = 24*60*60*1000;
+    let y = parseInt(post_time/(day_seconds*30*12));
+    let m = parseInt(post_time/(day_seconds*30));
+    let d = parseInt(post_time/day_seconds);
+    let hr = Math.floor((post_time %(1000*60*60*24))/(1000*60*60));
+    let min = Math.floor((post_time %(1000*60*60))/(1000*60));
+    let sec = Math.floor((post_time %(1000*60))/1000);
+    //최종 변환된 시간을 text로 입력
+    //변환된 시간은 int 단위로 계속 변경되므로 누적 값인 밀리초로 조건 설정
+    if (post_time < 60000) { //59초 까지만 초 단위
+        $(time).text(sec+"초 전");
+    }
+    else if (post_time < 3600000) { //59분 까지만 분 단위
+        $(time).text(min+"분 전");
+    }
+    else if (post_time < 86400000) { //23시 까지만 시간 단위
+        $(time).text(hr+"시간 전");
+    }
+    else if (post_time < 604800000){ //6일 까지만 일 단위
+        $(time).text(d+"일 전");
+    }
+    else if (y = 0){ //일주일 이후 부터 업로드 월,일 단위
+        $(time).text(split_time[1]+"월 "+split_time[2]+"일");
+    }
+    else if (y >= 1){ //해가 바뀌면 업로드 년,월,일 단위
+        $(time).text(split_time[0]+"년 "+split_time[1]+"월 "+split_time[2]+"일");
+    }
+  }
 // upload time
 $(function(){
     let create_time = document.querySelectorAll('.create_time');
     //각 게시물 별 업로드 시간
     create_time.forEach(time => {
-        //jinja로 받아온 시간 
-        let jinja = $(time).attr("value");
-        let split_time = jinja.split('-');
-        // Date 형식에 맞게 변환 (년,월,일,시,분,초 순서)
-        let jinja_time = split_time[0]+"-"+split_time[1]+"-"+split_time[2]+" "+split_time[3]+":"+split_time[4]+":"+split_time[5];
-
-        //현재 시간
-        let now = new Date();
-        let year = now.getFullYear();
-        let month = now.getMonth()+1;// month는 0~11이기 때문에 +1 필요
-        let date = now.getDate();
-        let hours = now.getHours();
-        let minutes = now.getMinutes();
-        let seconds = now.getSeconds();
-        // Date 형식에 맞게 변환
-        let js_time = year+"-"+month+"-"+date+" "+hours+":"+minutes+":"+seconds;
-
-        //업로드 시간 - 현재 시간
-        let post_time = new Date(js_time) - new Date(jinja_time);
-
-        //밀리초인 시간 차를 정수형으로 바꿈
-        let day_seconds = 24*60*60*1000;
-        let y = parseInt(post_time/(day_seconds*30*12));
-        let m = parseInt(post_time/(day_seconds*30));
-        let d = parseInt(post_time/day_seconds);
-        let hr = Math.floor((post_time %(1000*60*60*24))/(1000*60*60));
-        let min = Math.floor((post_time %(1000*60*60))/(1000*60));
-        let sec = Math.floor((post_time %(1000*60))/1000);
-        //최종 변환된 시간을 text로 입력
-        //변환된 시간은 int 단위로 계속 변경되므로 누적 값인 밀리초로 조건 설정
-        if (post_time < 60000) { //59초 까지만 초 단위
-            $(time).text(sec+"초 전");
-        }
-        else if (post_time < 3600000) { //59분 까지만 분 단위
-            $(time).text(min+"분 전");
-        }
-        else if (post_time < 86400000) { //23시 까지만 시간 단위
-            $(time).text(hr+"시간 전");
-        }
-        else if (post_time < 604800000){ //6일 까지만 일 단위
-            $(time).text(d+"일 전");
-        }
-        else if (y = 0){ //일주일 이후 부터 업로드 월,일 단위
-            $(time).text(split_time[1]+"월 "+split_time[2]+"일");
-        }
-        else if (y >= 1){ //해가 바뀌면 업로드 년,월,일 단위
-            $(time).text(split_time[0]+"년 "+split_time[1]+"월 "+split_time[2]+"일");
-        }
+        indicate_time(time)
     });
 });
 
@@ -395,7 +399,7 @@ $('[id$=_icon]').click(function(){
                 });
                 // 닉네임 태그
                 $(create_a_nickname).attr({
-                    'href': '/user/'+data['session_user']['nickname'],
+                    // 'href': '/user/'+data['session_user']['nickname'],
                     'class': 'like_user_nickname',
                 });
                 $(create_a_nickname).text(data['session_user']['nickname'])
@@ -419,7 +423,93 @@ $('[id$=_icon]').click(function(){
     })
 });
 
+// 댓글을 달았을때 댓글 정보와 댓글을 단 유저 정보를 댓글 목록에 추가하는 함수
+function indicate_comment(data, comment_div){
+    // 댓글 전체를 감쌀 div tag
+    const create_div = document.createElement('div');
+    // 이미지를 감쌀 a tag
+    const create_a_img = document.createElement('a');
+    // user profile img tag
+    const create_img = document.createElement('img');
+    // comment div tag
+    const create_div_user_comment = document.createElement('div');
+    // comment nickname time div tag
+    const create_div_comment_nickname_time = document.createElement('div');
+    // nickname a tag
+    const create_a_nickname = document.createElement('a');
+    // 시간 나타날 p tag
+    const create_p_time = document.createElement('p');
+    // 댓글 내용이 담길 div tag
+    const create_div_comment_txt = document.createElement('div');
 
+    // 좋아요 리스트에 추가할 div 태그
+    $(create_div).attr({
+        'class': 'user_img_nickname',
+        'value': data['session_user']['nickname']
+    });
+    // 이미지를 감쌀 a 테그
+    $(create_a_img).attr({
+        'href': '/user/'+ data['session_user']['nickname']
+    });
+    // 해당 user의 profile img tag
+    $(create_img).attr({
+        'src': data['session_user']['profile_img'][1],
+        'class': 'comment_user_img'
+    });
+    // user_comment div tag
+    $(create_div_user_comment).attr({
+        'class': 'user_comment',
+    });
+    // user_comment div tag
+    $(create_div_comment_nickname_time).attr({
+        'class': 'comment_nickname_time',
+    });
+    // 닉네임 태그
+    $(create_a_nickname).attr({
+        'href': '/user/'+ data['session_user']['nickname'],
+        'class': 'comment_nickname',
+    });
+    $(create_a_nickname).text(data['session_user']['nickname'])
+    // time p tag
+    $(create_p_time).attr({
+        'class': 'comment_time',
+        'value': data['time']
+    });
+    indicate_time(create_p_time)
+
+    // comment div tag
+    $(create_div_comment_txt).attr({
+        'class': 'comment_txt',
+    });
+    for (let i in data['comment']){
+        let comment_text = null
+        if (data['comment'][i].includes('@')){
+            comment_text = document.createElement('a');
+            $(comment_text).attr({
+                'href': "/user/" + data['comment'][i].slice(1),
+                'class': 'comment_nickname',
+                'id' : 'mention'
+            });
+            $(comment_text).text(data['comment'][i])
+        }
+        else {
+            comment_text = document.createElement('span');
+            $(comment_text).text(data['comment'][i])
+        }
+        create_div_comment_txt.appendChild(comment_text)
+    }
+
+    // 생성한 태그들 구조에 맞게 append
+    create_div_comment_nickname_time.appendChild(create_a_nickname);
+    create_div_comment_nickname_time.appendChild(create_p_time);
+    create_div_user_comment.appendChild(create_div_comment_nickname_time);
+    create_div_user_comment.appendChild(create_div_comment_txt);
+    create_a_img.appendChild(create_img)
+    create_div.appendChild(create_a_img);
+    create_div.appendChild(create_div_user_comment);
+    // 좋아요 리스트에 최종적으로 div 태그 append
+    $(comment_div).prepend(create_div);
+}
 // comment list btn
 $(function(){
     //모든 댓글 영역
@@ -434,10 +524,46 @@ $(function(){
         $(comment_btn).click(function(){
             if (change) {
                 change = false; 
-                console.log("false")       
+                console.log("false")
+                chiled = $(this).parent().parent().next().children()
+                for (let i = 0; i < chiled.length; i++) {
+                    // 생성된 댓글 div tag 지움
+                    if ($(chiled[i]).attr('class') == 'user_img_nickname') {
+                        $(chiled[i]).remove();
+                    }
+                }
             } else {
                 change = true;
-                console.log("true")       
+                console.log("true")
+                post_id = $(this).attr('value')
+                // 댓글이 나올 div 태그
+                comment_div = $(this).parent().parent().next()
+                let request_data = {
+                    'kind' : 'get_comment',
+                    'post_id' : post_id
+                }
+                $.ajax({
+                    type: "POST",
+                    url: "/content_reaction_submit",
+                    data: JSON.stringify(request_data),
+                    dataType: 'JSON',
+                    contentType: "application/json",
+                    success: function(data){
+                        // console.log(data['comment_dic'])
+                        for (let i in data['comment_dic']){
+                            comment_data = {
+                                'session_user': data['comment_dic'][i]['comment_user'],
+                                'time' : data['comment_dic'][i]['comment_time'],
+                                'comment': data['comment_dic'][i]['comment']
+                            }
+                            indicate_comment(comment_data,comment_div)
+                        }
+                    },
+                    error: function(request, status, error){
+                        // alert('ajax 통신 실패')
+                        // alert(error);
+                    }
+                })       
             };
             //댓글 영역에 toggle 효과를 줌
             $(comment).toggle(function(){
@@ -468,9 +594,9 @@ $('.comment_submit').click(function(){
     // 해당 버튼이 있는 post의 id 값
     let post_id = $(this).parent().attr('value');
     let btn = $(this)
-
+    let add_comment_list = $(this).parent().siblings(".comment_list")
     var request_data = {
-        "kind" : "comment",
+        "kind" : "append_comment",
         "text": text,
         "post_id": post_id
     }
@@ -481,62 +607,7 @@ $('.comment_submit').click(function(){
         dataType: 'JSON',
         contentType: "application/json",
         success: function(data){
-            // session user가 이미 좋아요를 누른 상태
-            // if (btn_value == "empty") {
-            //     $(btn).attr('value', 'color')
-            //     $(btn).attr('src', '../static/img/empty_like.png')
-            //     like_count -= 1
-            //     $(content_like).text(String(like_count) + '개')
-
-            //     let chiled = $(like_div).children()
-            //     //해당 div의 모든 자식 요소를 돌며
-            //     for (let i = 0; i < chiled.length; i++) {
-            //         console.log($(chiled[i]).attr('value'))
-            //         //입력한 값과 일치하는 속성 값을 가진 자식요소를 찾고
-            //         if ($(chiled[i]).attr('value') == data['session_user']['nickname']) {
-            //             // 해당 요소를 지움
-            //             $(chiled[i]).remove();
-            //         }
-            //     }
-            // session user가 좋아요를 누르지 않은 상태
-            // }else{ 
-            //     $(btn).attr('value', 'empty')
-            //     $(btn).attr('src', '../static/img/color_like.png')
-            //     like_count += 1
-            //     $(content_like).text(String(like_count) + '개')
-                
-            //     // 좋아요 누른 user 리스트에 추가할 user 태그들 생성
-            //     const create_div = document.createElement('div');
-            //     const create_a_img = document.createElement('a');
-            //     const create_a_nickname = document.createElement('a');
-            //     const create_img = document.createElement('img');
-            //     // 좋아요 리스트에 추가할 div 태그
-            //     $(create_div).attr({
-            //         'class': 'like_user_list',
-            //         'value': data['session_user']['nickname']
-            //     });
-            //     // 이미지를 감쌀 a 테그
-            //     $(create_a_img).attr({
-            //         'href': '/user/'+data['session_user']['nickname']
-            //     });
-            //     // 닉네임 태그
-            //     $(create_a_nickname).attr({
-            //         'href': '/user/'+data['session_user']['nickname'],
-            //         'class': 'like_user_nickname',
-            //     });
-            //     $(create_a_nickname).text(data['session_user']['nickname'])
-            //     // 이미지 테그
-            //     $(create_img).attr({
-            //         'src': data['session_user']['profile_img'][1],
-            //         'class': 'content_user_img'
-            //     });
-                // 생성한 태그들 구조에 맞게 append
-                // create_a_img.appendChild(create_img);
-                // create_div.appendChild(create_a_img);
-                // create_div.appendChild(create_a_nickname);
-                // 좋아요 리스트에 최종적으로 div 태그 append
-                // like_div.appendChild(create_div);
-            // }
+            indicate_comment(data, add_comment_list)
         },
         error: function(request, status, error){
             alert('ajax 통신 실패')
