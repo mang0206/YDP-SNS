@@ -423,7 +423,93 @@ $('[id$=_icon]').click(function(){
     })
 });
 
+// 댓글을 달았을때 댓글 정보와 댓글을 단 유저 정보를 댓글 목록에 추가하는 함수
+function indicate_comment(data, comment_div){
+    // 댓글 전체를 감쌀 div tag
+    const create_div = document.createElement('div');
+    // 이미지를 감쌀 a tag
+    const create_a_img = document.createElement('a');
+    // user profile img tag
+    const create_img = document.createElement('img');
+    // comment div tag
+    const create_div_user_comment = document.createElement('div');
+    // comment nickname time div tag
+    const create_div_comment_nickname_time = document.createElement('div');
+    // nickname a tag
+    const create_a_nickname = document.createElement('a');
+    // 시간 나타날 p tag
+    const create_p_time = document.createElement('p');
+    // 댓글 내용이 담길 div tag
+    const create_div_comment_txt = document.createElement('div');
 
+    // 좋아요 리스트에 추가할 div 태그
+    $(create_div).attr({
+        'class': 'user_img_nickname',
+        'value': data['session_user']['nickname']
+    });
+    // 이미지를 감쌀 a 테그
+    $(create_a_img).attr({
+        'href': '/user/'+ data['session_user']['nickname']
+    });
+    // 해당 user의 profile img tag
+    $(create_img).attr({
+        'src': data['session_user']['profile_img'][1],
+        'class': 'comment_user_img'
+    });
+    // user_comment div tag
+    $(create_div_user_comment).attr({
+        'class': 'user_comment',
+    });
+    // user_comment div tag
+    $(create_div_comment_nickname_time).attr({
+        'class': 'comment_nickname_time',
+    });
+    // 닉네임 태그
+    $(create_a_nickname).attr({
+        'href': '/user/'+ data['session_user']['nickname'],
+        'class': 'comment_nickname',
+    });
+    $(create_a_nickname).text(data['session_user']['nickname'])
+    // time p tag
+    $(create_p_time).attr({
+        'class': 'comment_time',
+        'value': data['time']
+    });
+    indicate_time(create_p_time)
+
+    // comment div tag
+    $(create_div_comment_txt).attr({
+        'class': 'comment_txt',
+    });
+    for (let i in data['comment']){
+        let comment_text = null
+        if (data['comment'][i].includes('@')){
+            comment_text = document.createElement('a');
+            $(comment_text).attr({
+                'href': "/user/" + data['comment'][i].slice(1),
+                'class': 'comment_nickname',
+                'id' : 'mention'
+            });
+            $(comment_text).text(data['comment'][i])
+        }
+        else {
+            comment_text = document.createElement('span');
+            $(comment_text).text(data['comment'][i])
+        }
+        create_div_comment_txt.appendChild(comment_text)
+    }
+
+    // 생성한 태그들 구조에 맞게 append
+    create_div_comment_nickname_time.appendChild(create_a_nickname);
+    create_div_comment_nickname_time.appendChild(create_p_time);
+    create_div_user_comment.appendChild(create_div_comment_nickname_time);
+    create_div_user_comment.appendChild(create_div_comment_txt);
+    create_a_img.appendChild(create_img)
+    create_div.appendChild(create_a_img);
+    create_div.appendChild(create_div_user_comment);
+    // 좋아요 리스트에 최종적으로 div 태그 append
+    $(comment_div).prepend(create_div);
+}
 // comment list btn
 $(function(){
     //모든 댓글 영역
@@ -438,10 +524,46 @@ $(function(){
         $(comment_btn).click(function(){
             if (change) {
                 change = false; 
-                console.log("false")       
+                console.log("false")
+                chiled = $(this).parent().parent().next().children()
+                for (let i = 0; i < chiled.length; i++) {
+                    // 생성된 댓글 div tag 지움
+                    if ($(chiled[i]).attr('class') == 'user_img_nickname') {
+                        $(chiled[i]).remove();
+                    }
+                }
             } else {
                 change = true;
-                console.log("true")       
+                console.log("true")
+                post_id = $(this).attr('value')
+                // 댓글이 나올 div 태그
+                comment_div = $(this).parent().parent().next()
+                let request_data = {
+                    'kind' : 'get_comment',
+                    'post_id' : post_id
+                }
+                $.ajax({
+                    type: "POST",
+                    url: "/content_reaction_submit",
+                    data: JSON.stringify(request_data),
+                    dataType: 'JSON',
+                    contentType: "application/json",
+                    success: function(data){
+                        // console.log(data['comment_dic'])
+                        for (let i in data['comment_dic']){
+                            comment_data = {
+                                'session_user': data['comment_dic'][i]['comment_user'],
+                                'time' : data['comment_dic'][i]['comment_time'],
+                                'comment': data['comment_dic'][i]['comment']
+                            }
+                            indicate_comment(comment_data,comment_div)
+                        }
+                    },
+                    error: function(request, status, error){
+                        // alert('ajax 통신 실패')
+                        // alert(error);
+                    }
+                })       
             };
             //댓글 영역에 toggle 효과를 줌
             $(comment).toggle(function(){
@@ -474,7 +596,7 @@ $('.comment_submit').click(function(){
     let btn = $(this)
     let add_comment_list = $(this).parent().siblings(".comment_list")
     var request_data = {
-        "kind" : "comment",
+        "kind" : "append_comment",
         "text": text,
         "post_id": post_id
     }
@@ -485,91 +607,7 @@ $('.comment_submit').click(function(){
         dataType: 'JSON',
         contentType: "application/json",
         success: function(data){
-            // 댓글 전체를 감쌀 div tag
-            const create_div = document.createElement('div');
-            // 이미지를 감쌀 a tag
-            const create_a_img = document.createElement('a');
-            // user profile img tag
-            const create_img = document.createElement('img');
-            // comment div tag
-            const create_div_user_comment = document.createElement('div');
-            // comment nickname time div tag
-            const create_div_comment_nickname_time = document.createElement('div');
-            // nickname a tag
-            const create_a_nickname = document.createElement('a');
-            // 시간 나타날 p tag
-            const create_p_time = document.createElement('p');
-            // 댓글 내용이 담길 div tag
-            const create_div_comment_txt = document.createElement('div');
-            
-            // 좋아요 리스트에 추가할 div 태그
-            $(create_div).attr({
-                'class': 'user_img_nickname',
-                'value': data['session_user']['nickname']
-            });
-            // 이미지를 감쌀 a 테그
-            $(create_a_img).attr({
-                'href': '/user/'+ data['session_user']['nickname']
-            });
-            // 해당 user의 profile img tag
-            $(create_img).attr({
-                'src': data['session_user']['profile_img'][1],
-                'class': 'comment_user_img'
-            });
-            // user_comment div tag
-            $(create_div_user_comment).attr({
-                'class': 'user_comment',
-            });
-            // user_comment div tag
-            $(create_div_comment_nickname_time).attr({
-                'class': 'comment_nickname_time',
-            });
-            // 닉네임 태그
-            $(create_a_nickname).attr({
-                'href': '/user/'+ data['session_user']['nickname'],
-                'class': 'comment_nickname',
-            });
-            $(create_a_nickname).text(data['session_user']['nickname'])
-            // time p tag
-            $(create_p_time).attr({
-                'class': 'comment_time',
-                'value': data['time']
-            });
-            indicate_time(create_p_time)
-
-            // comment div tag
-            $(create_div_comment_txt).attr({
-                'class': 'comment_txt',
-            });
-            for (let i in data['comment']){
-                let comment_text = null
-                if (data['comment'][i].includes('@')){
-                    comment_text = document.createElement('a');
-                    $(comment_text).attr({
-                        'href': "/user" + data['comment'][i].slice(1),
-                        'class': 'comment_nickname',
-                        'id' : 'mention'
-                    });
-                    $(comment_text).text(data['comment'][i])
-                }
-                else {
-                    comment_text = document.createElement('span');
-                    $(comment_text).text(data['comment'][i])
-                }
-                create_div_comment_txt.appendChild(comment_text)
-            }
-
-            // 생성한 태그들 구조에 맞게 append
-            create_div_comment_nickname_time.appendChild(create_a_nickname);
-            create_div_comment_nickname_time.appendChild(create_p_time);
-            create_div_user_comment.appendChild(create_div_comment_nickname_time);
-            create_div_user_comment.appendChild(create_div_comment_txt);
-            create_a_img.appendChild(create_img)
-            create_div.appendChild(create_a_img);
-            create_div.appendChild(create_div_user_comment);
-            // 좋아요 리스트에 최종적으로 div 태그 append
-            $(add_comment_list).prepend(create_div);
-            
+            indicate_comment(data, add_comment_list)
         },
         error: function(request, status, error){
             alert('ajax 통신 실패')

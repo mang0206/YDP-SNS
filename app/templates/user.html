@@ -208,14 +208,14 @@
                                 <!-- 댓글 기능 -->
                                 <div class="content_reaction comment">
                                     <img src="../static/img/chat.png" alt="" class="content_icon">
-                                    <p class="content_comment">{{ post['comment'] }}개</p>
+                                    <p class="content_comment" value="{{ post['_id'] }}">{{ post['comment'] }}개</p>
                                 </div>
                             </div>
                             <!-- 댓글 클릭하면 나타나는 영역 -->
                             <div class="content_comment_container none">
                                 <div class="comment_list">
                                     <!-- jinja for -->
-                                    <div class="user_img_nickname">
+                                    <!-- <div class="user_img_nickname">
                                         <img src="../static/img/user_profile_gray.png" alt="" class="comment_user_img">
                                         <div class="user_comment">
                                             <div class="comment_nickname_time">
@@ -223,7 +223,7 @@
                                                 <p class="comment_time">00시간 전</p>
                                             </div>
                                             <p class="comment_txt">유저가 남긴 댓글</p>
-                                            <!-- <div class="comment_txt" id="" value="{{ post['split_text'] }}">
+                                            <div class="comment_txt" id="" value="{{ post['split_text'] }}">
                                                 {% for text in post['split_text'] %}
                                                     {% if '@' in text %}
                                                     <a href="" id="mention">{{ text }}</a>
@@ -231,9 +231,9 @@
                                                     <span>{{ text }}</span>
                                                     {% endif %}
                                                 {% endfor %}
-                                            </div> -->
+                                            </div>
                                         </div>
-                                    </div>
+                                    </div> -->
                                     <button class="recomment">답글 달기</button>
                                     <!-- endfor -->
                                 </div>
