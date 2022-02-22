@@ -906,16 +906,13 @@ a:visited{color: black}
 }
 .user_list{
     height: 70px;
-    margin: 13px 0;
+    margin: 10px 0;
     
     display: flex;
     align-items: center;
 }
-@media (max-width: 767px) {
+@media (max-width: 908px) {
     .user_list{
-        margin: 7px 0;
-        padding: 0 50px;
-        
         justify-content: space-evenly;
     }
 }
@@ -964,8 +961,15 @@ a:visited{color: black}
     margin-bottom: 20px;
 }
 .friend_recommend_header{
+    margin-bottom: 20px;
     font-size: 17px;
     font-weight: 500;
+}
+.recommend_container{
+    display: flex;
+    flex-direction: column;
+    padding: 0 30px;
+    align-items: flex-start;
 }
 .recommended_friend{
     font-size: 13px;

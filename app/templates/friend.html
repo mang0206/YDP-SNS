@@ -57,25 +57,52 @@
         <div class="media_query_friend_recommend">
             <hr class="friend_hr" noshade="noshade">
             <div class="">
+                <!-- 화면 너비 950px 일 경우 표시 -->
                 <p class="friend_recommend_header">친구 추천 목록</p>
-                {% for friend in recommend_frined_dic %}
-                <div class="user_list">
-                    <a href="/user/{{recommend_frined_dic[friend]['nickname']}}">
-                        <img src="{{ recommend_frined_dic[friend]['profile_img'][1] }}" alt="" class="search_user_image">
-                    </a>
-                    <div class="user_list_name_area">
-                        <a class="user_nickname" href="/user/{{recommend_frined_dic[friend]['nickname']}}">
-                            {{ recommend_frined_dic[friend]['nickname'] }}
+                <div class="recommend_container">
+                    {% for friend in recommend_frined_dic %}
+                    <div class="user_list">
+                        <a href="/user/{{recommend_frined_dic[friend]['nickname']}}">
+                            <img src="{{ recommend_frined_dic[friend]['profile_img'][1] }}" alt="" class="search_user_image">
                         </a>
-                        <div class="user_name">
-                            {{ recommend_frined_dic[friend]['user_name'] }}
+                        <div class="user_list_name_area">
+                            <a class="user_nickname" href="/user/{{recommend_frined_dic[friend]['nickname']}}">
+                                {{ recommend_frined_dic[friend]['nickname'] }}
+                            </a>
+                            <div class="user_name">
+                                {{ recommend_frined_dic[friend]['user_name'] }}
+                            </div>
+                            {% if recommend_frined_dic[friend]['count'] != 0 %}
+                            <p class="recommended_friend">함께아는 친구 {{ recommend_frined_dic[friend]['count']|length }}</p>
+                            <!-- 함께아는 친구 popup -->
+                            <div class="more_icon_popup_back none">
+                                <div class="more_icon_popup popup_friend">
+                                    <div class="popup_friend_header" value="header">
+                                        <div>함께아는 친구 목록</div>
+                                        <img id="recommended_friend_close" class="top_bar_icon" src="../static/img/close.png" alt="close_icon" value="img">
+                                    </div>
+                                    <div style="overflow: auto;">
+                                        {% for friend in recommend_frined_dic %}
+                                        <div class="popup_friend_list"> 
+                                            <img src="{{recommend_frined_dic[friend]['profile_img'][1] }}" class="user_profile_img">
+                                            <div class="user_list_name_area">
+                                                <p class="user_nickname">
+                                                    {{recommend_frined_dic[friend]['nickname']}}
+                                                </p>
+                                                <p class="user_name">
+                                                    {{ recommend_frined_dic[friend]['user_name'] }}
+                                                </p>
+                                            </div>
+                                        </div> 
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                            {% endif %}
                         </div>
-                        {% if recommend_frined_dic[friend]['count'] != 0 %}
-                        <p> 함께아는 친구 {{ recommend_frined_dic[friend]['count']|length }}</p>
-                        {% endif %}
-                    </div>
-                </div> 
-                {% endfor %}
+                    </div> 
+                    {% endfor %}
+                </div>
             </div>
         </div>
     </div>
