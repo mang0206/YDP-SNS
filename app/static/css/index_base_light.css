@@ -558,6 +558,9 @@ a:visited{color: black}
     margin-left: 65px;
     cursor: pointer;
 }
+#recommended_friend_close{
+    margin-left: 40px;
+}
 .popup_friend_list{
     height: 70px;
     margin: 5px;
@@ -928,6 +931,7 @@ a:visited{color: black}
     border: solid 1px lightgray;
 }
 .user_nickname{
+    font-size: 15px;
     font-weight: 500;
 }
 /* friend */
@@ -962,6 +966,12 @@ a:visited{color: black}
 .friend_recommend_header{
     font-size: 17px;
     font-weight: 500;
+}
+.recommended_friend{
+    font-size: 13px;
+    text-decoration: underline;
+    text-underline-position: under;
+    cursor: pointer;
 }
 .request_status{
     display: flex;

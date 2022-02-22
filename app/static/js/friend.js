@@ -1,4 +1,22 @@
-// 친구 요청 수락 & 거절, 삭제 버튼
+// 추천 친구 - 함께아는 친구
+$(function(){
+    let recommended = document.querySelectorAll('.recommended_friend');
+    recommended.forEach(friend => {
+        let close_btn = $(friend).next().children().children('.popup_friend_header').children('#recommended_friend_close');
+        // 함께아는 친구 목록 클릭
+        $(friend).click(function(){
+            let friend_popup = $(friend).next();
+            friend_popup.attr('class','more_icon_popup_back');
+            document.querySelector(".body").className = "body scroll_hidden";        
+        });
+        //팝업창 close 버튼 클릭
+        $(close_btn).click(function(){
+            let friend_popup = $(friend).next();
+            friend_popup.attr('class','more_icon_popup_back none');
+            document.querySelector(".body").className = "body";        
+        });
+     });
+});
 
 // _btn으로 끝나는 id 요소를 클릭한 경우
 $('[id$=_btn]').click(function(){
