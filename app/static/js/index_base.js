@@ -25,28 +25,24 @@ $('html').click(function(e){
 
 //현재 페이지 navigation 표시
 let url = document.location.href.split('/');
-console.log(url)
 
 $(function(){
     let top_bar_icon = document.querySelectorAll('.top_bar_icon');
-    console.log(top_bar_icon)
     top_bar_icon.forEach(icon => {
         let alt = icon.getAttribute('alt');
-        console.log($(icon))
         //index 페이지 일 경우
         if(url[3] == ''){
-            console.log("home")
             //home_icon만 가져와서 변경
             if (alt == 'home_icon') {
                 $(icon).attr('src', '../static/img/home_fill.png');
-                console.log("src", $(icon).attr('src'))
+                console.log("home")
             };
         } //friend 페이지 일 경우
         else if(url[3] == 'friend'){
             //friend_icon만 가져와서 변경
             if(alt == 'friend_icon'){
                 $(icon).attr('src', '../static/img/friends_fill.png');
-                console.log("src", $(icon).attr('src'))
+                console.log("friend")
             };
         }; 
     });

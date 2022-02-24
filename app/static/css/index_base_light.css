@@ -533,9 +533,11 @@ a:visited{color: black}
 }
 .more_icon_popup{
     top: 35%;
-    left: 35%;
+    left: 0;
+    right: 0;
     width: 300px;
     height: fit-content;
+    margin: 0 auto;
     padding: 5px;
 
     position: fixed;
@@ -543,11 +545,6 @@ a:visited{color: black}
     background: #FFF;
     border-radius: 5px;
     box-shadow: 0 1px 10px rgba(0, 0, 0, 0.2);
-}
-@media (max-width: 767px) {
-    .more_icon_popup{
-        left: 25%;
-    }
 }
 .more_icon_popup.popup_friend{
     top: 25%;
@@ -1582,4 +1579,111 @@ a:visited{color: black}
 #setting_logout{
     color: red;
     opacity: 70%;
+}
+.withdrawal{
+    cursor: pointer;
+}
+.withdrawal_container{
+    top: 25%;
+    width: 420px;
+    padding: 20px;
+    
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.withdrawal_container p{
+    font-size: 15px;
+    text-align: center;
+}
+.withdrawal_info{
+    max-height: 45px;
+    /* height: 45px; */
+    text-decoration: underline;
+    text-underline-position: under;   
+    margin-bottom: 15px;
+
+    overflow: hidden;
+    transition: max-height 0.7s;
+    transition-delay: 0.3s;
+}
+.withdrawal_info2{
+    max-height: 100px;
+    height: fit-content;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    overflow: hidden;
+    transition: max-height 0.6s;
+    transition-delay: 0.8s;
+}
+#warning{
+    color: red;
+    margin-top: 10px;
+}
+.withdrawal_button{
+    margin: 10px 0;
+    display: flex;
+    flex-direction: row;
+}
+.withdrawal_btn{
+    width: 85px;
+    height: 30px;
+    cursor: pointer;
+}
+.withdrawal_btn:hover{
+    background-color: lightgray;
+}
+#withdrawal_cancel_btn{
+    margin-right: 10px;
+}
+#withdrawal_btn{
+    background-color: #ffcccc;
+}
+#withdrawal_btn:hover{
+    background-color: #FC9D9D;
+}
+.withdrawal_step{
+    max-height: 0;
+    height: 250px;
+    display: flex;
+    /* display: block; */
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+
+    overflow: hidden;
+    transition: max-height 0.7s;
+    transition-delay: 0.3s;
+}
+.withdrawal_input{
+    width: 320px;
+    height: 30px;
+}
+.idpw{
+    width: 200px;
+}
+#withdrawal_submit{
+    color: #FFF;
+    background-color: #46A6FF;
+}
+#withdrawal_submit:hover{
+    background-color: #0084ff;
+}
+.withdrawal_complete{
+    max-height: 0;
+
+    height: 100px;
+    display: flex;
+    flex-direction: column;
+
+    overflow: hidden;
+    transition: max-height 0.7s;
+    transition-delay: 1.8s;
+}
+#move_login{
+    padding: 10px 0 15px 0;
+    color: gray;
+    font-size: 14px;
 }
