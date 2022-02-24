@@ -79,11 +79,12 @@ a:visited{color: black}
     align-items: center;
 }
 .navigation_icon a{
-    width: 100%;
-    height: inherit;
-    margin: 0 10px 0 10px;
+    width: 40px;
+    height: 35px;
+    margin: 0 6px;
     padding-top: 4px;
     text-align: center;
+    border-radius: 50%;
 }
 .navigation_icon a:hover{
     background-color: #EDEDED;
@@ -151,8 +152,12 @@ a:visited{color: black}
         right: 15px;
     }
 }
-.user_popup button{
-    border: none;
+.user_popup a{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+
+    border-radius: 3px;
 }
 /* 게시물 생성 팝업창 */
 .plus_background{
@@ -223,12 +228,16 @@ a:visited{color: black}
     transition: all .5s;
 }
 #plus_icon_btn{
-    padding: 0;
-    margin: 0 10px 0 10px;
+    padding: 6px;
 
+    display: flex;
     border: none;
+    border-radius: 50%;
     cursor: pointer;
     background-color: #FFF;
+}
+#plus_icon_btn:hover{
+    background-color: #EDEDED;
 }
 .popup_header{
     width: 100%;

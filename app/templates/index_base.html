@@ -69,9 +69,9 @@
             <img src="{{ session['profile_img'] }}" class='top_bar_user' alt="">
             <!-- 프로필,로그아웃,설정 팝업창 -->
             <div id="user_popup" class="user_popup none">
-                <a href="/user/{{session['nickname']}}">프로필 이동</a>
-                <a href="/setting">설정</a>
-                <a href="/logout" style="color: red;">로그아웃</a>
+                <a href="/user/{{session['nickname']}}" class="user_popup_a">프로필 이동</a>
+                <a href="/setting" class="user_popup_a">설정</a>
+                <a href="/logout" style="color: red;" class="user_popup_a">로그아웃</a>
             </div>
             <div id="triangle" class="triangle none"></div>
         </div>
