@@ -8,7 +8,6 @@ $('#profile_setting_btn').click(function(){
 });
 
 // 2. '계정' 버튼
-// click
 $('#account_setting_btn').click(function(){
     $('#account_setting').removeClass('none');
     $('#profile_setting').addClass('none');
@@ -51,6 +50,31 @@ function readURL(input, n) {
         }
     }
 }
+
+//닉네임 변경 중복 검사
+function nickname(){
+    let input_nickname = document.getElementsByName('setting_input_ide');
+    console.log(input_nickname)
+
+    let nickname = {
+        "nickname":input_nickname
+    }
+
+    $.ajax({
+        type: 'GET',
+        url: 'post_setting',
+        data: JSON.stringify(nickname),
+        dataType: 'JSON',
+        contentType: "application/json",
+        success: function(data){
+
+        },
+        error: function(request, status, error){
+            alert('ajax 통신 실패')
+            console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+        }
+    })
+};
 
 // change_pw
 // 사용자가 입력한 기존 pw를 ajax로 전달

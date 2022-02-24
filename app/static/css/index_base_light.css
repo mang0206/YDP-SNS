@@ -79,7 +79,14 @@ a:visited{color: black}
     align-items: center;
 }
 .navigation_icon a{
+    width: 100%;
+    height: inherit;
     margin: 0 10px 0 10px;
+    padding-top: 4px;
+    text-align: center;
+}
+.navigation_icon a:hover{
+    background-color: #EDEDED;
 }
 .top_bar_icon{
     width: 30px;
@@ -124,9 +131,9 @@ a:visited{color: black}
     top: 60px;
     right: 20px;
 
-    width: 120px;
-    height: 90px;
-    padding: 10px;
+    width: 130px;
+    height: 100px;
+    padding: 5px;
 
     position: fixed;
     display: flex;

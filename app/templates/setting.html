@@ -36,7 +36,10 @@
                 <form action="/setting" method="post" name="setting_form_ide">
                     <p class="setting_header">닉네임 변경</p>
                     <input type="text" placeholder="새로운 닉네임" name="setting_input_ide">
-                    <button type="submit" class="setting_submit_btn" name="setting_button_ide">닉네임 저장</button>
+                    <div>
+                        <button class="check_btn" onclick="nickname();">중복 검사</button>
+                        <button type="submit" class="setting_submit_btn" name="setting_button_ide" disabled>닉네임 저장</button>
+                    </div>
                 </form>
                 <form action="/setting" method="post" name="setting_form_bio">
                     <p class="setting_header">소개글 수정</p>
