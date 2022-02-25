@@ -220,7 +220,7 @@
                                 </div>
                             </div>
                             <!-- 댓글 클릭하면 나타나는 영역 -->
-                            <div class="content_comment_container none">
+                            <div class="content_comment_container">
                                 <div class="comment_list" session_user="{{session['nickname']}}">
                                     <!-- jinja for -->
                                     <div class="user_img_nickname">
@@ -230,8 +230,8 @@
                                                 <p class="comment_nickname">nickname</p>
                                                 <p class="comment_time">00시간 전</p>
                                             </div>
-                                            <p class="comment_txt">유저가 남긴 댓글</p>
-                                            <!-- <div class="comment_txt" id="" value="{{ post['split_text'] }}">
+                                            <!-- <p class="comment_txt">유저가 남긴 댓글</p> -->
+                                            <div class="comment_txt" id="" value="{{ post['split_text'] }}">
                                                 {% for text in post['split_text'] %}
                                                     {% if '@' in text %}
                                                     <a href="" id="mention">{{ text }}</a>
@@ -239,9 +239,36 @@
                                                     <span>{{ text }}</span>
                                                     {% endif %}
                                                 {% endfor %}
-                                            </div> -->
+                                            </div>
+                                            <button class="recomment">답글 달기</button>
                                         </div>
-                                        <button class="recomment">답글 달기</button>
+                                        <button class="recomment delete">댓글 삭제</button>
+                                        <button class="recomment reply_show">답글 보기</button>
+                                    </div>
+                                    <!-- 답글 보기 누르면 나타나는 영역 -->
+                                    <div class="reply_container">
+                                        <!-- jinja for -->
+                                        <div class="reply_item">
+                                            <img src="../static/img/user_profile_gray.png" alt="" class="comment_user_img">
+                                            <div class="user_comment">
+                                                <div class="comment_nickname_time">
+                                                    <p class="comment_nickname">nickname</p>
+                                                    <p class="comment_time">00시간 전</p>
+                                                </div>
+                                                <p class="comment_txt">유저가 남긴 댓글</p>
+                                                <div class="comment_txt" id="" value="{{ post['split_text'] }}">
+                                                    {% for text in post['split_text'] %}
+                                                        {% if '@' in text %}
+                                                        <a href="" id="mention">{{ text }}</a>
+                                                        {% else %}
+                                                        <span>{{ text }}</span>
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                </div>
+                                            </div>
+                                            <button class="recomment delete">댓글 삭제</button>
+                                        </div>
+                                        <!-- endfor -->
                                     </div>
                                     <!-- endfor -->
                                 </div>
@@ -261,5 +288,5 @@
 </div>
 <script src="../static/js/user.js" defer="defer"></script>
 <script src="../static/js/create_content.js" defer="defer"></script>
-<script src="../static/js/post.js" defer="defer"></script>
+<!-- <script src="../static/js/post.js" defer="defer"></script> -->
 {% endblock %}

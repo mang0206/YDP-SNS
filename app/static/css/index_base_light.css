@@ -856,6 +856,7 @@ a:visited{color: black}
 .user_comment{
     display: flex;
     flex-direction: column;
+    align-items: flex-start;
 }
 .comment_nickname_time{
     display: flex;
@@ -896,7 +897,8 @@ a:visited{color: black}
     overflow: hidden;
 }
 .recomment{
-    margin-bottom: 10px;
+    padding: 0;
+    margin: 0 6px 10px 6px;
     color: gray;
     font-size: 13px;
     border: none;
@@ -904,6 +906,19 @@ a:visited{color: black}
     text-decoration: underline;
     text-underline-position: under;
     cursor: pointer;
+}
+/* .reply_show{
+    margin-left: 10px;
+} */
+.reply_container{
+    display: flex;
+    flex-direction: column;
+}
+.reply_item{
+    padding: 8px 0;
+    margin-left: 49px;
+    display: flex;
+    flex-direction: row;
 }
 .comment_submit{
     padding: 0 10px;
