@@ -22,8 +22,8 @@ $('html').click(function(e){
      });
 });
 
-// _btn으로 끝나는 id 요소를 클릭한 경우
-$('[id$=_btn]').click(function(){
+// request_btn인 class 요소를 클릭한 경우
+$('.request_btn').click(function(){
     // 클릭한 버튼에 해당하는 div 요소를 가져옴
     var div = $(this).parent()
     // div의 모든 자식 요소(button)
