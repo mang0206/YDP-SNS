@@ -8,7 +8,6 @@ $('#profile_setting_btn').click(function(){
 });
 
 // 2. '계정' 버튼
-// click
 $('#account_setting_btn').click(function(){
     $('#account_setting').removeClass('none');
     $('#profile_setting').addClass('none');
@@ -51,6 +50,31 @@ function readURL(input, n) {
         }
     }
 }
+
+//닉네임 변경 중복 검사
+function nickname(){
+    let input_nickname = document.getElementsByName('setting_input_ide');
+    console.log(input_nickname)
+
+    let nickname = {
+        "nickname":input_nickname
+    }
+
+    $.ajax({
+        type: 'GET',
+        url: 'post_setting',
+        data: JSON.stringify(nickname),
+        dataType: 'JSON',
+        contentType: "application/json",
+        success: function(data){
+
+        },
+        error: function(request, status, error){
+            alert('ajax 통신 실패')
+            console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+        }
+    })
+};
 
 // change_pw
 // 사용자가 입력한 기존 pw를 ajax로 전달
@@ -101,3 +125,35 @@ $('#origin_pw_btn').click(function(){
 import {password_validation} from './check_password.js';
 document.getElementById('pw2').addEventListener('keyup', password_validation);
 document.getElementById('pw').addEventListener('keyup', password_validation);
+
+//회원 탈퇴
+$("html").click(function(e){
+    // console.log(e.target)
+    let withdrawal = document.getElementsByClassName("more_icon_popup_back");
+    let withdrawal_info = document.getElementsByClassName("withdrawal_info");
+    let withdrawal_info2 = document.getElementsByClassName('withdrawal_info2');
+    let withdrawal_step = document.getElementsByClassName('withdrawal_step');
+    let withdrawal_complete = document.getElementsByClassName('withdrawal_complete');
+    
+    //탈퇴 버튼
+    if (e.target.className == 'withdrawal') {
+        withdrawal[0].className = 'more_icon_popup_back';
+    } //탈퇴 진행(확인) 버튼
+    else if (e.target.id == 'withdrawal_btn') {
+        withdrawal_info2[0].style.maxHeight = '0px';
+        withdrawal_step[0].style.maxHeight = '250px';
+        console.log("withdrawal_btn")
+    } //탈퇴 취소 버튼(각 요소 원위치)
+    else if (e.target.id == 'withdrawal_cancel_btn') {
+        withdrawal[0].className = 'more_icon_popup_back none';
+        withdrawal_info[0].style = '';
+        withdrawal_info2[0].style = '';
+        withdrawal_step[0].style = '';
+    } //탈퇴 진행 완료 버튼(로그인 페이지 이동)
+    else if (e.target.id == 'withdrawal_submit') {
+        withdrawal_info[0].style.maxHeight = '0px';
+        withdrawal_step[0].style = '';
+        withdrawal_complete[0].style.maxHeight = '100px';
+    };
+
+});

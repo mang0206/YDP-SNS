@@ -54,3 +54,17 @@ $('[id$=_btn]').click(function(){
         }
     })
 });
+
+// popup friend list btn
+$('.other_user_friend').click(function(){
+    let friend_popup = $(this).next();
+    console.log(friend_popup.attr('class'))
+    friend_popup.attr('class','more_icon_popup_back');
+    document.querySelector(".body").className = "body scroll_hidden";
+});
+
+$('#popup_friend_close').click(function(){
+    let friend_popup = $(this).parent().parent().parent();
+    friend_popup.attr('class','more_icon_popup_back none');
+    document.querySelector(".body").className = "body";
+});

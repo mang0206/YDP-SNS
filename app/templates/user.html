@@ -50,23 +50,31 @@
                     <a href="/friend" id="view_more">더보기</a>
                     {% else %}
                     <!-- 세션 유저가 아닌 사용자의 user 페이지 친구 목록 -->
-                    <a id="view_more">더보기</a>
+                    <button class="other_user_friend">더보기</button>
                     <!-- 친구 목록 팝업창 -->
                     <div class="more_icon_popup_back none">
-                        <div class="more_icon_popup">
-                            <!-- jinja for -->
-                            <div class="user_list"> 
-                                <a href="">
-                                    <img src="" class="user_profile_img">
-                                </a>
-                                <div class="user_list_name_area">
-                                    <a class="user_nickname" href ="">
+                        <div class="more_icon_popup popup_friend">
+                            <div class="popup_friend_header">
+                                <div>친구 목록</div>
+                                <img id="popup_friend_close" class="top_bar_icon" src="../static/img/close.png" alt="close_icon">
+                            </div>
+                            <div style="overflow: auto;">
+                                {% for friend in friend_dic %}
+                                <div class="popup_friend_list"> 
+                                    <a href="/user/{{friend_dic[friend]['nickname']}}">
+                                        <img src="{{friend_dic[friend]['profile_img'][1] }}" class="user_profile_img">
                                     </a>
-                                    <div class="user_name">
+                                    <div class="user_list_name_area">
+                                        <a class="user_nickname" href ="/user/{{friend_dic[friend]['nickname']}}">
+                                            {{friend_dic[friend]['nickname']}}
+                                        </a>
+                                        <div class="user_name">
+                                            {{ friend_dic[friend]['user_name'] }}
+                                        </div>
                                     </div>
-                                </div>
-                            </div> 
-                            <!-- endfor -->
+                                </div> 
+                                {% endfor %}
+                            </div>
                         </div>
                     </div>
                     {% endif %}
