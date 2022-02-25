@@ -747,9 +747,9 @@ a:visited{color: black}
     max-height: 200px;
     overflow: auto;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-start;
 }
 .user_comment{
     display: flex;

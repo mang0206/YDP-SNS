@@ -423,7 +423,7 @@ $('[id$=_icon]').click(function(){
     })
 });
 
-// 댓글을 달았을때 댓글 정보와 댓글을 단 유저 정보를 댓글 목록에 추가하는 함수
+// 댓글을 달았을 때 댓글 정보와 댓글을 단 유저 정보를 댓글 목록에 추가하는 함수
 function indicate_comment(data, comment_div){
     // 댓글 전체를 감쌀 div tag
     const create_div = document.createElement('div');
@@ -441,6 +441,9 @@ function indicate_comment(data, comment_div){
     const create_p_time = document.createElement('p');
     // 댓글 내용이 담길 div tag
     const create_div_comment_txt = document.createElement('div');
+    // 답글 달기 button
+    const create_btn = document.createElement('button');
+    
 
     // 좋아요 리스트에 추가할 div 태그
     $(create_div).attr({
@@ -498,6 +501,12 @@ function indicate_comment(data, comment_div){
         }
         create_div_comment_txt.appendChild(comment_text)
     }
+    //
+    $(create_btn).attr({
+        'class': 'recomment',
+        'value': data['session_user']['nickname']
+    });
+    $(create_btn).text('답글 달기')
 
     // 생성한 태그들 구조에 맞게 append
     create_div_comment_nickname_time.appendChild(create_a_nickname);
@@ -508,6 +517,22 @@ function indicate_comment(data, comment_div){
     create_div.appendChild(create_a_img);
     create_div.appendChild(create_div_user_comment);
     // 좋아요 리스트에 최종적으로 div 태그 append
+    create_div.appendChild(create_btn);
+    
+    
+    // session user와 댓글 작성한 user가 같을 시 삭제 버튼 추가 
+    if (data['session_user']['nickname'] == $(comment_div).attr('session_user')){
+        // 댓글 삭제 button
+        const create_btn_delete = document.createElement('button');
+
+        $(create_btn_delete).attr({
+            'class': 'recomment',
+            'value': data['session_user']['nickname']
+        });
+        $(create_btn_delete).text('댓글 삭제')
+        create_div.appendChild(create_btn_delete);
+    }
+
     $(comment_div).prepend(create_div);
 }
 // comment list btn
@@ -525,7 +550,7 @@ $(function(){
             if (change) {
                 change = false; 
                 console.log("false")
-                chiled = $(this).parent().parent().next().children()
+                chiled = $(this).parent().parent().next().children('.comment_list').children()
                 for (let i = 0; i < chiled.length; i++) {
                     // 생성된 댓글 div tag 지움
                     if ($(chiled[i]).attr('class') == 'user_img_nickname') {
@@ -535,9 +560,10 @@ $(function(){
             } else {
                 change = true;
                 console.log("true")
-                post_id = $(this).attr('value')
+                post_id = $(this).attr('post_id')
                 // 댓글이 나올 div 태그
-                comment_div = $(this).parent().parent().next()
+                comment_div = $(this).parent().parent().next().children('.comment_list')
+
                 let request_data = {
                     'kind' : 'get_comment',
                     'post_id' : post_id
