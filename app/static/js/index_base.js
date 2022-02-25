@@ -1,27 +1,52 @@
-// 상단바 프로필 사진 팝업창(프로필, 설정, 로그아웃)
+//user icon
 let user_icon = document.getElementsByClassName('.top_bar_user');
 let user_popup = document.getElementById('user_popup');
-let triangle = document.getElementById('triangle');
+let user_triangle = document.getElementById('triangle');
+// notice icon
+let notice_icon = document.getElementsByClassName('.notice_icon');
+let notice_popup = document.getElementById('notice_container');
+let notice_dot = document.getElementById('notice_dot');
+let notice_triangle = document.getElementById('notice_triangle');
 
 $('html').click(function(e){
-    //모달 영역 클릭하면 pass
-    if(e.target == user_popup){
-        return console.log('popup area');
-    } //모달 영역 외 클릭
-    else if(e.target != user_popup){
-        //user icon 클릭하면 모달 show & hide
+    //user modal area
+    if (e.target == user_popup){
+        return console.log('user modal');
+    } //notice modal area
+    else if (e.target == notice_popup) {
+        return console.log('notice modal');
+    } //not modal area
+    else if(e.target != user_popup || e.target != notice_popup){
+        //user icon click
         if (e.target.className == 'top_bar_user') {
+            //user modal toggle
             user_popup.classList.toggle('none');
-            triangle.classList.toggle('none');
+            user_triangle.classList.toggle('none');
+            //notice hide
+            notice_popup.className = 'none notice_popup user_popup';
+            notice_triangle.className = 'triangle none';
             console.log('user_icon');
-        } else { //user icon 외 클릭
+        } 
+        //notice icon click
+        else if (e.target.className == 'top_bar_icon notice_icon') {
+            //notice modal toggle
+            notice_popup.classList.toggle('none');
+            notice_triangle.classList.toggle('none');
+            //user hide
             user_popup.className = 'user_popup none';
-            triangle.className = 'triangle none';
-            console.log('popup close area');
+            user_triangle.className = 'triangle none';
+            console.log('notice_icon');
+        } 
+        else { //if not icon clicked, hide to all modal
+            user_popup.className = 'user_popup none';
+            user_triangle.className = 'triangle none';
+            notice_popup.className = 'none notice_popup user_popup';
+            notice_triangle.className = 'triangle none';
+            console.log('close area');
         };
     };
 });
-// notice.js 같은 동작
+
 
 //현재 페이지 navigation 표시
 let url = document.location.href.split('/');

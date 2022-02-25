@@ -64,7 +64,54 @@
                     </form>
                 </div>
             </div>
-            <a href="/"><img class="top_bar_icon" src="../static/img/notification.png" alt="notice_icon"></a>
+            <div class="top_bar_notice">
+                <div id="notice_dot"></div>
+                <img class="top_bar_icon notice_icon" src="../static/img/notification.png" alt="notice_icon">
+            </div>
+            <!-- notice modal -->
+            <div id="notice_container" class="none notice_popup user_popup">
+                <div class="notice_list">
+                    <!-- jinja for -->
+                    <!-- if 컨텐츠 관련 알림 -->
+                    <div class="notice_item post_notice">
+                        <a class="notice_a img" href=""><img class="post_notice_img" src="../static/img/user_profile_gray.png" alt=""></a>
+                        <div class="notice_content">
+                            <p class="notice_txt">
+                                <a class="notice_a notice_nickname" href="">nickname</a>
+                                <!-- 좋아요, 댓글, 태그에 따라 다른 내용 -->
+                                님이 게시물을 좋아합니다.
+                                <!-- 시간 -->
+                                <a class="notice_a notice_time">00시간 전</a>
+                            </p> 
+                        </div>
+                    </div>
+                    <!-- else if 친구 관련 알림 -->
+                    <div class="notice_item friend_notice">
+                        <a  class="notice_a img" href=""><img class="friend_notice_img" src="../static/img/user_profile_gray.png" alt=""></a>
+                        <div class="notice_content">
+                            <p class="notice_txt">
+                                <a class="notice_a notice_nickname" href="">nickname</a>
+                                님이 친구 요청을 보냈습니다.
+                                <!-- 시간 -->
+                                <a class="notice_a notice_time">00시간 전</a>
+                            </p> 
+                        </div>
+                    </div>
+                    <!-- endif -->
+                    <!-- <div class="notice_item friend_notice"> -->
+                        <!-- <a  class="notice_a img" href=""><img class="friend_notice_img" src="../static/img/user_profile_gray.png" alt=""></a> -->
+                        <!-- <p class="notice_txt"><a class="notice_a notice_nickname" href="">nickname</a>님이 친구 요청을 보냈습니다.</p> -->
+                        <!-- <p class="notice_time">00시간 전</p> -->
+                    <!-- </div> -->
+                    <!-- <div class="notice_item friend_notice"> -->
+                        <!-- <a  class="notice_a img" href=""><img class="friend_notice_img" src="../static/img/user_profile_gray.png" alt=""></a> -->
+                        <!-- <p class="notice_txt"><a class="notice_a notice_nickname" href="">nickname</a>님이 친구 요청을 보냈습니다.</p> -->
+                        <!-- <p class="notice_time">00시간 전</p>  -->
+                    <!-- </div> -->
+                    <!-- endfor -->
+                </div>
+            </div>
+            <div id="notice_triangle" class="triangle none"></div>
             <!-- <button type="button" id="" class="top_bar_user"></button> -->
             <img src="{{ session['profile_img'] }}" class='top_bar_user' alt="">
             <!-- 프로필,로그아웃,설정 팝업창 -->

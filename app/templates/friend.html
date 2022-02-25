@@ -81,7 +81,7 @@
                                         <div>함께아는 친구 목록</div>
                                         <img id="recommended_friend_close" class="top_bar_icon" src="../static/img/close.png" alt="close_icon" value="img">
                                     </div>
-                                    <div style="overflow: auto;">
+                                    <div class="popup_friend_container">
                                         {% for friend in recommend_frined_dic %}
                                         <div class="popup_friend_list"> 
                                             <img src="{{recommend_frined_dic[friend]['profile_img'][1] }}" class="user_profile_img">

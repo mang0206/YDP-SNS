@@ -78,20 +78,23 @@ a:visited{color: black}
     flex-direction: row;
     align-items: center;
 }
-.navigation_icon a{
+.navigation_icon a:not(.notice_a){
     width: 40px;
     height: 35px;
-    margin: 0 6px;
+    margin: 0 3px;
     padding-top: 4px;
     text-align: center;
     border-radius: 50%;
 }
-.navigation_icon a:hover{
+.navigation_icon a:hover:not(.notice_a){
     background-color: #EDEDED;
 }
 .top_bar_icon{
     width: 30px;
     height: 30px;
+}
+.content_popup{
+    margin: 0 2px;
 }
 .search_btn{
     cursor: pointer;
@@ -102,10 +105,104 @@ a:visited{color: black}
     width: 30px;
     height: 30px;
 }
+/* ---notice--- */
+#notice_dot{
+    top: 16px;
+    right: 78px;
+    width: 5px;
+    height: 5px;
+    position: absolute;
+    background-color: #ff6060;
+    border-radius: 50%;
+}
+@media (max-width: 767px) {
+    .notice_dot{
+        right: 68px;
+    }
+}
+.notice_icon{
+    padding: 5px;
+    margin: 0 3px;
+    border-radius: 50%;
+    cursor: pointer;
+}
+.notice_icon:hover{
+    background-color: #EDEDED;
+}
+#notice_container{
+    right: 59px;
+    width: 310px;
+    height: fit-content;
+    max-height: 250px;
+    padding: 5px;
+
+    /* display: flex;
+    flex-direction: column;
+    align-items: flex-start; */
+}
+.notice_list{
+    width: 100%;
+    overflow: auto;
+}
+.notice_item{
+    height: 55px;
+    padding: 5px;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    border-radius: 3px;
+}
+.notice_item:hover{
+    background-color: #EEEEEE;
+}
+.notice_a{
+    padding: 0;
+    margin: 0;
+    width: fit-content;
+    cursor: pointer;
+}
+.notice_a.img{
+    display: flex;
+    align-items: center;
+}
+.post_notice_img{
+    width: 55px;
+    height: 55px;
+    border: solid 1px #EDEDED;
+}
+.friend_notice_img{
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    border: solid 1px #EDEDED; /* 임시 */
+}
+.notice_content{
+    display: flex;
+}
+.notice_txt{
+    width: 100%;
+    margin-left: 10px;
+    padding: 3px;
+    font-size: 13px;
+}
+.notice_nickname{
+    font-weight: 500;
+}
+.notice_time{
+    /* position: absolute; */
+    /* top: 53px; */
+    /* right: 25px; */
+    font-size: 11px;
+    color: rgb(0, 0, 0, 0.5);
+}
+#notice_triangle{
+    top: 55px;
+    right: 86px;
+}
 .top_bar_user{
     width: 40px;
     height: 40px;
-    margin: 0 10px 0 10px;
+    margin: 0 5px;
     cursor: pointer;
 
     box-sizing: border-box;
@@ -152,7 +249,7 @@ a:visited{color: black}
         right: 15px;
     }
 }
-.user_popup a{
+.user_popup a:not(.notice_a){
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -573,6 +670,11 @@ a:visited{color: black}
 }
 #recommended_friend_close{
     margin-left: 40px;
+}
+.popup_friend_container{
+    overflow: auto;
+    display: flex;
+    flex-direction: column;
 }
 .popup_friend_list{
     height: 70px;
