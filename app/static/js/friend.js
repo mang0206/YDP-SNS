@@ -1,20 +1,24 @@
 // 추천 친구 - 함께아는 친구
-$(function(){
+$('html').click(function(e){
     let recommended = document.querySelectorAll('.recommended_friend');
+    console.log(e.target)
     recommended.forEach(friend => {
-        let close_btn = $(friend).next().children().children('.popup_friend_header').children('#recommended_friend_close');
         // 함께아는 친구 목록 클릭
-        $(friend).click(function(){
+        if (e.target == friend) {
             let friend_popup = $(friend).next();
             friend_popup.attr('class','more_icon_popup_back');
-            document.querySelector(".body").className = "body scroll_hidden";        
-        });
-        //팝업창 close 버튼 클릭
-        $(close_btn).click(function(){
+            document.querySelector(".body").className = "body scroll_hidden";
+            console.log("friend list")
+        }  //close 버튼 혹은 팝업 영역 외 클릭
+        else if (e.target.className == 'top_bar_icon' || e.target.className == 'more_icon_popup_back') {
             let friend_popup = $(friend).next();
             friend_popup.attr('class','more_icon_popup_back none');
-            document.querySelector(".body").className = "body";        
-        });
+            document.querySelector(".body").className = "body";   
+            console.log("close modal")
+        }
+        else { //팝업창 영역 클릭
+            console.log('modal area')
+        };
      });
 });
 

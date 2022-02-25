@@ -55,16 +55,20 @@ $('[id$=_btn]').click(function(){
     })
 });
 
-// popup friend list btn
-$('.other_user_friend').click(function(){
-    let friend_popup = $(this).next();
-    console.log(friend_popup.attr('class'))
-    friend_popup.attr('class','more_icon_popup_back');
-    document.querySelector(".body").className = "body scroll_hidden";
-});
-
-$('#popup_friend_close').click(function(){
-    let friend_popup = $(this).parent().parent().parent();
-    friend_popup.attr('class','more_icon_popup_back none');
-    document.querySelector(".body").className = "body";
+// other user friend list
+$('html').click(function(e){
+    console.log(e.target)
+    // 더보기 버튼
+    if (e.target.className == 'other_user_friend') {
+        $('.more_icon_popup_back').attr('class','more_icon_popup_back');
+        document.querySelector(".body").className = "body scroll_hidden";
+    }  //close 버튼 혹은 팝업 영역 외 클릭
+    else if (e.target.id == 'popup_friend_close' || e.target.className == 'more_icon_popup_back') {
+        $('.more_icon_popup_back').attr('class','more_icon_popup_back none');
+        document.querySelector(".body").className = "body";
+        console.log("close modal")
+    }
+    else { //팝업창 영역
+        console.log('modal area')
+    };
 });

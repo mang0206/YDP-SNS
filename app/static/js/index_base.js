@@ -1,13 +1,36 @@
+//maintain notice dot
+$(function(){
+    console.log(notice_icon)
+    //새로운 알림이 존재하면 notice dot 표시
+    
+    // $.ajax({
+    //     type: 'GET',
+    //     url: "/",
+    //     data: JSON.stringify(),
+    //     dataType: 'JSON',
+    //     contentType: "application/json",
+    //     success: function(data){
+    //         if (notice.length > 0) {
+    //             notice_dot.className == 'notice_dot'
+    //         }
+    //     },
+    //     error: function(request, status, error){
+    //         alert('ajax 통신 실패')
+    //         console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+    //     }
+    // });
+})
+
 //user icon
 let user_icon = document.getElementsByClassName('.top_bar_user');
 let user_popup = document.getElementById('user_popup');
 let user_triangle = document.getElementById('triangle');
 // notice icon
-let notice_icon = document.getElementsByClassName('.notice_icon');
+let notice_icon = document.getElementsByClassName('notice_icon');
 let notice_popup = document.getElementById('notice_container');
 let notice_dot = document.getElementById('notice_dot');
 let notice_triangle = document.getElementById('notice_triangle');
-
+//상단바 아이콘 팝업창 토글
 $('html').click(function(e){
     //user modal area
     if (e.target == user_popup){
@@ -25,6 +48,8 @@ $('html').click(function(e){
             //notice hide
             notice_popup.className = 'none notice_popup user_popup';
             notice_triangle.className = 'triangle none';
+            //notice icon change
+            $(notice_icon[0]).attr('src', '../static/img/notification.png');
             console.log('user_icon');
         } 
         //notice icon click
@@ -32,6 +57,15 @@ $('html').click(function(e){
             //notice modal toggle
             notice_popup.classList.toggle('none');
             notice_triangle.classList.toggle('none');
+            //notice icon change
+            if (notice_popup.classList.contains('none')) {
+                //if notice popup has class 'none', show empty icon
+                $(notice_icon[0]).attr('src', '../static/img/notification.png');
+            } else {
+                $(notice_icon[0]).attr('src', '../static/img/notification_fill.png');
+            }
+            //notice dot hide
+            notice_dot.className = 'notice_dot none';
             //user hide
             user_popup.className = 'user_popup none';
             user_triangle.className = 'triangle none';
@@ -42,6 +76,7 @@ $('html').click(function(e){
             user_triangle.className = 'triangle none';
             notice_popup.className = 'none notice_popup user_popup';
             notice_triangle.className = 'triangle none';
+            $(notice_icon[0]).attr('src', '../static/img/notification.png');
             console.log('close area');
         };
     };
