@@ -220,7 +220,7 @@
                                 </div>
                             </div>
                             <!-- 댓글 클릭하면 나타나는 영역 -->
-                            <div class="content_comment_container">
+                            <div class="content_comment_container none">
                                 <div class="comment_list" session_user="{{session['nickname']}}">
                                     <!-- jinja for -->
                                     <div class="user_img_nickname">
@@ -288,5 +288,5 @@
 </div>
 <script src="../static/js/user.js" defer="defer"></script>
 <script src="../static/js/create_content.js" defer="defer"></script>
-<!-- <script src="../static/js/post.js" defer="defer"></script> -->
+<script src="../static/js/post.js" defer="defer"></script>
 {% endblock %}

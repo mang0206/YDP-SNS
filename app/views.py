@@ -323,10 +323,16 @@ def like_submit():
     # 해당 post의 댓글을 불러오는 ajax 통신
     elif data['kind'] == 'get_comment':
         comment_dic = list(col_comment.find(
-            {'post_id': data['post_id']},
-            {'_id': 0}
+            {'post_id': data['post_id']}
         ))#.sort("comment_time", pymongo.DESCENDING))
+        for comment in comment_dic:
+            comment['_id'] = str(comment['_id'])
+        print(comment_dic)
         return jsonify(result = "success", comment_dic = comment_dic)
+    elif data['kind'] == 'append_reply':
+        
+        return jsonify(result = "success")
+
 
 @app.route("/user/<user>")
 def user(user):
