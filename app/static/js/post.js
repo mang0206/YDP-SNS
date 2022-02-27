@@ -553,6 +553,17 @@ function indicate_comment(data, comment_div){
     }
 
     $(comment_div).prepend(create_div_reply);
+    console.log(comment_div)
+    console.log(data['reply_list'])
+    for (let i in data['reply_list']){
+        reply_data = {
+            'comment_id': data['comment_dic'],
+            'session_user': data['reply_list'][i]['reply_user'],
+            'time' : data['reply_list'][i]['reply_time'],
+            'reply': data['reply_list'][i]['reply'],
+        }
+        indicate_reply(reply_data,comment_div, create_div_reply)
+    }
     $(comment_div).prepend(create_div);
 }
 // comment list btn
@@ -573,7 +584,7 @@ $(function(){
                 chiled = $(this).parent().parent().next().children('.comment_list').children()
                 for (let i = 0; i < chiled.length; i++) {
                     // 생성된 댓글 div tag 지움
-                    if ($(chiled[i]).attr('class') == 'user_img_nickname') {
+                    if ($(chiled[i]).attr('class') == 'user_img_nickname' || $(chiled[i]).attr('class') == 'reply_container') {
                         $(chiled[i]).remove();
                     }
                 }
@@ -601,7 +612,8 @@ $(function(){
                                 'comment_id': data['comment_dic'][i]['_id'],
                                 'session_user': data['comment_dic'][i]['comment_user'],
                                 'time' : data['comment_dic'][i]['comment_time'],
-                                'comment': data['comment_dic'][i]['comment']
+                                'comment': data['comment_dic'][i]['comment'],
+                                'reply_list': data['comment_dic'][i]['reply_list']
                             }
                             indicate_comment(comment_data,comment_div)
                         }
