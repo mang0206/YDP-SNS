@@ -279,6 +279,7 @@ def delete_post():
     col_post.delete_one({'_id':ObjectId(data)})
     return jsonify(result = "success")
 
+# 좋아요, 댓글 및 답글 관리(C.R.U.D) 함수
 @app.route("/content_reaction_submit", methods=["POST"])
 def like_submit():
     col_user = db.get_collection('user')
@@ -306,7 +307,7 @@ def like_submit():
         time = dt.datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
         session_user = col_user.find_one({'user_id':session['login']},{'_id':0, 'nickname':1 ,'profile_img':1})
         comment = data['text'].split(' ')
-        col_comment.insert_one({
+        comment_info = col_comment.insert_one({
             'post_id' : data['post_id'],
             'comment_user' : session_user,
             'comment_time' : time,
@@ -315,11 +316,11 @@ def like_submit():
         })
         col_user.update_one(
             {'user_id': session['login']},
-            {'$push': {'comment': ['comment', data['post_id']]}}
+            {'$push': {'comment': ['comment', comment_info.inserted_id]}}
         )
         col_post.update_one({'_id': ObjectId(data['post_id'])}, {'$inc': {'comment': 1}})
         print(comment)
-        return jsonify(result = "success", session_user=session_user, comment=comment, time=time)
+        return jsonify(result = "success", session_user=session_user, comment=comment, time=time, comment_id = str(comment_info.inserted_id))
     # 해당 post의 댓글을 불러오는 ajax 통신
     elif data['kind'] == 'get_comment':
         comment_dic = list(col_comment.find(
@@ -327,11 +328,28 @@ def like_submit():
         ))#.sort("comment_time", pymongo.DESCENDING))
         for comment in comment_dic:
             comment['_id'] = str(comment['_id'])
-        print(comment_dic)
-        return jsonify(result = "success", comment_dic = comment_dic)
-    elif data['kind'] == 'append_reply':
         
-        return jsonify(result = "success")
+        return jsonify(result = "success", comment_dic = comment_dic)\
+    # 답글 추가 ajax 통신
+    elif data['kind'] == 'append_reply':
+        time = dt.datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
+        session_user = col_user.find_one({'user_id':session['login']},{'_id':0, 'nickname':1 ,'profile_img':1})
+        reply = data['text'].split(' ')
+        # 댓글 document의 reply list에 추가할 정보 dictionary 
+        append_reply = {
+            'reply_user' : session_user,
+            'reply_time' : time,
+            'reply' : reply,
+        }
+        comment_info = col_comment.update_one(
+            {'_id': ObjectId(data['comment_id'])},
+            {'$push': {'reply_list': append_reply}})
+        col_user.update_one(
+            {'user_id': session['login']},
+            {'$push': {'comment': ['reply', comment_info.upserted_id]}}
+        )
+        col_post.update_one({'_id': ObjectId(data['post_id'])}, {'$inc': {'comment': 1}})
+        return jsonify(result = "success", session_user=session_user, reply=reply, time=time)
 
 
 @app.route("/user/<user>")
