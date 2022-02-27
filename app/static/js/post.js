@@ -810,11 +810,11 @@ function indicate_reply(data, comment_div, standard_div){
         const create_btn_delete = document.createElement('button');
 
         $(create_btn_delete).attr({
-            'class': 'recomment delete_comment',
+            'class': 'recomment delete_reply',
             'value': data['session_user']['nickname'],
             'comment_id' : data['comment_id']
         });
-        $(create_btn_delete).text('댓글 삭제')
+        $(create_btn_delete).text('답글 삭제')
         create_div.appendChild(create_btn_delete);
     }
 
@@ -861,3 +861,54 @@ $(document).on("click",".reply_submit",function(){
     })
 });
 
+// 답글 삭제 ajax
+$(document).on("click",".delete_reply",function(){
+    console.log('delete test')
+    const time = $(this).siblings('.user_comment').children('.comment_nickname_time').children('.comment_time').attr('value')
+    const nickname = $(this).siblings('.user_comment').children('.comment_nickname_time').children('.comment_nickname').text()
+    const comment_id = $(this).parent().parent().attr('comment_id')
+    console.log(time, nickname,comment_id)
+    var request_data = {
+        "kind" : "delete_reply",
+        "time": time,
+        "nickname": nickname,
+        "comment_id": comment_id
+    }
+    $.ajax({
+        type: "DELETE",
+        url: "/content_reaction_submit",
+        data: JSON.stringify(request_data),
+        dataType: 'JSON',
+        contentType: "application/json",
+        success: function(data){
+            indicate_reply(data, add_comment_list, standard_div)
+        },
+        error: function(request, status, error){
+            alert('ajax 통신 실패')
+            alert(error);
+        }
+    })
+});
+
+//Post Delete Button
+$('[id$=_delete_btn]').click(function(){
+    let post_id = $(this).attr('value');
+    let close_div = $(this).parent().parent().parent().parent().parent().parent();
+    $.ajax({
+        type: 'DELETE',
+        url: "/content_submit",
+        data: JSON.stringify(post_id),
+        dataType: 'JSON',
+        contentType: "application/json",
+        success: function(data){
+            // $(close_div).addClass('none')
+            $(close_div).css("display" ,"none");
+            document.querySelector(".body").className = "body";
+            alert('게시글이 삭제되었습니다.')
+        },
+        error: function(request, status, error){
+            alert('ajax 통신 실패')
+            alert(error);
+        }
+    });
+});

@@ -279,7 +279,7 @@ def delete_post():
     col_post.delete_one({'_id':ObjectId(data)})
     return jsonify(result = "success")
 
-# 좋아요, 댓글 및 답글 관리(C.R.U.D) 함수
+# 좋아요, 댓글 및 답글 관리(C.R.U.D) Route
 @app.route("/content_reaction_submit", methods=["POST"])
 def like_submit():
     col_user = db.get_collection('user')
@@ -351,6 +351,10 @@ def like_submit():
         col_post.update_one({'_id': ObjectId(data['post_id'])}, {'$inc': {'comment': 1}})
         return jsonify(result = "success", session_user=session_user, reply=reply, time=time)
 
+@app.route("/content_reaction_submit", methods=["DELETE"])
+def delete_reply():
+    pass
+    pass
 
 @app.route("/user/<user>")
 def user(user):
