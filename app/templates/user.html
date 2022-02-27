@@ -223,14 +223,13 @@
                             <div class="content_comment_container none">
                                 <div class="comment_list" session_user="{{session['nickname']}}">
                                     <!-- jinja for -->
-                                    <div class="user_img_nickname">
+                                    <!-- <div class="user_img_nickname">
                                         <img src="../static/img/user_profile_gray.png" alt="" class="comment_user_img">
                                         <div class="user_comment">
                                             <div class="comment_nickname_time">
                                                 <p class="comment_nickname">nickname</p>
                                                 <p class="comment_time">00시간 전</p>
                                             </div>
-                                            <!-- <p class="comment_txt">유저가 남긴 댓글</p> -->
                                             <div class="comment_txt" id="" value="{{ post['split_text'] }}">
                                                 {% for text in post['split_text'] %}
                                                     {% if '@' in text %}
@@ -244,11 +243,11 @@
                                         </div>
                                         <button class="recomment delete_comment">댓글 삭제</button>
                                         <button class="recomment reply_show">답글 보기</button>
-                                    </div>
+                                    </div> -->
                                     <!-- 답글 보기 누르면 나타나는 영역 -->
-                                    <div class="reply_container">
+                                    <!-- <div class="reply_container"> -->
                                         <!-- jinja for -->
-                                        <div class="reply_item">
+                                        <!-- <div class="reply_item">
                                             <img src="../static/img/user_profile_gray.png" alt="" class="comment_user_img">
                                             <div class="user_comment">
                                                 <div class="comment_nickname_time">
@@ -267,7 +266,7 @@
                                                 </div>
                                             </div>
                                             <button class="recomment delete_comment">댓글 삭제</button>
-                                        </div>
+                                        </div> -->
                                         <!-- endfor -->
                                     </div>
                                     <!-- endfor -->

@@ -445,7 +445,8 @@ function indicate_comment(data, comment_div){
     const create_btn = document.createElement('button');
     // 답글 보기 button
     const create_btn_reply = document.createElement('button');
-    
+    // 답글이 들어갈 div tag
+    const create_div_reply = document.createElement('div');
 
     // 좋아요 리스트에 추가할 div 태그
     $(create_div).attr({
@@ -518,6 +519,11 @@ function indicate_comment(data, comment_div){
     });
     $(create_btn_reply).text('답글 보기')
 
+    $(create_div_reply).attr({
+        'class': 'reply_container',
+        'comment_id': data['comment_id']
+    });
+
 
     // 생성한 태그들 구조에 맞게 append
     create_div_comment_nickname_time.appendChild(create_a_nickname);
@@ -546,6 +552,7 @@ function indicate_comment(data, comment_div){
         create_div.appendChild(create_btn_delete);
     }
 
+    $(comment_div).prepend(create_div_reply);
     $(comment_div).prepend(create_div);
 }
 // comment list btn
@@ -799,7 +806,8 @@ function indicate_reply(data, comment_div, standard_div){
         create_div.appendChild(create_btn_delete);
     }
 
-    $(standard_div).after(create_div);
+    // $(standard_div).prepend(create_div);
+    $(standard_div).append(create_div);
 }
 
 //답글 전송 ajax
@@ -815,7 +823,7 @@ $(document).on("click",".reply_submit",function(){
     console.log(post_id)
     let chiled = add_comment_list.children()
     for(let i = 0; i < chiled.length; i++){
-        if ($(chiled[i]).attr('comment_id') == comment_id){
+        if ($(chiled[i]).attr('comment_id') == comment_id & $(chiled[i]).attr('class') == 'reply_container'){
             standard_div = chiled[i]
         }
     }
