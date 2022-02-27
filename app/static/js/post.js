@@ -867,7 +867,8 @@ $(document).on("click",".delete_reply",function(){
     const time = $(this).siblings('.user_comment').children('.comment_nickname_time').children('.comment_time').attr('value')
     const nickname = $(this).siblings('.user_comment').children('.comment_nickname_time').children('.comment_nickname').text()
     const comment_id = $(this).parent().parent().attr('comment_id')
-    console.log(time, nickname,comment_id)
+    const remove_tag = $(this).parent()
+
     var request_data = {
         "kind" : "delete_reply",
         "time": time,
@@ -881,34 +882,11 @@ $(document).on("click",".delete_reply",function(){
         dataType: 'JSON',
         contentType: "application/json",
         success: function(data){
-            indicate_reply(data, add_comment_list, standard_div)
+            $(remove_tag).remove()
         },
         error: function(request, status, error){
             alert('ajax 통신 실패')
             alert(error);
         }
     })
-});
-
-//Post Delete Button
-$('[id$=_delete_btn]').click(function(){
-    let post_id = $(this).attr('value');
-    let close_div = $(this).parent().parent().parent().parent().parent().parent();
-    $.ajax({
-        type: 'DELETE',
-        url: "/content_submit",
-        data: JSON.stringify(post_id),
-        dataType: 'JSON',
-        contentType: "application/json",
-        success: function(data){
-            // $(close_div).addClass('none')
-            $(close_div).css("display" ,"none");
-            document.querySelector(".body").className = "body";
-            alert('게시글이 삭제되었습니다.')
-        },
-        error: function(request, status, error){
-            alert('ajax 통신 실패')
-            alert(error);
-        }
-    });
 });

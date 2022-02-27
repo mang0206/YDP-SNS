@@ -341,20 +341,42 @@ def like_submit():
             'reply_time' : time,
             'reply' : reply,
         }
-        comment_info = col_comment.update_one(
+        info = col_comment.find_one_and_update(
             {'_id': ObjectId(data['comment_id'])},
-            {'$push': {'reply_list': append_reply}})
+            {'$push': {'reply_list': append_reply}},
+            { 'returnNewDocument': True })
         col_user.update_one(
             {'user_id': session['login']},
-            {'$push': {'comment': ['reply', comment_info.upserted_id]}}
+            {'$push': {'comment': 
+                {'comment_id': info['_id'], 'kind': 'reply', 'time': time}
+            }}
         )
+        print(info['_id'])
         col_post.update_one({'_id': ObjectId(data['post_id'])}, {'$inc': {'comment': 1}})
         return jsonify(result = "success", session_user=session_user, reply=reply, time=time)
 
 @app.route("/content_reaction_submit", methods=["DELETE"])
 def delete_reply():
-    pass
-    pass
+    col_user = db.get_collection('user')
+    col_post = db.get_collection('post')
+    col_comment = db.get_collection('comment')
+
+    data = request.get_json()
+    print(data)
+    if data['kind'] == 'delete_reply':
+        comment = col_comment.find_one_and_update(
+            {'_id': ObjectId(data['comment_id'])},
+            { '$pull': {'reply_list' : {'$and': [{'reply_time': data['time']}, {'reply_user.nickname': data['nickname']}]} }}
+        )
+        col_post.update_one({'_id': comment['_id']}, {'$inc': {'comment': -1}})
+        col_user.update_one({'nickname': data['nickname']}, 
+        {'$pull': 
+            { 'comment' : 
+                {'$and':[{'commemt.kind':'reply'}, {'comment.id':comment['_id']}, {'comment.time'}]}
+            }
+        })
+
+    return jsonify(result = "success")
 
 @app.route("/user/<user>")
 def user(user):

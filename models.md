@@ -12,7 +12,10 @@
     - background_img : 사용자 백그라운드 이미지
     - bio : 소개글
     - like : 좋아요 누른 post의 id 리스트
-    - commemt : 댓글 혹은 답글을 단 comment의 id 리스트
+    - commemt
+        - comment_id : comment id
+        - kind : 댓글인지 답글인지 구분
+        - time : 작성시간
 
 ## request_friend
 	- user_id : 요청을 보낸 사용자 ID
