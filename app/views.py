@@ -316,7 +316,8 @@ def like_submit():
         })
         col_user.update_one(
             {'user_id': session['login']},
-            {'$push': {'comment': ['comment', comment_info.inserted_id]}}
+            {'$push': {'comment': {'comment_id': str(comment_info.inserted_id), 'kind': 'comment', 'time': time}
+}}
         )
         col_post.update_one({'_id': ObjectId(data['post_id'])}, {'$inc': {'comment': 1}})
         print(comment)
@@ -348,10 +349,10 @@ def like_submit():
         col_user.update_one(
             {'user_id': session['login']},
             {'$push': {'comment': 
-                {'comment_id': info['_id'], 'kind': 'reply', 'time': time}
+                {'comment_id': str(info['_id']), 'kind': 'reply', 'time': time}
             }}
         )
-        print(info['_id'])
+        print(str(info['_id']))
         col_post.update_one({'_id': ObjectId(data['post_id'])}, {'$inc': {'comment': 1}})
         return jsonify(result = "success", session_user=session_user, reply=reply, time=time)
 
@@ -368,11 +369,11 @@ def delete_reply():
             {'_id': ObjectId(data['comment_id'])},
             { '$pull': {'reply_list' : {'$and': [{'reply_time': data['time']}, {'reply_user.nickname': data['nickname']}]} }}
         )
-        col_post.update_one({'_id': comment['_id']}, {'$inc': {'comment': -1}})
+        col_post.update_one({'_id': ObjectId(comment['post_id'])}, {'$inc': {'comment': -1}})
         col_user.update_one({'nickname': data['nickname']}, 
         {'$pull': 
             { 'comment' : 
-                {'$and':[{'commemt.kind':'reply'}, {'comment.id':comment['_id']}, {'comment.time'}]}
+                {'$and':[{'kind':'reply'}, {'comment_id':data['comment_id']}, {'time': data['time']}]}
             }
         })
 
@@ -596,7 +597,7 @@ def connection_mongodb():
     col_comment = db.get_collection('comment')
     # print(* list(col.find({},{'user_id':True, 'nickname':True})))
     # col.update_many({},{"$rename":{"name":"user_name"}})
-    lis = col.find_one({'nickname':'bbb'})
+    lis = col.find_one({'nickname':'aa'})
     
     json_lis = dumps(lis)
     print(json_lis)
@@ -604,8 +605,10 @@ def connection_mongodb():
     for i in lis['like']:
         f = col_post.find_one({'_id': ObjectId(i)})
         print(f, end='\n-------------------------\n')
+    print('post show')
     for i in col_post.find({}):
         print(i, end='\n-------------------------\n')
+    print('comment show')
     for i in col_comment.find({}):
         print(i, end='\n-------------------------\n')
     return jsonify(json_lis)

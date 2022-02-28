@@ -34,10 +34,10 @@ def modify_user_one():
         # {'nickname': 'fff'},
         # {'$set':{'like':[]}}
     # )
-    # result = col.update_many(
-    #     {},
-    #     {'$set': {'commemt':[]}}
-    # )
+    result = col.update_many(
+        {},
+        {'$set': {'comment':[]}}
+    )
     # result = col_post.update_one(
     #     {'_id':ObjectId('6201d33f299b641572be24b9')},
     #     {'$set': {'like':[]}}
@@ -108,3 +108,9 @@ def search():
 # modify_user_one()
 # insert()
 # print(dir(col_comment))
+col.update_one({'nickname': 'aa'}, 
+        {'$pull': 
+            { 'comment' : 
+                {'$and':[{'kind':'reply'}, {'comment_id':'621c569dd541342d603e6567'}, {'time':"2022-02-28-13-59-16"}]}
+            }
+        })
