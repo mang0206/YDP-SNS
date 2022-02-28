@@ -49,30 +49,6 @@ $('[id$=_update_btn]').click(function(){
     $(this).siblings(".post_delete_container").css({"max-height":"0"});
 });
 
-//Post Updata ajax
-// $('[id$=_apply_btn]').click(function(){
-//     console.log("update_apply")
-//     let post_id = $(this).attr('value');
-//     let text = 
-//     $.ajax({
-//         type: 'POST',
-//         url: "/content_submit",
-//         data: JSON.stringify(post_id),
-//         dataType: 'JSON',
-//         contentType: "application/json",
-//         success: function(data){
-//             // $(close_div).addClass('none')
-//             $(close_div).css("display" ,"none");
-//             document.querySelector(".body").className = "body";
-//             alert('게시글이 삭제되었습니다.')
-//         },
-//         error: function(request, status, error){
-//             alert('ajax 통신 실패')
-//             alert(error);
-//         }
-//     });
-// });
-
 //취소 버튼을 눌렀을 때
 $('[id$=_cancel_btn]').click(function(){
     //update 취소 버튼일 경우
@@ -704,7 +680,7 @@ $('.comment_submit').click(function(){
 $(document).on("click",".reply",function(){
     const value = $(this).attr('value')
     const comment_id = $(this).attr('comment_id')
-    console.log(value,comment_id)
+
     const div_tag = $(this).parent().parent().parent()
     // 답글 전체를 감쌀 div tag
     const create_div = document.createElement('div');
@@ -716,6 +692,9 @@ $(document).on("click",".reply",function(){
     const create_btn = document.createElement('button');
     // 답글 취소 button
     const create_btn_cancel = document.createElement('button');
+    
+    //댓글 입력칸 hidden
+    $(this).parent().parent().siblings('.comment_form').hide()
 
     $(create_div).attr({
         'class': 'reply_form',
@@ -897,8 +876,9 @@ $(document).on("click",".reply_submit",function(){
     })
 });
 
-// 답글 취소 함수
+// 답글 취소시 해당 답글 tag 삭제 및 댓글 tag show
 $(document).on("click",".reply_cancel",function(){
+    $(this).parent().siblings('.comment_form').show()
     $(this).parent().remove()
 })
 
