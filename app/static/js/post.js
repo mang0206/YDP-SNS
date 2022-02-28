@@ -43,11 +43,35 @@ $(function(){
 //Post Update-area show Button
 $('[id$=_update_btn]').click(function(){
     console.log("update")
-    let post_id = $(this).attr('value');
+    // let post_id = $(this).attr('value');
     $(this).siblings(".update_form").css({"max-height":"fit-content"});
     //게시글 삭제 영역 숨김
     $(this).siblings(".post_delete_container").css({"max-height":"0"});
 });
+
+//Post Updata ajax
+// $('[id$=_apply_btn]').click(function(){
+//     console.log("update_apply")
+//     let post_id = $(this).attr('value');
+//     let text = 
+//     $.ajax({
+//         type: 'POST',
+//         url: "/content_submit",
+//         data: JSON.stringify(post_id),
+//         dataType: 'JSON',
+//         contentType: "application/json",
+//         success: function(data){
+//             // $(close_div).addClass('none')
+//             $(close_div).css("display" ,"none");
+//             document.querySelector(".body").className = "body";
+//             alert('게시글이 삭제되었습니다.')
+//         },
+//         error: function(request, status, error){
+//             alert('ajax 통신 실패')
+//             alert(error);
+//         }
+//     });
+// });
 
 //취소 버튼을 눌렀을 때
 $('[id$=_cancel_btn]').click(function(){
@@ -690,6 +714,8 @@ $(document).on("click",".reply",function(){
     const create_textarea = document.createElement('textarea');
     // 답글을 누를 button
     const create_btn = document.createElement('button');
+    // 답글 취소 button
+    const create_btn_cancel = document.createElement('button');
 
     $(create_div).attr({
         'class': 'reply_form',
@@ -698,20 +724,27 @@ $(document).on("click",".reply",function(){
     $(create_mention).attr({
         'class': 'reply_metion',
     });
-    $(create_mention).text(value)
 
     $(create_textarea).attr({
         'class': 'reply_textarea'
     });
+    $(create_textarea).text('@'+value+ ' ')
+
     $(create_btn).attr({
         'class': 'reply_submit',
         'type' : 'submit'
     });
     $(create_btn).text('답글 달기')
 
-    create_div.appendChild(create_mention)
+    $(create_btn_cancel).attr({
+        'class': 'reply_cancel',
+    });
+    $(create_btn_cancel).text('취소')
+
+    // create_div.appendChild(create_mention)
     create_div.appendChild(create_textarea)
     create_div.appendChild(create_btn);
+    create_div.appendChild(create_btn_cancel);
     $(div_tag).append(create_div);
 });
 
@@ -863,6 +896,11 @@ $(document).on("click",".reply_submit",function(){
         }
     })
 });
+
+// 답글 취소 함수
+$(document).on("click",".reply_cancel",function(){
+    $(this).parent().remove()
+})
 
 // 답글 삭제 ajax
 $(document).on("click",".delete_reply",function(){

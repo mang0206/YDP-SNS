@@ -129,11 +129,11 @@
                                 <img src="../static/img/more.png" alt="" class="content_icon more_icon">
                                 <div class="more_icon_popup_back none">
                                     <div class="more_icon_popup">
-                                        <button id="post_update_btn" class="more_popup_btn" value='{{post["_id"]}}'>게시글 수정</button>
-                                        <form action="/content_submit" class="update_form" method="post">
+                                        <button id="post_update_btn" class="more_popup_btn" >게시글 수정</button>
+                                        <form action="/content_submit/{{post['_id']}}" class="update_form" method="POST">
                                             <textarea id="update_textarea" class="hashtag" name="update_textarea" value="{{ post['text'] }}">{{ post['text'] }}</textarea>
                                             <div class="update_btn_container">
-                                                <button class="update_btn" type="submit">저장</button>
+                                                <button class="update_btn" id="update_apply_btn" type="submit">저장</button>
                                                 <button class="update_btn" id="update_cancel_btn" type="button">작성 취소</button>
                                             </div>
                                         </form>

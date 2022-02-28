@@ -195,6 +195,9 @@ def search():
 # 팝업창 txt와 img를 DB로 전송
 @app.route("/content_submit", methods=["POST"])
 def content_submit():
+    if request.get_json():
+
+        return jsonify(result = "success")
     col_post = db.get_collection('post')
     content_txt = request.form.get('content_txt')
     content_file = request.files.getlist("content_file[]")    
@@ -244,6 +247,38 @@ def content_submit():
     })
     # print(hash_tag)
     flash("게시물이 업로드 되었습니다.")
+    
+    return redirect(url_for('user', user=session['nickname']))
+
+@app.route("/content_submit/<post_id>", methods=["POST"])
+def content_update_submit(post_id):
+    print(dir(request.method))
+    col_post = db.get_collection('post')
+    # post_id = request.form.get('post_id')
+    content_txt = request.form.get('update_textarea') 
+    print('-==============================',content_txt)
+    # print("get list",len(content_file))
+
+    time = dt.datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
+
+    tmp = content_txt.splitlines(True)
+    text = []
+    for t in tmp:
+        text.extend(t.split(' '))
+        if '\n' in text[-1]:
+            text[-1] = text[-1][:-1]
+            text.append('\n')
+    hash_tag = [h[1:] for h in tmp if len(h) and h[0] == '#']
+        
+    col_post.update_one(
+        {'_id': ObjectId(post_id)},
+        {'$set' :
+            {'create_time': time,
+            'text': content_txt,
+            'split_text' : text,
+            'hashtag' : hash_tag}}
+    )
+    flash("게시물이 수정 되었습니다.")
     
     return redirect(url_for('user', user=session['nickname']))
 
@@ -324,7 +359,7 @@ def like_submit():
         col_user.update_one(
             {'user_id': session['login']},
             {'$push': {'comment': {'comment_id': str(comment_info.inserted_id), 'kind': 'comment', 'time': time}
-}}
+            }}
         )
         col_post.update_one({'_id': ObjectId(data['post_id'])}, {'$inc': {'comment': 1}})
         print(comment)
