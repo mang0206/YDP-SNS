@@ -108,9 +108,3 @@ def search():
 # modify_user_one()
 # insert()
 # print(dir(col_comment))
-col.update_one({'nickname': 'aa'}, 
-        {'$pull': 
-            { 'comment' : 
-                {'$and':[{'kind':'reply'}, {'comment_id':'621c569dd541342d603e6567'}, {'time':"2022-02-28-13-59-16"}]}
-            }
-        })

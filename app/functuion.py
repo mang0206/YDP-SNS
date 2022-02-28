@@ -9,7 +9,7 @@ from . import app, conn
 from flask import request, render_template, jsonify, redirect, url_for, session, flash
 from flask_bcrypt import Bcrypt
 import boto3
-
+from bson.objectid import ObjectId
 import datetime as dt
 
 bcrypt = Bcrypt()
@@ -81,6 +81,45 @@ def s3_get_image_url(s3, filename, file_kind = 'images'):
     """
     location = s3.get_bucket_location(Bucket='ydpsns')["LocationConstraint"]
     return f"https://{'ydpsns'}.s3.{location}.amazonaws.com/{file_kind}/{filename}"
+
+def delete_reply(data):
+    col_user = db.get_collection('user')
+    col_post = db.get_collection('post')
+    col_comment = db.get_collection('comment')
+
+    comment = col_comment.find_one_and_update(
+        {'_id': ObjectId(data['comment_id'])},
+        { '$pull': {'reply_list' : {'$and': [{'reply_time': data['time']}, {'reply_user.nickname': data['nickname']}]} }}
+    )
+    col_post.update_one({'_id': ObjectId(comment['post_id'])}, {'$inc': {'comment': -1}})
+    col_user.update_one({'nickname': data['nickname']}, 
+    {'$pull': 
+        { 'comment' : 
+            {'$and':[{'kind':'reply'}, {'comment_id':data['comment_id']}, {'time': data['time']}]}
+        }
+    })
+
+def delete_comment(data):
+    col_user = db.get_collection('user')
+    col_post = db.get_collection('post')
+    col_comment = db.get_collection('comment')
+    
+    comment = col_comment.find_one( {'_id': ObjectId(data['comment_id'])},{'_id':1,'reply_list':1,'post_id':1})
+    for reply in comment['reply_list']:
+        reply_data = {
+            'time': reply['reply_time'],
+            'nickname': reply['reply_user']['nickname'],
+            'comment_id': str(comment['_id'])
+        }
+        delete_reply(reply_data)
+    col_comment.delete_one({'_id': ObjectId(data['comment_id'])})
+    col_post.update_one({'_id': ObjectId(comment['post_id'])}, {'$inc': {'comment': -1}})
+    col_user.update_one({'nickname': data['nickname']}, 
+        {'$pull': 
+            { 'comment' : 
+                {'$and':[{'kind':'comment'}, {'comment_id':data['comment_id']}, {'time': data['time']}]}
+            }
+        })
 
 @app.route('/check_password', methods=['GET','POST'])
 def check_password():

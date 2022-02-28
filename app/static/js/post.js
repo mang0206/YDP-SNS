@@ -682,9 +682,9 @@ $(document).on("click",".reply",function(){
     const comment_id = $(this).attr('comment_id')
     console.log(value,comment_id)
     const div_tag = $(this).parent().parent().parent()
-    // 댓글 전체를 감쌀 div tag
+    // 답글 전체를 감쌀 div tag
     const create_div = document.createElement('div');
-    // 댓글에 대한 맨션 tag
+    // 답글에 대한 맨션 tag
     const create_mention = document.createElement('p');
     // 답글을 작성할 textarea tag
     const create_textarea = document.createElement('textarea');
@@ -829,10 +829,12 @@ $(document).on("click",".reply_submit",function(){
     let text = $(this).prev().val();
     // 해당 버튼이 있는 comment의 id 값
     let comment_id = $(this).parent().attr('value');
+    // 해당 답글이 달린 comment가 있는 post id 값
     let post_id = $(this).parent().siblings('.comment_form').attr('value');
-    let btn = $(this)
+    // 답글 전송시 답글 입력 tag 삭제
+    let remove_tag = $(this).parent()
+
     let add_comment_list = $(this).parent().siblings(".comment_list")
-    console.log(post_id)
     let chiled = add_comment_list.children()
     for(let i = 0; i < chiled.length; i++){
         if ($(chiled[i]).attr('comment_id') == comment_id & $(chiled[i]).attr('class') == 'reply_container'){
@@ -853,6 +855,7 @@ $(document).on("click",".reply_submit",function(){
         contentType: "application/json",
         success: function(data){
             indicate_reply(data, add_comment_list, standard_div)
+            $(remove_tag).remove()
         },
         error: function(request, status, error){
             alert('ajax 통신 실패')
@@ -891,4 +894,38 @@ $(document).on("click",".delete_reply",function(){
     })
 });
 
+// 댓글 삭제 ajax
+$(document).on("click",".delete_comment",function(){
+    console.log('delete test')
+    const time = $(this).siblings('.user_comment').children('.comment_nickname_time').children('.comment_time').attr('value')
+    const nickname = $(this).attr('value')
+    const comment_id = $(this).attr('comment_id')
+    const remove_tag = $(this).parent()
+    const remove_reply_tag = $(this).parent().next()
+
+    var request_data = {
+        "kind" : "delete_comment",
+        "time": time,
+        "nickname": nickname,
+        "comment_id": comment_id
+    }
+    $.ajax({
+        type: "DELETE",
+        url: "/content_reaction_submit",
+        data: JSON.stringify(request_data),
+        dataType: 'JSON',
+        contentType: "application/json",
+        success: function(data){
+            $(remove_tag).remove()
+            let chiled = remove_reply_tag.children()
+             for(let i = 0; i < chiled.length; i++){
+                 $(chiled[i]).remove();
+             }
+        },
+        error: function(request, status, error){
+            alert('ajax 통신 실패')
+            alert(error);
+        }
+    })
+});
 

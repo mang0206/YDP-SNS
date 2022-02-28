@@ -251,6 +251,7 @@ def content_submit():
 def delete_post():
     col_user = db.get_collection('user')
     col_post = db.get_collection('post')
+    col_comment = db.get_collection('comment')
     col_delete = db.get_collection('deleteFile')
 
     data = request.get_json()
@@ -266,7 +267,6 @@ def delete_post():
             'file_route' : 'postimages',
             'file_name' : tmp_img
         })
-        # s3_delete_image(tmp_img, file_kind='postimages')
 
     # 해당 게시물 좋아요 누른 사용자에 대한 document 정리
     for user in del_post['like']:
@@ -274,7 +274,14 @@ def delete_post():
         print(col_user.find_one({'nickname': user['nickname']}, {'_id':0, 'like':1})['like'])
 
     # 해당 게시물 댓글 및 답글단 사용자에 대한 document 정리
-
+    comments = col_comment.find({'post_id':data})
+    for comment in comments:
+        comment_data = {
+            'time': comment['comment_time'],
+            'nickname': comment['comment_user']['nickname'],
+            'comment_id': str(comment['_id'])
+        }
+        delete_comment(comment_data)
     # 최종 해당 post 삭제 
     col_post.delete_one({'_id':ObjectId(data)})
     return jsonify(result = "success")
@@ -357,7 +364,7 @@ def like_submit():
         return jsonify(result = "success", session_user=session_user, reply=reply, time=time)
 
 @app.route("/content_reaction_submit", methods=["DELETE"])
-def delete_reply():
+def delete_reply_comment():
     col_user = db.get_collection('user')
     col_post = db.get_collection('post')
     col_comment = db.get_collection('comment')
@@ -365,18 +372,9 @@ def delete_reply():
     data = request.get_json()
     print(data)
     if data['kind'] == 'delete_reply':
-        comment = col_comment.find_one_and_update(
-            {'_id': ObjectId(data['comment_id'])},
-            { '$pull': {'reply_list' : {'$and': [{'reply_time': data['time']}, {'reply_user.nickname': data['nickname']}]} }}
-        )
-        col_post.update_one({'_id': ObjectId(comment['post_id'])}, {'$inc': {'comment': -1}})
-        col_user.update_one({'nickname': data['nickname']}, 
-        {'$pull': 
-            { 'comment' : 
-                {'$and':[{'kind':'reply'}, {'comment_id':data['comment_id']}, {'time': data['time']}]}
-            }
-        })
-
+        delete_reply(data)
+    elif data['kind'] == 'delete_comment':
+        delete_comment(data)
     return jsonify(result = "success")
 
 @app.route("/user/<user>")
