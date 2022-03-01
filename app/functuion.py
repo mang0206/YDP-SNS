@@ -1,6 +1,5 @@
 ### 이미지 지정 함수 
 # from crypt import methods
-from asyncio.windows_events import NULL
 from sre_constants import SUCCESS
 import gridfs
 import codecs
