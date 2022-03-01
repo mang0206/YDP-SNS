@@ -416,6 +416,13 @@ $('[id$=_icon]').click(function(){
                 create_div.appendChild(create_a_nickname);
                 // 좋아요 리스트에 최종적으로 div 태그 append
                 like_div.appendChild(create_div);
+
+                //socket
+                
+                    // const socket = io.connect('http://127.0.0.1:5000/user');
+                    // const socket = io();
+                var socket = io.connect('http://localhost:5000');
+                socket.emit('like_post', {'post_id':post_id, 'nickname':data['session_user']['nickname']});           
             }
         },
         error: function(request, status, error){
@@ -532,11 +539,11 @@ function indicate_comment(data, comment_div){
     create_div_comment_nickname_time.appendChild(create_p_time);
     create_div_user_comment.appendChild(create_div_comment_nickname_time);
     create_div_user_comment.appendChild(create_div_comment_txt);
+    create_div_user_comment.appendChild(create_btn);
     create_a_img.appendChild(create_img)
     create_div.appendChild(create_a_img);
     create_div.appendChild(create_div_user_comment);
     // 좋아요 리스트에 최종적으로 div 태그 append
-    create_div.appendChild(create_btn);
     create_div.appendChild(create_btn_reply);
     
     
@@ -684,11 +691,12 @@ $(document).on("click",".reply",function(){
     const value = $(this).attr('value')
     const comment_id = $(this).attr('comment_id')
 
-    const div_tag = $(this).parent().parent().parent()
+    const div_tag = $(this).parent().parent().parent().parent()
     // 답글 전체를 감쌀 div tag
     const create_div = document.createElement('div');
     // 답글에 대한 맨션 tag
-    const create_mention = document.createElement('p');
+    // const create_mention = document.createElement('p');
+
     // 답글을 작성할 textarea tag
     const create_textarea = document.createElement('textarea');
     // 답글을 누를 button
@@ -697,15 +705,15 @@ $(document).on("click",".reply",function(){
     const create_btn_cancel = document.createElement('button');
     
     //댓글 입력칸 hidden
-    $(this).parent().parent().siblings('.comment_form').hide()
+    $(this).parent().parent().parent().siblings('.comment_form').hide()
 
     $(create_div).attr({
         'class': 'reply_form',
         'value': comment_id,
     });
-    $(create_mention).attr({
-        'class': 'reply_metion',
-    });
+    // $(create_mention).attr({
+    //     'class': 'reply_metion',
+    // });
 
     $(create_textarea).attr({
         'class': 'reply_textarea'
