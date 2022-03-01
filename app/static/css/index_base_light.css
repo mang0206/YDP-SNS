@@ -1604,10 +1604,8 @@ a:visited{color: black}
     font-size: 14px;
     text-align: center;
     overflow: hidden;
-    /* transition: check 1s; */
 }
 .check{
-    /* height: 30px; */
     -webkit-animation: check 3s;
 }
 @-webkit-keyframes check {
@@ -1712,8 +1710,6 @@ a:visited{color: black}
     font-size: 14px;
 
     box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.3);
-
-    /* border: solid 1px gray; */
     border-radius: 3px;
 }
 #origin_pw{

@@ -52,12 +52,12 @@ function readURL(input, n) {
 }
 
 //닉네임 변경 중복 검사
-let nickname_check = document.getElementsByClassName('check_btn');
-let input = document.getElementById('input_nickname');
+let nickname_check = document.querySelector('.check_btn');
+let input = document.querySelector('#input_nickname');
 let check_p = document.querySelector('.nickname_check');
-let nickname_submit = document.getElementsByName('setting_button_ide');
+let nickname_submit = document.querySelector('.nickname_submit');
 
-input.addEventListener('keyup', function() {
+function input_keyup() {
     let input_nickname = input.value;
     //닉네임 공백 허용 X
     if (input_nickname.includes(" ")) {
@@ -65,19 +65,19 @@ input.addEventListener('keyup', function() {
         check_p.style.color = '#000';
         check_p.className = 'nickname_check check';
         //모든 버튼 disabled
-        nickname_submit[0].disabled = true;
-        nickname_check[0].disabled = true;
+        nickname_submit.disabled = true;
+        nickname_check.disabled = true;
     } //닉네임 null이면 disabled
     else if (input_nickname == ''){
-        nickname_submit[0].disabled = true;
-        nickname_check[0].disabled = true;
+        nickname_submit.disabled = true;
+        nickname_check.disabled = true;
     } 
     else {
-        nickname_check[0].disabled = false;
+        nickname_check.disabled = false;
     }
-})
+}
 
-nickname_check[0].addEventListener('click', function(){
+function check_btn(){
     //사용자가 입력한 닉네임
     let input_nickname = input.value;
     //db 닉네임 list
@@ -89,28 +89,31 @@ nickname_check[0].addEventListener('click', function(){
         check_p.innerText = '이미 존재하는 닉네임입니다.';
         check_p.style.color = 'red';
         check_p.className = 'nickname_check check';
-        nickname_submit[0].disabled = true;
+        nickname_submit.disabled = true;
     } 
     //닉네임을 입력하지 않고 중복 확인 누른 경우
     else if (input_nickname == "") {
         check_p.innerText = '닉네임을 입력해주세요.';
         check_p.style.color = '#000';
         check_p.className = 'nickname_check check';
-        nickname_submit[0].disabled = true;
+        nickname_submit.disabled = true;
     }
     else {
         check_p.innerText = '사용 가능한 닉네임입니다.';
         check_p.style.color = 'green';
         check_p.className = 'nickname_check check';
-        nickname_submit[0].disabled = false;
+        nickname_submit.disabled = false;
     }
-});
+}
 //check 애니메이션이 끝나면 class 제거
-check_p.onanimationend = () => {
+function animation_end() {
     check_p.className = 'nickname_check';
-    console.log('end')
 }
 
+input.addEventListener('keyup', input_keyup);
+nickname_check.addEventListener('click', check_btn);
+check_p.addEventListener('animationend', animation_end);
+export {check_btn, animation_end, input_keyup}
 
 // change_pw
 // 사용자가 입력한 기존 pw를 ajax로 전달

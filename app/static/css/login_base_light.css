@@ -162,11 +162,46 @@ h4{
         margin-top: 8px;
     }
 }
-#nickname{
+.name::placeholder{
+    opacity: 50%;
+}
+#input_nickname{
     padding: 0 25px;
     text-align: center;
 
     box-shadow: inset 0px 0px 10px rgba(0, 0, 0, 0.08);
+}
+#nickname_infoBox{
+    margin: 0;
+    padding: 2px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+.nickname_check{
+    margin: 0;
+    height: 0;
+    max-height: 30px;
+    font-size: 14px;
+    text-align: center;
+    overflow: hidden;
+}
+.check{
+    -webkit-animation: check 3s;
+}
+@-webkit-keyframes check {
+    0% {height: 0px;}
+    50% {height: 30px;}
+    100% {height: 0px;}
+}
+.check_btn{
+    padding: 3px 13px;
+    cursor: pointer;
+    font-size: 14px;
+
+    border-radius: 3px;
+    background-color: #FFF;
+    border: solid 1px #E1E1E1;
 }
 #user_name{
     padding: 0 25px;

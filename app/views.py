@@ -48,6 +48,8 @@ def join():
     col = db.get_collection('user')
     id_list = [user['user_id'] for user in col.find()]
     nickname_list = [user['nickname'] for user in col.find()]
+    nickname_dict = {'list': nickname_list}
+    json_lis = json.dumps(nickname_dict)
 
     email_list = [user['user_email'] for user in col.find()]
 
@@ -89,7 +91,7 @@ def join():
         return redirect(url_for('join'))
         # return redirect('join.html')
     else:
-        return render_template('join.html', email_list=email_list, nickname_list=nickname_list, id_list=id_list)
+        return render_template('join.html', email_list=email_list, nickname_list=json_lis, id_list=id_list)
 
 @app.route("/password_reset", methods=["GET", "POST"])
 def password_reset():
