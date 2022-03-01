@@ -29,4 +29,4 @@ def socketio_init(socketio):
         nickname = session.get('nickname')
         post = col_post.find_one({'_id':ObjectId(message['post_id'])})
         retMessage = { 'msg' : nickname + " 님이 좋아요 누름", 'post_nickname': post['create_user_nickname'] }
-        emit('test2',retMessage)
+        emit('test2',retMessage, broadcast=True) 
