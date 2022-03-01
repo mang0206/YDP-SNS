@@ -336,18 +336,6 @@ $('html').click(function(e){
         console.log('modal area')
     };
 });
-// like list btn
-// $('.content_like').click(function(){
-//     let like_contaiber = $(this).parent().children('.like_container_back');
-//     $(like_contaiber).removeClass('none')
-//     document.querySelector(".body").className = "body scroll_hidden";
-// });
-
-// $('.like_close').click(function(){
-//     let like_contaiber = $(this).parent().parent().parent()
-//     $(like_contaiber).addClass('none')
-//     document.querySelector(".body").className = "body";
-// });
 
 //like btn ajax
 $('[id$=_icon]').click(function(){

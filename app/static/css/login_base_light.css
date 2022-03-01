@@ -224,23 +224,16 @@ h4{
     flex-direction: row;
     align-items: center;
     
-    animation: status 0.5s;
-}
-@-webkit-keyframes status{
-    0% {
-        opacity: 0;
-    }
-    100%{
-        opacity: 1;
-    }
-}
-#password_reset{
-    transition: all .5s;
+    opacity: 0;
 }
 .certification_img{
     width: 30px;
     height: 30px;
     margin: 0 5px;
+}
+.opacity{
+    opacity: 1;
+    transition: all 0.3s;
 }
 .send_btn{
     margin-bottom: 10px;
