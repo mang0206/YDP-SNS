@@ -6,12 +6,10 @@ $('#send_email_btn').click(function(){
     console.log(send_email)
 
     $('.certification_img').attr('src','../static/img/protection.png');
-    $('#certification_text').text('발급된 인증번호를 확인해주세요.');
-    $('#certification_text').css({'color':"#000000"});
+    $('.certification_text').text('발급된 인증번호를 확인해주세요.');
+    $('.certification_text').css({'color':"#000000"});
 
-    $('.certification_status').css({"opacity":"1"});
-    $('.certification_status').css({'transition':'0.1s'});
-    console.log("opacity 1")
+    $('.certification_status').addClass('opacity');
 
     if (send_email == '') {
         alert('인증번호를 받을 이메일을 입력해주세요.')
@@ -69,18 +67,14 @@ function startCountDown(duration, element) {
         //인증 유효시간 만료 시
         if (secondsRemaining < 0) { 
             let certification_img = $('.certification_img');
-            let certification_text = $('#certification_text');
+            let certification_text = $('.certification_text');
         
             clearInterval(countInterval);
             //안내문구 표시
             certification_img.attr('src','../static/img/unprotected_color.png');
             certification_text.text('인증 유효시간이 만료되었습니다.');
             certification_text.attr('style','color:red');
-
-            $('.certification_status').css({"opacity":"1"});
-            $('.certification_status').css({'transition':'0.1s'});
-            console.log("opacity 1")
-
+            $('.certification_status').addClass('opacity');
             //인증번호 초기화
             let certification_num = $('#input_num_submit').attr('num-data',`{{ session[''] }}`);
             console.log(certification_num.attr('num-data'))
@@ -91,8 +85,8 @@ function startCountDown(duration, element) {
 let certification = "";
 
 function count_down() {
-    let time_minutes = 0; // Value in minutes
-    let time_seconds = 20; // Value in seconds
+    let time_minutes = 3; // set minutes
+    let time_seconds = 0; // set seconds
     let duration = time_minutes * 60 + time_seconds;
 
     let element = $('#count_down');
@@ -100,9 +94,8 @@ function count_down() {
     startCountDown(--duration, element);
 };
 
-$('#input_num_submit').click(function(){
-    $('.certification_status').css({'opacity':'0'});
-    console.log("opacity 0")
+$('.certification_status').on('animationend', function(){
+    $('.certification_status').removeClass('opacity');
 });
 
 // 인증번호 일치 여부
@@ -117,10 +110,7 @@ $('#input_num_submit').click(function(e){
 
     // 인증번호 일치여부
     let certification_img = $('.certification_img');
-    let certification_text = $('#certification_text');
-
-    //인증번호 일치 여부 영역 숨김
-    // $('.certification_status').css({'opacity':'0'});
+    let certification_text = $('.certification_text');
 
     // 인증번호 일치 시 비밀번호 변경하는 영역 표시
     let password_reset = $('#password_reset');
@@ -130,7 +120,6 @@ $('#input_num_submit').click(function(e){
     let flag_data = {
         "input_num": input_num,
         "ran_num": ran_num,
-        // "password_reset": password_reset
     }
     console.log(input_num, certification_img, certification_text, password_reset, email_send_container)
     $.ajax({
@@ -143,14 +132,7 @@ $('#input_num_submit').click(function(e){
             if (input_num == ran_num) {
                 certification = 'success'
                 //animation 적용
-                // $(".certification_status").toggleClass('opacity');
-
-                // $(".certification_status").toggle('.opacity')
-
-                $('.certification_status').css({'opacity':'1'});
-                $('.certification_status').css({'transition':'0.1s'});
-                console.log("opacity 1")
-
+                $('.certification_status').addClass('opacity');
                 // 번호 일치 img 변경
                 certification_img.attr('src','../static/img/protection_color.png');
                 // 번호 일치 text 및 style 변경
@@ -164,18 +146,13 @@ $('#input_num_submit').click(function(e){
             // 번호 불일치 시
             else {
                 certification = 'fail'
-                console.log("fail")
                 //animation 및 css 적용
+                $('.certification_status').addClass('opacity');
                 certification_img.attr('src','../static/img/unprotected_color.png');
                 certification_text.text('인증에 실패하였습니다.');
                 certification_text.attr('style','color:red');
                 password_reset.addClass('none');
                 email_send_container.removeClass('none');
-                // $(".certification_status").toggleClass('opacity');
-
-                $('.certification_status').css({'opacity':'1'});
-                $('.certification_status').css({'transition':'0.1s'});
-                console.log("opacity 1")
             };
         },
         error: function(request, status, error){

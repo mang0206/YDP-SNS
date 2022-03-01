@@ -545,8 +545,7 @@ function indicate_comment(data, comment_div){
     create_div.appendChild(create_div_user_comment);
     // 좋아요 리스트에 최종적으로 div 태그 append
     create_div.appendChild(create_btn_reply);
-    
-    
+
     // session user와 댓글 작성한 user가 같을 시 삭제 버튼 추가 
     if (data['session_user']['nickname'] == $(comment_div).attr('session_user')){
         // 댓글 삭제 button
@@ -575,6 +574,7 @@ function indicate_comment(data, comment_div){
     }
     $(comment_div).prepend(create_div);
 }
+
 // comment list btn
 $(function(){
     //모든 댓글 영역
@@ -587,6 +587,7 @@ $(function(){
         let change = false;
         //해당 게시물의 comment_btn 클릭 시
         $(comment_btn).click(function(){
+            console.log(comment_btn)
             if (change) {
                 change = false; 
                 console.log("false")
@@ -634,11 +635,8 @@ $(function(){
                     }
                 })       
             };
-            //댓글 영역에 toggle 효과를 줌
-            $(comment).toggle(function(){
-                $(comment).attr("class","content_comment_container none");
-                $(comment).removeAttr('display');
-            });
+            //댓글 영역 show/hide toggle
+            $(comment).toggleClass('comment_height');
         })
 
         // 해당 게시글의 댓글 입력란 높이 조절
@@ -661,6 +659,7 @@ $(function(){
 $('.comment_submit').click(function(){
     // 댓글 내용
     let text = $(this).prev().val();
+    console.log(text)
     // 해당 버튼이 있는 post의 id 값
     let post_id = $(this).parent().attr('value');
     let btn = $(this)
@@ -678,6 +677,9 @@ $('.comment_submit').click(function(){
         contentType: "application/json",
         success: function(data){
             indicate_comment(data, add_comment_list)
+            text = ''
+            console.log(text)
+
         },
         error: function(request, status, error){
             alert('ajax 통신 실패')
@@ -705,10 +707,10 @@ $(document).on("click",".reply",function(){
     const create_btn_cancel = document.createElement('button');
     
     //댓글 입력칸 hidden
-    $(this).parent().parent().parent().siblings('.comment_form').hide()
+    $(this).parent().parent().parent().siblings('.comment_form').hide();
 
     $(create_div).attr({
-        'class': 'reply_form',
+        'class': 'comment_form reply_form',
         'value': comment_id,
     });
     // $(create_mention).attr({
@@ -716,19 +718,20 @@ $(document).on("click",".reply",function(){
     // });
 
     $(create_textarea).attr({
-        'class': 'reply_textarea'
+        'class': 'comment_textarea reply_textarea'
     });
     $(create_textarea).text('@'+value+ ' ')
 
     $(create_btn).text('답글 달기')
     $(create_btn).attr({
-        'class': 'reply_submit',
+        'class': 'comment_submit reply_submit',
         'type' : 'submit'
     });
 
     $(create_btn_cancel).text('취소')
     $(create_btn_cancel).attr({
-        'class': 'reply_cancel',
+        'id': 'reply_cancel_id',
+        'class': 'reply_cancel comment_submit',
     });
 
     // create_div.appendChild(create_mention)
@@ -826,7 +829,6 @@ function indicate_reply(data, comment_div, standard_div){
     // 좋아요 리스트에 최종적으로 div 태그 append
     // create_div.appendChild(create_btn);
     
-    
     // session user와 댓글 작성한 user가 같을 시 삭제 버튼 추가 
     if (data['session_user']['nickname'] == $(comment_div).attr('session_user')){
         // 댓글 삭제 button
@@ -850,10 +852,14 @@ $(document).on("click",".reply_submit",function(){
     console.log('apply test')
     // 답글 내용
     let text = $(this).prev().val();
+    // 해당 버튼이 있는 comment
+    let this_comment = $(this).parent()
+    console.log(this_comment)
     // 해당 버튼이 있는 comment의 id 값
-    let comment_id = $(this).parent().attr('value');
+    let comment_id = this_comment.attr('value');
+    let comment_form = $(this).parent().siblings('.comment_form')
     // 해당 답글이 달린 comment가 있는 post id 값
-    let post_id = $(this).parent().siblings('.comment_form').attr('value');
+    let post_id = comment_form.attr('value');
     // 답글 전송시 답글 입력 tag 삭제
     let remove_tag = $(this).parent()
 
@@ -878,7 +884,10 @@ $(document).on("click",".reply_submit",function(){
         contentType: "application/json",
         success: function(data){
             indicate_reply(data, add_comment_list, standard_div)
+            //해당 댓글의 답글 list show
+            $(standard_div).attr('style','display:flex;');
             $(remove_tag).remove()
+            $(comment_form).show()
         },
         error: function(request, status, error){
             alert('ajax 통신 실패')
@@ -891,6 +900,11 @@ $(document).on("click",".reply_submit",function(){
 $(document).on("click",".reply_cancel",function(){
     $(this).parent().siblings('.comment_form').show()
     $(this).parent().remove()
+})
+// 답글 보기 시 해당 답글 show
+$(document).on("click",".reply_show",function(){
+    console.log('reply show')
+    $(this).parent().next().attr('style','display:flex;');
 })
 
 // 답글 삭제 ajax
