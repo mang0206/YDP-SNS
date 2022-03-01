@@ -129,11 +129,11 @@
                                 <img src="../static/img/more.png" alt="" class="content_icon more_icon">
                                 <div class="more_icon_popup_back none">
                                     <div class="more_icon_popup">
-                                        <button id="post_update_btn" class="more_popup_btn" value='{{post["_id"]}}'>게시글 수정</button>
-                                        <form action="/content_submit" class="update_form" method="post">
+                                        <button id="post_update_btn" class="more_popup_btn" >게시글 수정</button>
+                                        <form action="/content_submit/{{post['_id']}}" class="update_form" method="POST">
                                             <textarea id="update_textarea" class="hashtag" name="update_textarea" value="{{ post['text'] }}">{{ post['text'] }}</textarea>
                                             <div class="update_btn_container">
-                                                <button class="update_btn" type="submit">저장</button>
+                                                <button class="update_btn" id="update_apply_btn" type="submit">저장</button>
                                                 <button class="update_btn" id="update_cancel_btn" type="button">작성 취소</button>
                                             </div>
                                         </form>
@@ -220,17 +220,16 @@
                                 </div>
                             </div>
                             <!-- 댓글 클릭하면 나타나는 영역 -->
-                            <div class="content_comment_container">
+                            <div class="content_comment_container none">
                                 <div class="comment_list" session_user="{{session['nickname']}}">
                                     <!-- jinja for -->
-                                    <div class="user_img_nickname">
+                                    <!-- <div class="user_img_nickname">
                                         <img src="../static/img/user_profile_gray.png" alt="" class="comment_user_img">
                                         <div class="user_comment">
                                             <div class="comment_nickname_time">
                                                 <p class="comment_nickname">nickname</p>
                                                 <p class="comment_time">00시간 전</p>
                                             </div>
-                                            <!-- <p class="comment_txt">유저가 남긴 댓글</p> -->
                                             <div class="comment_txt" id="" value="{{ post['split_text'] }}">
                                                 {% for text in post['split_text'] %}
                                                     {% if '@' in text %}
@@ -240,15 +239,15 @@
                                                     {% endif %}
                                                 {% endfor %}
                                             </div>
-                                            <button class="recomment">답글 달기</button>
+                                            <button class="recomment reply" >답글 달기</button>
                                         </div>
-                                        <button class="recomment delete">댓글 삭제</button>
+                                        <button class="recomment delete_comment">댓글 삭제</button>
                                         <button class="recomment reply_show">답글 보기</button>
-                                    </div>
+                                    </div> -->
                                     <!-- 답글 보기 누르면 나타나는 영역 -->
-                                    <div class="reply_container">
+                                    <!-- <div class="reply_container"> -->
                                         <!-- jinja for -->
-                                        <div class="reply_item">
+                                        <!-- <div class="reply_item">
                                             <img src="../static/img/user_profile_gray.png" alt="" class="comment_user_img">
                                             <div class="user_comment">
                                                 <div class="comment_nickname_time">
@@ -266,10 +265,10 @@
                                                     {% endfor %}
                                                 </div>
                                             </div>
-                                            <button class="recomment delete">댓글 삭제</button>
-                                        </div>
+                                            <button class="recomment delete_comment">댓글 삭제</button>
+                                        </div> -->
                                         <!-- endfor -->
-                                    </div>
+                                    <!-- </div> -->
                                     <!-- endfor -->
                                 </div>
                                 <!-- 댓글 ajax 전송 부분 -->

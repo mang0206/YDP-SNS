@@ -43,7 +43,7 @@ $(function(){
 //Post Update-area show Button
 $('[id$=_update_btn]').click(function(){
     console.log("update")
-    let post_id = $(this).attr('value');
+    // let post_id = $(this).attr('value');
     $(this).siblings(".update_form").css({"max-height":"fit-content"});
     //게시글 삭제 영역 숨김
     $(this).siblings(".post_delete_container").css({"max-height":"0"});
@@ -445,12 +445,16 @@ function indicate_comment(data, comment_div){
     const create_div_comment_txt = document.createElement('div');
     // 답글 달기 button
     const create_btn = document.createElement('button');
-    
+    // 답글 보기 button
+    const create_btn_reply = document.createElement('button');
+    // 답글이 들어갈 div tag
+    const create_div_reply = document.createElement('div');
 
     // 좋아요 리스트에 추가할 div 태그
     $(create_div).attr({
         'class': 'user_img_nickname',
-        'value': data['session_user']['nickname']
+        'value': data['session_user']['nickname'],
+        'comment_id': data['comment_id']
     });
     // 이미지를 감쌀 a 테그
     $(create_a_img).attr({
@@ -505,10 +509,23 @@ function indicate_comment(data, comment_div){
     }
     //
     $(create_btn).attr({
-        'class': 'recomment',
-        'value': data['session_user']['nickname']
+        'class': 'recomment reply',
+        'value': data['session_user']['nickname'],
+        'comment_id' : data['comment_id']
     });
     $(create_btn).text('답글 달기')
+    $(create_btn_reply).attr({
+        'class': 'recomment reply',
+        // 'value': data['session_user']['nickname'],
+        // 'comment_id' : data['comment_id']
+    });
+    $(create_btn_reply).text('답글 보기')
+
+    $(create_div_reply).attr({
+        'class': 'reply_container',
+        'comment_id': data['comment_id']
+    });
+
 
     // 생성한 태그들 구조에 맞게 append
     create_div_comment_nickname_time.appendChild(create_a_nickname);
@@ -520,6 +537,7 @@ function indicate_comment(data, comment_div){
     create_div.appendChild(create_div_user_comment);
     // 좋아요 리스트에 최종적으로 div 태그 append
     create_div.appendChild(create_btn);
+    create_div.appendChild(create_btn_reply);
     
     
     // session user와 댓글 작성한 user가 같을 시 삭제 버튼 추가 
@@ -528,13 +546,26 @@ function indicate_comment(data, comment_div){
         const create_btn_delete = document.createElement('button');
 
         $(create_btn_delete).attr({
-            'class': 'recomment',
-            'value': data['session_user']['nickname']
+            'class': 'recomment delete_comment',
+            'value': data['session_user']['nickname'],
+            'comment_id' : data['comment_id']
         });
         $(create_btn_delete).text('댓글 삭제')
         create_div.appendChild(create_btn_delete);
     }
 
+    $(comment_div).prepend(create_div_reply);
+    console.log(comment_div)
+    console.log(data['reply_list'])
+    for (let i in data['reply_list']){
+        reply_data = {
+            'comment_id': data['comment_dic'],
+            'session_user': data['reply_list'][i]['reply_user'],
+            'time' : data['reply_list'][i]['reply_time'],
+            'reply': data['reply_list'][i]['reply'],
+        }
+        indicate_reply(reply_data,comment_div, create_div_reply)
+    }
     $(comment_div).prepend(create_div);
 }
 // comment list btn
@@ -555,7 +586,7 @@ $(function(){
                 chiled = $(this).parent().parent().next().children('.comment_list').children()
                 for (let i = 0; i < chiled.length; i++) {
                     // 생성된 댓글 div tag 지움
-                    if ($(chiled[i]).attr('class') == 'user_img_nickname') {
+                    if ($(chiled[i]).attr('class') == 'user_img_nickname' || $(chiled[i]).attr('class') == 'reply_container') {
                         $(chiled[i]).remove();
                     }
                 }
@@ -581,9 +612,11 @@ $(function(){
                         // console.log(data['comment_dic'])
                         for (let i in data['comment_dic']){
                             comment_data = {
+                                'comment_id': data['comment_dic'][i]['_id'],
                                 'session_user': data['comment_dic'][i]['comment_user'],
                                 'time' : data['comment_dic'][i]['comment_time'],
-                                'comment': data['comment_dic'][i]['comment']
+                                'comment': data['comment_dic'][i]['comment'],
+                                'reply_list': data['comment_dic'][i]['reply_list']
                             }
                             indicate_comment(comment_data,comment_div)
                         }
@@ -617,6 +650,7 @@ $(function(){
     });
 });
 
+// 댓글 전송 ajax
 $('.comment_submit').click(function(){
     // 댓글 내용
     let text = $(this).prev().val();
@@ -644,3 +678,275 @@ $('.comment_submit').click(function(){
         }
     })
 });
+
+// 답글 칸 생성 ajax
+$(document).on("click",".reply",function(){
+    const value = $(this).attr('value')
+    const comment_id = $(this).attr('comment_id')
+
+    const div_tag = $(this).parent().parent().parent()
+    // 답글 전체를 감쌀 div tag
+    const create_div = document.createElement('div');
+    // 답글에 대한 맨션 tag
+    const create_mention = document.createElement('p');
+    // 답글을 작성할 textarea tag
+    const create_textarea = document.createElement('textarea');
+    // 답글을 누를 button
+    const create_btn = document.createElement('button');
+    // 답글 취소 button
+    const create_btn_cancel = document.createElement('button');
+    
+    //댓글 입력칸 hidden
+    $(this).parent().parent().siblings('.comment_form').hide()
+
+    $(create_div).attr({
+        'class': 'reply_form',
+        'value': comment_id,
+    });
+    $(create_mention).attr({
+        'class': 'reply_metion',
+    });
+
+    $(create_textarea).attr({
+        'class': 'reply_textarea'
+    });
+    $(create_textarea).text('@'+value+ ' ')
+
+    $(create_btn).attr({
+        'class': 'reply_submit',
+        'type' : 'submit'
+    });
+    $(create_btn).text('답글 달기')
+
+    $(create_btn_cancel).attr({
+        'class': 'reply_cancel',
+    });
+    $(create_btn_cancel).text('취소')
+
+    // create_div.appendChild(create_mention)
+    create_div.appendChild(create_textarea)
+    create_div.appendChild(create_btn);
+    create_div.appendChild(create_btn_cancel);
+    $(div_tag).append(create_div);
+});
+
+// 답글을 달았을 때 댓글 정보와 댓글을 단 유저 정보를 답글 목록에 추가하는 함수
+function indicate_reply(data, comment_div, standard_div){
+    // 답글 전체를 감쌀 div tag
+    const create_div = document.createElement('div');
+    // 이미지를 감쌀 a tag
+    const create_a_img = document.createElement('a');
+    // user profile img tag
+    const create_img = document.createElement('img');
+    // comment div tag
+    const create_div_user_comment = document.createElement('div');
+    // comment nickname time div tag
+    const create_div_comment_nickname_time = document.createElement('div');
+    // nickname a tag
+    const create_a_nickname = document.createElement('a');
+    // 시간 나타날 p tag
+    const create_p_time = document.createElement('p');
+    // 답글 내용이 담길 div tag
+    const create_div_comment_txt = document.createElement('div');
+
+    // 좋아요 리스트에 추가할 div 태그
+    $(create_div).attr({
+        'class': 'reply_item',
+        'value': data['session_user']['nickname']
+    });
+    // 이미지를 감쌀 a 테그
+    $(create_a_img).attr({
+        'href': '/user/'+ data['session_user']['nickname']
+    });
+    // 해당 user의 profile img tag
+    $(create_img).attr({
+        'src': data['session_user']['profile_img'][1],
+        'class': 'comment_user_img'
+    });
+    // user_comment div tag
+    $(create_div_user_comment).attr({
+        'class': 'user_comment',
+    });
+    // user_comment div tag
+    $(create_div_comment_nickname_time).attr({
+        'class': 'comment_nickname_time',
+    });
+    // 닉네임 태그
+    $(create_a_nickname).attr({
+        'href': '/user/'+ data['session_user']['nickname'],
+        'class': 'comment_nickname',
+    });
+    $(create_a_nickname).text(data['session_user']['nickname'])
+    // time p tag
+    $(create_p_time).attr({
+        'class': 'comment_time',
+        'value': data['time']
+    });
+    indicate_time(create_p_time)
+
+    // comment div tag
+    $(create_div_comment_txt).attr({
+        'class': 'comment_txt',
+    });
+    for (let i in data['reply']){
+        let comment_text = null
+        if (data['reply'][i].includes('@')){
+            comment_text = document.createElement('a');
+            $(comment_text).attr({
+                'href': "/user/" + data['reply'][i].slice(1),
+                'class': 'comment_nickname',
+                'id' : 'mention'
+            });
+            $(comment_text).text(data['reply'][i])
+        }
+        else {
+            comment_text = document.createElement('span');
+            $(comment_text).text(data['reply'][i])
+        }
+        create_div_comment_txt.appendChild(comment_text)
+    }
+    //
+
+    // 생성한 태그들 구조에 맞게 append
+    create_div_comment_nickname_time.appendChild(create_a_nickname);
+    create_div_comment_nickname_time.appendChild(create_p_time);
+    create_div_user_comment.appendChild(create_div_comment_nickname_time);
+    create_div_user_comment.appendChild(create_div_comment_txt);
+    create_a_img.appendChild(create_img)
+    create_div.appendChild(create_a_img);
+    create_div.appendChild(create_div_user_comment);
+    // 좋아요 리스트에 최종적으로 div 태그 append
+    // create_div.appendChild(create_btn);
+    
+    
+    // session user와 댓글 작성한 user가 같을 시 삭제 버튼 추가 
+    if (data['session_user']['nickname'] == $(comment_div).attr('session_user')){
+        // 댓글 삭제 button
+        const create_btn_delete = document.createElement('button');
+
+        $(create_btn_delete).attr({
+            'class': 'recomment delete_reply',
+            'value': data['session_user']['nickname'],
+            'comment_id' : data['comment_id']
+        });
+        $(create_btn_delete).text('답글 삭제')
+        create_div.appendChild(create_btn_delete);
+    }
+
+    // $(standard_div).prepend(create_div);
+    $(standard_div).append(create_div);
+}
+
+//답글 전송 ajax
+$(document).on("click",".reply_submit",function(){
+    console.log('apply test')
+    // 답글 내용
+    let text = $(this).prev().val();
+    // 해당 버튼이 있는 comment의 id 값
+    let comment_id = $(this).parent().attr('value');
+    // 해당 답글이 달린 comment가 있는 post id 값
+    let post_id = $(this).parent().siblings('.comment_form').attr('value');
+    // 답글 전송시 답글 입력 tag 삭제
+    let remove_tag = $(this).parent()
+
+    let add_comment_list = $(this).parent().siblings(".comment_list")
+    let chiled = add_comment_list.children()
+    for(let i = 0; i < chiled.length; i++){
+        if ($(chiled[i]).attr('comment_id') == comment_id & $(chiled[i]).attr('class') == 'reply_container'){
+            standard_div = chiled[i]
+        }
+    }
+    var request_data = {
+        "kind" : "append_reply",
+        "text": text,
+        "post_id": post_id,
+        "comment_id": comment_id
+    }
+    $.ajax({
+        type: "POST",
+        url: "/content_reaction_submit",
+        data: JSON.stringify(request_data),
+        dataType: 'JSON',
+        contentType: "application/json",
+        success: function(data){
+            indicate_reply(data, add_comment_list, standard_div)
+            $(remove_tag).remove()
+        },
+        error: function(request, status, error){
+            alert('ajax 통신 실패')
+            alert(error);
+        }
+    })
+});
+
+// 답글 취소시 해당 답글 tag 삭제 및 댓글 tag show
+$(document).on("click",".reply_cancel",function(){
+    $(this).parent().siblings('.comment_form').show()
+    $(this).parent().remove()
+})
+
+// 답글 삭제 ajax
+$(document).on("click",".delete_reply",function(){
+    console.log('delete test')
+    const time = $(this).siblings('.user_comment').children('.comment_nickname_time').children('.comment_time').attr('value')
+    const nickname = $(this).siblings('.user_comment').children('.comment_nickname_time').children('.comment_nickname').text()
+    const comment_id = $(this).parent().parent().attr('comment_id')
+    const remove_tag = $(this).parent()
+
+    var request_data = {
+        "kind" : "delete_reply",
+        "time": time,
+        "nickname": nickname,
+        "comment_id": comment_id
+    }
+    $.ajax({
+        type: "DELETE",
+        url: "/content_reaction_submit",
+        data: JSON.stringify(request_data),
+        dataType: 'JSON',
+        contentType: "application/json",
+        success: function(data){
+            $(remove_tag).remove()
+        },
+        error: function(request, status, error){
+            alert('ajax 통신 실패')
+            alert(error);
+        }
+    })
+});
+
+// 댓글 삭제 ajax
+$(document).on("click",".delete_comment",function(){
+    console.log('delete test')
+    const time = $(this).siblings('.user_comment').children('.comment_nickname_time').children('.comment_time').attr('value')
+    const nickname = $(this).attr('value')
+    const comment_id = $(this).attr('comment_id')
+    const remove_tag = $(this).parent()
+    const remove_reply_tag = $(this).parent().next()
+
+    var request_data = {
+        "kind" : "delete_comment",
+        "time": time,
+        "nickname": nickname,
+        "comment_id": comment_id
+    }
+    $.ajax({
+        type: "DELETE",
+        url: "/content_reaction_submit",
+        data: JSON.stringify(request_data),
+        dataType: 'JSON',
+        contentType: "application/json",
+        success: function(data){
+            $(remove_tag).remove()
+            let chiled = remove_reply_tag.children()
+             for(let i = 0; i < chiled.length; i++){
+                 $(chiled[i]).remove();
+             }
+        },
+        error: function(request, status, error){
+            alert('ajax 통신 실패')
+            alert(error);
+        }
+    })
+});
+

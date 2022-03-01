@@ -34,18 +34,18 @@ def modify_user_one():
         # {'nickname': 'fff'},
         # {'$set':{'like':[]}}
     # )
-    # result = col.update_many(
-    #     {},
-    #     {'$set': {'like':[]}}
-    # )
+    result = col.update_many(
+        {},
+        {'$set': {'comment':[]}}
+    )
     # result = col_post.update_one(
     #     {'_id':ObjectId('6201d33f299b641572be24b9')},
     #     {'$set': {'like':[]}}
     # )
-    result = col_post.update_many(
-        {},
-        {'$set': {'comment':0}}
-    )
+    # result = col_post.update_many(
+    #     {},
+    #     {'$set': {'comment':0}}
+    # )
     # return
     # id = col.find_one({'user_id':'default'})
     # background_img = id['background_img'] 
@@ -69,9 +69,13 @@ def del_user():
     print(result.deleted_count)
 
 def del_post():
-    result = col_post.delete_many({
-        # '_id': ObjectId('61d00cdeba8833acb1019a6b')
-        # '_id': ObjectId('61efc1b8a94321fa3d464725')
+    # result = col_post.delete_many({
+    #     # '_id': ObjectId('61d00cdeba8833acb1019a6b')
+    #     # '_id': ObjectId('61efc1b8a94321fa3d464725')
+    # })
+    # print(result.deleted_count)
+    result = col_comment.delete_many({
+
     })
     print(result.deleted_count)
 
@@ -103,3 +107,4 @@ def search():
 # search()
 # modify_user_one()
 # insert()
+# print(dir(col_comment))

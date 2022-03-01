@@ -195,6 +195,9 @@ def search():
 # 팝업창 txt와 img를 DB로 전송
 @app.route("/content_submit", methods=["POST"])
 def content_submit():
+    if request.get_json():
+
+        return jsonify(result = "success")
     col_post = db.get_collection('post')
     content_txt = request.form.get('content_txt')
     content_file = request.files.getlist("content_file[]")    
@@ -247,10 +250,43 @@ def content_submit():
     
     return redirect(url_for('user', user=session['nickname']))
 
+@app.route("/content_submit/<post_id>", methods=["POST"])
+def content_update_submit(post_id):
+    print(dir(request.method))
+    col_post = db.get_collection('post')
+    # post_id = request.form.get('post_id')
+    content_txt = request.form.get('update_textarea') 
+    print('-==============================',content_txt)
+    # print("get list",len(content_file))
+
+    time = dt.datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
+
+    tmp = content_txt.splitlines(True)
+    text = []
+    for t in tmp:
+        text.extend(t.split(' '))
+        if '\n' in text[-1]:
+            text[-1] = text[-1][:-1]
+            text.append('\n')
+    hash_tag = [h[1:] for h in tmp if len(h) and h[0] == '#']
+        
+    col_post.update_one(
+        {'_id': ObjectId(post_id)},
+        {'$set' :
+            {'create_time': time,
+            'text': content_txt,
+            'split_text' : text,
+            'hashtag' : hash_tag}}
+    )
+    flash("게시물이 수정 되었습니다.")
+    
+    return redirect(url_for('user', user=session['nickname']))
+
 @app.route("/content_submit", methods=["DELETE"])
 def delete_post():
     col_user = db.get_collection('user')
     col_post = db.get_collection('post')
+    col_comment = db.get_collection('comment')
     col_delete = db.get_collection('deleteFile')
 
     data = request.get_json()
@@ -266,7 +302,6 @@ def delete_post():
             'file_route' : 'postimages',
             'file_name' : tmp_img
         })
-        # s3_delete_image(tmp_img, file_kind='postimages')
 
     # 해당 게시물 좋아요 누른 사용자에 대한 document 정리
     for user in del_post['like']:
@@ -274,11 +309,19 @@ def delete_post():
         print(col_user.find_one({'nickname': user['nickname']}, {'_id':0, 'like':1})['like'])
 
     # 해당 게시물 댓글 및 답글단 사용자에 대한 document 정리
-
+    comments = col_comment.find({'post_id':data})
+    for comment in comments:
+        comment_data = {
+            'time': comment['comment_time'],
+            'nickname': comment['comment_user']['nickname'],
+            'comment_id': str(comment['_id'])
+        }
+        delete_comment(comment_data)
     # 최종 해당 post 삭제 
     col_post.delete_one({'_id':ObjectId(data)})
     return jsonify(result = "success")
 
+# 좋아요, 댓글 및 답글 관리(C.R.U.D) Route
 @app.route("/content_reaction_submit", methods=["POST"])
 def like_submit():
     col_user = db.get_collection('user')
@@ -306,7 +349,7 @@ def like_submit():
         time = dt.datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
         session_user = col_user.find_one({'user_id':session['login']},{'_id':0, 'nickname':1 ,'profile_img':1})
         comment = data['text'].split(' ')
-        col_comment.insert_one({
+        comment_info = col_comment.insert_one({
             'post_id' : data['post_id'],
             'comment_user' : session_user,
             'comment_time' : time,
@@ -315,18 +358,59 @@ def like_submit():
         })
         col_user.update_one(
             {'user_id': session['login']},
-            {'$push': {'comment': ['comment', data['post_id']]}}
+            {'$push': {'comment': {'comment_id': str(comment_info.inserted_id), 'kind': 'comment', 'time': time}
+            }}
         )
         col_post.update_one({'_id': ObjectId(data['post_id'])}, {'$inc': {'comment': 1}})
         print(comment)
-        return jsonify(result = "success", session_user=session_user, comment=comment, time=time)
+        return jsonify(result = "success", session_user=session_user, comment=comment, time=time, comment_id = str(comment_info.inserted_id))
     # 해당 post의 댓글을 불러오는 ajax 통신
     elif data['kind'] == 'get_comment':
         comment_dic = list(col_comment.find(
-            {'post_id': data['post_id']},
-            {'_id': 0}
+            {'post_id': data['post_id']}
         ))#.sort("comment_time", pymongo.DESCENDING))
-        return jsonify(result = "success", comment_dic = comment_dic)
+        for comment in comment_dic:
+            comment['_id'] = str(comment['_id'])
+        
+        return jsonify(result = "success", comment_dic = comment_dic)\
+    # 답글 추가 ajax 통신
+    elif data['kind'] == 'append_reply':
+        time = dt.datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
+        session_user = col_user.find_one({'user_id':session['login']},{'_id':0, 'nickname':1 ,'profile_img':1})
+        reply = data['text'].split(' ')
+        # 댓글 document의 reply list에 추가할 정보 dictionary 
+        append_reply = {
+            'reply_user' : session_user,
+            'reply_time' : time,
+            'reply' : reply,
+        }
+        info = col_comment.find_one_and_update(
+            {'_id': ObjectId(data['comment_id'])},
+            {'$push': {'reply_list': append_reply}},
+            { 'returnNewDocument': True })
+        col_user.update_one(
+            {'user_id': session['login']},
+            {'$push': {'comment': 
+                {'comment_id': str(info['_id']), 'kind': 'reply', 'time': time}
+            }}
+        )
+        print(str(info['_id']))
+        col_post.update_one({'_id': ObjectId(data['post_id'])}, {'$inc': {'comment': 1}})
+        return jsonify(result = "success", session_user=session_user, reply=reply, time=time)
+
+@app.route("/content_reaction_submit", methods=["DELETE"])
+def delete_reply_comment():
+    col_user = db.get_collection('user')
+    col_post = db.get_collection('post')
+    col_comment = db.get_collection('comment')
+
+    data = request.get_json()
+    print(data)
+    if data['kind'] == 'delete_reply':
+        delete_reply(data)
+    elif data['kind'] == 'delete_comment':
+        delete_comment(data)
+    return jsonify(result = "success")
 
 @app.route("/user/<user>")
 def user(user):
@@ -546,7 +630,7 @@ def connection_mongodb():
     col_comment = db.get_collection('comment')
     # print(* list(col.find({},{'user_id':True, 'nickname':True})))
     # col.update_many({},{"$rename":{"name":"user_name"}})
-    lis = col.find_one({'nickname':'bbb'})
+    lis = col.find_one({'nickname':'aa'})
     
     json_lis = dumps(lis)
     print(json_lis)
@@ -554,8 +638,10 @@ def connection_mongodb():
     for i in lis['like']:
         f = col_post.find_one({'_id': ObjectId(i)})
         print(f, end='\n-------------------------\n')
+    print('post show')
     for i in col_post.find({}):
         print(i, end='\n-------------------------\n')
+    print('comment show')
     for i in col_comment.find({}):
         print(i, end='\n-------------------------\n')
     return jsonify(json_lis)
