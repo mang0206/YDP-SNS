@@ -421,7 +421,7 @@ $('[id$=_icon]').click(function(){
                 
                     // const socket = io.connect('http://127.0.0.1:5000/user');
                     // const socket = io();
-                var socket = io.connect('http://13.125.71.134:5000');
+                var socket = io.connect('http://' + document.domain + ':' + location.port+'/');
                 socket.emit('like_post', {'post_id':post_id, 'nickname':data['session_user']['nickname']});           
             }
         },

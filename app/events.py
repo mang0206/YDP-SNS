@@ -28,6 +28,5 @@ def socketio_init(socketio):
         print(message)
         nickname = session.get('nickname')
         post = col_post.find_one({'_id':ObjectId(message['post_id'])})
-        retMessage = { 'msg' : nickname + " 님이 좋아요 누름" }
-        if session['nickname'] == post['create_user_nickname']:
-            emit('test2',retMessage)
+        retMessage = { 'msg' : nickname + " 님이 좋아요 누름", 'post_nickname': post['create_user_nickname'] }
+        emit('test2',retMessage)

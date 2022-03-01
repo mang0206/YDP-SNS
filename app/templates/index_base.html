@@ -26,14 +26,18 @@
     <!-- SoketIo -->
     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js" integrity="sha512-q/dWJ3kcmjBLU4Qc47E4A9kTB4m3wuTY7vkFJDTZKjTs8jhyGQnaUrxa0Ytd0ssMZhbNua9hE+E7Qv1j+DyZwA==" crossorigin="anonymous"></script> -->
     <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
-    <script type="text/javascript" charset="utf-8">
+    <script type="text/javascript" charset="utf-8" >
         // var socket = io.connect('http://localhost:5000/');
-        var socket = io.connect('http://13.125.71.134:5000/');
+        session_nickname = "{{session['nickname']}}"
+        var socket = io.connect('http://' + document.domain + ':' + location.port+'/');
+        // var socket = io.connect('http://13.125.71.134:5000/');
         socket.on('connect', function(msg) {
             console.log(msg)
         });
-        socket.on('test2', function(msg) {
-            console.log(msg)
+        socket.on('test2', function(retMessage) {
+            if(retMessage['post_nickname'] == session_nickname){
+            console.log(retMessage['msg'])
+            }
         });
         socket.emit('testSocket', 'piz');
     </script>
