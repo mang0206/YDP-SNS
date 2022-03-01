@@ -416,6 +416,13 @@ $('[id$=_icon]').click(function(){
                 create_div.appendChild(create_a_nickname);
                 // 좋아요 리스트에 최종적으로 div 태그 append
                 like_div.appendChild(create_div);
+
+                //socket
+                
+                    // const socket = io.connect('http://127.0.0.1:5000/user');
+                    // const socket = io();
+                var socket = io.connect('http://localhost:5000');
+                socket.emit('like_post', {'post_id':post_id, 'nickname':data['session_user']['nickname']});           
             }
         },
         error: function(request, status, error){
@@ -849,7 +856,6 @@ $(document).on("click",".reply_submit",function(){
     let post_id = $(this).parent().siblings('.comment_form').attr('value');
     // 답글 전송시 답글 입력 tag 삭제
     let remove_tag = $(this).parent()
-    let comment_tag = $(this).parent().siblings('.comment_form')
 
     let add_comment_list = $(this).parent().siblings(".comment_list")
     let chiled = add_comment_list.children()
@@ -873,7 +879,6 @@ $(document).on("click",".reply_submit",function(){
         success: function(data){
             indicate_reply(data, add_comment_list, standard_div)
             $(remove_tag).remove()
-            $(comment_tag).show()
         },
         error: function(request, status, error){
             alert('ajax 통신 실패')

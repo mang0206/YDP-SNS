@@ -19,6 +19,9 @@ def create_app(debug=False):
 
     socketio.init_app(app)
 
+    from app.events import socketio_init
+    socketio_init(socketio)
+    
     return app
     
 app = create_app(debug=True)
