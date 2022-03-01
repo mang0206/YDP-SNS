@@ -150,8 +150,7 @@ h4{
 }
 .info_text{
     text-align: right;
-    /* right: 0; */
-    font-size: 12px;
+    font-size: 13px;
     color: gray;
 }
 #join_pw2{
@@ -221,7 +220,14 @@ h4{
         left: 28%;
     }
 }
+.join_success_container h3{
+    margin-bottom: 40px;
+    font-weight: 500;
+}
 /* reset password */
+.pw_reset_container{
+    width: 360px;
+}
 #certification_send{
     margin-bottom: 10px;
 }
@@ -258,7 +264,6 @@ h4{
     display: flex;
     flex-direction: row;
     align-items: center;
-    
     opacity: 0;
 }
 .certification_img{
@@ -267,8 +272,12 @@ h4{
     margin: 0 5px;
 }
 .opacity{
-    opacity: 1;
-    transition: all 0.3s;
+    -webkit-animation: opacity 3s;
+}
+@-webkit-keyframes opacity{
+    0%{opacity: 0;}
+    20%{opacity: 1;}
+    100%{opacity: 0;}
 }
 .send_btn{
     margin-bottom: 10px;
@@ -282,6 +291,9 @@ h4{
     background: #46A6FF;
 
     border: solid 1px lightgray;
+}
+.password_rule{
+    font-size: 14px;    
 }
 #reset_pw2{
     margin-bottom: 0;
