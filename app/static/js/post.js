@@ -319,20 +319,22 @@ $(function(){
 });
 
 // like list btn
-$('.content_like').click(function(){
-    let like_contaiber = $(this).parent().children('.like_container_back');
-    // document.querySelector(".like_container_back").className = "like_container_back";
-    // $(like_contaiber).addClass('like_container_back')
-    $(like_contaiber).removeClass('none')
-    document.querySelector(".body").className = "body scroll_hidden";
-});
 
-$('.like_close').click(function(){
-    let like_contaiber = $(this).parent().parent().parent()
-    // let like_contaiber = $(this).parent().children('.like_container_back');
-    // document.querySelector(".like_container_back").className = "like_container_back none";
-    $(like_contaiber).addClass('none')
-    document.querySelector(".body").className = "body";
+$('html').click(function(e){
+    console.log(e.target)
+    // 더보기 버튼
+    if (e.target.className == 'content_like') {
+        $('.like_container_back').attr('class','like_container_back');
+        document.querySelector(".body").className = "body scroll_hidden";
+    }  //close 버튼 혹은 팝업 영역 외 클릭
+    else if (e.target.className == 'content_icon like_close' || e.target.className == 'like_container_back') {
+        $('.like_container_back').attr('class','like_container_back none');
+        document.querySelector(".body").className = "body";
+        console.log("close modal")
+    }
+    else { //팝업창 영역
+        console.log('modal area')
+    };
 });
 
 //like btn ajax
@@ -594,6 +596,7 @@ $(function(){
                 post_id = $(this).attr('post_id')
                 // 댓글이 나올 div 태그
                 comment_div = $(this).parent().parent().next().children('.comment_list')
+                console.log(comment_div)
 
                 let request_data = {
                     'kind' : 'get_comment',

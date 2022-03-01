@@ -70,9 +70,6 @@ function image_select() {
             // input FileList 목록에 추가
             dt.items.add(image[i]);
             console.log(dt)
-
-            
-
         } else {
             alert(image[i].name + "이미 선택한 파일입니다.");
         }
@@ -85,7 +82,7 @@ function image_select() {
     img_value = document.getElementById('file_preview').getAttribute('value');
 }
     
-
+let index = 0;
 // 이미지 미리보기
 function image_show() {
     var image = "";
@@ -93,9 +90,12 @@ function image_show() {
         image += `<div class="file_preview" id="file_preview" value="file">
         <img src="`+ i.url +`" alt="Image">
         <span onclick="delete_image(`+ images.indexOf(i) +`)">&times;</span>
+        <p class="show_number">${images.indexOf(i) + 1}</p>
         </div>`;
+        console.log(images.indexOf(i));
     })
     return image;
+
 }
     
 // 이미지 삭제
