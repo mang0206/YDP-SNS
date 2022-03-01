@@ -849,6 +849,7 @@ $(document).on("click",".reply_submit",function(){
     let post_id = $(this).parent().siblings('.comment_form').attr('value');
     // 답글 전송시 답글 입력 tag 삭제
     let remove_tag = $(this).parent()
+    let comment_tag = $(this).parent().siblings('.comment_form')
 
     let add_comment_list = $(this).parent().siblings(".comment_list")
     let chiled = add_comment_list.children()
@@ -872,6 +873,7 @@ $(document).on("click",".reply_submit",function(){
         success: function(data){
             indicate_reply(data, add_comment_list, standard_div)
             $(remove_tag).remove()
+            $(comment_tag).show()
         },
         error: function(request, status, error){
             alert('ajax 통신 실패')
