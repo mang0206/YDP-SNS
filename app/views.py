@@ -48,6 +48,7 @@ def join():
     col = db.get_collection('user')
     id_list = [user['user_id'] for user in col.find()]
     nickname_list = [user['nickname'] for user in col.find()]
+
     email_list = [user['user_email'] for user in col.find()]
 
     if request.method == "POST":
@@ -496,9 +497,13 @@ def friend_respond():
 def setting():
     col_user = db.get_collection('user')
     session_user = col_user.find_one({'user_id': session['login']})
+    nicknames = list(col_user.find({},{'_id':0,'nickname':1}))
     # get_user_image(session_user, 'background_img')
-    
-    return render_template('setting.html', session_user=session_user)
+    nickname_list = [user['nickname'] for user in nicknames]
+    nickname_dict = {'list': nickname_list}
+    json_lis = json.dumps(nickname_dict)
+
+    return render_template('setting.html', session_user=session_user, nickname_list=json_lis)
 
 @app.route("/setting", methods= ['POST'])
 def post_setting():

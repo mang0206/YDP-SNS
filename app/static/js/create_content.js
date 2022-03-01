@@ -38,6 +38,9 @@ function close(){
             // 이미지 영역 초기화
             images.splice(0);
             document.getElementById('file_container').innerHTML = image_show();
+            document.querySelector('#popup_input_file').files = dt.items.clear();
+            // document.querySelector('#popup_input_file').value = "";
+            console.log()
 
             // textarea 초기화
             document.getElementById('popup_textarea').value = '';
@@ -56,6 +59,7 @@ var img_value = {};
 
 // 이미지 선택
 let dt = new DataTransfer();
+
 function image_select() {
     var image = document.getElementById('popup_input_file').files;
     for (i = 0; i < image.length; i++) {

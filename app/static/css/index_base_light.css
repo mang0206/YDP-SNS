@@ -1597,6 +1597,28 @@ a:visited{color: black}
 .setting_header{
     font-size: 18px;
 }
+.nickname_check{
+    margin: 0;
+    height: 0;
+    max-height: 30px;
+    font-size: 14px;
+    text-align: center;
+    overflow: hidden;
+    /* transition: check 1s; */
+}
+.check{
+    /* height: 30px; */
+    -webkit-animation: check 3s;
+}
+@-webkit-keyframes check {
+    0% {height: 0px;}
+    50% {height: 30px;}
+    100% {height: 0px;}
+}
+.check_btn{
+    background-color: #fff;
+    border: none;
+}
 #change_name{
     margin-bottom: 40px;
 }

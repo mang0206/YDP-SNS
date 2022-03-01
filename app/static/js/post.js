@@ -507,20 +507,20 @@ function indicate_comment(data, comment_div){
         }
         create_div_comment_txt.appendChild(comment_text)
     }
-    //
+    //답글 button
+    $(create_btn).text('답글 달기')
     $(create_btn).attr({
         'class': 'recomment reply',
         'value': data['session_user']['nickname'],
         'comment_id' : data['comment_id']
     });
-    $(create_btn).text('답글 달기')
+    $(create_btn_reply).text('답글 보기')
     $(create_btn_reply).attr({
-        'class': 'recomment reply',
+        'class': 'recomment reply_show',
         // 'value': data['session_user']['nickname'],
         // 'comment_id' : data['comment_id']
     });
-    $(create_btn_reply).text('답글 보기')
-
+    //
     $(create_div_reply).attr({
         'class': 'reply_container',
         'comment_id': data['comment_id']
@@ -712,16 +712,16 @@ $(document).on("click",".reply",function(){
     });
     $(create_textarea).text('@'+value+ ' ')
 
+    $(create_btn).text('답글 달기')
     $(create_btn).attr({
         'class': 'reply_submit',
         'type' : 'submit'
     });
-    $(create_btn).text('답글 달기')
 
+    $(create_btn_cancel).text('취소')
     $(create_btn_cancel).attr({
         'class': 'reply_cancel',
     });
-    $(create_btn_cancel).text('취소')
 
     // create_div.appendChild(create_mention)
     create_div.appendChild(create_textarea)
