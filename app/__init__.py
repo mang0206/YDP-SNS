@@ -3,7 +3,7 @@ import pymongo
 import boto3
 from flask_socketio import SocketIO
 
-socketio = SocketIO(logger=True,engineio_logger=True)
+socketio = SocketIO(logger=False,engineio_logger=False)
 
 def create_app(debug=False):
     app = Flask(__name__)

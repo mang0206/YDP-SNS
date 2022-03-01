@@ -13,15 +13,13 @@ def socketio_init(socketio):
     
     @socketio.on('connect')
     def test():
-        print('1111111111111111111111111111111111111111111111111111111')
         retMessage = { 'msg' : "hello response11" }
         emit('connect', retMessage)
 
     @socketio.on('testSocket')
     def testEvent(message):
         # tsession = session.get('test')
-        print('================================================================received message='+ message)
-        print('-----------------------------------------------------------')
+        print('received message='+ message)
     
     @socketio.on('like_post')
     def testEvent(message):

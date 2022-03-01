@@ -82,15 +82,15 @@
                                         <img id="recommended_friend_close" class="top_bar_icon" src="../static/img/close.png" alt="close_icon" value="img">
                                     </div>
                                     <div class="popup_friend_container">
-                                        {% for friend in recommend_frined_dic %}
+                                        {% for together_friend in recommend_frined_dic[friend]['count'] %}
                                         <div class="popup_friend_list"> 
-                                            <img src="{{recommend_frined_dic[friend]['profile_img'][1] }}" class="user_profile_img">
+                                            <img src="{{together_friend['profile_img'][1] }}" class="user_profile_img">
                                             <div class="user_list_name_area">
                                                 <p class="user_nickname">
-                                                    {{recommend_frined_dic[friend]['nickname']}}
+                                                    {{together_friend['nickname']}}
                                                 </p>
                                                 <p class="user_name">
-                                                    {{ recommend_frined_dic[friend]['user_name'] }}
+                                                    {{ together_friend['user_name'] }}
                                                 </p>
                                             </div>
                                         </div> 
@@ -130,15 +130,15 @@
                             <img id="recommended_friend_close" class="top_bar_icon" src="../static/img/close.png" alt="close_icon" value="img">
                         </div>
                         <div style="overflow: auto;">
-                            {% for friend in recommend_frined_dic %}
+                            {% for together_friend in recommend_frined_dic[friend]['count'] %}
                             <div class="popup_friend_list"> 
-                                <img src="{{recommend_frined_dic[friend]['profile_img'][1] }}" class="user_profile_img">
+                                <img src="{{together_friend['profile_img'][1] }}" class="user_profile_img">
                                 <div class="user_list_name_area">
                                     <p class="user_nickname">
-                                        {{recommend_frined_dic[friend]['nickname']}}
+                                        {{together_friend['nickname']}}
                                     </p>
                                     <p class="user_name">
-                                        {{ recommend_frined_dic[friend]['user_name'] }}
+                                        {{together_friend['user_name'] }}
                                     </p>
                                 </div>
                             </div> 

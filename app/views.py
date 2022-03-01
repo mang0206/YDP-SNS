@@ -473,7 +473,8 @@ def friend():
                     recommend_frined_dic[f]['count'] = [friend_dic]
     for k, v in recommend_frined_dic.items():
         print(k, v['count'])
-
+        break
+    # print(recommend_frined_dic)
     return render_template('friend.html', request_friend=request_friend, friend_list=friend_dict, recommend_frined_dic=recommend_frined_dic)
 
 @app.route("/friend_respond", methods=["POST"])
