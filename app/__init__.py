@@ -18,7 +18,9 @@ def create_app(debug=False):
     app.config["MAIL_USE_TLS"] = True 
 
     socketio.init_app(app)
-print(dir(socketio))
+
+    return app
+    
 app = create_app(debug=True)
 # socketio = SocketIO(app)
 
