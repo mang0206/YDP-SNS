@@ -93,6 +93,13 @@ a:visited{color: black}
     width: 30px;
     height: 30px;
 }
+#friend_a{
+    padding: 0;
+}
+#friend_icon{
+    width: 32px;
+    height: 34px;
+}
 .content_popup{
     margin: 0 2px;
 }
@@ -122,7 +129,8 @@ a:visited{color: black}
 }
 .notice_icon{
     padding: 5px;
-    margin: 0 3px;
+    margin: 2px 3px 0 3px;
+    height: 28px;
     border-radius: 50%;
     cursor: pointer;
 }

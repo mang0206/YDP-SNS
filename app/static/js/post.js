@@ -44,7 +44,7 @@ $(function(){
 $('[id$=_update_btn]').click(function(){
     console.log("update")
     // let post_id = $(this).attr('value');
-    $(this).siblings(".update_form").css({"max-height":"fit-content"});
+    $(this).siblings(".update_form").css({"max-height":"110px"});
     //게시글 삭제 영역 숨김
     $(this).siblings(".post_delete_container").css({"max-height":"0"});
 });
