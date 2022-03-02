@@ -36,7 +36,7 @@
         });
         socket.on('test2', function(retMessage) {
             if(retMessage['post_nickname'] == session_nickname){
-            console.log(retMessage['msg'])
+                console.log(retMessage['msg'])
             }
         });
         socket.emit('testSocket', 'piz');
@@ -77,7 +77,7 @@
                                 <div class="popup_file_input">
                                     <input type="file"  multiple="'multiple" id="popup_input_file" name="content_file[]" onChange="image_select()" >
                                     <button type="button" id="input_file_btn" onClick="document.getElementById('popup_input_file').click()" class="input_file_btn">                                
-                                        파일 선택하기
+                                        파일 선택하기{{test}}
                                     </button>
                                 </div>
                                 <div class="" id="file_container">
@@ -97,6 +97,24 @@
                 <div class="notice_list">
                     <!-- jinja for -->
                     <!-- if 컨텐츠 관련 알림 -->
+                    {% for notice in session['notice']%}
+                        {% if notice['kind'] == 'request_friend' %}
+                        <div class="notice_item friend_notice">
+                            <a  class="notice_a img" href=""><img class="friend_notice_img" src="{{notice['reaction_user']['profile_img']}}" alt=""></a>
+                            <div class="notice_content">
+                                <p class="notice_txt">
+                                    <a class="notice_a notice_nickname" href="">{{notice['reaction_user']['nickname']}}</a>
+                                    님이 친구 요청을 보냈습니다.
+                                    <!-- 시간 -->
+                                    <a class="notice_a notice_time" value = "{{notice['time']}}"></a>
+                                </p> 
+                            </div>
+                        </div>
+                        {% else %}
+
+                        {% endif %}
+
+                    {% endfor %}
                     <div class="notice_item post_notice">
                         <a class="notice_a img" href=""><img class="post_notice_img" src="../static/img/user_profile_gray.png" alt=""></a>
                         <div class="notice_content">
@@ -172,4 +190,5 @@
 </body>
 <script src="../static/js/create_content.js" defer="defer"></script>
 <script src="../static/js/index_base.js" defer="defer"></script>
+<script src="../static/js/post.js" defer="defer"></script>
 

@@ -3,7 +3,7 @@ from enum import Flag
 import profile
 from time import strftime
 from unittest import result
-from flask import request, render_template, jsonify, redirect, url_for, session, flash
+from flask import request, render_template, jsonify, redirect, url_for, session, flash, g
 from flask_bcrypt import Bcrypt
 from bson.json_util import dumps
 from bson.objectid import ObjectId
@@ -137,6 +137,18 @@ def send_email():
 @app.route("/join_success")
 def join_success():
     return render_template('join_success.html')
+
+# 매 페이지 render 이전에 sessoin user의 notice 정보 update
+@app.before_request
+def base_notice():
+    if session.get('login'):
+        col_notice = db.get_collection('notice')
+        notice = col_notice.find(
+            {'notice_user':session['login']},
+            {'_id':0,'reaction_user':1,'kind':1,'time':1,'check':1}
+            ).sort("time", pymongo.DESCENDING)
+        session['notice'] = list(notice)
+        print(session['notice'])
 
 @app.route("/", methods=['GET',"POST"])
 def index():
@@ -605,6 +617,8 @@ def request_frie():
     data = request.get_json()
     col_user = db.get_collection('user')
     col_request_friend = db.get_collection('request_friend')
+    col_notice = db.get_collection('notice')
+
     print(data['user'], data['id'].split('!')[-1], data['val'])
     user = data['user']
     request_user = data['id'].split('!')[-1]
@@ -613,6 +627,13 @@ def request_frie():
         col_request_friend.insert_one({
             'user_id' : user,
             'request_user' : request_user
+        })
+        col_notice.insert_one({
+            'notice_user' : request_user,
+            'reaction_user' : {'nickname': session['nickname'], 'profile_img':session['profile_img']},
+            'kind' : 'request_friend',
+            'time' : dt.datetime.now().strftime("%Y-%m-%d-%H-%M-%S"),
+            'check' : False
         })
     elif data['val'] == '요청 삭제':
         query = { '$or' : 
@@ -635,6 +656,7 @@ def connection_mongodb():
     col_post = db.get_collection('post')
     col_delete = db.get_collection('deleteFile')
     col_comment = db.get_collection('comment')
+    col_notice = db.get_collection('notice')
     # print(* list(col.find({},{'user_id':True, 'nickname':True})))
     # col.update_many({},{"$rename":{"name":"user_name"}})
     lis = col.find_one({'nickname':'aa'})
@@ -650,6 +672,9 @@ def connection_mongodb():
         print(i, end='\n-------------------------\n')
     print('comment show')
     for i in col_comment.find({}):
+        print(i, end='\n-------------------------\n')
+    print('notice')
+    for i in col_notice.find({}):
         print(i, end='\n-------------------------\n')
     return jsonify(json_lis)
 
