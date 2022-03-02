@@ -47,11 +47,18 @@
     - file_route : s3의 파일 경로
     - file_name : 삭제할 이미지 파일 명
 
+## notice
+    - notice_user : 알림을 받을 user
+    - reaction_user : 알림에 해당하는 행위를 한 user의 profile 및 nickname 정보
+    - kind : 어떤 알림인지에 대한 구분 (친구 요청, post(좋아요, 댓글, 태그))
+    - time : 해당 행위를 한 시간
+    - check : 해당 알림을 확인 했는지에 대한 구분
+
 # session 정보
     session['login'] : id(로그인 id)
     session['nickname'] = nickname
     session['name'] = name
     session['profile_img'] = 프로필 사진
     session['like'] = user가 좋아요 누른 post id 리스트 
-
+    session['notice] = 해당 user의 알림 list
 
