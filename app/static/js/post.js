@@ -259,14 +259,14 @@ $(function(){
     });
 });
 
-import { indicate_time } from './time_information.js';
+import indicate_time from './time_information.js';
 // upload time
 $(function(){
     let create_time = document.querySelectorAll('.create_time');
     //각 게시물 별 업로드 시간
     create_time.forEach(time => {
-        // indicate_time(time)
-        time.addEventListener('load', indicate_time);
+        indicate_time(time)
+        // time.addEventListener('load', indicate_time);
     });
 });
 
@@ -516,7 +516,7 @@ function indicate_comment(data, comment_div){
     console.log(comment_div)
     console.log(data['reply_list'])
     for (let i in data['reply_list']){
-        reply_data = {
+        let reply_data = {
             'comment_id': data['comment_dic'],
             'session_user': data['reply_list'][i]['reply_user'],
             'time' : data['reply_list'][i]['reply_time'],
@@ -543,7 +543,7 @@ $(function(){
             if (change) {
                 change = false; 
                 console.log("false")
-                chiled = $(this).parent().parent().next().children('.comment_list').children()
+                let chiled = $(this).parent().parent().next().children('.comment_list').children()
                 for (let i = 0; i < chiled.length; i++) {
                     // 생성된 댓글 div tag 지움
                     if ($(chiled[i]).attr('class') == 'user_img_nickname' || $(chiled[i]).attr('class') == 'reply_container') {
@@ -553,9 +553,9 @@ $(function(){
             } else {
                 change = true;
                 console.log("true")
-                post_id = $(this).attr('post_id')
+                let post_id = $(this).attr('post_id')
                 // 댓글이 나올 div 태그
-                comment_div = $(this).parent().parent().next().children('.comment_list')
+                let comment_div = $(this).parent().parent().next().children('.comment_list')
                 console.log(comment_div)
 
                 let request_data = {
@@ -571,7 +571,7 @@ $(function(){
                     success: function(data){
                         // console.log(data['comment_dic'])
                         for (let i in data['comment_dic']){
-                            comment_data = {
+                            let comment_data = {
                                 'comment_id': data['comment_dic'][i]['_id'],
                                 'session_user': data['comment_dic'][i]['comment_user'],
                                 'time' : data['comment_dic'][i]['comment_time'],

@@ -1,5 +1,5 @@
 // upload time function
-export function indicate_time(time) {
+export default function (time) {
     // jinja로 받아온 시간 
     let jinja = $(time).attr("value");
     let split_time = jinja.split('-');
