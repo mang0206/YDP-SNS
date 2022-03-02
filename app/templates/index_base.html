@@ -100,13 +100,13 @@
                     {% for notice in session['notice']%}
                         {% if notice['kind'] == 'request_friend' %}
                         <div class="notice_item friend_notice">
-                            <a  class="notice_a img" href=""><img class="friend_notice_img" src="notice['reaction_user']['profile_img']" alt=""></a>
+                            <a  class="notice_a img" href=""><img class="friend_notice_img" src="{{notice['reaction_user']['profile_img']}}" alt=""></a>
                             <div class="notice_content">
                                 <p class="notice_txt">
-                                    <a class="notice_a notice_nickname" href="">notice['reaction_user']['nickname']</a>
+                                    <a class="notice_a notice_nickname" href="">{{notice['reaction_user']['nickname']}}</a>
                                     님이 친구 요청을 보냈습니다.
                                     <!-- 시간 -->
-                                    <a class="notice_a notice_time">notice['time']</a>
+                                    <a class="notice_a notice_time" value = "{{notice['time']}}"></a>
                                 </p> 
                             </div>
                         </div>
@@ -189,4 +189,5 @@
 </body>
 <script src="../static/js/create_content.js" defer="defer"></script>
 <script src="../static/js/index_base.js" defer="defer"></script>
+<script src="../static/js/post.js" defer="defer"></script>
 
