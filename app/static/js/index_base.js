@@ -21,6 +21,17 @@ $(function(){
     // });
 })
 
+
+import indicate_time from './time_information.js';
+// upload time
+$(function(){
+    let create_time = document.querySelectorAll('.notice_time');
+    //각 게시물 별 업로드 시간
+    create_time.forEach(time => {
+        indicate_time(time)
+        // time.addEventListener('load', indicate_time);
+    });
+});
 //user icon
 let user_icon = document.getElementsByClassName('.top_bar_user');
 let user_popup = document.getElementById('user_popup');
