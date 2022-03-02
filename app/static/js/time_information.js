@@ -48,4 +48,4 @@ export function indicate_time(time) {
     else if (y >= 1){ //해가 바뀌면 업로드 년,월,일 단위
         $(time).text(split_time[0]+"년 "+split_time[1]+"월 "+split_time[2]+"일");
     }
-  }
+}

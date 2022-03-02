@@ -154,9 +154,6 @@ def check_password():
 
         return redirect(url_for('login'))
     
-# @app.route('/testUser')
-# def testUser():
-#     return render_template('testUser.html')
 
 @app.route("/testUser/<user>")
 def testUser(user):

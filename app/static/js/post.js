@@ -259,7 +259,7 @@ $(function(){
     });
 });
 
-import { indicate_time } from './time_information.js';
+import { indicate_time } from '.time_information.js';
 // upload time
 $(function(){
     let create_time = document.querySelectorAll('.create_time');
