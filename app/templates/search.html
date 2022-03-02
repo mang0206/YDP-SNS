@@ -30,9 +30,9 @@
     <div class="both_layout_content">
         <h4>게시물</h4>
         <!-- jinja for -->
-        <div>
-            컨텐츠 목록
-        </div>
+        {% for post in post_dic%}
+            {% include 'post.html'  ignore missing %}
+        {% endfor %}
         <!-- endfor -->
     </div>
     <!-- 검색어 db 필터링, js 조건문 별로 다른 버튼 생성 -->

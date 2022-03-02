@@ -10,6 +10,8 @@ from flask_bcrypt import Bcrypt
 import boto3
 from bson.objectid import ObjectId
 import datetime as dt
+import pymongo
+
 
 bcrypt = Bcrypt()
 db = conn.get_database('root')
@@ -152,3 +154,29 @@ def check_password():
 
         return redirect(url_for('login'))
     
+# @app.route('/testUser')
+# def testUser():
+#     return render_template('testUser.html')
+
+@app.route("/testUser/<user>")
+def testUser(user):
+    col_user = db.get_collection('user')
+    col_request_friend = db.get_collection('request_friend')
+    col_post = db.get_collection('post')
+
+    session_friend_list = get_friend_list(session['login'])
+    
+    search_user = col_user.find_one({'nickname':user})
+    # get_user_image(search_user, 'profile_img')
+    # get_user_image(search_user, 'background_img')
+    # user의 친구 정보 dictionary
+    user_friend_list = get_friend_list(search_user['user_id']) 
+    friend_dic = get_friend_dic(user_friend_list)
+
+    # session 유저가 친구 요청을 보낸 user의 id 리스트
+    session_request_list = [user['request_user'] for user in col_request_friend.find({'user_id': session['login']})]
+    # print(friend_dic)
+    post_dic = col_post.find({'create_user_nickname': user}).sort("create_time", pymongo.DESCENDING)  
+    # print(list(post_dic))
+    return render_template('testUser.html', user=search_user,session_friend_list=session_friend_list,\
+         friend_dic=friend_dic, session_request_list = session_request_list, post_dic=post_dic)
