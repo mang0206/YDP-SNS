@@ -118,21 +118,21 @@ $(function(){
         }; 
     });
 });
-
+let session_nickname = $('#notice_container').attr('session_nickname')
 socket.on('like_notice', function(retMessage) {
-    if(retMessage['post_nickname'] == session_nickname){
+    if(retMessage['notice_user'] == session_nickname){
         console.log(retMessage)
     }
 });
 
 socket.on('comment_notice', function(retMessage) {
-    if(retMessage['comment_nickname'] == session_nickname){
+    if(retMessage['notice_user'] == session_nickname){
         console.log(retMessage)
     }
 });
 
 socket.on('mention_notice', function(retMessage) {
-    if(retMessage['post_nickname'] == session_nickname){
+    if(retMessage['notice_user'] == session_nickname){
         console.log(retMessage)
     }
 });
