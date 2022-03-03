@@ -47,7 +47,7 @@ def socketio_init(socketio):
                         {'kind' : 'reply'}]
                 }).sort('time', pymongo.DESCENDING).limit(1)
             notice = list(notice)
-            print('message = ',notice)
+            print('reply message = ',notice, message['create_user'],  message['session_user'])
             notice[0]['_id'] = str(notice[0]['_id'])
             emit('comment_notice',notice, broadcast=True) 
         else :
@@ -58,7 +58,7 @@ def socketio_init(socketio):
                         {'kind' : 'comment'}]
                 }).sort('time', pymongo.DESCENDING).limit(1)
             notice = list(notice)
-            print('message = ',notice)
+            print('comment message = ',notice, message['create_user'],  message['session_user'])
             notice[0]['_id'] = str(notice[0]['_id'])
             emit('comment_notice',notice, broadcast=True) 
 
@@ -73,7 +73,7 @@ def socketio_init(socketio):
                     {'kind' :'mention'}]
             }).sort('time', pymongo.DESCENDING).limit(1)
         notice = list(notice)
-        # print('message = ',message)
+        print('mention, message = ',notice, message['create_user'], message['session_user'])
         # if len(message):
         #     message[0]['_id'] = str(message[0]['_id'])
         emit('mention_notice',notice, broadcast=True) 
