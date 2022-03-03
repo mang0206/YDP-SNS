@@ -44,10 +44,9 @@
                     <p class="setting_header">소개글 수정</p>
                     {% if session_user['bio'] == none %}
                     <!-- 작성된 내용이 없을 경우 -->
-                    <input type="text" placeholder="새로운 소개글" name="setting_input_bio" maxlength="140">
+                    <textarea id="setting_bio" type="text" name="setting_input_bio" placeholder="새로운 소개글"></textarea>
                     {% else %}
-                    <input type="text" name="setting_input_bio" maxlength="140" value="{{ session_user['bio'] }}">
-                    <textarea type="text" name="setting_input_bio" >{{ session_user['bio'] }}</textarea>
+                    <textarea id="setting_bio" type="text" name="setting_input_bio">{{ session_user['bio'] }}</textarea>
                     {% endif %}
                     <button type="submit" class="setting_submit_btn" name="setting_button_bio">소개글 저장</button>
                 </form>

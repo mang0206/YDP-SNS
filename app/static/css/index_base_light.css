@@ -1013,8 +1013,17 @@ a:visited{color: black}
     /* align-items: center; */
 }
 .empty_content{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.empty_txt{
+    margin: 100px 0 30px 0;
     color: gray;
-    text-align: center;
+}
+.empty_img{
+    width: 200px;
+    height: 200px;
 }
 .index_content{
     display: flex;
@@ -1079,8 +1088,7 @@ a:visited{color: black}
     }
 }
 .search_container{    
-    /* margin-bottom: 50px; */
-
+    margin-top: 100px;
     display: flex;
     justify-content: center;
 }
@@ -1338,6 +1346,17 @@ a:visited{color: black}
     margin: 0;
     font-size: 20px;
     font-weight: 600;
+}
+#setting_bio{
+    width: 250px;
+    min-height: 50px;
+    height: fit-content;
+    padding: 5px;
+
+    border: solid 1px lightgray;
+    border-radius: 5px;
+    resize: none;
+    overflow-y: auto;
 }
 #setting_name{
     color: gray;
