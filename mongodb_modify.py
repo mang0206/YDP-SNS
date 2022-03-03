@@ -9,6 +9,7 @@ db = conn.get_database('root')
 col = db.get_collection('user')
 col_post = db.get_collection('post')
 col_comment = db.get_collection('comment')
+col_notice = db.get_collection('notice')
 def modify_user():
     lst = []
     ''' 유저마다 닉네임 추가'''
@@ -74,7 +75,11 @@ def del_post():
     #     # '_id': ObjectId('61efc1b8a94321fa3d464725')
     # })
     # print(result.deleted_count)
-    result = col_comment.delete_many({
+    # result = col_comment.delete_many({
+
+    # })
+    # print(result.deleted_count)
+    result = col_notice.delete_many({
 
     })
     print(result.deleted_count)

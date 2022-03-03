@@ -342,7 +342,7 @@ def like_submit():
     col_post = db.get_collection('post')
     col_comment = db.get_collection('comment')
     col_notice = db.get_collection('notice')
-
+    time = dt.datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
     data = request.get_json()
     # like 버튼을 눌렀을 때에 대한 ajax 통신
     if data['kind'] == 'like':
@@ -359,7 +359,7 @@ def like_submit():
                     'notice_user' : data['create_user'],
                     'reaction_user' : {'nickname': session['nickname'], 'profile_img':session['profile_img']},
                     'kind' : 'like',
-                    'time' : dt.datetime.now().strftime("%Y-%m-%d-%H-%M-%S"),
+                    'time' : time,
                     'check' : False
                 })
         else:
@@ -370,7 +370,6 @@ def like_submit():
         return jsonify(result = "success", session_user=session_user)
     # 댓글 달기 버튼을 눌렀을 때에 대한 ajax 통신
     elif data['kind'] == 'append_comment':
-        time = dt.datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
         session_user = col_user.find_one({'user_id':session['login']},{'_id':0, 'nickname':1 ,'profile_img':1})
         comment = data['text'].split(' ')
         comment_info = col_comment.insert_one({
@@ -393,7 +392,7 @@ def like_submit():
                     'notice_user' : data['create_user'],
                     'reaction_user' : {'nickname': session['nickname'], 'profile_img':session['profile_img']},
                     'kind' : 'comment',
-                    'time' : dt.datetime.now().strftime("%Y-%m-%d-%H-%M-%S"),
+                    'time' : time,
                     'check' : False
             })
             for word in comment:
@@ -402,7 +401,7 @@ def like_submit():
                         'notice_user' : word[1:],
                         'reaction_user' : {'nickname': session['nickname'], 'profile_img':session['profile_img']},
                         'kind' : 'mention',
-                        'time' : dt.datetime.now().strftime("%Y-%m-%d-%H-%M-%S"),
+                        'time' : time,
                         'check' : False
                      })
         return jsonify(result = "success", session_user=session_user, comment=comment, time=time, comment_id = str(comment_info.inserted_id))
@@ -443,7 +442,7 @@ def like_submit():
                     'notice_user' : data['create_user'],
                     'reaction_user' : {'nickname': session['nickname'], 'profile_img':session['profile_img']},
                     'kind' : 'reply',
-                    'time' : dt.datetime.now().strftime("%Y-%m-%d-%H-%M-%S"),
+                    'time' : time,
                     'check' : False
             })
             for word in reply:
@@ -452,7 +451,7 @@ def like_submit():
                         'notice_user' : word[1:],
                         'reaction_user' : {'nickname': session['nickname'], 'profile_img':session['profile_img']},
                         'kind' : 'mention',
-                        'time' : dt.datetime.now().strftime("%Y-%m-%d-%H-%M-%S"),
+                        'time' : time,
                         'check' : False
                      })
 
