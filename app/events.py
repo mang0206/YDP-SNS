@@ -27,7 +27,7 @@ def socketio_init(socketio):
         message = col_notice.find(
             {'$and': [
                     {'notice_user' : message['create_user']},
-                    {'reaction_user.nickame' : message['session_user']},
+                    {'reaction_user.nickname' : message['session_user']},
                     {'kind' : message['kind']}]
             }).sort('time').limit(1)
         message = list(message)
