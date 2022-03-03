@@ -386,6 +386,7 @@ def like_submit():
         col_post.update_one({'_id': ObjectId(data['post_id'])}, {'$inc': {'comment': 1}})
 
         # 댓글 전송시 notice 처리
+        mention = []
         if data['create_user'] != session['nickname']:
             col_notice.insert_one({
                     'notice_user' : data['create_user'],
@@ -403,7 +404,8 @@ def like_submit():
                         'time' : time,
                         'check' : False
                      })
-        return jsonify(result = "success", session_user=session_user, comment=comment, time=time, comment_id = str(comment_info.inserted_id))
+                    mention.append(word[1:])
+        return jsonify(result = "success", session_user=session_user, comment=comment, time=time, comment_id = str(comment_info.inserted_id), mention=mention)
     # 해당 post의 댓글을 불러오는 ajax 통신
     elif data['kind'] == 'get_comment':
         comment_dic = list(col_comment.find(
@@ -435,7 +437,7 @@ def like_submit():
             }}
         )
         col_post.update_one({'_id': ObjectId(data['post_id'])}, {'$inc': {'comment': 1}})
-
+        mention = []
         if data['create_user'] != session['nickname']:
             col_notice.insert_one({
                     'notice_user' : data['create_user'],
@@ -453,8 +455,8 @@ def like_submit():
                         'time' : time,
                         'check' : False
                      })
-
-        return jsonify(result = "success", session_user=session_user, reply=reply, time=time)
+                    mention.append(word[1:])
+        return jsonify(result = "success", session_user=session_user, reply=reply, time=time, mention=mention)
 
 @app.route("/content_reaction_submit", methods=["DELETE"])
 def delete_reply_comment():

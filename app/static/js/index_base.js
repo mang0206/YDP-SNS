@@ -119,7 +119,19 @@ $(function(){
     });
 });
 
-socket.on('test2', function(retMessage) {
+socket.on('like_notice', function(retMessage) {
+    if(retMessage['post_nickname'] == session_nickname){
+        console.log(retMessage)
+    }
+});
+
+socket.on('comment_notice', function(retMessage) {
+    if(retMessage['comment_nickname'] == session_nickname){
+        console.log(retMessage)
+    }
+});
+
+socket.on('mention_notice', function(retMessage) {
     if(retMessage['post_nickname'] == session_nickname){
         console.log(retMessage)
     }

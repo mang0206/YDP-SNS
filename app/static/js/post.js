@@ -628,7 +628,8 @@ $('.comment_submit').click(function(){
         "kind" : "append_comment",
         "text": text,
         "post_id": post_id,
-        "create_user": create_user
+        "create_user": create_user,
+        "session_user": session_user
     }
     $.ajax({
         type: "POST",
@@ -638,9 +639,10 @@ $('.comment_submit').click(function(){
         contentType: "application/json",
         success: function(data){
             indicate_comment(data, add_comment_list)
-            text = ''
-            console.log(text)
-
+            socket.emit('reaction_post', request_data);
+            if(data['mention'].length > 0){
+                socket.emit('mention', request_data);
+            } 
         },
         error: function(request, status, error){
             alert('ajax 통신 실패')
@@ -840,7 +842,8 @@ $(document).on("click",".reply_submit",function(){
         "text": text,
         "post_id": post_id,
         "comment_id": comment_id,
-        'create_user': create_user
+        'create_user': create_user,
+        'session_user': session_user
     }
     $.ajax({
         type: "POST",
@@ -854,6 +857,10 @@ $(document).on("click",".reply_submit",function(){
             $(standard_div).attr('style','display:flex;');
             $(remove_tag).remove()
             $(comment_form).show()
+            socket.emit('comment_post', request_data);
+            if(data['mention'].length > 0){
+                socket.emit('mention', request_data);
+            }
         },
         error: function(request, status, error){
             alert('ajax 통신 실패')

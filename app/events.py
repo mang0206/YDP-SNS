@@ -24,24 +24,56 @@ def socketio_init(socketio):
     @socketio.on('like_post')
     def like_notice(message):
         print(message)
-        message = col_notice.find(
+        notice = col_notice.find(
             {'$and': [
                     {'notice_user' : message['create_user']},
                     {'reaction_user.nickname' : message['session_user']},
                     {'kind' : message['kind']}]
             }).sort('time', pymongo.DESCENDING).limit(1)
-        message = list(message)
-        # col_notice.find({
-        #             'notice_user' : message['create_user'],
-        #             'reaction_user' : {'nickname': session['nickname'], 'profile_img':session['profile_img']},
-        #             'kind' : 'like',
-        #             'time' : dt.datetime.now().strftime("%Y-%m-%d-%H-%M-%S"),
-        #             'check' : False
-        # })
-        # nickname = session.get('nickname')
-        # post = col_post.find_one({'_id':ObjectId(message['post_id'])})
-        # retMessage = { 'msg' : nickname + " 님이 좋아요 누름", 'post_nickname': post['create_user_nickname'] }
-        print('message = ',message)
-        if len(message):
-            message[0]['_id'] = str(message[0]['_id'])
-        emit('test2',message, broadcast=True) 
+        notice = list(notice)
+        print('message = ',notice)
+        if len(notice):
+            notice[0]['_id'] = str(notice[0]['_id'])
+        emit('like_notice',notice, broadcast=True)
+
+    @socketio.on('comment_post')
+    def comment_notice(message):
+        print(message)
+        if message['kind'] == 'append_reply':
+            notice = col_notice.find(
+                {'$and': [
+                        {'notice_user' : message['create_user']},
+                        {'reaction_user.nickname' : message['session_user']},
+                        {'kind' : 'reply'}]
+                }).sort('time', pymongo.DESCENDING).limit(1)
+            notice = list(notice)
+            print('message = ',notice)
+            notice[0]['_id'] = str(notice[0]['_id'])
+            emit('comment_notice',notice, broadcast=True) 
+        else :
+            notice = col_notice.find(
+                {'$and': [
+                        {'notice_user' : message['create_user']},
+                        {'reaction_user.nickname' : message['session_user']},
+                        {'kind' : 'comment'}]
+                }).sort('time', pymongo.DESCENDING).limit(1)
+            notice = list(notice)
+            print('message = ',notice)
+            notice[0]['_id'] = str(notice[0]['_id'])
+            emit('comment_notice',notice, broadcast=True) 
+
+
+    @socketio.on('mention')
+    def mention_notice(message):
+        print(message)
+        notice = col_notice.find(
+            {'$and': [
+                    {'notice_user' : message['create_user']},
+                    {'reaction_user.nickname' : message['session_user']},
+                    {'kind' :'mention'}]
+            }).sort('time', pymongo.DESCENDING).limit(1)
+        notice = list(notice)
+        # print('message = ',message)
+        # if len(message):
+        #     message[0]['_id'] = str(message[0]['_id'])
+        emit('mention_notice',notice, broadcast=True) 
