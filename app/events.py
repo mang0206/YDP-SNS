@@ -29,7 +29,7 @@ def socketio_init(socketio):
                     {'notice_user' : message['create_user']},
                     {'reaction_user.nickname' : message['session_user']},
                     {'kind' : message['kind']}]
-            }).sort('time').limit(1)
+            }).sort('time', pymongo.DESCENDING).limit(1)
         message = list(message)
         # col_notice.find({
         #             'notice_user' : message['create_user'],
@@ -42,5 +42,6 @@ def socketio_init(socketio):
         # post = col_post.find_one({'_id':ObjectId(message['post_id'])})
         # retMessage = { 'msg' : nickname + " 님이 좋아요 누름", 'post_nickname': post['create_user_nickname'] }
         print('message = ',message)
-        # message['_id'] = str(message['_id'])
+        if len(message):
+            message['_id'] = str(message['_id'])
         emit('test2',message, broadcast=True) 
