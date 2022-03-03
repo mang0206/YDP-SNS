@@ -639,7 +639,7 @@ $('.comment_submit').click(function(){
         contentType: "application/json",
         success: function(data){
             indicate_comment(data, add_comment_list)
-            socket.emit('reaction_post', request_data);
+            socket.emit('comment_post', request_data);
             if(data['mention'].length > 0){
                 socket.emit('mention', request_data);
             } 

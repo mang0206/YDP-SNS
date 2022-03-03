@@ -68,12 +68,12 @@ def socketio_init(socketio):
         print(message)
         notice = col_notice.find(
             {'$and': [
-                    {'notice_user' : message['create_user']},
+                    {'notice_user' : message['text'][1:]},
                     {'reaction_user.nickname' : message['session_user']},
                     {'kind' :'mention'}]
             }).sort('time', pymongo.DESCENDING).limit(1)
         notice = list(notice)
-        print('mention, message = ',notice, message['create_user'], message['session_user'])
-        # if len(message):
-        #     message[0]['_id'] = str(message[0]['_id'])
+        # print('mention, message = ',notice, message['create_user'], message['session_user'])
+        if len(message):
+            message[0]['_id'] = str(message[0]['_id'])
         emit('mention_notice',notice, broadcast=True) 
