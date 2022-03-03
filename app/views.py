@@ -722,5 +722,6 @@ def connection_mongodb():
     print('=================notice======================')
     for i in col_notice.find({}):
         print(i, end='\n-------------------------\n')
+
     return jsonify(json_lis)
 

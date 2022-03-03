@@ -43,5 +43,5 @@ def socketio_init(socketio):
         # retMessage = { 'msg' : nickname + " 님이 좋아요 누름", 'post_nickname': post['create_user_nickname'] }
         print('message = ',message)
         if len(message):
-            message['_id'] = str(message['_id'])
+            message[0]['_id'] = str(message[0]['_id'])
         emit('test2',message, broadcast=True) 
