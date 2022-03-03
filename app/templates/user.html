@@ -33,13 +33,12 @@
                 </div>
                 <div class="user_introduce">
                     <p>소개</p>
-                    <div class="user_introduce_text">
-                        {% if user['bio'] == none %}
-                            <!-- 작성된 내용이 없을 경우 -->
-                        {% else %}
-                            {{ user['bio'] }}
-                        {% endif %}
-                    </div>
+                    <!-- 작성된 내용이 없을 경우 -->
+                    {% if user['bio'] == none %}
+                        <textarea class="user_introduce_text" readonly></textarea>
+                    {% else %}
+                        <textarea class="user_introduce_text" readonly>{{ user['bio'] }}</textarea>
+                    {% endif %}
                 </div>
             </div>
         </div>

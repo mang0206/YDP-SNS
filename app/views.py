@@ -449,8 +449,13 @@ def user(user):
     return render_template('user.html', user=search_user,session_friend_list=session_friend_list,\
          friend_dic=friend_dic, session_request_list = session_request_list, post_dic=post_dic)
 
-@app.route("/logout")
+@app.route("/logout", methods=["GET", "POST"])
 def logout():
+    if request.get_json:
+        flash("로그아웃 되었습니다.")
+        session['login'] = None
+        return jsonify(result = "success")
+
     flash("로그아웃 되었습니다.")
     session['login'] = None
     return redirect(url_for('login'))

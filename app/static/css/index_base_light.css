@@ -1424,6 +1424,7 @@ a:visited{color: black}
     margin-bottom: 5px;
 }
 .user_introduce_text{
+    width: 450px;
     height: 60px;
     padding: 5px 10px;
     font-size: 14px;
@@ -1431,6 +1432,8 @@ a:visited{color: black}
 
     border: solid 1px lightgray;
     border-radius: 5px;
+    overflow: auto;
+    resize: none;
 }
 @media (max-width: 767px) {
     .user_friend_list{
@@ -1764,8 +1767,12 @@ a:visited{color: black}
     margin-bottom: 15px;
 }
 #setting_logout{
+    font-size: 15px;
     color: red;
     opacity: 70%;
+    background: none;
+    border: none;
+    cursor: pointer;
 }
 .withdrawal{
     cursor: pointer;
