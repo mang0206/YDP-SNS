@@ -1,5 +1,6 @@
 // 동일한 content 구조가 들어가는 page에 export
-
+const session_user = $('#content').attr('session_nicnkname');
+var socket = io.connect('http://' + document.domain + ':' + location.port+'/');
 // session user 더보기 btn
 
 $(function(){    
@@ -294,10 +295,14 @@ $('[id$=_icon]').click(function(){
     let btn_value = $(this).attr('value');
     let post_id = $(this).attr('post_id');
     let btn = $(this)
+    let create_user = $(this).parents('#content').attr('create_user_nickname')
+
     var request_data = {
         "kind" : "like",
         "flag": btn_value,
-        "post_id": post_id
+        "post_id": post_id,
+        "create_user": create_user,
+        'session_user': session_user
     }
     // 해당 post의 좋아요 버튼
     let content_like = $(btn).parent().children('.content_like')
@@ -369,12 +374,13 @@ $('[id$=_icon]').click(function(){
                 // 좋아요 리스트에 최종적으로 div 태그 append
                 like_div.appendChild(create_div);
 
+                //알림 리스트
+                if(session_user != create_user){
+                    socket.emit('like_post', request_data); 
+                }
                 //socket
-                
-                    // const socket = io.connect('http://127.0.0.1:5000/user');
-                    // const socket = io();
-                var socket = io.connect('http://' + document.domain + ':' + location.port+'/');
-                socket.emit('like_post', {'post_id':post_id, 'nickname':data['session_user']['nickname']});           
+                socket.emit('like_post', request_data); 
+                          
             }
         },
         error: function(request, status, error){
@@ -616,10 +622,13 @@ $('.comment_submit').click(function(){
     let post_id = $(this).parent().attr('value');
     let btn = $(this)
     let add_comment_list = $(this).parent().siblings(".comment_list")
+    let create_user = $(this).parents('#content').attr('create_user_nickname')
+
     var request_data = {
         "kind" : "append_comment",
         "text": text,
-        "post_id": post_id
+        "post_id": post_id,
+        "create_user": create_user
     }
     $.ajax({
         type: "POST",
@@ -814,9 +823,13 @@ $(document).on("click",".reply_submit",function(){
     let post_id = comment_form.attr('value');
     // 답글 전송시 답글 입력 tag 삭제
     let remove_tag = $(this).parent()
+    // 해당 post 작성 user
+    let create_user = $(this).parents('#content').attr('create_user_nickname')
 
     let add_comment_list = $(this).parent().siblings(".comment_list")
     let chiled = add_comment_list.children()
+
+    let standard_div = null
     for(let i = 0; i < chiled.length; i++){
         if ($(chiled[i]).attr('comment_id') == comment_id & $(chiled[i]).attr('class') == 'reply_container'){
             standard_div = chiled[i]
@@ -826,7 +839,8 @@ $(document).on("click",".reply_submit",function(){
         "kind" : "append_reply",
         "text": text,
         "post_id": post_id,
-        "comment_id": comment_id
+        "comment_id": comment_id,
+        'create_user': create_user
     }
     $.ajax({
         type: "POST",

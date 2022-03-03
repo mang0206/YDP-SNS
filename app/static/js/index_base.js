@@ -118,3 +118,9 @@ $(function(){
         }; 
     });
 });
+
+socket.on('test2', function(retMessage) {
+    if(retMessage['post_nickname'] == session_nickname){
+        console.log(retMessage)
+    }
+});

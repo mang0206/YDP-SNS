@@ -8,7 +8,7 @@ db = conn.get_database('root')
 col = db.get_collection('user')
 col_post = db.get_collection('post')
 col_comment = db.get_collection('comment')
-
+col_notice = db.get_collection('notice')
 def socketio_init(socketio):
     
     @socketio.on('connect')
@@ -22,9 +22,25 @@ def socketio_init(socketio):
         print('received message='+ message)
     
     @socketio.on('like_post')
-    def testEvent(message):
+    def like_notice(message):
         print(message)
-        nickname = session.get('nickname')
-        post = col_post.find_one({'_id':ObjectId(message['post_id'])})
-        retMessage = { 'msg' : nickname + " 님이 좋아요 누름", 'post_nickname': post['create_user_nickname'] }
-        emit('test2',retMessage, broadcast=True) 
+        message = col_notice.find(
+            {'$and': [
+                    {'notice_user' : message['create_user']},
+                    {'reaction_user.nickame' : message['session_user']},
+                    {'kind' : message['kind']}]
+            }).sort('time').limit(1)
+        message = list(message)
+        # col_notice.find({
+        #             'notice_user' : message['create_user'],
+        #             'reaction_user' : {'nickname': session['nickname'], 'profile_img':session['profile_img']},
+        #             'kind' : 'like',
+        #             'time' : dt.datetime.now().strftime("%Y-%m-%d-%H-%M-%S"),
+        #             'check' : False
+        # })
+        # nickname = session.get('nickname')
+        # post = col_post.find_one({'_id':ObjectId(message['post_id'])})
+        # retMessage = { 'msg' : nickname + " 님이 좋아요 누름", 'post_nickname': post['create_user_nickname'] }
+        print('message = ',message)
+        # message['_id'] = str(message['_id'])
+        emit('test2',message, broadcast=True) 

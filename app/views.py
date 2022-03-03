@@ -81,7 +81,8 @@ def join():
                 'background_img': _default['background_img'],
                 'bio': None,
                 'user_email': email,
-                'like': []
+                'like': [],
+                'commemt': []
                 })
             return render_template('join_success.html')
         else:
@@ -144,11 +145,10 @@ def base_notice():
     if session.get('login'):
         col_notice = db.get_collection('notice')
         notice = col_notice.find(
-            {'notice_user':session['login']},
+            {'$or': [{'notice_user':session['login']}, {'notice_user':session['nickname']}]},
             {'_id':0,'reaction_user':1,'kind':1,'time':1,'check':1}
             ).sort("time", pymongo.DESCENDING)
         session['notice'] = list(notice)
-        print(session['notice'])
 
 @app.route("/", methods=['GET',"POST"])
 def index():
@@ -341,6 +341,7 @@ def like_submit():
     col_user = db.get_collection('user')
     col_post = db.get_collection('post')
     col_comment = db.get_collection('comment')
+    col_notice = db.get_collection('notice')
 
     data = request.get_json()
     # like 버튼을 눌렀을 때에 대한 ajax 통신
@@ -352,11 +353,20 @@ def like_submit():
             session_user = col_user.find_one({'user_id':session['login']},{'_id':0, 'nickname':1 ,'profile_img':1, 'like':1})
             col_post.update_one({'_id':ObjectId(data['post_id'])}, {'$push': {'like': session_user}})
             session['like'] = col_user.find_one({'user_id':session['login']},{'_id':0, 'like':1})['like']
+
+            if session['nickname'] != data['create_user']:
+                col_notice.insert_one({
+                    'notice_user' : data['create_user'],
+                    'reaction_user' : {'nickname': session['nickname'], 'profile_img':session['profile_img']},
+                    'kind' : 'like',
+                    'time' : dt.datetime.now().strftime("%Y-%m-%d-%H-%M-%S"),
+                    'check' : False
+                })
         else:
             col_user.update_one({'user_id':session['login']}, {'$pull': {'like': data['post_id']}})
             col_post.update_one({'_id':ObjectId(data['post_id'])}, {'$pull': {'like': { 'nickname' : session['nickname']}}})
             session['like'] = col_user.find_one({'user_id':session['login']},{'_id':0, 'like':1})['like']
-
+        print('like')
         return jsonify(result = "success", session_user=session_user)
     # 댓글 달기 버튼을 눌렀을 때에 대한 ajax 통신
     elif data['kind'] == 'append_comment':
@@ -376,7 +386,25 @@ def like_submit():
             }}
         )
         col_post.update_one({'_id': ObjectId(data['post_id'])}, {'$inc': {'comment': 1}})
-        print(comment)
+
+        # 댓글 전송시 notice 처리
+        if data['create_user'] != session['nickname']:
+            col_notice.insert_one({
+                    'notice_user' : data['create_user'],
+                    'reaction_user' : {'nickname': session['nickname'], 'profile_img':session['profile_img']},
+                    'kind' : 'comment',
+                    'time' : dt.datetime.now().strftime("%Y-%m-%d-%H-%M-%S"),
+                    'check' : False
+            })
+            for word in comment:
+                if '@' in word:
+                    col_notice.insert_one({
+                        'notice_user' : word[1:],
+                        'reaction_user' : {'nickname': session['nickname'], 'profile_img':session['profile_img']},
+                        'kind' : 'mention',
+                        'time' : dt.datetime.now().strftime("%Y-%m-%d-%H-%M-%S"),
+                        'check' : False
+                     })
         return jsonify(result = "success", session_user=session_user, comment=comment, time=time, comment_id = str(comment_info.inserted_id))
     # 해당 post의 댓글을 불러오는 ajax 통신
     elif data['kind'] == 'get_comment':
@@ -408,8 +436,26 @@ def like_submit():
                 {'comment_id': str(info['_id']), 'kind': 'reply', 'time': time}
             }}
         )
-        print(str(info['_id']))
         col_post.update_one({'_id': ObjectId(data['post_id'])}, {'$inc': {'comment': 1}})
+
+        if data['create_user'] != session['nickname']:
+            col_notice.insert_one({
+                    'notice_user' : data['create_user'],
+                    'reaction_user' : {'nickname': session['nickname'], 'profile_img':session['profile_img']},
+                    'kind' : 'reply',
+                    'time' : dt.datetime.now().strftime("%Y-%m-%d-%H-%M-%S"),
+                    'check' : False
+            })
+            for word in reply:
+                if '@' in word:
+                    col_notice.insert_one({
+                        'notice_user' : word[1:],
+                        'reaction_user' : {'nickname': session['nickname'], 'profile_img':session['profile_img']},
+                        'kind' : 'mention',
+                        'time' : dt.datetime.now().strftime("%Y-%m-%d-%H-%M-%S"),
+                        'check' : False
+                     })
+
         return jsonify(result = "success", session_user=session_user, reply=reply, time=time)
 
 @app.route("/content_reaction_submit", methods=["DELETE"])
@@ -673,7 +719,7 @@ def connection_mongodb():
     print('comment show')
     for i in col_comment.find({}):
         print(i, end='\n-------------------------\n')
-    print('notice')
+    print('=================notice======================')
     for i in col_notice.find({}):
         print(i, end='\n-------------------------\n')
     return jsonify(json_lis)
