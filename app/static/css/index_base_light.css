@@ -618,7 +618,13 @@ a:visited{color: black}
     border-top: solid 1px lightgray;
     border-bottom: solid 1px lightgray;
 
+    background-color: #EDEDED;
     object-fit: cover;
+}
+.image_lazy{
+    /* broken icon hide */
+    width: 420px;
+    transform: translateX(-20px);
 }
 .img_number{
     width: fit-content;

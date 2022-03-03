@@ -111,7 +111,7 @@
                 {% endif %}
                 <!-- session user 아닐 경우 나타나는 user content -->
                 {% for post in post_dic%}
-                    <div id="content" class="index_content">
+                    <div id="content" class="index_content easyCheck">
                         <!-- page, session 유저, 권한에 따라 조건문 변경 -->
                         <div class="content">
                             <div class="content_header">
@@ -172,7 +172,7 @@
                                     <button class="img_arrow_btn right_arrow"><img id="right_arrow" src="../static/img/right_arrow.png" alt=""></button>
                                     <div class="img_album">
                                         {% for i in post['images'] %}
-                                        <img src="{{ i }}" alt="" class="content_image" value="{{ post['images']|length }}">
+                                        <img src="" data-src="{{ i }}" alt="" class="content_image image_lazy" value="{{ post['images']|length }}">
                                         {% endfor %}
                                     </div>
                                 </div>
@@ -288,6 +288,7 @@
 </div>
 <script src="../static/js/user.js" defer="defer"></script>
 <script src="../static/js/create_content.js" defer="defer"></script>
+<script src="../static/js/lazyLoad.js" defer="defer"></script>
 <script type="module" src="../static/js/time_information.js" defer="defer"></script>
 <script type="module" src="../static/js/post.js" defer="defer"></script>
 {% endblock %}
