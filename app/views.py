@@ -16,6 +16,7 @@ import random
 from .functuion import *
 import datetime as dt
 import pymongo
+from pytz import timezone
 
 db = conn.get_database('root')
 bcrypt = Bcrypt()
@@ -218,10 +219,7 @@ def content_submit():
     print('-==============================',content_txt, content_file)
     # print("get list",len(content_file))
 
-    time = dt.datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
-    now_time = dt.datetime.now()
-    print(now_time)
-    print(type(now_time))
+    time = dt.datetime.now(timezone('Asia/Seoul')).strftime("%Y-%m-%d-%H-%M-%S")
 
     img_list = []
     if len(content_file) > 0:
@@ -229,7 +227,7 @@ def content_submit():
             filename = img.filename.split('.')[0]
             ext = img.filename.split('.')[-1]
             nickname = session['nickname']
-            img_name = dt.datetime.now().strftime(f"{nickname}-{filename}-%Y-%m-%d-%H-%M-%S.{ext}")
+            img_name = dt.datetime.now(timezone('Asia/Seoul')).strftime(f"{nickname}-{filename}-%Y-%m-%d-%H-%M-%S.{ext}")
             s3_put_object(s3,'ydpsns',img,img_name,'postimages')
             img_list.append(s3_get_image_url(s3, img_name, 'postimages')) 
 
@@ -273,7 +271,7 @@ def content_update_submit(post_id):
     print('-==============================',content_txt)
     # print("get list",len(content_file))
 
-    time = dt.datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
+    time = dt.datetime.now(timezone('Asia/Seoul')).strftime("%Y-%m-%d-%H-%M-%S")
 
     tmp = content_txt.splitlines(True)
     text = []
@@ -342,7 +340,8 @@ def like_submit():
     col_post = db.get_collection('post')
     col_comment = db.get_collection('comment')
     col_notice = db.get_collection('notice')
-    time = dt.datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
+    time = dt.datetime.now(timezone('Asia/Seoul')).strftime("%Y-%m-%d-%H-%M-%S")
+    print(time)
     data = request.get_json()
     # like 버튼을 눌렀을 때에 대한 ajax 통신
     if data['kind'] == 'like':
@@ -416,7 +415,7 @@ def like_submit():
         return jsonify(result = "success", comment_dic = comment_dic)\
     # 답글 추가 ajax 통신
     elif data['kind'] == 'append_reply':
-        time = dt.datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
+        time = dt.datetime.now(timezone('Asia/Seoul')).strftime("%Y-%m-%d-%H-%M-%S")
         session_user = col_user.find_one({'user_id':session['login']},{'_id':0, 'nickname':1 ,'profile_img':1})
         reply = data['text'].split(' ')
         # 댓글 document의 reply list에 추가할 정보 dictionary 
@@ -581,7 +580,7 @@ def post_setting():
         filename = input_profile.filename.split('.')[0]
         ext = input_profile.filename.split('.')[-1]
         nickname = session['nickname']
-        img_name = dt.datetime.now().strftime(f"{nickname}-{filename}-%Y-%m-%d-%H-%M-%S.{ext}")
+        img_name = dt.datetime.now(timezone('Asia/Seoul')).strftime(f"{nickname}-{filename}-%Y-%m-%d-%H-%M-%S.{ext}")
 
         # _delete = col_user.find_one({'user_id':session['login']}, {'_id':0, 'profile_img':1})['profile_img']
         # if _delete != col_user.find_one({'user_id': 'default'}, {'_id':0, 'profile_img':1})['profile_img']:
@@ -598,7 +597,7 @@ def post_setting():
 
         filename = input_background.filename.split('.')[0]
         ext = input_background.filename.split('.')[-1]
-        img_name = dt.datetime.now().strftime(f"{session['nickname']}-{filename}-%Y-%m-%d-%H-%M-%S.{ext}")
+        img_name = dt.datetime.now(timezone('Asia/Seoul')).strftime(f"{session['nickname']}-{filename}-%Y-%m-%d-%H-%M-%S.{ext}")
         s3_put_object(s3,'ydpsns',input_background,img_name)
         # _delete = col_user.find_one({'user_id':session['login']}, {'_id':0, 'background_img':1})['background_img']
         # if _delete != col_user.find_one({'user_id': 'default'}, {'_id':0, 'background_img':1})['background_img']:
@@ -677,7 +676,7 @@ def request_frie():
             'notice_user' : request_user,
             'reaction_user' : {'nickname': session['nickname'], 'profile_img':session['profile_img']},
             'kind' : 'request_friend',
-            'time' : dt.datetime.now().strftime("%Y-%m-%d-%H-%M-%S"),
+            'time' : dt.datetime.now(timezone('Asia/Seoul')).strftime("%Y-%m-%d-%H-%M-%S"),
             'check' : False
         })
     elif data['val'] == '요청 삭제':
