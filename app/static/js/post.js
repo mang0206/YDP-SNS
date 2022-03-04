@@ -1,8 +1,10 @@
 // 동일한 content 구조가 들어가는 page에 export
+
+// socket 통신을 위한 session user, socket 정보
 const session_user = $('#content').attr('session_nicnkname');
 var socket = io.connect('http://' + document.domain + ':' + location.port+'/');
-// session user 더보기 btn
 
+// session user 더보기 btn
 $(function(){    
     let more_icon = document.querySelectorAll(".more_icon");
     more_icon.forEach(more => {
@@ -377,10 +379,7 @@ $('[id$=_icon]').click(function(){
                 //알림 리스트
                 if(session_user != create_user){
                     socket.emit('like_post', request_data); 
-                }
-                //socket
-                socket.emit('like_post', request_data); 
-                          
+                }         
             }
         },
         error: function(request, status, error){
@@ -639,10 +638,23 @@ $('.comment_submit').click(function(){
         contentType: "application/json",
         success: function(data){
             indicate_comment(data, add_comment_list)
+            
             socket.emit('comment_post', request_data);
             if(data['mention'].length > 0){
-                socket.emit('mention', request_data);
-            } 
+                for(let i = 0; i < data['mention'].length; i++){
+                    console.log(data['mention'][i])
+                    var mention_data = {
+                        "kind" : "append_reply",
+                        "text": text,
+                        "post_id": post_id,
+                        'create_user': create_user,
+                        'session_user': session_user,
+                        'mention' : data['mention'][i]
+                    }
+                    socket.emit('mention', mention_data);
+                    // console.log(request)
+                }
+            }
         },
         error: function(request, status, error){
             alert('ajax 통신 실패')
@@ -858,8 +870,23 @@ $(document).on("click",".reply_submit",function(){
             $(remove_tag).remove()
             $(comment_form).show()
             socket.emit('comment_post', request_data);
+
+            console.log('mention = ',data['mention'])
             if(data['mention'].length > 0){
-                socket.emit('mention', request_data);
+                for(let i = 0; i < data['mention'].length; i++){
+                    console.log(data['mention'][i])
+                    var mention_data = {
+                        "kind" : "append_reply",
+                        "text": text,
+                        "post_id": post_id,
+                        "comment_id": comment_id,
+                        'create_user': create_user,
+                        'session_user': session_user,
+                        'mention' : data['mention'][i]
+                    }
+                    socket.emit('mention', mention_data);
+                    // console.log(request)
+                }
             }
         },
         error: function(request, status, error){

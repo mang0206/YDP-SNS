@@ -145,11 +145,16 @@ def join_success():
 def base_notice():
     if session.get('login'):
         col_notice = db.get_collection('notice')
-        notice = col_notice.find(
+        notices = list(col_notice.find(
             {'$or': [{'notice_user':session['login']}, {'notice_user':session['nickname']}]},
             {'_id':0,'reaction_user':1,'kind':1,'time':1,'check':1}
-            ).sort("time", pymongo.DESCENDING)
-        session['notice'] = list(notice)
+            ).sort("time", pymongo.DESCENDING))
+        session['notice'] = notices
+
+        session['notice_ckeck'] = True
+        for notice in notices['check']:
+            if notice == False:
+                session['notice_ckeck'] = False
 
 @app.route("/", methods=['GET',"POST"])
 def index():
@@ -396,7 +401,8 @@ def like_submit():
                     'check' : False
             })
             for word in comment:
-                if '@' in word:
+                print(word)
+                if word[0] == '@':
                     col_notice.insert_one({
                         'notice_user' : word[1:],
                         'reaction_user' : {'nickname': session['nickname'], 'profile_img':session['profile_img']},

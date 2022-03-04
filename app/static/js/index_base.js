@@ -118,22 +118,120 @@ $(function(){
         }; 
     });
 });
-let session_nickname = $('#notice_container').attr('session_nickname')
-console.log(session_nickname)
+function make_notice_div(notice){
+    const notice_list = document.querySelector(".notice_list");
+    console.log(notice_list)
+    const create_div = document.createElement('div');
+    const create_a_img = document.createElement('a');
+    const create_img = document.createElement('img');
+    const create_div_notice_content = document.createElement('div');
+    const create_p_notice_txt = document.createElement('p');
+    const create_a_notice_a = document.createElement('a');
+    const p_notice_a = document.createElement('p');
+
+    // notice 리스트에 추가할 div 태그
+    if(notice['kind'] =='request_friend'){
+        $(create_div).attr({
+            'class': 'notice_item friend_notice',
+            'value': notice['reaction_user']['nickname']
+        });
+    } else {
+        $(create_div).attr({
+            'class': 'notice_item post_notice',
+            'value': notice['reaction_user']['nickname']
+        });
+    }
+    // 이미지를 감쌀 a 테그
+    $(create_a_img).attr({
+        'href': '/user/'+notice['reaction_user']['nickname'],
+        'class': 'notice_a img'
+    });
+    // 이미지 테그
+    if(notice['kind'] =='request_friend'){
+        $(create_img).attr({
+            'src': notice['reaction_user']['profile_img'],
+            'class': 'friend_notice_img'
+        });
+    } else {
+        $(create_img).attr({
+            'src': notice['reaction_user']['profile_img'],
+            'class': 'post_notice_img'
+        });
+    }
+    $(create_div_notice_content).attr({
+        'class': 'notice_content'
+    });
+    // 알림 내용
+    $(create_p_notice_txt).attr({
+        'class': 'notice_txt',
+    });
+    if (notice['kind'] =='request_friend'){
+        $(create_p_notice_txt).text('님이 친구 요청을 보냈습니다.')
+    } else if (notice['kind'] =='like') {
+        $(create_p_notice_txt).text('님이 게시물을 좋아합니다.')
+    } else if (notice['kind'] =='reply') {
+        $(create_p_notice_txt).text('님이 답글을 달았습니다.')
+    } else if (notice['kind'] =='comment') {
+        $(create_p_notice_txt).text('님이 댓글을 달았습니다.')
+    } else {
+        $(create_p_notice_txt).text('님이 회원님을 멘션 했습니다.')
+    }
+
+    $(create_a_notice_a).attr({
+        'class': 'notice_a notice_nickname',
+        'href': '/user/'+notice['reaction_user']['nickname']
+    });
+    $(create_a_notice_a).text(notice['reaction_user']['nickname'])
+
+    $(p_notice_a).attr({
+        'class': 'notice_a notice_time',
+        'value': notice['time']
+    });
+    indicate_time(p_notice_a)
+
+    // 생성한 태그들 구조에 맞게 append
+    create_p_notice_txt.prepend(create_a_notice_a);
+    create_p_notice_txt.appendChild(p_notice_a);
+    create_div_notice_content.appendChild(create_p_notice_txt);
+    create_a_img.appendChild(create_img);
+    create_div.appendChild(create_a_img);
+    create_div.appendChild(create_div_notice_content);
+    // 좋아요 리스트에 최종적으로 div 태그 append
+    notice_list.prepend(create_div);
+}
+
+
+let session_nickname = $('.notice_list').attr('session_nickname')
+let session_id = $('.notice_list').attr('session_id')
+
+socket.on('request_notice', function(retMessage) {
+    let message = retMessage[0]
+    if(message['notice_user'] == session_id){
+        make_notice_div(message)
+        notice_dot.className = 'notice_dot';
+    }
+});
+
 socket.on('like_notice', function(retMessage) {
-    if(retMessage['notice_user'] == session_nickname){
-        console.log(retMessage)
+    let message = retMessage[0]
+    if(message['notice_user'] == session_nickname){
+        make_notice_div(message)
+        notice_dot.className = 'notice_dot';
     }
 });
 
 socket.on('comment_notice', function(retMessage) {
-    if(retMessage['notice_user'] == session_nickname){
-        console.log(retMessage)
+    let message = retMessage[0]
+    if(message['notice_user'] == session_nickname){
+        make_notice_div(message)
+        notice_dot.className = 'notice_dot';
     }
 });
 
 socket.on('mention_notice', function(retMessage) {
-    if(retMessage['notice_user'] == session_nickname){
-        console.log(retMessage)
+    let message = retMessage[0]
+    if(message['notice_user'] == session_nickname){
+        make_notice_div(message)
+        notice_dot.className = 'notice_dot';
     }
 });

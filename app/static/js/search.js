@@ -113,6 +113,9 @@ $('[id^=_button_area]').click(function(){
                 $(btn).text('요청 삭제');
                 $(btn).attr('id', 'reject_btn')
 
+                var socket = io.connect('http://' + document.domain + ':' + location.port+'/');
+                socket.emit('friend_request', postdata);
+
             } else if (val == '요청 삭제') {
                 val = '친구 요청'
                 $(btn).text('친구 요청');

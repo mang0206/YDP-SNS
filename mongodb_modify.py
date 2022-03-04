@@ -108,7 +108,7 @@ def search():
 
 
 # del_user()
-# del_post()
+del_post()
 # search()
 # modify_user_one()
 # insert()
