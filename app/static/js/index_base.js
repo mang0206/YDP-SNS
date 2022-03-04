@@ -119,6 +119,7 @@ $(function(){
     });
 });
 let session_nickname = $('#notice_container').attr('session_nickname')
+console.log(session_nickname)
 socket.on('like_notice', function(retMessage) {
     if(retMessage['notice_user'] == session_nickname){
         console.log(retMessage)

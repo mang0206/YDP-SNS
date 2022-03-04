@@ -15,11 +15,6 @@ def socketio_init(socketio):
     def test():
         retMessage = { 'msg' : "hello response11" }
         emit('connect', retMessage)
-
-    @socketio.on('testSocket')
-    def testEvent(message):
-        # tsession = session.get('test')
-        print('received message='+ message)
     
     @socketio.on('like_post')
     def like_notice(message):
