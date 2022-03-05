@@ -1,27 +1,3 @@
-//maintain notice dot
-$(function(){
-    console.log(notice_icon)
-    //새로운 알림이 존재하면 notice dot 표시
-    
-    // $.ajax({
-    //     type: 'GET',
-    //     url: "/",
-    //     data: JSON.stringify(),
-    //     dataType: 'JSON',
-    //     contentType: "application/json",
-    //     success: function(data){
-    //         if (notice.length > 0) {
-    //             notice_dot.className == 'notice_dot'
-    //         }
-    //     },
-    //     error: function(request, status, error){
-    //         alert('ajax 통신 실패')
-    //         console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
-    //     }
-    // });
-})
-
-
 import indicate_time from './time_information.js';
 // upload time
 $(function(){
@@ -41,6 +17,17 @@ let notice_icon = document.getElementsByClassName('notice_icon');
 let notice_popup = document.getElementById('notice_container');
 let notice_dot = document.getElementById('notice_dot');
 let notice_triangle = document.getElementById('notice_triangle');
+console.log(notice_dot)
+
+//maintain notice dot
+$(function(){
+    let notice_check = $('.notice_list').attr('notice_check')
+    if (notice_check == 'False'){
+        notice_dot.className = 'notice_dot'
+    }
+})
+
+
 //상단바 아이콘 팝업창 토글
 $('html').click(function(e){
     //user modal area
@@ -80,7 +67,17 @@ $('html').click(function(e){
             //user hide
             user_popup.className = 'user_popup none';
             user_triangle.className = 'triangle none';
-            console.log('notice_icon');
+            $.ajax({
+                type: "POST",
+                url: "/notice",
+                success: function(data){
+                    
+                },
+                error: function(request, status, error){
+                    alert('ajax 통신 실패')
+                    alert(error);
+                }
+            })
         } 
         else { //if not icon clicked, hide to all modal
             user_popup.className = 'user_popup none';

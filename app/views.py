@@ -146,15 +146,27 @@ def base_notice():
     if session.get('login'):
         col_notice = db.get_collection('notice')
         notices = list(col_notice.find(
-            {'$or': [{'notice_user':session['login']}, {'notice_user':session['nickname']}]},
-            {'_id':0,'reaction_user':1,'kind':1,'time':1,'check':1}
+            {'$or': [{'notice_user':session['login']}, {'notice_user':session['nickname']}]}
             ).sort("time", pymongo.DESCENDING))
+        for i in range(len(notices)):
+            notices[i]['_id'] = str(notices[i]['_id'])
         session['notice'] = notices
 
-        session['notice_ckeck'] = True
-        for notice in notices['check']:
-            if notice == False:
-                session['notice_ckeck'] = False
+        session['notice_check'] = True
+        for notice in notices:
+            if notice['check'] == False:
+                session['notice_check'] = False
+
+@app.route('/notice', methods=['POST'])
+def notice_check():
+    col_notice = db.get_collection('notice')
+    print('notice')
+    # data = request.get_json()
+    session['notice_check'] = True
+    for notics in session['notice']:
+        col_notice.update_one({'_id':ObjectId(notics['_id'])}, {'$set': {'check':True}})
+    return jsonify(result = "success")
+
 
 @app.route("/", methods=['GET',"POST"])
 def index():
