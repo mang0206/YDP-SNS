@@ -165,6 +165,28 @@ import {password_validation} from './check_password.js';
 document.getElementById('pw2').addEventListener('keyup', password_validation);
 document.getElementById('pw').addEventListener('keyup', password_validation);
 
+//로그아웃 confirm
+$('#setting_logout').click(function(){
+    if (confirm("현재 계정에서 로그아웃합니다.") == true) {
+        $.ajax({
+            type: "GET",
+            url: "/logout",
+            dataType: 'JSON',
+            contentType: "application/json",
+            success: function(){
+                console.log("logout")
+                location.replace("http://localhost:5000/login");
+            },
+            error: function(request, status, error){
+                alert('ajax 통신 실패')
+                console.log(error)
+            }
+        })
+    } else {
+        return false
+    };
+});
+
 //회원 탈퇴
 $("html").click(function(e){
     // console.log(e.target)

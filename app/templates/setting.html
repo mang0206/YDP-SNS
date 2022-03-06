@@ -42,7 +42,12 @@
                 </form>
                 <form action="/setting" method="post" name="setting_form_bio">
                     <p class="setting_header">소개글 수정</p>
-                    <input type="text"placeholder="새로운 소개글" name="setting_input_bio" maxlength="140">
+                    {% if session_user['bio'] == none %}
+                    <!-- 작성된 내용이 없을 경우 -->
+                    <textarea id="setting_bio" type="text" name="setting_input_bio" placeholder="새로운 소개글"></textarea>
+                    {% else %}
+                    <textarea id="setting_bio" type="text" name="setting_input_bio">{{ session_user['bio'] }}</textarea>
+                    {% endif %}
                     <button type="submit" class="setting_submit_btn" name="setting_button_bio">소개글 저장</button>
                 </form>
             </div>
@@ -71,7 +76,7 @@
                     </div>
                 </div>
                 <div class="account_container">
-                    <a id="setting_logout">로그아웃</a>
+                    <button id="setting_logout">로그아웃</button>
                     <div>
                         <p class="withdrawal">탈퇴</p>
                         <div class="more_icon_popup_back none">
