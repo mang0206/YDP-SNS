@@ -29,14 +29,15 @@
     </div>
     <div class="both_layout_content">
         <h4>게시물</h4>
-        <!-- jinja for -->
-        {% for post in post_dic%}
-            {% include 'post.html'  ignore missing %}
-        {% endfor %}
-        <!-- endfor -->
+        <!-- jinja if : 해당 검색어에 따른 결과가 없을 경우-->
+
+        <!-- else -->
+            {% for post in post_dic%}
+                {% include 'post.html'  ignore missing %}
+            {% endfor %}
+        <!-- endif -->
     </div>
     <!-- 검색어 db 필터링, js 조건문 별로 다른 버튼 생성 -->
 </div>
-
 <script src="../static/js/search.js" defer="defer"></script>
 {% endblock %}
