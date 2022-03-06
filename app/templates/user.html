@@ -126,7 +126,7 @@
                                 </div>
                                 <!-- more icon -->
                                 <!-- ver 1.0에선 session user만 버튼 노출 -->
-                                {% if session['nickname'] == user['nickname'] %}
+                                {% if session['nickname'] == post['create_user_nickname'] %}
                                 <img src="../static/img/more.png" alt="" class="content_icon more_icon">
                                 <div class="more_icon_popup_back none">
                                     <div class="more_icon_popup">

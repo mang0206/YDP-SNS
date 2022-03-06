@@ -148,6 +148,10 @@ def base_notice():
         notices = list(col_notice.find(
             {'$or': [{'notice_user':session['login']}, {'notice_user':session['nickname']}]}
             ).sort("time", pymongo.DESCENDING))
+
+        if len(notices) > 10:
+            col_notice.delete_one({'_id':notices[-1]['_id']})
+
         for i in range(len(notices)):
             notices[i]['_id'] = str(notices[i]['_id'])
         session['notice'] = notices
@@ -190,6 +194,7 @@ def search():
     col_request_friend = db.get_collection('request_friend')
     request_list = col_request_friend.find()
     col_user = db.get_collection('user')
+    col_post = db.get_collection('post')
     # if request.method == "POST":
     # if request.form.get('search_btn') == 'topbar_search':
     #     search = request.form.get('search')
@@ -221,8 +226,11 @@ def search():
     session_request_list[''] = [user['request_user'] for user in col_request_friend.find({'user_id': session['login']})]
     session_request_list = json.dumps(session_request_list, ensure_ascii = False)
 
+    # search_post = col_post.find({'hash_tag': {'$all': [search]}})
+    search_post = list(col_post.find({'hashtag': search}))
+    print(search_post)
     return render_template('search.html', search = search, search_user_dic=search_user_dic, search_user_id=search_user_id,\
-                 session_friend_list=session_friend_list, session_request_list=session_request_list)
+                 session_friend_list=session_friend_list, session_request_list=session_request_list, post_dic = search_post)
 
 # 팝업창 txt와 img를 DB로 전송
 @app.route("/content_submit", methods=["POST"])
@@ -259,7 +267,7 @@ def content_submit():
     # hash_tag = []
     # if content_txt:
     #     hash_tag = [h[1:] for h in content_txt.split(' ') if len(h) and h[0] == '#']
-    hash_tag = [h[1:] for h in tmp if len(h) and h[0] == '#']
+    hash_tag = [h[1:] for h in text if len(h) and h[0] == '#']
         
 
     col_post.insert_one(
@@ -297,7 +305,7 @@ def content_update_submit(post_id):
         if '\n' in text[-1]:
             text[-1] = text[-1][:-1]
             text.append('\n')
-    hash_tag = [h[1:] for h in tmp if len(h) and h[0] == '#']
+    hash_tag = [h[1:] for h in text if len(h) and h[0] == '#']
         
     col_post.update_one(
         {'_id': ObjectId(post_id)},
