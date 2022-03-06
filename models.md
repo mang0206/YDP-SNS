@@ -32,6 +32,7 @@
     - hash_tag : 해시 태그 리스트
     - like : 좋아요 누른 user 딕셔너리 리스트
     - comment : 댓글 개수
+    - modified : 수정 여부(True, False)
 
 ## comment
     - post_id : 기준 post 
@@ -50,9 +51,11 @@
 ## notice
     - notice_user : 알림을 받을 user
     - reaction_user : 알림에 해당하는 행위를 한 user의 profile 및 nickname 정보
+        (post 관련 알림이라면 user의 profile 대신 해당 post의 첫 번째 이미지 정보)
     - kind : 어떤 알림인지에 대한 구분 (친구 요청, post(좋아요, 댓글, 태그))
     - time : 해당 행위를 한 시간
     - check : 해당 알림을 확인 했는지에 대한 구분
+    - post_id : post 관련 알림일시 해당 post의 id, 친구 요청의 경우 None 값
 
 # session 정보
     session['login'] : id(로그인 id)

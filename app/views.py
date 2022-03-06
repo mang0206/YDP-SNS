@@ -174,6 +174,8 @@ def notice_check():
 
 @app.route("/", methods=['GET',"POST"])
 def index():
+    col_post = db.get_collection('post')
+
     if session.get('login') is None:
         return redirect(url_for('login'))
 
@@ -185,8 +187,23 @@ def index():
     session_friend_list = get_friend_list(session['login'])
     # 친구 정보 딕셔너리 
     friend_dic = get_friend_dic(session_friend_list)
-     
-    return render_template('index.html', friend_dic = friend_dic)
+
+    post_dic = []
+    # 자신의 게시물 목록 추가
+    for post in col_post.find({'create_user': session['login']}):
+        post['_id'] = str(post['_id'])
+        post_dic.append(post)
+
+    # 친구의 게시물 목록 추가
+    for friend in session_friend_list:
+        # 해당 친구의 post 정보들
+        firend_post = col_post.find({'create_user': friend})
+        for post in firend_post:
+            post['_id'] = str(post['_id'])
+            post_dic.append(post)
+    
+    post_dic = sorted(post_dic, key = lambda t: t['create_time'], reverse=True)
+    return render_template('index.html', friend_dic = friend_dic, post_dic=post_dic)
 
 @app.route("/search", methods=['GET',"POST"])
 def search():
@@ -235,9 +252,9 @@ def search():
 # 팝업창 txt와 img를 DB로 전송
 @app.route("/content_submit", methods=["POST"])
 def content_submit():
-    if request.get_json():
+    # if request.get_json():
 
-        return jsonify(result = "success")
+    #     return jsonify(result = "success")
     col_post = db.get_collection('post')
     content_txt = request.form.get('content_txt')
     content_file = request.files.getlist("content_file[]")    
@@ -289,14 +306,11 @@ def content_submit():
 
 @app.route("/content_submit/<post_id>", methods=["POST"])
 def content_update_submit(post_id):
-    print(dir(request.method))
     col_post = db.get_collection('post')
     # post_id = request.form.get('post_id')
     content_txt = request.form.get('update_textarea') 
     print('-==============================',content_txt)
     # print("get list",len(content_file))
-
-    time = dt.datetime.now(timezone('Asia/Seoul')).strftime("%Y-%m-%d-%H-%M-%S")
 
     tmp = content_txt.splitlines(True)
     text = []
@@ -310,10 +324,11 @@ def content_update_submit(post_id):
     col_post.update_one(
         {'_id': ObjectId(post_id)},
         {'$set' :
-            {'create_time': time,
+            {'modified' : True,
             'text': content_txt,
             'split_text' : text,
-            'hashtag' : hash_tag}}
+            'hashtag' : hash_tag}
+        }
     )
     flash("게시물이 수정 되었습니다.")
     
@@ -384,7 +399,8 @@ def like_submit():
                     'reaction_user' : {'nickname': session['nickname'], 'profile_img':session['profile_img']},
                     'kind' : 'like',
                     'time' : time,
-                    'check' : False
+                    'check' : False,
+                    'post_id' : data['post_id']
                 })
         else:
             col_user.update_one({'user_id':session['login']}, {'$pull': {'like': data['post_id']}})
