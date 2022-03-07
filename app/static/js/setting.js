@@ -212,9 +212,33 @@ $("html").click(function(e){
         withdrawal_step[0].style = '';
     } //탈퇴 진행 완료 버튼(로그인 페이지 이동)
     else if (e.target.id == 'withdrawal_submit') {
-        withdrawal_info[0].style.maxHeight = '0px';
-        withdrawal_step[0].style = '';
-        withdrawal_complete[0].style.maxHeight = '100px';
+        // withdrawal_info[0].style.maxHeight = '0px';
+        // withdrawal_step[0].style = '';
+        // withdrawal_complete[0].style.maxHeight = '100px';
+        let id = document.getElementById('user_id').value;
+        let pw = document.getElementById('user_password').value;
+        let confirm = document.getElementById('confirm').value;
+        let request_data = {
+            'id' : id,
+            'pw' : pw,
+            'confirm' : confirm
+        }
+        $.ajax({
+            type: 'POST',
+            url: 'secession',
+            data: JSON.stringify(request_data),
+            dataType: 'JSON',
+            contentType: "application/json",
+            success: function(data){
+                withdrawal_info[0].style.maxHeight = '0px';
+                withdrawal_step[0].style = '';
+                withdrawal_complete[0].style.maxHeight = '100px';
+            },
+            error: function(request, status, error){
+                alert('ajax 통신 실패')
+                console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+            }
+        })
     };
 
 });

@@ -93,7 +93,7 @@
                     {% for notice in session['notice']%}
                         {% if notice['kind'] == 'request_friend' %}
                         <div class="notice_item friend_notice">
-                            <a  class="notice_a img" href="/user/{{notice['notice_info']['nickname']}}">
+                            <a class="notice_a img" href="/user/{{notice['notice_info']['nickname']}}">
                                 <img class="friend_notice_img" src="{{notice['notice_info']['notice_img_data']}}" alt="">
                             </a>
                             <div class="notice_content">
@@ -107,14 +107,13 @@
                         </div>
                         {% else %}
                         <div class="notice_item post_notice">
-                            <a class="notice_a img" href="/user/{{notice['notice_info']['nickname']}}">
+                            <div class="notice_a img">
                                 {% if notice['notice_info']['notice_img_kind'] == 'post_img' %}
                                     <img class="post_notice_img" src="{{notice['notice_info']['notice_img_data']}}" alt="">
-                                <!-- {% elif notice['notice_img_kind'] == 'post_text' %} -->
                                 {% else %}
                                     <p class="">"{{notice['notice_info']['notice_img_data']}}"</p>
                                 {% endif %}
-                            </a>
+                            </div>
                             <div class="notice_content">
                                 <p class="notice_txt">
                                     <a class="notice_a notice_nickname" href="/user/{{notice['notice_info']['nickname']}}">{{notice['notice_info']['nickname']}}</a>

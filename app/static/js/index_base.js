@@ -116,9 +116,13 @@ $(function(){
     });
 });
 function make_notice_div(notice){
+    // notice가 추가될 위치
     const notice_list = document.querySelector(".notice_list");
     console.log(notice_list)
+    // 각 notice 전체를 감쌀 div tag 
     const create_div = document.createElement('div');
+    // 해당 notice의 img를 감쌀 a, div tag
+    // if(notice[''])
     const create_a_img = document.createElement('a');
     const create_img = document.createElement('img');
     const create_div_notice_content = document.createElement('div');
@@ -130,29 +134,30 @@ function make_notice_div(notice){
     if(notice['kind'] =='request_friend'){
         $(create_div).attr({
             'class': 'notice_item friend_notice',
-            'value': notice['reaction_user']['nickname']
+            'value': notice['notice_info']['nickname']
         });
     } else {
         $(create_div).attr({
             'class': 'notice_item post_notice',
-            'value': notice['reaction_user']['nickname']
+            'value': notice['notice_info']['nickname']
         });
     }
     // 이미지를 감쌀 a 테그
     $(create_a_img).attr({
-        'href': '/user/'+notice['reaction_user']['nickname'],
+        'href': '/user/'+notice['notice_info']['nickname'],
         'class': 'notice_a img'
     });
     // 이미지 테그
     if(notice['kind'] =='request_friend'){
         $(create_img).attr({
-            'src': notice['reaction_user']['profile_img'],
+            'src': notice['notice_info']['notice_img_data'],
             'class': 'friend_notice_img'
         });
     } else {
         $(create_img).attr({
-            'src': notice['reaction_user']['profile_img'],
-            'class': 'post_notice_img'
+            'src': notice['notice_info']['notice_img_data'],
+            'class': 'post_notice_img',
+            'value': notice['post_id']
         });
     }
     $(create_div_notice_content).attr({
@@ -176,9 +181,9 @@ function make_notice_div(notice){
 
     $(create_a_notice_a).attr({
         'class': 'notice_a notice_nickname',
-        'href': '/user/'+notice['reaction_user']['nickname']
+        'href': '/user/'+notice['notice_info']['nickname']
     });
-    $(create_a_notice_a).text(notice['reaction_user']['nickname'])
+    $(create_a_notice_a).text(notice['notice_info']['nickname'])
 
     $(p_notice_a).attr({
         'class': 'notice_a notice_time',

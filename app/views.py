@@ -592,11 +592,9 @@ def friend():
     # friend_list = ['aaa', 'bbb', 'ccc', 'ddd', 'eee', 'fff']
     recommend_frined_dic = {}
     for friend in friend_list:
-        print('friend = ', friend)
         friend_friend_list = get_friend_list(friend)
         friend_friend_dict = get_friend_dic(friend_friend_list)
         for f, recommend_friend in friend_friend_dict.items():
-            print('f = ', f)
             if f != session['login'] and f not in friend_list:
                 friend_dic = col_user.find_one({'user_id':friend})
                 if f in recommend_frined_dic.keys():
@@ -604,9 +602,6 @@ def friend():
                 else:
                     recommend_frined_dic[f] = recommend_friend
                     recommend_frined_dic[f]['count'] = [friend_dic]
-    for k, v in recommend_frined_dic.items():
-        print(k, v['count'])
-        break
     # print(recommend_frined_dic)
     return render_template('friend.html', request_friend=request_friend, friend_list=friend_dict, recommend_frined_dic=recommend_frined_dic)
 
@@ -766,6 +761,32 @@ def request_frie():
         print('================친구 삭제',user, request_user)
         col_user.update_one( {'user_id':user},{'$pull': {'friend_list' : request_user }})
         col_user.update_one( {'user_id':request_user},{'$pull': {'friend_list' : user }})
+    
+    return jsonify(result = "success", result2= data)
+
+# 탈퇴를 위한 route 함수
+@app.route('/secession', methods=["post"])
+def user_secession():
+    col_user = db.get_collection('user')
+    col_request_friend = db.get_collection('request_friend')
+    col_post = db.get_collection('post')
+    col_comment = db.get_collection('comment')
+    col_notice = db.get_collection('notice')
+
+    data = request.get_json()
+    user = col_user.find_one({'user_id':data['id']})
+    if bcrypt.check_password_hash(user['password'], data['pw']):
+        # 친구 요청 collection에서 해당 user가 포함된 document 제거
+        col_request_friend.delete_many(
+            {'$or': [{'user_id': user['user_id']}, {'request_user': user['user_id']}]}
+        )
+        # 알림 collection에서 해당 user가 포함된 document 제거
+        col_notice.delete_many({
+             {'$or': [{'notice_user': user['user_id']}, {'notice_user': user['nickname']}, {'notice_info.nickname': user['nickname']}]}
+        })
+        # 댓글 collection에서 해당 user가 포함된 document 수정 및 제거
+    else:
+        data = False
     
     return jsonify(result = "success", result2= data)
 
