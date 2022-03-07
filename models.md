@@ -50,12 +50,14 @@
 
 ## notice
     - notice_user : 알림을 받을 user
-    - reaction_user : 알림에 해당하는 행위를 한 user의 profile 및 nickname 정보
-        (post 관련 알림이라면 user의 profile 대신 해당 post의 첫 번째 이미지 정보)
+    - notice_info : 알림에 해당하는 img 정보 및 nickname 정보 딕셔너리
+                        1. notice_img_kind -> user profile인지, post img 인지, post text 인지
+                        2. notice_img_data -> 해당 이미지 및 text 데이터
+                        3. nickname      -> 알림에 해당하는 행위를 한 user의 nickname
     - kind : 어떤 알림인지에 대한 구분 (친구 요청, post(좋아요, 댓글, 태그))
     - time : 해당 행위를 한 시간
     - check : 해당 알림을 확인 했는지에 대한 구분
-    - post_id : post 관련 알림일시 해당 post의 id, 친구 요청의 경우 None 값
+    - post_id : post 관련 알림 일시 해당 post의 id, 친구 요청의 경우 None 값
 
 # session 정보
     session['login'] : id(로그인 id)

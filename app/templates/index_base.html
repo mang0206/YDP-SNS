@@ -93,12 +93,12 @@
                     {% for notice in session['notice']%}
                         {% if notice['kind'] == 'request_friend' %}
                         <div class="notice_item friend_notice">
-                            <a  class="notice_a img" href="/user/{{notice['reaction_user']['nickname']}}">
-                                <img class="friend_notice_img" src="{{notice['reaction_user']['profile_img']}}" alt="">
+                            <a  class="notice_a img" href="/user/{{notice['notice_info']['nickname']}}">
+                                <img class="friend_notice_img" src="{{notice['notice_info']['notice_img_data']}}" alt="">
                             </a>
                             <div class="notice_content">
                                 <p class="notice_txt">
-                                    <a class="notice_a notice_nickname" href="/user/{{notice['reaction_user']['nickname']}}">{{notice['reaction_user']['nickname']}}</a>
+                                    <a class="notice_a notice_nickname" href="/user/{{notice['notice_info']['nickname']}}">{{notice['notice_info']['nickname']}}</a>
                                     님이 친구 요청을 보냈습니다.
                                     <!-- 시간 -->
                                     <p class="notice_a notice_time" value = "{{notice['time']}}"></p>
@@ -107,12 +107,17 @@
                         </div>
                         {% else %}
                         <div class="notice_item post_notice">
-                            <a class="notice_a img" href="/user/{{notice['reaction_user']['nickname']}}">
-                                <img class="post_notice_img" src="{{notice['reaction_user']['profile_img']}}" alt="">
+                            <a class="notice_a img" href="/user/{{notice['notice_info']['nickname']}}">
+                                {% if notice['notice_info']['notice_img_kind'] == 'post_img' %}
+                                    <img class="post_notice_img" src="{{notice['notice_info']['notice_img_data']}}" alt="">
+                                <!-- {% elif notice['notice_img_kind'] == 'post_text' %} -->
+                                {% else %}
+                                    <p class="">"{{notice['notice_info']['notice_img_data']}}"</p>
+                                {% endif %}
                             </a>
                             <div class="notice_content">
                                 <p class="notice_txt">
-                                    <a class="notice_a notice_nickname" href="/user/{{notice['reaction_user']['nickname']}}">{{notice['reaction_user']['nickname']}}</a>
+                                    <a class="notice_a notice_nickname" href="/user/{{notice['notice_info']['nickname']}}">{{notice['notice_info']['nickname']}}</a>
                                     <!-- 좋아요, 댓글, 태그에 따라 다른 내용 -->
                                     {% if notice['kind'] == 'like'%}
                                         님이 게시물을 좋아합니다.

@@ -17,6 +17,7 @@ from .functuion import *
 import datetime as dt
 import pymongo
 from pytz import timezone
+from pymongo import ReturnDocument
 
 db = conn.get_database('root')
 bcrypt = Bcrypt()
@@ -258,8 +259,6 @@ def content_submit():
     col_post = db.get_collection('post')
     content_txt = request.form.get('content_txt')
     content_file = request.files.getlist("content_file[]")    
-    print('-==============================',content_txt, content_file)
-    # print("get list",len(content_file))
 
     time = dt.datetime.now(timezone('Asia/Seoul')).strftime("%Y-%m-%d-%H-%M-%S")
 
@@ -309,8 +308,6 @@ def content_update_submit(post_id):
     col_post = db.get_collection('post')
     # post_id = request.form.get('post_id')
     content_txt = request.form.get('update_textarea') 
-    print('-==============================',content_txt)
-    # print("get list",len(content_file))
 
     tmp = content_txt.splitlines(True)
     text = []
@@ -390,13 +387,23 @@ def like_submit():
         if data['flag'] == 'color':
             col_user.update_one({'user_id':session['login']}, {'$push': {'like': data['post_id']}})
             session_user = col_user.find_one({'user_id':session['login']},{'_id':0, 'nickname':1 ,'profile_img':1, 'like':1})
-            col_post.update_one({'_id':ObjectId(data['post_id'])}, {'$push': {'like': session_user}})
+            notice_post = col_post.find_one_and_update({'_id':ObjectId(data['post_id'])}, {'$push': {'like': session_user}}, return_document=ReturnDocument.AFTER)
+            # 세션 유저의 좋아요 정보 update
             session['like'] = col_user.find_one({'user_id':session['login']},{'_id':0, 'like':1})['like']
-
+            print('notice_post', notice_post)
             if session['nickname'] != data['create_user']:
+                # notice를 위한 변수
+                notice_img_kind = 'post_img'
+                notice_img_data = notice_post['images'][0]
+
+                # 이미지 파일이 없는 경우 첫번째 text로 대체
+                if notice_img_data.split('.')[-1] == '':
+                    notice_img_kind = 'post_text'
+                    notice_img_data = notice_post['split_text'][0]
+
                 col_notice.insert_one({
                     'notice_user' : data['create_user'],
-                    'reaction_user' : {'nickname': session['nickname'], 'profile_img':session['profile_img']},
+                    'notice_info' : { 'nickname': session['nickname'], 'notice_img_kind': notice_img_kind, 'notice_img_data': notice_img_data },
                     'kind' : 'like',
                     'time' : time,
                     'check' : False,
@@ -406,7 +413,6 @@ def like_submit():
             col_user.update_one({'user_id':session['login']}, {'$pull': {'like': data['post_id']}})
             col_post.update_one({'_id':ObjectId(data['post_id'])}, {'$pull': {'like': { 'nickname' : session['nickname']}}})
             session['like'] = col_user.find_one({'user_id':session['login']},{'_id':0, 'like':1})['like']
-        print('like')
         return jsonify(result = "success", session_user=session_user)
     # 댓글 달기 버튼을 눌렀을 때에 대한 ajax 통신
     elif data['kind'] == 'append_comment':
@@ -424,27 +430,38 @@ def like_submit():
             {'$push': {'comment': {'comment_id': str(comment_info.inserted_id), 'kind': 'comment', 'time': time}
             }}
         )
-        col_post.update_one({'_id': ObjectId(data['post_id'])}, {'$inc': {'comment': 1}})
+        notice_post = col_post.find_one_and_update({'_id': ObjectId(data['post_id'])}, {'$inc': {'comment': 1}}, return_document=ReturnDocument.AFTER)
 
         # 댓글 전송시 notice 처리
         mention = []
         if data['create_user'] != session['nickname']:
+            # notice를 위한 변수
+            notice_img_kind = 'post_img'
+            notice_img_data = notice_post['images'][0]
+
+            # 이미지 파일이 없는 경우 첫번째 text로 대체
+            if notice_img_data.split('.')[-1] == '':
+                notice_img_kind = 'post_text'
+                notice_img_data = notice_post['split_text'][0]
+
             col_notice.insert_one({
                     'notice_user' : data['create_user'],
-                    'reaction_user' : {'nickname': session['nickname'], 'profile_img':session['profile_img']},
+                    'notice_info' : { 'nickname': session['nickname'], 'notice_img_kind': notice_img_kind, 'notice_img_data': notice_img_data },
                     'kind' : 'comment',
                     'time' : time,
-                    'check' : False
+                    'check' : False,
+                    'post_id' : data['post_id']
             })
             for word in comment:
                 print(word)
                 if word[0] == '@':
                     col_notice.insert_one({
                         'notice_user' : word[1:],
-                        'reaction_user' : {'nickname': session['nickname'], 'profile_img':session['profile_img']},
+                        'notice_info' : { 'nickname': session['nickname'], 'notice_img_kind': notice_img_kind, 'notice_img_data': notice_img_data },
                         'kind' : 'mention',
                         'time' : time,
-                        'check' : False
+                        'check' : False,
+                        'post_id' : data['post_id']
                      })
                     mention.append(word[1:])
         return jsonify(result = "success", session_user=session_user, comment=comment, time=time, comment_id = str(comment_info.inserted_id), mention=mention)
@@ -478,24 +495,35 @@ def like_submit():
                 {'comment_id': str(info['_id']), 'kind': 'reply', 'time': time}
             }}
         )
-        col_post.update_one({'_id': ObjectId(data['post_id'])}, {'$inc': {'comment': 1}})
+        notice_post = col_post.find_one_and_update({'_id': ObjectId(data['post_id'])}, {'$inc': {'comment': 1}}, return_document=ReturnDocument.AFTER)
         mention = []
         if data['create_user'] != session['nickname']:
+            # notice를 위한 변수
+            notice_img_kind = 'post_img'
+            notice_img_data = notice_post['images'][0]
+
+            # 이미지 파일이 없는 경우 첫번째 text로 대체
+            if notice_img_data.split('.')[-1] == '':
+                notice_img_kind = 'post_text'
+                notice_img_data = notice_post['split_text'][0]
+
             col_notice.insert_one({
                     'notice_user' : data['create_user'],
-                    'reaction_user' : {'nickname': session['nickname'], 'profile_img':session['profile_img']},
+                    'notice_info' : { 'nickname': session['nickname'], 'notice_img_kind': notice_img_kind, 'notice_img_data': notice_img_data },
                     'kind' : 'reply',
                     'time' : time,
-                    'check' : False
+                    'check' : False,
+                    'post_id' : data['post_id']
             })
             for word in reply:
                 if '@' in word:
                     col_notice.insert_one({
                         'notice_user' : word[1:],
-                        'reaction_user' : {'nickname': session['nickname'], 'profile_img':session['profile_img']},
+                        'notice_info' : { 'nickname': session['nickname'], 'notice_img_kind': notice_img_kind, 'notice_img_data': notice_img_data },
                         'kind' : 'mention',
                         'time' : time,
-                        'check' : False
+                        'check' : False,
+                        'post_id' : data['post_id']
                      })
                     mention.append(word[1:])
         return jsonify(result = "success", session_user=session_user, reply=reply, time=time, mention=mention)
@@ -723,10 +751,11 @@ def request_frie():
         })
         col_notice.insert_one({
             'notice_user' : request_user,
-            'reaction_user' : {'nickname': session['nickname'], 'profile_img':session['profile_img']},
+            'notice_info' : { 'nickname': session['nickname'], 'notice_img_kind': 'profile_img', 'notice_img_data': session['profile_img'] },
             'kind' : 'request_friend',
             'time' : dt.datetime.now(timezone('Asia/Seoul')).strftime("%Y-%m-%d-%H-%M-%S"),
-            'check' : False
+            'check' : False,
+            'post_id': None
         })
     elif data['val'] == '요청 삭제':
         query = { '$or' : 

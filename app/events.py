@@ -23,7 +23,7 @@ def socketio_init(socketio):
         notice = col_notice.find(
             {'$and': [
                     {'notice_user' : message['id'].split('!')[-1]},
-                    {'reaction_user.nickname' : notice_user['nickname']},
+                    {'notice_info.nickname' : notice_user['nickname']},
                     {'kind' : 'request_friend'}]
             }).sort('time', pymongo.DESCENDING).limit(1)
         notice = list(notice)
@@ -37,7 +37,7 @@ def socketio_init(socketio):
         notice = col_notice.find(
             {'$and': [
                     {'notice_user' : message['create_user']},
-                    {'reaction_user.nickname' : message['session_user']},
+                    {'notice_info.nickname' : message['session_user']},
                     {'kind' : message['kind']}]
             }).sort('time', pymongo.DESCENDING).limit(1)
         notice = list(notice)
@@ -51,7 +51,7 @@ def socketio_init(socketio):
             notice = col_notice.find(
                 {'$and': [
                         {'notice_user' : message['create_user']},
-                        {'reaction_user.nickname' : message['session_user']},
+                        {'notice_info.nickname' : message['session_user']},
                         {'kind' : 'reply'}]
                 }).sort('time', pymongo.DESCENDING).limit(1)
             notice = list(notice)
@@ -61,7 +61,7 @@ def socketio_init(socketio):
             notice = col_notice.find(
                 {'$and': [
                         {'notice_user' : message['create_user']},
-                        {'reaction_user.nickname' : message['session_user']},
+                        {'notice_info.nickname' : message['session_user']},
                         {'kind' : 'comment'}]
                 }).sort('time', pymongo.DESCENDING).limit(1)
             notice = list(notice)
@@ -74,7 +74,7 @@ def socketio_init(socketio):
         notice = col_notice.find(
             {'$and': [
                     {'notice_user' : message['mention']},
-                    {'reaction_user.nickname' : message['session_user']},
+                    {'notice_info.nickname' : message['session_user']},
                     {'kind' :'mention'}]
             }).sort('time', pymongo.DESCENDING).limit(1)
         notice = list(notice)
