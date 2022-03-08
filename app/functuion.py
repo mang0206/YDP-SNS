@@ -11,7 +11,7 @@ import boto3
 from bson.objectid import ObjectId
 import datetime as dt
 import pymongo
-
+from pymongo import ReturnDocument
 
 bcrypt = Bcrypt()
 db = conn.get_database('root')
@@ -91,8 +91,9 @@ def delete_reply(data):
     comment = col_comment.find_one_and_update(
         {'_id': ObjectId(data['comment_id'])},
         { '$pull': {'reply_list' : {'$and': [{'reply_time': data['time']}, {'reply_user.nickname': data['nickname']}]} }}
-    )
-    col_post.update_one({'_id': ObjectId(comment['post_id'])}, {'$inc': {'comment': -1}})
+    , return_document=ReturnDocument.AFTER)
+    if not comment:
+        col_post.update_one({'_id': ObjectId(comment['post_id'])}, {'$inc': {'comment': -1}})
     col_user.update_one({'nickname': data['nickname']}, 
     {'$pull': 
         { 'comment' : 
@@ -121,6 +122,42 @@ def delete_comment(data):
                 {'$and':[{'kind':'comment'}, {'comment_id':data['comment_id']}, {'time': data['time']}]}
             }
         })
+
+# post id값을 받아서 해당 post에 대한 삭제 처리
+# 좋아요 목록, 댓글 및 답글 목록에 대한 사용자 정보 처리
+def delete_post_one(data):
+    col_user = db.get_collection('user')
+    col_post = db.get_collection('post')
+    col_comment = db.get_collection('comment')
+    col_delete = db.get_collection('deleteFile')
+    
+    del_post = col_post.find_one({'_id':ObjectId(data)})
+
+    # 해당 게시물에 해당하는 s3의 이미지 파일들 삭제
+    for img in del_post['images']:
+        tmp_img = img.split('/')[-1]
+        if 'postimages' in tmp_img :
+            tmp_img = tmp_img.split('/')[-1]
+        col_delete.insert_one({
+            'file_route' : 'postimages',
+            'file_name' : tmp_img
+        })
+
+    # 해당 게시물 좋아요 누른 사용자에 대한 document 정리
+    for user in del_post['like']:
+        col_user.update_one({'nickname': user['nickname']}, {'$pull' : {'like': data}})
+
+    # 해당 게시물 댓글 및 답글단 사용자에 대한 document 정리
+    comments = col_comment.find({'post_id':data})
+    for comment in comments:
+        comment_data = {
+            'time': comment['comment_time'],
+            'nickname': comment['comment_user']['nickname'],
+            'comment_id': str(comment['_id'])
+        }
+        delete_comment(comment_data)
+    # 최종 해당 post 삭제 
+    col_post.delete_one({'_id':ObjectId(data)})
 
 @app.route('/check_password', methods=['GET','POST'])
 def check_password():

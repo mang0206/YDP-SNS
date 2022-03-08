@@ -144,7 +144,7 @@ def join_success():
 # 매 페이지 render 이전에 sessoin user의 notice 정보 update
 @app.before_request
 def base_notice():
-    if session.get('login'):
+    if session.get('login') != 'none':
         col_notice = db.get_collection('notice')
         notices = list(col_notice.find(
             {'$or': [{'notice_user':session['login']}, {'notice_user':session['nickname']}]}
@@ -161,6 +161,9 @@ def base_notice():
         for notice in notices:
             if notice['check'] == False:
                 session['notice_check'] = False
+    else:
+        session['login'] = 'none'
+        return redirect(url_for('login'))
 
 @app.route('/notice', methods=['POST'])
 def notice_check():
@@ -333,41 +336,10 @@ def content_update_submit(post_id):
 
 @app.route("/content_submit", methods=["DELETE"])
 def delete_post():
-    col_user = db.get_collection('user')
-    col_post = db.get_collection('post')
-    col_comment = db.get_collection('comment')
-    col_delete = db.get_collection('deleteFile')
-
     data = request.get_json()
 
-    del_post = col_post.find_one({'_id':ObjectId(data)})
+    delete_post_one(data)
 
-    # 해당 게시물에 해당하는 s3의 이미지 파일들 삭제
-    for img in del_post['images']:
-        tmp_img = img.split('/')[-1]
-        if 'postimages' in tmp_img :
-            tmp_img = tmp_img.split('/')[-1]
-        col_delete.insert_one({
-            'file_route' : 'postimages',
-            'file_name' : tmp_img
-        })
-
-    # 해당 게시물 좋아요 누른 사용자에 대한 document 정리
-    for user in del_post['like']:
-        col_user.update_one({'nickname': user['nickname']}, {'$pull' : {'like': data}})
-        print(col_user.find_one({'nickname': user['nickname']}, {'_id':0, 'like':1})['like'])
-
-    # 해당 게시물 댓글 및 답글단 사용자에 대한 document 정리
-    comments = col_comment.find({'post_id':data})
-    for comment in comments:
-        comment_data = {
-            'time': comment['comment_time'],
-            'nickname': comment['comment_user']['nickname'],
-            'comment_id': str(comment['_id'])
-        }
-        delete_comment(comment_data)
-    # 최종 해당 post 삭제 
-    col_post.delete_one({'_id':ObjectId(data)})
     return jsonify(result = "success")
 
 # 좋아요, 댓글 및 답글 관리(C.R.U.D) Route
@@ -567,11 +539,11 @@ def user(user):
 
 @app.route("/logout", methods=["GET", "POST"])
 def logout():
-    if request.get_json:
-        flash("로그아웃 되었습니다.")
-        session['login'] = None
-        return jsonify(result = "success")
-
+    # if request.get_json:
+    #     flash("로그아웃 되었습니다.")
+    #     session['login'] = None
+    #     return jsonify(result = "success")
+    print('logout')
     flash("로그아웃 되었습니다.")
     session['login'] = None
     return redirect(url_for('login'))
@@ -772,21 +744,62 @@ def user_secession():
     col_post = db.get_collection('post')
     col_comment = db.get_collection('comment')
     col_notice = db.get_collection('notice')
+    col_delete = db.get_collection('deleteFile')
 
     data = request.get_json()
     user = col_user.find_one({'user_id':data['id']})
     if bcrypt.check_password_hash(user['password'], data['pw']):
-        # 친구 요청 collection에서 해당 user가 포함된 document 제거
-        col_request_friend.delete_many(
-            {'$or': [{'user_id': user['user_id']}, {'request_user': user['user_id']}]}
-        )
-        # 알림 collection에서 해당 user가 포함된 document 제거
-        col_notice.delete_many({
-             {'$or': [{'notice_user': user['user_id']}, {'notice_user': user['nickname']}, {'notice_info.nickname': user['nickname']}]}
-        })
-        # 댓글 collection에서 해당 user가 포함된 document 수정 및 제거
+        # # 친구 요청 collection에서 해당 user가 포함된 document 제거
+        # col_request_friend.delete_many(
+        #     {'$or': [{'user_id': user['user_id']}, {'request_user': user['user_id']}]}
+        # )
+
+        # # 알림 collection에서 해당 user가 포함된 document 제거
+        # col_notice.delete_many({
+        #      {'$or': [{'notice_user': user['user_id']}, {'notice_user': user['nickname']}, {'notice_info.nickname': user['nickname']}]}
+        # })
+
+        # # 해당 user가 좋아요 누른 게시물 정보 수정
+        # for post_id in user['like']:
+        #     col_post.update_one({'_id': ObjectId(post_id)}, {'$pull' : {'like' : {'nickname' : user['nickname']}}})
+
+        # # 댓글 collection에서 해당 user가 포함된 document 수정 및 제거
+        # for comment in user['comment']:
+        #     tmp_data = comment
+        #     tmp_data['nickname'] = user['nickname']
+        #     if comment['kind'] == 'reply':
+        #         delete_reply(comment)
+        #     else:
+        #         delete_comment(comment)
+
+        # # 해당 user가 작성한 post 제거
+        # delete_posts = col_post.find({'create_user_nickname': user['nickname']})
+        # for post in delete_posts:
+        #     delete_post_one(str(post['_id']))
+        
+        # # 해당 user의 profile, background 이미지 제거 
+        # default_user = col_user.find_one({'nickname': 'default'})
+        # if default_user['profile_img'][0] != user['profile_img'][0]:
+        #     col_delete.insert_one({
+        #         'file_route': 'images',
+        #         'file_name' : user['profile_img'][0]
+        #     })
+        # if default_user['background_img'][0] != user['background_img'][0]:
+        #     col_delete.insert_one({
+        #         'file_route': 'images',
+        #         'file_name' : user['background_img'][0]
+        #     })
+        
+        # # 해당 user의 친구 user에 friend_list 수정
+        # for friend in user['friend_list']:
+        #     col_user.update_one({'user_id': friend}, {'$pull' : {'friend_list': user['user_id']}})
+
+        # # 해당 user 최종 삭제
+        # col_user.delete_one({'nickname': user['nickname']})
+
+        data = True
     else:
-        data = False
+        data = '입력된 계정 정보가 잘못되었습니다. 아이디와 비밀번호를 확인해 주세요'
     
     return jsonify(result = "success", result2= data)
 
