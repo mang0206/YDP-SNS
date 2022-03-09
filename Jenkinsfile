@@ -1,15 +1,10 @@
 pipeline {
     agent any
 
-    //깃을 1분 주기로 끌어온다
+    //깃을 3분 주기로 끌어온다
     triggers {
-        pollSCM('*/1 * * * *')
+        pollSCM('*/3 * * * *')
     }
-
-    environment {
-      HOME = './home/MJ/ydpsns/YDP-SNS' // Avoid npm root owned
-    }
-
     stages {
         // 레포지토리를 다운로드 받음
         stage('Prepare') {
@@ -48,7 +43,6 @@ pipeline {
             dir (''){
                 sh """
                 pip3 install -r requirement.txt
-                pip3 install pytz
                 """
             }
           }
