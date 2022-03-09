@@ -48,7 +48,7 @@ pipeline {
             dir ('/home/MJ/ydpsns/YDP-SNS'){
                 sh """
                 source /tmp/ydpsns/bin/activate
-                pip3 install requirement.txt
+                pip3 install -r requirement.txt
                 """
             }
           }
