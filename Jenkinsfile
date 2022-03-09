@@ -1,16 +1,13 @@
 pipeline {
     agent any
 
-    //깃을 3분 주기로 끌어온다
+    //깃을 1분 주기로 끌어온다
     triggers {
-        pollSCM('*/3 * * * *')
+        pollSCM('*/1 * * * *')
     }
 
     environment {
-      AWS_ACCESS_KEY_ID = credentials('awsAccessKeyId')
-      AWS_SECRET_ACCESS_KEY = credentials('awsSecretAccessKey')
-      AWS_DEFAULT_REGION = 'ap-northeast-2'
-      HOME = '.' // Avoid npm root owned
+      HOME = './home/MJ/ydpsns/YDP-SNS' // Avoid npm root owned
     }
 
     stages {
@@ -21,9 +18,9 @@ pipeline {
             steps {
                 echo 'Clonning Repository'
 
-                git url: 'https://github.com/dyeo-mee/YDP-SNS.git',
-                    branch: 'testing',
-                    credentialsId: 'gitMJ'
+                git url: 'https://github.com/mang0206/YDP-SNS.git',
+                    branch: 'MJ',
+                    credentialsId: 'snsMJ'
             }
 
             post {
@@ -48,9 +45,9 @@ pipeline {
           steps {
             echo 'Build Backend'
 
-            dir ('.jenkins/sample_code/temp/server'){
+            dir ('./home/MJ/ydpsns/YDP-SNS'){
                 sh """
-                docker build . -t server --build-arg env=${PROD}
+                source /tmp/ydpsns/bin/activate
                 """
             }
           }
@@ -69,16 +66,16 @@ pipeline {
           steps {
             echo 'Build Backend'
             // 만약 처음 시작이 아니라면 docker run 전에 docker rm -f $(docker ps -aq) 이 코드 필요  
-            dir ('.jenkins/sample_code/temp/server'){
+            dir ('./home/MJ/ydpsns/YDP-SNS'){
                 sh '''
-                docker run -p 80:80 -d server
+                python3 main.py
                 '''
             }
           }
 
           post {
             success {
-              mail  to: 'frontalnh@gmail.com',
+              mail  to: 'alswosp0206@gmail.com',
                     subject: "Deploy Success",
                     body: "Successfully deployed!"
                   
