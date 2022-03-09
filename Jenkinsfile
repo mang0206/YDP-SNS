@@ -65,8 +65,8 @@ pipeline {
 
           steps {
             echo 'Build Backend'
-            // 만약 처음 시작이 아니라면 docker run 전에 docker rm -f $(docker ps -aq) 이 코드 필요  
-            dir ('./home/MJ/ydpsns/YDP-SNS'){
+
+            dir ('/home/MJ/ydpsns/YDP-SNS'){
                 sh '''
                 python3 main.py
                 '''
