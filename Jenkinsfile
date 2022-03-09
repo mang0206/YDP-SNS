@@ -45,9 +45,8 @@ pipeline {
           steps {
             echo 'Build Backend'
 
-            dir ('/home/MJ/ydpsns/YDP-SNS'){
+            dir (''){
                 sh """
-                source /tmp/ydpsns/bin/activate
                 pip3 install -r requirement.txt
                 """
             }
