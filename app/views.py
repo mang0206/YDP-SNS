@@ -169,8 +169,8 @@ def base_notice():
         for notice in notices:
             if notice['check'] == False:
                 session['notice_check'] = False
-    elif request.path == "/login" and session.get('login') is None:
-        print('login page')
+    # elif request.path == "/login" and session.get('login') is None:
+    #     print('login page')
     # elif session.get('login') is None:
     #     return redirect(url_for('login'))
 
@@ -189,7 +189,7 @@ def notice_check():
 def index():
     col_post = db.get_collection('post')
 
-    if session.get('logins') is None:
+    if session.get('login') is None:
         return redirect(url_for('login'))
         
     if request.form.get('search_btn') == 'topbar_search':
