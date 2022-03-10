@@ -139,7 +139,8 @@ $(function(){
     // 페이지에서 불러들인 모든 img_album을 돌며
     total_img.forEach(img_album => {
         //해당 태그의 value 속성
-        let total_img_val = $(img_album).attr('value');
+        let total_img_val = $(img_album).data().length;
+        console.log(total_img_val)
         //해당 태그의 양쪽 화살표 버튼
         let img_arrow_btn = $(img_album).siblings('.img_arrow_btn');
         //img 개수 p태그
