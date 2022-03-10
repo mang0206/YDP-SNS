@@ -4,7 +4,6 @@
 const session_user = $('#content').attr('session_nicnkname');
 var socket = io.connect('http://' + document.domain + ':' + location.port+'/');
 
-
 // session user 더보기 btn
 $(function(){    
     let more_icon = document.querySelectorAll(".more_icon");
@@ -160,6 +159,18 @@ $(function(){
 $(function(){
     //모든 이미지 앨범을 가져옴
     let img_albums = document.querySelectorAll('.img_album');
+    console.log(img_albums)
+
+    //index page인 경우
+    let url = document.location.href.split('/');
+    if (url[3] == '') {
+        //각 게시물의 화살표 위치 조정
+        img_albums.forEach(img_album => {
+            let right_arrow = $(img_album).siblings(".right_arrow");
+            right_arrow.css('left','425px');
+        });
+    };
+
     //각 이미지 앨범마다 다른 변수를 지정
     img_albums.forEach(img_album => {
         //해당 게시물의 총 이미지 개수
