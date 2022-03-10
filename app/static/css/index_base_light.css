@@ -227,11 +227,13 @@ a:visited{color: black}
     padding: 0;
     margin: 0;
     width: fit-content;
-    cursor: pointer;
+    /* cursor: ; */
 }
-.notice_a.img{
+
+.notice_img{
     display: flex;
     align-items: center;
+    cursor: pointer;
 }
 .post_notice_img{
     width: 55px;
@@ -255,11 +257,11 @@ a:visited{color: black}
 }
 .notice_nickname{
     font-weight: 500;
+    cursor: pointer;
 }
 .notice_time{
-    /* position: absolute; */
-    /* top: 53px; */
-    /* right: 25px; */
+    padding: 3px 0;
+    width: 70px;
     font-size: 11px;
     color: rgb(0, 0, 0, 0.5);
 }
