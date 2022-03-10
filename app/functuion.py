@@ -23,6 +23,12 @@ def session_check():
         session['login'] = 'default'
         return redirect(url_for('login'))
 
+def get_post(id):
+    col_post = db.get_collection('post')
+    post = col_post.find_one({'_id':ObjectId(id)})
+    post['_id'] = str(post['_id'])
+    return post
+
 def s3_connection():
     try:
         s3 = boto3.client(

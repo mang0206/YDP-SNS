@@ -388,7 +388,7 @@ def like_submit():
                     'kind' : 'like',
                     'time' : time,
                     'check' : False,
-                    'post_id' : data['post_id']
+                    'post_info' : get_post(data['post_id'])
                 })
         else:
             col_user.update_one({'user_id':session['login']}, {'$pull': {'like': data['post_id']}})
@@ -431,7 +431,7 @@ def like_submit():
                     'kind' : 'comment',
                     'time' : time,
                     'check' : False,
-                    'post_id' : data['post_id']
+                    'post_info' : get_post(data['post_id'])
             })
             for word in comment:
                 print(word)
@@ -442,7 +442,7 @@ def like_submit():
                         'kind' : 'mention',
                         'time' : time,
                         'check' : False,
-                        'post_id' : data['post_id']
+                        'post_info' : get_post(data['post_id'])
                      })
                     mention.append(word[1:])
         return jsonify(result = "success", session_user=session_user, comment=comment, time=time, comment_id = str(comment_info.inserted_id), mention=mention)
@@ -494,7 +494,7 @@ def like_submit():
                     'kind' : 'reply',
                     'time' : time,
                     'check' : False,
-                    'post_id' : data['post_id']
+                    'post_info' : get_post(data['post_id'])
             })
             for word in reply:
                 if '@' in word:
@@ -504,7 +504,7 @@ def like_submit():
                         'kind' : 'mention',
                         'time' : time,
                         'check' : False,
-                        'post_id' : data['post_id']
+                        'post_info' : get_post(data['post_id'])
                      })
                     mention.append(word[1:])
         return jsonify(result = "success", session_user=session_user, reply=reply, time=time, mention=mention)
@@ -732,7 +732,7 @@ def request_frie():
             'kind' : 'request_friend',
             'time' : dt.datetime.now(timezone('Asia/Seoul')).strftime("%Y-%m-%d-%H-%M-%S"),
             'check' : False,
-            'post_id': None
+            'post_info': None
         })
     elif data['val'] == '요청 취소':
         query = { '$or' : 
