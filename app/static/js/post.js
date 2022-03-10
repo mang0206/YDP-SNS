@@ -4,6 +4,7 @@
 const session_user = $('#content').attr('session_nicnkname');
 var socket = io.connect('http://' + document.domain + ':' + location.port+'/');
 
+
 // session user 더보기 btn
 $(function(){    
     let more_icon = document.querySelectorAll(".more_icon");
@@ -134,23 +135,21 @@ $('[id$=_delete_btn]').click(function(){
 // 이미지 슬라이드
 //1.페이지 처음 로드 시 이미지의 개수에 따라 화살표 버튼 및 이미지 번호 표시를 구분 함
 $(function(){   
-    let total_img = document.querySelectorAll('.img_number');
-    // let total_img_val = total_img.val();
-    // console.log(typeof(total_img_val))
-
-    // 페이지에서 불러들인 모든 img_number P 태그를 돌며
-    total_img.forEach(img_num => {
-        //해당 P 태그의 value 속성
-        let total_img_val = $(img_num).attr('value');
-        //해당 P 태그의 양쪽 화살표 버튼
-        let img_arrow_btn = $(img_num).parent().siblings('.content_image_viewer').children().children('.img_arrow_btn');
+    let total_img = document.querySelectorAll('.img_album');
+    // 페이지에서 불러들인 모든 img_album을 돌며
+    total_img.forEach(img_album => {
+        //해당 태그의 value 속성
+        let total_img_val = $(img_album).attr('value');
+        //해당 태그의 양쪽 화살표 버튼
+        let img_arrow_btn = $(img_album).siblings('.img_arrow_btn');
+        //img 개수 p태그
+        let img_number = $(img_album).parent().parent().siblings('.content_footer').children('.img_number');
 
         //업로드한 이미지가 한 장일 경우 화살표 & img_num 표시 X
         if (total_img_val == "1") {
             $(img_arrow_btn).css({"display":"none"});
-            $(img_num).css({"display":"none"});
+            img_number.css({"display":"none"});
         };
-        
     });
     //페이지 처음 로드 시, 모든 게시물의 왼쪽 버튼 비활성화
     $('.left_arrow').css({"display":"none"});
@@ -163,7 +162,7 @@ $(function(){
     //각 이미지 앨범마다 다른 변수를 지정
     img_albums.forEach(img_album => {
         //해당 게시물의 총 이미지 개수
-        let total_img_num = $(img_album).children().attr('value');
+        let total_img_num = $(img_album).data().length;
 
         let img_index = 0; // 이미지 index
         let translate = 0; //이미지 이동 거리(x축)
@@ -175,10 +174,9 @@ $(function(){
         let p_tag = $(img_album).parent().parent().siblings(".content_footer").children('.img_number');
         //현재 게시물의 textarea
         let content_text = $(img_album).parent().parent().siblings(".content_text");
-        // console.log(content_text.text())
         
-        //img의 src 마지막 문자열 추출 
-        let image_type = p_tag.attr('img').slice(-3, -2);
+        //img의 마지막 문자열 추출 
+        let image_type = $(img_album).attr('images').slice(-3, -2);
 
         //img null인 경우(마지막 문자열이 dot)
         if (image_type == ".") {

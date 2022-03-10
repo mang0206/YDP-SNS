@@ -704,7 +704,7 @@ def change_pw():
             return jsonify(result="success", flag=flag)
 
 
-# 친구 요청, 요청 삭제, 친구 삭제 처리
+# 친구 요청, 요청 취소, 친구 삭제 처리
 @app.route('/request_friend', methods=['POST'])
 def request_frie():
     data = request.get_json()
@@ -728,7 +728,7 @@ def request_frie():
             'time' : dt.datetime.now(timezone('Asia/Seoul')).strftime("%Y-%m-%d-%H-%M-%S"),
             'check' : False
         })
-    elif data['val'] == '요청 삭제':
+    elif data['val'] == '요청 취소':
         query = { '$or' : 
             [{'user_id': user}, {'request_user' : request_user}]
         }
