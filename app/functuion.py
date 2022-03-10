@@ -17,6 +17,12 @@ bcrypt = Bcrypt()
 db = conn.get_database('root')
 fs = gridfs.GridFS(db)
 
+def session_check():
+    print('session_check',session.get('login'))
+    if session.get('login') is None:
+        session['login'] = 'default'
+        return redirect(url_for('login'))
+
 def s3_connection():
     try:
         s3 = boto3.client(

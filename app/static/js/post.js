@@ -164,7 +164,7 @@ $(function(){
     img_albums.forEach(img_album => {
         //해당 게시물의 총 이미지 개수
         let total_img_num = $(img_album).children().attr('value');
-
+        console.log(total_img_num)
         let img_index = 0; // 이미지 index
         let translate = 0; //이미지 이동 거리(x축)
         let present_img = 1; //현재 보이는 이미지의 순서

@@ -141,10 +141,18 @@ def send_email():
 def join_success():
     return render_template('join_success.html')
 
+# 처음 접속 시 session 정보 확인 후 session 정보가 없다면 login 페이지로 이동
+@app.before_first_request
+def session_confirm():
+    print('frist_request', request.path)
+    if request.path != "/login" or session.get('login') is None:
+        return redirect(url_for('login'))
+
 # 매 페이지 render 이전에 sessoin user의 notice 정보 update
 @app.before_request
 def base_notice():
-    if session.get('login') != 'none':
+    # session_check()
+    if request.path != "/login" and session.get('login'):
         col_notice = db.get_collection('notice')
         notices = list(col_notice.find(
             {'$or': [{'notice_user':session['login']}, {'notice_user':session['nickname']}]}
@@ -161,9 +169,10 @@ def base_notice():
         for notice in notices:
             if notice['check'] == False:
                 session['notice_check'] = False
-    else:
-        session['login'] = 'none'
-        return redirect(url_for('login'))
+    elif request.path == "/login" and session.get('login') is None:
+        print('login page')
+    # elif session.get('login') is None:
+    #     return redirect(url_for('login'))
 
 @app.route('/notice', methods=['POST'])
 def notice_check():
@@ -180,9 +189,9 @@ def notice_check():
 def index():
     col_post = db.get_collection('post')
 
-    if session.get('login') is None:
+    if session.get('logins') is None:
         return redirect(url_for('login'))
-
+        
     if request.form.get('search_btn') == 'topbar_search':
         # input의 name으로 값을 가져옴
         search = request.form.get('search')
@@ -546,6 +555,7 @@ def logout():
     print('logout')
     flash("로그아웃 되었습니다.")
     session['login'] = None
+    session.clear()
     return redirect(url_for('login'))
 
 @app.route("/friend", methods=["GET", "POST"])
