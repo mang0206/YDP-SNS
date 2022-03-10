@@ -9,9 +9,7 @@
             <img class="empty_img" src="../static/img/notes_gray.png" alt="notes">
         </div>
         {% else %}
-            {% for post in post_dic%}
-                {% include 'post.html' ignore missing %}
-            {% endfor %}
+            {% include 'post.html' %}
         {% endif %}
     </div>
     <div id="index_friend_list" class="both_layout_friend">

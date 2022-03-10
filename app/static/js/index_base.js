@@ -17,7 +17,7 @@ let notice_icon = document.getElementsByClassName('notice_icon');
 let notice_popup = document.getElementById('notice_container');
 let notice_dot = document.getElementById('notice_dot');
 let notice_triangle = document.getElementById('notice_triangle');
-console.log(notice_dot)
+// console.log(notice_dot)
 
 //maintain notice dot
 $(function(){
