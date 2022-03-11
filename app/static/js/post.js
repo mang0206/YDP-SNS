@@ -303,7 +303,7 @@ $('html').click(function(e){
 });
 
 //like btn ajax
-$('[id$=_icon]').click(function(){
+$('[id$=like_icon]').click(function(){
     let btn_value = $(this).attr('value');
     let post_id = $(this).attr('post_id');
     let btn = $(this)
