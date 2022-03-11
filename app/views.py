@@ -359,7 +359,6 @@ def like_submit():
     col_comment = db.get_collection('comment')
     col_notice = db.get_collection('notice')
     time = dt.datetime.now(timezone('Asia/Seoul')).strftime("%Y-%m-%d-%H-%M-%S")
-    print(time)
     data = request.get_json()
     # like 버튼을 눌렀을 때에 대한 ajax 통신
     if data['kind'] == 'like':
@@ -554,7 +553,6 @@ def logout():
     #     return jsonify(result = "success")
     print('logout')
     flash("로그아웃 되었습니다.")
-    session['login'] = None
     session.clear()
     return redirect(url_for('login'))
 
