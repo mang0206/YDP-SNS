@@ -57,7 +57,7 @@
     - kind : 어떤 알림인지에 대한 구분 (친구 요청, post(좋아요, 댓글, 태그))
     - time : 해당 행위를 한 시간
     - check : 해당 알림을 확인 했는지에 대한 구분
-    - post_id : post 관련 알림 일시 해당 post의 id, 친구 요청의 경우 None 값
+    - post_info : post 관련 알림 일시 해당 post 정보, 친구 요청의 경우 None 값
 
 # session 정보
     session['login'] : id(로그인 id)
