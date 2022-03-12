@@ -154,38 +154,6 @@ $(function(){
     $('.left_arrow').css({"display":"none"});
 });
 
-//index 에서만 실행하는 btn 위치 변경
-// const m = matchMedia("(max-width: 767px)")
-// function indexBtn(){
-//     let img_albums = document.querySelectorAll('.img_album');
-//     console.log("resize")
-//     console.log(m.matches)
-//     //각 게시물의 화살표 위치 조정
-//     if (m.matches == true) {
-//         console.log("match true")
-//         // img_albums.forEach(img_album => {
-//             // let right_arrow = $(img_album).siblings(".right_arrow");
-//             // right_arrow.css('left','45%');
-//         // });
-//     }
-//     else {
-//         console.log("match false")
-//         // img_albums.forEach(img_album => {
-//             // let right_arrow = $(img_album).siblings(".right_arrow");
-//             // right_arrow.css('left','50%');
-//             // right_arrow.css('transform','translateX(-5px)');
-//         // });
-//     };
-
-// };
-// //index page인 경우
-// let url = document.location.href.split('/');
-// if (url[3] == '') {
-//     console.log("index")
-//     window.addEventListener('DOMContentLoaded', indexBtn);
-//     window.addEventListener('resize', indexBtn);
-// };
-
 //2.여러 이미지의 transform 및 현재 이미지 번호 표시
 function imgSlide(){
     //모든 이미지 앨범을 가져옴
@@ -290,7 +258,6 @@ function imgSlide(){
 // img slide Event
 window.addEventListener('DOMContentLoaded', imgSlide);
 
-
 import indicate_time from './time_information.js';
 // upload time
 $(function(){
@@ -303,9 +270,8 @@ $(function(){
 });
 
 // like list btn
-
 $('html').click(function(e){
-    console.log(e.target)
+    // console.log(e.target)
     // 더보기 버튼
     if (e.target.className == 'content_like') {
         $('.like_container_back').attr('class','like_container_back');
