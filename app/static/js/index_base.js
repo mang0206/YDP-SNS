@@ -9,7 +9,7 @@ $(function(){
     });
 });
 //user icon
-let user_icon = document.getElementsByClassName('.top_bar_user');
+// let user_icon = document.getElementsByClassName('.top_bar_user');
 let user_popup = document.getElementById('user_popup');
 let user_triangle = document.getElementById('triangle');
 // notice icon
@@ -17,10 +17,9 @@ let notice_icon = document.getElementsByClassName('notice_icon');
 let notice_popup = document.getElementById('notice_container');
 let notice_dot = document.getElementById('notice_dot');
 let notice_triangle = document.getElementById('notice_triangle');
-// console.log(notice_dot)
-// notice post
-let notice_modal = document.getElementById('notice_modal');
 
+// post notice modal
+let post_modal = document.querySelectorAll('.notice_modal_background');
 
 //maintain notice dot
 $(function(){
@@ -30,17 +29,23 @@ $(function(){
     }
 })
 
-
 //상단바 아이콘 팝업창 토글
 $('html').click(function(e){
+    console.log(e.target)
     //user modal area
     if (e.target == user_popup){
         return console.log('user modal');
     } //notice modal area
     else if (e.target.className == 'notice_txt') {
         return console.log('notice item');
+    } //post notice modal show
+    else if (e.target.className.includes('post_notice_click')) {
+        return console.log('post notice link')
+    } //notice post area
+    else if (e.target.closest('.post_notice_area')) {
+        return console.log('notice post');
     } //not modal area
-    else if(e.target != user_popup || e.target != notice_popup){
+    else if(e.target != user_popup || e.target != notice_popup || e.target.className == 'notice_modal_background' || e.target.id == 'notice_modal_close_img'){
         //user icon click
         if (e.target.className == 'top_bar_user') {
             //user modal toggle
@@ -51,10 +56,11 @@ $('html').click(function(e){
             notice_triangle.className = 'triangle none';
             //notice icon change
             $(notice_icon[0]).attr('src', '../static/img/notification.png');
+            
             console.log('user_icon');
         } 
         //notice icon click
-        else if (e.target.className == 'top_bar_icon notice_icon') {
+        else if (e.target.className.includes('notice_icon')) {
             //notice modal toggle
             notice_popup.classList.toggle('none');
             notice_triangle.classList.toggle('none');
@@ -81,15 +87,24 @@ $('html').click(function(e){
                     alert(error);
                 }
             })
-        } 
+        } // post notice의 modal 창만 닫힘
+        else if (e.target.className == 'notice_modal_background' || e.target.id == 'notice_modal_close_img') {
+            post_modal.forEach(post => {
+                post.style.display = 'none';
+                console.log('post display none');
+            });
+            document.querySelector(".body").className = "body";
+        }
         else { //if not icon clicked, hide to all modal
             user_popup.className = 'user_popup none';
             user_triangle.className = 'triangle none';
             notice_popup.className = 'none notice_popup user_popup';
             notice_triangle.className = 'triangle none';
             $(notice_icon[0]).attr('src', '../static/img/notification.png');
-            console.log(notice_modal)
-            notice_modal.style.display = 'none';
+            // post_modal.forEach(post => {
+            //     post.style.display = 'none';
+            //     console.log('post display none');
+            // });
             console.log('close area');
         };
     };

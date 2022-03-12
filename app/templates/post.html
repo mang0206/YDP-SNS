@@ -58,7 +58,7 @@
             <div class="content_image_container">
                 <button class="img_arrow_btn left_arrow"><img id="left_arrow" src="../static/img/left_arrow.png" alt=""></button>
                 <button class="img_arrow_btn right_arrow"><img id="right_arrow" src="../static/img/right_arrow.png" alt=""></button>
-                <div class="img_album" images="{{ post['images'] }}" data-length="{{ post['images']|length }}">
+                <div class="img_album" data-length="{{ post['images']|length }}">
                     {% for i in post['images'] %}
                     <img src="" data-src="{{ i }}" alt="" class="content_image image_lazy">
                     {% endfor %}

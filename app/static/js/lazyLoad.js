@@ -94,9 +94,11 @@ document.addEventListener("DOMContentLoaded", function() {
         //20밀리초 후 실행(스크롤 이벤트는 빠르고 자주 일어나므로)
         }, 20);
     }
-    // 이벤트 리스너 선언
+    // 스크롤 이벤트
     document.addEventListener("scroll", lazyload);
+    // 브라우저 사이즈 감지
     window.addEventListener("resize", lazyload);
+    // 화면 모드 감지
     window.addEventListener("orientationChange", lazyload);
     }
 });
