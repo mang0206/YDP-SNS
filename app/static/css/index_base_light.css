@@ -212,6 +212,12 @@ a:visited{color: black}
     width: 100%;
     overflow: auto;
 }
+.notice_none{
+    color: gray;
+    text-align: center;
+    font-size: 13px;
+    padding: 5px 0;
+}
 .notice_item{
     height: 55px;
     padding: 5px;
@@ -229,25 +235,23 @@ a:visited{color: black}
     width: fit-content;
     /* cursor: ; */
 }
-
-.notice_img{
-    display: flex;
-    align-items: center;
-    cursor: pointer;
-}
 .post_notice_img{
     width: 55px;
     height: 55px;
     border: solid 1px #EDEDED;
+    cursor: pointer;
+}
+#post_txt{
+    font-weight: 500;
+    text-decoration: underline;
+    text-underline-position: under;   
+    cursor: pointer;
 }
 .friend_notice_img{
     width: 55px;
     height: 55px;
     border-radius: 50%;
     border: solid 1px #EDEDED; /* 임시 */
-}
-.notice_content{
-    display: flex;
 }
 .notice_txt{
     width: 100%;
@@ -256,7 +260,7 @@ a:visited{color: black}
     font-size: 13px;
 }
 .notice_nickname{
-    font-weight: 500;
+    font-weight: 700;
     cursor: pointer;
 }
 .notice_time{
@@ -637,6 +641,7 @@ a:visited{color: black}
     flex-direction: row;
 }
 .content_image_container{
+    position: relative;
     display: flex;
     align-items: center;
 }
@@ -653,13 +658,13 @@ a:visited{color: black}
     opacity: 50%;
 }
 .img_arrow_btn.right_arrow{
-    left: 730px;
+    left: 360px;
 }
-@media (max-width: 767px) {
+/* @media (max-width: 767px) {
     .img_arrow_btn.right_arrow{
         left: 433px;
     }
-}
+} */
 .img_arrow_btn img{
     width: 30px;
     height: 30px;

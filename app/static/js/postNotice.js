@@ -1,23 +1,26 @@
 // post에 해당하는 notice의 image를 클릭하면 해당 게시물을 modal 형태로 띄움
-// let noticeList = document.querySelector('.notice_list');
-let postNotice = document.querySelectorAll('.post_notice');
+let postNotice = document.querySelectorAll('.post_notice_click');
+// notice post
+let notice_modal = document.getElementById('notice_modal');
 
-//post notice가 존재하는 경우
 if (postNotice.length != 0) {
     postNotice.forEach(post => {
-        // 해당 게시물의 이미지        
-        let postNoticeImg = post.querySelector('.post_notice_img');
-        console.log(postNoticeImg)
-
-        postNoticeImg.addEventListener('click', function(){
-            // console.log(this, "this");
-            let noticeModal = $(this).parent().siblings('.notice_modal_background');
-            console.log(noticeModal);
-            noticeModal[0].style.display = 'block';
-
-        });
+        console.log(post);
+        // 이미지가 있는 post
+        if (post.className.includes('post_notice_img')) {
+            post.addEventListener('click', function(){
+                let noticeModal = $(post).parent().siblings('.notice_modal_background');
+                console.log(noticeModal);
+                noticeModal.style.display = 'block';
+            });
+        } else { // text만 있는 post
+            post.addEventListener('click', function(){
+                let noticeModal = $(post).parent().parent().siblings('.notice_modal_background');
+                console.log(noticeModal);
+                noticeModal.style.display = 'block';
+            });
+        };
     });
 };
-
-// console.log($('.notice_modal_background').arrt('value'))
-
+// modal 영역 외 클릭시
+notice_modal.style.display = 'none';

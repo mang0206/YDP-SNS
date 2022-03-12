@@ -139,7 +139,6 @@ $(function(){
     total_img.forEach(img_album => {
         //해당 태그의 value 속성
         let total_img_val = $(img_album).data().length;
-        console.log(total_img_val)
         //해당 태그의 양쪽 화살표 버튼
         let img_arrow_btn = $(img_album).siblings('.img_arrow_btn');
         //img 개수 p태그
@@ -155,21 +154,42 @@ $(function(){
     $('.left_arrow').css({"display":"none"});
 });
 
+//index 에서만 실행하는 btn 위치 변경
+// const m = matchMedia("(max-width: 767px)")
+// function indexBtn(){
+//     let img_albums = document.querySelectorAll('.img_album');
+//     console.log("resize")
+//     console.log(m.matches)
+//     //각 게시물의 화살표 위치 조정
+//     if (m.matches == true) {
+//         console.log("match true")
+//         // img_albums.forEach(img_album => {
+//             // let right_arrow = $(img_album).siblings(".right_arrow");
+//             // right_arrow.css('left','45%');
+//         // });
+//     }
+//     else {
+//         console.log("match false")
+//         // img_albums.forEach(img_album => {
+//             // let right_arrow = $(img_album).siblings(".right_arrow");
+//             // right_arrow.css('left','50%');
+//             // right_arrow.css('transform','translateX(-5px)');
+//         // });
+//     };
+
+// };
+// //index page인 경우
+// let url = document.location.href.split('/');
+// if (url[3] == '') {
+//     console.log("index")
+//     window.addEventListener('DOMContentLoaded', indexBtn);
+//     window.addEventListener('resize', indexBtn);
+// };
+
 //2.여러 이미지의 transform 및 현재 이미지 번호 표시
-$(function(){
+function imgSlide(){
     //모든 이미지 앨범을 가져옴
     let img_albums = document.querySelectorAll('.img_album');
-    console.log(img_albums)
-
-    //index page인 경우
-    let url = document.location.href.split('/');
-    if (url[3] == '') {
-        //각 게시물의 화살표 위치 조정
-        img_albums.forEach(img_album => {
-            let right_arrow = $(img_album).siblings(".right_arrow");
-            right_arrow.css('left','425px');
-        });
-    };
 
     //각 이미지 앨범마다 다른 변수를 지정
     img_albums.forEach(img_album => {
@@ -187,8 +207,8 @@ $(function(){
         //현재 게시물의 textarea
         let content_text = $(img_album).parent().parent().siblings(".content_text");
         
-        //img의 마지막 문자열 추출 
-        let image_type = $(img_album).attr('images').slice(-3, -2);
+        //img의 마지막 문자열 추출(file type check)
+        let image_type = $(img_album).children().data().src.slice(-1);
 
         //img null인 경우(마지막 문자열이 dot)
         if (image_type == ".") {
@@ -222,9 +242,7 @@ $(function(){
                     });
                     //현재 이미지 번호 +1 & text 변경
                     p_tag.text(present_img +` / `+ p_tag.attr('value'));
-
                 }
-    
             };
             //해당 게시물에서 누른 버튼이 left인 경우
             if ($(this).attr("class") == "img_arrow_btn left_arrow") {
@@ -245,9 +263,7 @@ $(function(){
                     });
                     //현재 이미지 번호 -1 & text 변경
                     p_tag.text(present_img +` / `+ p_tag.attr('value'));
-
                 }
-    
             };
             //image의 양 끝에 도달한 경우 버튼 display:none 설정
             //img_album의 transition이 끝났을 때
@@ -270,7 +286,10 @@ $(function(){
         });
 
     });
-});
+};
+// img slide Event
+window.addEventListener('DOMContentLoaded', imgSlide);
+
 
 import indicate_time from './time_information.js';
 // upload time

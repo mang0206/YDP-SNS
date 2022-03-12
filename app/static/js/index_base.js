@@ -18,9 +18,6 @@ let notice_popup = document.getElementById('notice_container');
 let notice_dot = document.getElementById('notice_dot');
 let notice_triangle = document.getElementById('notice_triangle');
 // console.log(notice_dot)
-// notice post
-let notice_modal = document.getElementById('notice_modal');
-
 
 //maintain notice dot
 $(function(){
@@ -89,7 +86,6 @@ $('html').click(function(e){
             notice_triangle.className = 'triangle none';
             $(notice_icon[0]).attr('src', '../static/img/notification.png');
             console.log(notice_modal)
-            notice_modal.style.display = 'none';
             console.log('close area');
         };
     };
