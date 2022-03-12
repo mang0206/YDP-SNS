@@ -1,0 +1,1 @@
+import { indicate_comment, indicate_reply } from './create_comment.js';

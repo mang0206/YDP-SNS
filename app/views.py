@@ -380,7 +380,8 @@ def like_submit():
                 if notice_img_data.split('.')[-1] == '':
                     notice_img_kind = 'post_text'
                     notice_img_data = notice_post['split_text'][0]
-
+                
+                post_info = get_post(data['post_id'])
                 col_notice.insert_one({
                     'notice_user' : data['create_user'],
                     'notice_info' : { 'nickname': session['nickname'], 'notice_img_kind': notice_img_kind, 'notice_img_data': notice_img_data },

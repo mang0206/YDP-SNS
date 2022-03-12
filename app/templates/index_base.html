@@ -187,18 +187,29 @@
                                             <!-- post txt (hashtag) -->
                                             <div class="content_text" id="" value="{{ notice['post_info']['split_text'] }}">
                                                 post notice text test
+                                                {% for text in notice['post_info']['split_text'] %}
+                                                    {% if '#' in text %}
+                                                    <a href="{{ url_for('search', search = text ) }}" id="hashtag">{{ text }}</a>
+                                                    {% elif '@' in text %}
+                                                    <a href="" id="mention">{{ text }}</a>
+                                                    {% elif '\n' in text %}
+                                                    <br>
+                                                    {% else %}
+                                                    <span>{{ text }}</span>
+                                                    {% endif %}
+                                                {% endfor %}
                                             </div>
                                             <!-- reaction -->
                                             <div class="content_footer">
                                                 <!-- 좋아요 기능 -->
                                                 <div class="content_reaction">
-                                                    if post['_id']|string in session['like']
+                                                    {% if notice["post_info"]['_id']|string in session['like'] %}
                                                     <img src="../static/img/color_like.png" alt="" class="content_icon" id="like_icon" value="empty"\
                                                         post_id = "{{ notice['post_info']['_id'] }}">
-                                                    else
+                                                    {% else %}
                                                     <img src="../static/img/empty_like.png" alt="" class="content_icon" id="like_icon" value="color"\
                                                         post_id = "{{ notice['post_info']['_id'] }}">
-                                                    endif
+                                                    {% endif %}
                                                     <p class="content_like" id="content_like">{{ notice['post_info']['like']|length }} 개</p>
                                                     <!-- 좋아요 갯수 클릭하면 나타나는 영역 -->
                                                     <div class="like_container_back none">
@@ -226,20 +237,18 @@
                                                     <p class="content_comment" post_id="{{ notice['post_info']['_id'] }}">{{ notice['post_info']['comment'] }}개</p>
                                                 </div>
                                             </div>
+                                        </div>
+                                        <div class="content_comment_container">
                                             <div class="post_notice_comment_list" session_user="{{ session['nickname'] }}">
-                                                <!-- 임시 댓글 영역 -->
-                                                <div style="border: solid 1px lightgray; height: 50px;">comment</div>
-                                                <div style="border: solid 1px lightgray; height: 50px;">comment</div>
-                                                <div style="border: solid 1px lightgray; height: 50px;">comment</div>
-                                                <div style="border: solid 1px lightgray; height: 50px;">comment</div>
-                                                <div style="border: solid 1px lightgray; height: 50px;">comment</div>
+                                                
+                                            </div>
+                                            <!-- 댓글 ajax 전송 부분 -->
+                                            <div class="comment_form" value ="{{ notice['post_info']['_id'] }}">
+                                                <textarea class="comment_textarea"></textarea>
+                                                <button class="comment_submit" type="submit">댓글<br>달기</button>
                                             </div>
                                         </div>
-                                        <!-- 댓글 ajax 전송 부분 -->
-                                        <div class="comment_form" value ="{{ notice['post_info']['_id'] }}">
-                                            <textarea class="comment_textarea"></textarea>
-                                            <button class="comment_submit" type="submit">댓글<br>달기</button>
-                                        </div>
+                                        
                                     </div>
                                 </div>
                             </div>
@@ -289,5 +298,6 @@
 <!-- <script src="../static/js/post.js" defer="defer"></script> -->
 <script type="module" src="../static/js/index_base.js" defer="defer"></script>
 <script type="module" src="../static/js/time_information.js" defer="defer"></script>
+<script type="module" src="../static/js/create_comment.js" defer="defer"></script>
 
 
