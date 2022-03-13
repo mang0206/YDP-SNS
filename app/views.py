@@ -345,10 +345,11 @@ def content_update_submit(post_id):
 
 @app.route("/content_submit", methods=["DELETE"])
 def delete_post():
+    col_notice = db.get_collection('notice')
     data = request.get_json()
 
     delete_post_one(data)
-
+    col_notice.delete_many({'post_info._id':data})
     return jsonify(result = "success")
 
 # 좋아요, 댓글 및 답글 관리(C.R.U.D) Route
@@ -515,16 +516,18 @@ def like_submit():
 
 @app.route("/content_reaction_submit", methods=["DELETE"])
 def delete_reply_comment():
-    col_user = db.get_collection('user')
+    col_notice = db.get_collection('notice')
     col_post = db.get_collection('post')
     col_comment = db.get_collection('comment')
-
     data = request.get_json()
     print(data)
+    post_id = col_comment.find_one({'_id':ObjectId(data['comment_id'])}, {'_id':0, 'post_id':1})['post_id']
     if data['kind'] == 'delete_reply':
         delete_reply(data)
     elif data['kind'] == 'delete_comment':
         delete_comment(data)
+
+    col_notice.update_many({'post_info._id':post_id}, {'$set' : {'post_info' : get_post(post_id)}})
     return jsonify(result = "success")
 
 @app.route("/user/<user>")

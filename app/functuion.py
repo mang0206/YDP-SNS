@@ -37,10 +37,6 @@ def get_post(id):
     post['comment_info'] = comment_list
     return post
 
-def get_comment(id):
-    
-    return comment_list
-
 def s3_connection():
     try:
         s3 = boto3.client(

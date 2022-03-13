@@ -1,6 +1,6 @@
 import indicate_time from './time_information.js';
 // 댓글을 달았을 때 댓글 정보와 댓글을 단 유저 정보를 댓글 목록에 추가하는 함수
-function indicate_comment(data, comment_div){
+function indicate_comment(data, comment_div, notice = false){
     // 댓글 전체를 감쌀 div tag
     const create_div = document.createElement('div');
     // 이미지를 감쌀 a tag
@@ -24,7 +24,7 @@ function indicate_comment(data, comment_div){
     // 답글이 들어갈 div tag
     const create_div_reply = document.createElement('div');
 
-    // 좋아요 리스트에 추가할 div 태그
+    // 답글 user div 태그
     $(create_div).attr({
         'class': 'user_img_nickname',
         'value': data['session_user']['nickname'],
