@@ -138,16 +138,26 @@ $(function(){
 function make_notice_div(notice){
     // notice가 추가될 위치
     const notice_list = document.querySelector(".notice_list");
-    console.log(notice_list)
     // 각 notice 전체를 감쌀 div tag 
     const create_div = document.createElement('div');
-    // 해당 notice의 img를 감쌀 a, div tag
-    // if(notice[''])
-    const create_a_img = document.createElement('a');
-    const create_img = document.createElement('img');
+    // img를 감쌀 div tag
+    const create_div_img = document.createElement('div');
+
+    // 알림에 해당하는 img or text 데이터의 img, p 태그
+    let create_notice_info = null
+    if (notice['notice_info']['notice_img_kind'] == 'post_text'){
+        create_notice_info = document.createElement('p');
+    } else {
+        create_notice_info = document.createElement('img');
+    }
+    
+    // 시간 정보, 닉네임 정보, 알림 정보를 담을 div tag
     const create_div_notice_content = document.createElement('div');
+    // 알림 정보를 작성할 p 태그
     const create_p_notice_txt = document.createElement('p');
+    // 닉네임을 감쌀 a 태그
     const create_a_notice_a = document.createElement('a');
+    // 시간 정보를 담을 p 태그
     const p_notice_a = document.createElement('p');
 
     // notice 리스트에 추가할 div 태그
@@ -163,22 +173,24 @@ function make_notice_div(notice){
         });
     }
     // 이미지를 감쌀 a 테그
-    $(create_a_img).attr({
+    $(create_div_img).attr({
         'href': '/user/'+notice['notice_info']['nickname'],
         'class': 'notice_a img'
     });
     // 이미지 테그
-    if(notice['kind'] =='request_friend'){
-        $(create_img).attr({
+    if(notice['notice_info']['notice_img_kind'] =='profile_img'){
+        $(create_notice_info).attr({
             'src': notice['notice_info']['notice_img_data'],
             'class': 'friend_notice_img'
         });
-    } else {
-        $(create_img).attr({
+    } else if(notice['notice_info']['notice_img_kind'] =='post_img') {
+        $(create_notice_info).attr({
             'src': notice['notice_info']['notice_img_data'],
             'class': 'post_notice_img',
             'value': notice['post_id']
         });
+    } else {
+        $(create_notice_info).text('"' + notice['notice_info']['notice_img_data'] + '"');
     }
     $(create_div_notice_content).attr({
         'class': 'notice_content'
@@ -215,8 +227,8 @@ function make_notice_div(notice){
     create_p_notice_txt.prepend(create_a_notice_a);
     create_p_notice_txt.appendChild(p_notice_a);
     create_div_notice_content.appendChild(create_p_notice_txt);
-    create_a_img.appendChild(create_img);
-    create_div.appendChild(create_a_img);
+    create_div_img.appendChild(create_notice_info);
+    create_div.appendChild(create_div_img);
     create_div.appendChild(create_div_notice_content);
     // 좋아요 리스트에 최종적으로 div 태그 append
     notice_list.prepend(create_div);
