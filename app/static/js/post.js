@@ -139,11 +139,16 @@ $(function(){
     total_img.forEach(img_album => {
         //해당 태그의 value 속성
         let total_img_val = $(img_album).data().length;
+        console.log(total_img_val);
         //해당 태그의 양쪽 화살표 버튼
         let img_arrow_btn = $(img_album).siblings('.img_arrow_btn');
         //img 개수 p태그
         let img_number = $(img_album).parent().parent().siblings('.content_footer').children('.img_number');
-
+        // notice post p태그
+        if (img_album.id == 'notice_img_album') {
+            console.log("post notice p태그")
+            $(img_album).siblings('#post_notice_img_num').css({"display":"none"});
+        };
         //업로드한 이미지가 한 장일 경우 화살표 & img_num 표시 X
         if (total_img_val == "1") {
             $(img_arrow_btn).css({"display":"none"});
