@@ -122,8 +122,8 @@
                                                 <p class="comment_nickname">{{ comment['comment_user']['nickname'] }}</p>
                                                 <p class="comment_time" value="{{ comment['comment_time'] }}"></p>
                                                 <button class="notice_recomment notice_reply" value="{{ comment['comment_user']['nickname'] }}" comment_id = "{{ comment['_id']}}">답글 달기</button>
-                                                {% if comment['comment_user']['nickname'] == session['nickname']%}
-                                                <button class="notice_recomment delete_comment" value="{{ session[nickname ]}}" comment_id="{{ comment['_id'] }}">댓글 삭제</button>
+                                                {% if comment['comment_user']['nickname'] == session['nickname'] %}
+                                                    <button class="notice_recomment notice_delete_comment" value="{{ session[nickname ]}}" comment_id="{{ comment['_id'] }}">댓글 삭제</button>
                                                 {% endif %}
                                             </div>
                                             <div class="comment_txt" id="" value="{{ comment['comment'] }}">
@@ -136,7 +136,9 @@
                                                 {% endfor %}
                                             </div>
                                         </div>
-                                        <button class="notice_recomment reply_show">답글 보기</button>
+                                        {% if comment['reply_list']|length > 0 %}
+                                        <button class="notice_recomment notice_reply_show">답글 보기</button>
+                                        {% endif %}
                                     </div>
                                 </div>
                             </div>
@@ -147,8 +149,11 @@
                                     <img src="{{ reply['reply_user']['profile_img'][1] }}" alt="" class="comment_user_img">
                                     <div class="user_comment">
                                         <div class="comment_nickname_time">
-                                            <p class="comment_nickname">{{reply['reply_user']['nickname']}}</p>
+                                            <p class="comment_nickname">{{ reply['reply_user']['nickname'] }}</p>
                                             <p class="comment_time" value="{{reply['reply_time']}}"></p>
+                                            {% if reply['reply_user']['nickname'] == session['nickname'] %}
+                                                <button class="recomment notice_delete_reply" value="{{ session[nickname ]}}">답글 삭제</button>
+                                            {% endif %}
                                         </div>
                                         <p class="comment_txt">유저가 남긴 댓글</p>
                                         <div class="comment_txt" id="" value="{{ reply['reply'] }}">
@@ -161,9 +166,6 @@
                                             {% endfor %}
                                         </div>
                                     </div>
-                                    {% if reply['reply_user']['nickname'] == session['nickname']%}
-                                        <button class="recomment delete_reply" value="{{ session[nickname ]}}">댭글 삭제</button>
-                                    {% endif %}
                                 </div>
                                 {% endfor %}
                             </div>

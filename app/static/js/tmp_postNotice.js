@@ -40,6 +40,7 @@ if (postNotice.length != 0) {
     });
 };
 
+// 댓글 전송 ajax
 $('.notice_comment_submit').click(function(){
     // 댓글 내용
     let text = $(this).prev().val();
@@ -90,12 +91,60 @@ $('.notice_comment_submit').click(function(){
     })
 });
 
+// 댓글 삭제 ajax
+$(document).on("click",".notice_delete_comment",function(){
+    console.log('delete test')
+    const time = $(this).siblings('.comment_time').attr('value')
+    const nickname = $(this).attr('value')
+    const comment_id = $(this).attr('comment_id')
+    const remove_tag = $(this).parents('.post_notice_comment')
+    const remove_reply_tag = $(this).parent().next()
+
+    // 댓글 수 변경을 위한 변수들
+    let content_footer = $(this).parents('.post_notice_comment_list').siblings('.content_footer')
+    let content_comment = $(content_footer).find('.content_comment')
+    let comment_count = Number($(content_comment).text().slice(0,1))
+
+    var request_data = {
+        "kind" : "delete_comment",
+        "time": time,
+        "nickname": nickname,
+        "comment_id": comment_id
+    }
+    $.ajax({
+        type: "DELETE",
+        url: "/content_reaction_submit",
+        data: JSON.stringify(request_data),
+        dataType: 'JSON',
+        contentType: "application/json",
+        success: function(data){
+            $(remove_tag).remove()
+            let chiled = remove_reply_tag.children()
+             for(let i = 0; i < chiled.length; i++){
+                 $(chiled[i]).remove();
+                 comment_count -= 1
+             }
+             comment_count -= 1
+            $(content_comment).text(String(comment_count) + '개')
+        },
+        error: function(request, status, error){
+            alert('ajax 통신 실패')
+            alert(error);
+        }
+    })
+});
+
+// 답글 보기 시 해당 답글 show
+$(document).on("click",".notice_reply_show",function(){
+    $(this).parents('.post_notice_comment').next().attr('style','display:flex;');
+})
+
 // 답글 칸 생성 ajax
 $(document).on("click",".notice_reply",function(){
     const value = $(this).attr('value')
     const comment_id = $(this).attr('comment_id')
 
-    const div_tag = $(this).parent().parent().parent().parent()
+    const div_tag = $(this).parents('.txt_comment_scroll')
     // 답글 전체를 감쌀 div tag
     const create_div = document.createElement('div');
     // 답글에 대한 맨션 tag
@@ -109,7 +158,7 @@ $(document).on("click",".notice_reply",function(){
     const create_btn_cancel = document.createElement('button');
     
     //댓글 입력칸 hidden
-    $(this).parent().parent().parent().siblings('.comment_form').hide();
+    $(this).parents('post_notice_comment_list').siblings('.comment_form').hide();
 
     $(create_div).attr({
         'class': 'comment_form reply_form',
@@ -212,6 +261,44 @@ $(document).on("click",".notice_reply_submit",function(){
                     // console.log(request)
                 }
             }
+        },
+        error: function(request, status, error){
+            alert('ajax 통신 실패')
+            alert(error);
+        }
+    })
+});
+
+// 답글 삭제 ajax
+$(document).on("click",".notice_delete_reply",function(){
+    console.log('delete test')
+    const time = $(this).siblings('.comment_time').attr('value')
+    const nickname = $(this).siblings('.comment_nickname').text()
+    const comment_id = $(this).parents('.reply_container').attr('comment_id')
+    const remove_tag = $(this).parents('.reply_item')
+
+    // 댓글 수 변경을 위한 변수들
+    let content_footer = $(this).parents('.post_notice_comment_list').siblings('.content_footer')
+    let content_comment = $(content_footer).find('.content_comment')
+    let comment_count = Number($(content_comment).text().slice(0,1))
+
+    var request_data = {
+        "kind" : "delete_reply",
+        "time": time,
+        "nickname": nickname,
+        "comment_id": comment_id
+    }
+    $.ajax({
+        type: "DELETE",
+        url: "/content_reaction_submit",
+        data: JSON.stringify(request_data),
+        dataType: 'JSON',
+        contentType: "application/json",
+        success: function(data){
+            $(remove_tag).remove()
+
+            comment_count -= 1
+            $(content_comment).text(String(comment_count) + '개')
         },
         error: function(request, status, error){
             alert('ajax 통신 실패')

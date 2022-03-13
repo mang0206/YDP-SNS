@@ -111,7 +111,9 @@ function indicate_comment(data, comment_div, notice = false){
     create_div.appendChild(create_a_img);
     create_div.appendChild(create_div_user_comment);
     // 좋아요 리스트에 최종적으로 div 태그 append
-    create_div.appendChild(create_btn_reply);
+    if (data['reply_list'].length > 0) {
+        create_div.appendChild(create_btn_reply);
+    }
 
     // session user와 댓글 작성한 user가 같을 시 삭제 버튼 추가 
     if (data['session_user']['nickname'] == $(comment_div).attr('session_user')){
