@@ -112,7 +112,7 @@ def delete_reply(data):
         {'_id': ObjectId(data['comment_id'])},
         { '$pull': {'reply_list' : {'$and': [{'reply_time': data['time']}, {'reply_user.nickname': data['nickname']}]} }}
     , return_document=ReturnDocument.AFTER)
-    if not comment:
+    if comment is not None:
         col_post.update_one({'_id': ObjectId(comment['post_id'])}, {'$inc': {'comment': -1}})
     col_user.update_one({'nickname': data['nickname']}, 
     {'$pull': 

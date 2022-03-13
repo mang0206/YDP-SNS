@@ -834,20 +834,35 @@ def connection_mongodb():
     lis = col.find_one({'nickname':'aa'})
     
     json_lis = dumps(lis)
-    print(json_lis)
-    print('\n\n\n')
-    for i in lis['like']:
-        f = col_post.find_one({'_id': ObjectId(i)})
-        print(f, end='\n-------------------------\n')
+    # print(json_lis)
+    # print('\n\n\n')
+    # for i in lis['like']:
+    #     f = col_post.find_one({'_id': ObjectId(i)})
+    #     print(f, end='\n-------------------------\n')
+    # print('post show')
+    # for i in col_post.find({}):
+    #     print(i, end='\n-------------------------\n')
+    # print('comment show')
+    # for i in col_comment.find({}):
+    #     print(i, end='\n-------------------------\n')
+    # print('=================notice======================')
+    # for i in col_notice.find({}):
+    #     print(i, end='\n-------------------------\n')
     print('post show')
-    for i in col_post.find({}):
+    p =list(col_post.find({'create_user_nickname': 'aa'}))
+    for i in p:
         print(i, end='\n-------------------------\n')
     print('comment show')
-    for i in col_comment.find({}):
+    for i in col_comment.find({'post_id':str(p[0]['_id'])}):
         print(i, end='\n-------------------------\n')
-    print('=================notice======================')
-    for i in col_notice.find({}):
-        print(i, end='\n-------------------------\n')
-
+    data = {
+        'time': 123,
+        'nickname' : 'aa'
+    }
+    comment = col_comment.find_one_and_update(
+        {'_id': 'qwer'},
+        { '$pull': {'reply_list' : {'$and': [{'reply_time': data['time']}, {'reply_user.nickname': data['nickname']}]} }}
+    , return_document=ReturnDocument.AFTER)
+    print(comment, type(comment))
     return jsonify(json_lis)
 
