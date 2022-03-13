@@ -43,9 +43,18 @@ $('html').click(function(e){
         return console.log('post notice link')
     } //notice post area
     else if (e.target.closest('.post_notice_area')) {
-        return console.log('notice post');
+        // post notice like modal 창
+        if (e.target.className.includes('like_close') || e.target.className == 'like_container_back'){
+            //close btn or background 클릭시 none class
+            let notice_like_modal = e.target.closest('.like_container_back')
+            notice_like_modal.classList += ' none';
+        }
+        else {
+            return console.log('notice post');
+        };
     } //not modal area
-    else if(e.target != user_popup || e.target != notice_popup || e.target.className == 'notice_modal_background' || e.target.id == 'notice_modal_close_img'){
+    else if(e.target != user_popup || e.target != notice_popup || e.target.className == 'notice_modal_background' || e.target.id == 'notice_modal_close_img'
+        || e.target.className.includes('like_close') || e.target.className == 'like_container_back'){
         //user icon click
         if (e.target.className == 'top_bar_user') {
             //user modal toggle
@@ -94,7 +103,7 @@ $('html').click(function(e){
                 console.log('post display none');
             });
             document.querySelector(".body").className = "body";
-        }
+        } 
         else { //if not icon clicked, hide to all modal
             user_popup.className = 'user_popup none';
             user_triangle.className = 'triangle none';
