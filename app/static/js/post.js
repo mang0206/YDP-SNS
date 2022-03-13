@@ -280,13 +280,13 @@ $('html').click(function(e){
     let like_container = $(e.target).siblings('.like_container_back') 
     console.log($(like_container))
     if (e.target.className == 'content_like') {
-        // $('.like_container_back').attr('class','like_container_back');
-        $(like_container).attr('class','like_container_back');
+        $('.like_container_back').attr('class','like_container_back');
+        // $(like_container).attr('class','like_container_back');
         document.querySelector(".body").className = "body scroll_hidden";
     }  //close 버튼 혹은 팝업 영역 외 클릭
     else if (e.target.className == 'content_icon like_close' || e.target.className == 'like_container_back') {
-        // $('.like_container_back').attr('class','like_container_back none');
-        $(like_container).attr('class','like_container_back none');
+        $('.like_container_back').attr('class','like_container_back none');
+        // $(like_container).attr('class','like_container_back none');
         document.querySelector(".body").className = "body";
         console.log("close modal")
     }
@@ -484,6 +484,11 @@ $('.comment_submit').click(function(){
     let btn = $(this)
     let add_comment_list = $(this).parent().siblings(".comment_list")
     let create_user = $(this).parents('#content').attr('create_user_nickname')
+    
+    // 댓글 수 변경을 위한 변수들
+    let content_footer = $(this).parents('.content_comment_container').siblings('.content_footer')
+    let content_comment = $(content_footer).find('.content_comment')
+    let comment_count = Number($(content_comment).text().slice(0,1))
 
     var request_data = {
         "kind" : "append_comment",
@@ -500,7 +505,9 @@ $('.comment_submit').click(function(){
         contentType: "application/json",
         success: function(data){
             indicate_comment(data, add_comment_list)
-            
+            comment_count += 1
+            $(content_comment).text(String(comment_count) + '개')
+
             socket.emit('comment_post', request_data);
             if(data['mention'].length > 0){
                 for(let i = 0; i < data['mention'].length; i++){
@@ -616,6 +623,12 @@ $(document).on("click",".reply_submit",function(){
         'create_user': create_user,
         'session_user': session_user
     }
+
+    // 댓글 수 변경을 위한 변수들
+    let content_footer = $(this).parents('.content_comment_container').siblings('.content_footer')
+    let content_comment = $(content_footer).find('.content_comment')
+    let comment_count = Number($(content_comment).text().slice(0,1))
+
     $.ajax({
         type: "POST",
         url: "/content_reaction_submit",
@@ -628,6 +641,10 @@ $(document).on("click",".reply_submit",function(){
             $(standard_div).attr('style','display:flex;');
             $(remove_tag).remove()
             $(comment_form).show()
+
+            comment_count += 1
+            $(content_comment).text(String(comment_count) + '개')
+
             socket.emit('comment_post', request_data);
 
             console.log('mention = ',data['mention'])
@@ -674,6 +691,11 @@ $(document).on("click",".delete_reply",function(){
     const comment_id = $(this).parent().parent().attr('comment_id')
     const remove_tag = $(this).parent()
 
+    // 댓글 수 변경을 위한 변수들
+    let content_footer = $(this).parents('.content_comment_container').siblings('.content_footer')
+    let content_comment = $(content_footer).find('.content_comment')
+    let comment_count = Number($(content_comment).text().slice(0,1))
+
     var request_data = {
         "kind" : "delete_reply",
         "time": time,
@@ -688,6 +710,9 @@ $(document).on("click",".delete_reply",function(){
         contentType: "application/json",
         success: function(data){
             $(remove_tag).remove()
+
+            comment_count -= 1
+            $(content_comment).text(String(comment_count) + '개')
         },
         error: function(request, status, error){
             alert('ajax 통신 실패')
@@ -704,6 +729,11 @@ $(document).on("click",".delete_comment",function(){
     const comment_id = $(this).attr('comment_id')
     const remove_tag = $(this).parent()
     const remove_reply_tag = $(this).parent().next()
+
+    // 댓글 수 변경을 위한 변수들
+    let content_footer = $(this).parents('.content_comment_container').siblings('.content_footer')
+    let content_comment = $(content_footer).find('.content_comment')
+    let comment_count = Number($(content_comment).text().slice(0,1))
 
     var request_data = {
         "kind" : "delete_comment",
@@ -722,7 +752,10 @@ $(document).on("click",".delete_comment",function(){
             let chiled = remove_reply_tag.children()
              for(let i = 0; i < chiled.length; i++){
                  $(chiled[i]).remove();
+                 comment_count -= 1
              }
+             comment_count -= 1
+            $(content_comment).text(String(comment_count) + '개')
         },
         error: function(request, status, error){
             alert('ajax 통신 실패')
