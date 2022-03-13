@@ -277,3 +277,6 @@ socket.on('mention_notice', function(retMessage) {
         notice_dot.className = 'notice_dot';
     }
 });
+
+
+console.log($('.user_friend').attr('value'))

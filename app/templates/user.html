@@ -79,21 +79,25 @@
                     </div>
                     {% endif %}
                 </div>
-                {% for friend in friend_dic %}
-                <div class="user_list"> 
-                    <a href="/user/{{friend_dic[friend]['nickname']}}">
-                        <img src="{{friend_dic[friend]['profile_img'][1] }}" class="user_profile_img">
-                    </a>
-                    <div class="user_list_name_area">
-                        <a class="user_nickname" href ="/user/{{friend_dic[friend]['nickname']}}">
-                            {{friend_dic[friend]['nickname']}}
+                {% if session['nickname'] == user['nickname'] and friend_dic|length == 0 %}
+                <span id="user_friend_empty_txt" class="empty_txt">친구를 검색하고 추가해보세요!</span>
+                {% else %}
+                    {% for friend in friend_dic %}
+                    <div class="user_list"> 
+                        <a href="/user/{{friend_dic[friend]['nickname']}}">
+                            <img src="{{friend_dic[friend]['profile_img'][1] }}" class="user_profile_img">
                         </a>
-                        <div class="user_name">
-                            {{ friend_dic[friend]['user_name'] }}
+                        <div class="user_list_name_area">
+                            <a class="user_nickname" href ="/user/{{friend_dic[friend]['nickname']}}">
+                                {{friend_dic[friend]['nickname']}}
+                            </a>
+                            <div class="user_name">
+                                {{ friend_dic[friend]['user_name'] }}
+                            </div>
                         </div>
-                    </div>
-                </div> 
-                {% endfor %}
+                    </div> 
+                    {% endfor %}
+                {% endif %}
             </div>
             <div class="both_layout_content user_content">
                 {% if session['nickname'] == user['nickname'] %}

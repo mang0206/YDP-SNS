@@ -17,7 +17,9 @@ a:visited{color: black}
 /* top_bar */
 .index_base_topbar{
     top: 0;
+    width: 98%;
     width: -webkit-fill-available;
+    width: -moz-available;
     height: 65px;
     padding: 0 20px 0 20px;
     background-color: #FFF;
@@ -1000,7 +1002,7 @@ a:visited{color: black}
     display: flex;
 }
 .content_comment_container{
-    height: 0;
+    max-height: 0;
     padding: 0 10px;
     display: flex;
     flex-direction: column;
@@ -1010,12 +1012,12 @@ a:visited{color: black}
     transition: ease-in 0.5s;
 }
 .comment_height{
-    height: 200px;
+    max-height: 200px;
 }
 .comment_list{
-    height: 200px;
+    /* height: 10px; */
     min-height: fit-content;
-    max-height: 200px;
+    /* max-height: 200px; */
     overflow: auto;
     display: flex;
     flex-direction: column;
@@ -1068,8 +1070,9 @@ a:visited{color: black}
     overflow: hidden;
 }
 .recomment{
+    width: 60px;
     padding: 0;
-    margin: 0 6px 10px 6px;
+    /* margin: 0 6px 10px 6px; */
     color: gray;
     font-size: 13px;
     border: none;
@@ -1144,6 +1147,9 @@ a:visited{color: black}
 .empty_txt{
     margin: 100px 0 30px 0;
     color: gray;
+}
+#user_friend_empty_txt{
+    margin: 40px;
 }
 .empty_img{
     width: 200px;
@@ -1273,6 +1279,9 @@ a:visited{color: black}
     .friend h2{
         width: 600px;
     }
+}
+#index_friend_container{
+    position: fixed;
 }
 .friend_container{
     width: 600px;
@@ -1434,6 +1443,13 @@ a:visited{color: black}
     display: flex;
     flex-direction: column;
     align-items: center;
+}
+.background_parallax{
+    position: absolute;
+    top: 0;
+    height: 375px;
+    width: 100%;
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0) 67.5%, rgba(0, 0, 0, 0.2) 100%);
 }
 .user_background{
     width: 100%;
