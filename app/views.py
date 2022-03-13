@@ -370,7 +370,8 @@ def like_submit():
             notice_post = col_post.find_one_and_update({'_id':ObjectId(data['post_id'])}, {'$push': {'like': session_user}}, return_document=ReturnDocument.AFTER)
             # 세션 유저의 좋아요 정보 update
             session['like'] = col_user.find_one({'user_id':session['login']},{'_id':0, 'like':1})['like']
-            print('notice_post', notice_post)
+            # print('notice_post', notice_post)
+            col_notice.update_many({'post_info._id':data['post_id']}, {'$set' : {'post_info' : get_post(data['post_id'])}})
             if session['nickname'] != data['create_user']:
                 # notice를 위한 변수
                 notice_img_kind = 'post_img'
@@ -381,7 +382,6 @@ def like_submit():
                     notice_img_kind = 'post_text'
                     notice_img_data = notice_post['split_text'][0]
                 
-                post_info = get_post(data['post_id'])
                 col_notice.insert_one({
                     'notice_user' : data['create_user'],
                     'notice_info' : { 'nickname': session['nickname'], 'notice_img_kind': notice_img_kind, 'notice_img_data': notice_img_data },
@@ -393,7 +393,9 @@ def like_submit():
         else:
             col_user.update_one({'user_id':session['login']}, {'$pull': {'like': data['post_id']}})
             col_post.update_one({'_id':ObjectId(data['post_id'])}, {'$pull': {'like': { 'nickname' : session['nickname']}}})
+            col_notice.update_many({'post_info._id':data['post_id']}, {'$set' : {'post_info' : get_post(data['post_id'])}})
             session['like'] = col_user.find_one({'user_id':session['login']},{'_id':0, 'like':1})['like']
+            
         return jsonify(result = "success", session_user=session_user)
     # 댓글 달기 버튼을 눌렀을 때에 대한 ajax 통신
     elif data['kind'] == 'append_comment':
@@ -412,7 +414,8 @@ def like_submit():
             }}
         )
         notice_post = col_post.find_one_and_update({'_id': ObjectId(data['post_id'])}, {'$inc': {'comment': 1}}, return_document=ReturnDocument.AFTER)
-
+        # 알림 중 해당 post정보 update
+        col_notice.update_many({'post_info._id':data['post_id']}, {'$set' : {'post_info' : get_post(data['post_id'])}})
         # 댓글 전송시 notice 처리
         mention = []
         if data['create_user'] != session['nickname']:
@@ -477,6 +480,7 @@ def like_submit():
             }}
         )
         notice_post = col_post.find_one_and_update({'_id': ObjectId(data['post_id'])}, {'$inc': {'comment': 1}}, return_document=ReturnDocument.AFTER)
+        col_notice.update_many({'post_info._id':data['post_id']}, {'$set' : {'post_info' : get_post(data['post_id'])}})
         mention = []
         if data['create_user'] != session['nickname']:
             # notice를 위한 변수
