@@ -53,8 +53,7 @@ $('html').click(function(e){
             return console.log('notice post');
         };
     } //not modal area
-    else if(e.target != user_popup || e.target != notice_popup || e.target.className == 'notice_modal_background' || e.target.id == 'notice_modal_close_img'
-        || e.target.className.includes('like_close') || e.target.className == 'like_container_back'){
+    else if(e.target != user_popup || e.target != notice_popup || e.target.className == 'notice_modal_background' || e.target.id == 'notice_modal_close_img'){
         //user icon click
         if (e.target.className == 'top_bar_user') {
             //user modal toggle
@@ -278,3 +277,6 @@ socket.on('mention_notice', function(retMessage) {
         notice_dot.className = 'notice_dot';
     }
 });
+
+
+console.log($('.user_friend').attr('value'))

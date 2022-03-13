@@ -35,23 +35,27 @@
         <hr class="friend_hr" noshade="noshade">
         <div id="friend_list">
             <h3>친구 목록</h3>
-            <div class="user_friend">
-                {% for my_friend_key, my_friend_val in friend_list.items() %}
-                <div name="request_friend" class="request_friend">
-                    <div class="friend_user_container ">
-                        <a href="/user/{{my_friend_val['nickname']}}">
-                            <img src="{{ my_friend_val['profile_img'][1] }}" alt="" class="friend_user_image">
-                        </a>
-                        <a href="/user/{{my_friend_val['nickname']}}">
-                            <div class="friend_user_name">{{ my_friend_val['nickname'] }}</div>
-                        </a>
-                        <!-- js 친구 삭제 버튼 -->
-                        <div id="request_button" style="background-color: #EDEDED;">
-                            <button id="delete_btn" btn-data-value="{{ my_friend_key }}" name="delete" class="request_btn">친구 삭제</button>
+            <div class="user_friend" value="{{friend_list|length}}">
+                {% if friend_list|length == 0 %}
+                <span class="empty_txt">친구를 검색하고 추가해보세요!</span>
+                {% else %}
+                    {% for my_friend_key, my_friend_val in friend_list.items() %}
+                    <div name="request_friend" class="request_friend">
+                        <div class="friend_user_container ">
+                            <a href="/user/{{my_friend_val['nickname']}}">
+                                <img src="{{ my_friend_val['profile_img'][1] }}" alt="" class="friend_user_image">
+                            </a>
+                            <a href="/user/{{my_friend_val['nickname']}}">
+                                <div class="friend_user_name">{{ my_friend_val['nickname'] }}</div>
+                            </a>
+                            <!-- js 친구 삭제 버튼 -->
+                            <div id="request_button" style="background-color: #EDEDED;">
+                                <button id="delete_btn" btn-data-value="{{ my_friend_key }}" name="delete" class="request_btn">친구 삭제</button>
+                            </div>
                         </div>
                     </div>
-                </div>
-                {% endfor %}
+                    {% endfor %}
+                {% endif %}
             </div>
         </div>
         <div class="media_query_friend_recommend">

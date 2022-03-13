@@ -275,18 +275,15 @@ $(function(){
 
 // like list btn
 $('html').click(function(e){
-    // console.log(e.target)
     // 더보기 버튼
-    let like_container = $(e.target).siblings('.like_container_back') 
-    console.log($(like_container))
+    let like_container = $(e.target).siblings('.like_container_back');
     if (e.target.className == 'content_like') {
-        $('.like_container_back').attr('class','like_container_back');
-        // $(like_container).attr('class','like_container_back');
+        $(like_container[0]).attr('class','like_container_back');
+        console.log(like_container.className)
         document.querySelector(".body").className = "body scroll_hidden";
     }  //close 버튼 혹은 팝업 영역 외 클릭
-    else if (e.target.className == 'content_icon like_close' || e.target.className == 'like_container_back') {
-        $('.like_container_back').attr('class','like_container_back none');
-        // $(like_container).attr('class','like_container_back none');
+    if (e.target.className == 'content_icon like_close' || e.target.className == 'like_container_back') {
+        e.target.closest('.like_container_back').classList += ' none';
         document.querySelector(".body").className = "body";
         console.log("close modal")
     }
