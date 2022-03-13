@@ -172,7 +172,7 @@ a:visited{color: black}
 .content_txt_comment{
     display: flex;
     flex-direction: column;
-    width: 300px;
+    width: 350px;
 }
 #post_notice_header{
     height: 60px;
@@ -186,11 +186,6 @@ a:visited{color: black}
     display: flex;
     flex-direction: row;
     align-items: center;
-}
-.txt_comment_scroll{
-    height: 280px;
-    overflow-x: hidden;
-    overflow-y: auto;
 }
 #notice_dot{
     top: 16px;
@@ -278,9 +273,18 @@ a:visited{color: black}
     display: flex;
     flex-direction: column;
 }
+.post_notice_comment_list{
+    margin-left: 15px;
+    min-height: 10px;
+    max-height: 210px;
+    overflow: auto;
+}
 #post_notice_comment_header{
-    height: 60px;
-    margin: 0;
+    align-items: flex-start;
+}
+.notice_user_comment{
+    display: flex;
+    flex-direction: column;
 }
 .post_notice_recomment{
     margin-left: 50px;
@@ -290,8 +294,8 @@ a:visited{color: black}
     justify-content: space-between;
 }
 .notice_recomment{
+    width: 60px;
     padding: 0;
-    /* margin: 0 6px 10px 6px; */
     color: gray;
     font-size: 13px;
     border: none;
@@ -1017,7 +1021,6 @@ a:visited{color: black}
     align-items: flex-start;
 }
 .user_comment{
-    margin-right: 10px;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -1032,7 +1035,7 @@ a:visited{color: black}
     font-weight: 500;
 }
 .comment_time{
-    font-size: 11px;
+    font-size: 10px;
     color: gray;
 }
 .comment_txt{
