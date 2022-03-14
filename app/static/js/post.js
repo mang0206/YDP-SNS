@@ -517,8 +517,9 @@ $('.comment_submit').click(function(){
                         'session_user': session_user,
                         'mention' : data['mention'][i]
                     }
-                    socket.emit('mention', mention_data);
-                    // console.log(request)
+                    if (create_user != session_user){
+                        socket.emit('mention', mention_data);
+                    }
                 }
             }
         },

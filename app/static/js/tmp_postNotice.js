@@ -65,7 +65,7 @@ $('.notice_comment_submit').click(function(){
         dataType: 'JSON',
         contentType: "application/json",
         success: function(data){
-            indicate_comment(data, add_comment_list)
+            indicate_comment(data, add_comment_list, true)
             
             socket.emit('comment_post', request_data);
             if(data['mention'].length > 0){
@@ -79,8 +79,9 @@ $('.notice_comment_submit').click(function(){
                         'session_user': session_user,
                         'mention' : data['mention'][i]
                     }
-                    socket.emit('mention', mention_data);
-                    // console.log(request)
+                    if (create_user != session_user){
+                        socket.emit('mention', mention_data);
+                    }
                 }
             }
         },
@@ -98,7 +99,7 @@ $(document).on("click",".notice_delete_comment",function(){
     const nickname = $(this).attr('value')
     const comment_id = $(this).attr('comment_id')
     const remove_tag = $(this).parents('.post_notice_comment')
-    const remove_reply_tag = $(this).parent().next()
+    const remove_reply_tag = $(this).parents('.post_notice_comment').next()
 
     // 댓글 수 변경을 위한 변수들
     let content_footer = $(this).parents('.post_notice_comment_list').siblings('.content_footer')
@@ -158,7 +159,7 @@ $(document).on("click",".notice_reply",function(){
     const create_btn_cancel = document.createElement('button');
     
     //댓글 입력칸 hidden
-    $(this).parents('post_notice_comment_list').siblings('.comment_form').hide();
+    $(this).parents('.post_notice_comment_list').siblings('.comment_form').hide();
 
     $(create_div).attr({
         'class': 'comment_form reply_form',
@@ -202,7 +203,6 @@ $(document).on("click",".notice_reply_submit",function(){
     let text = $(this).prev().val();
     // 해당 버튼이 있는 comment
     let this_comment = $(this).parent()
-    console.log(this_comment)
     // 해당 버튼이 있는 comment의 id 값
     let comment_id = this_comment.attr('value');
     let comment_form = $(this).parent().siblings('.comment_form')
@@ -237,7 +237,7 @@ $(document).on("click",".notice_reply_submit",function(){
         dataType: 'JSON',
         contentType: "application/json",
         success: function(data){
-            indicate_reply(data, add_comment_list, standard_div)
+            indicate_reply(data, add_comment_list, standard_div, true)
             //해당 댓글의 답글 list show
             $(standard_div).attr('style','display:flex;');
             $(remove_tag).remove()
@@ -257,8 +257,9 @@ $(document).on("click",".notice_reply_submit",function(){
                         'session_user': session_user,
                         'mention' : data['mention'][i]
                     }
-                    socket.emit('mention', mention_data);
-                    // console.log(request)
+                    if (create_user != session_user){
+                        socket.emit('mention', mention_data);
+                    }
                 }
             }
         },
