@@ -55,7 +55,8 @@ def socketio_init(socketio):
                         {'kind' : 'reply'}]
                 }).sort('time', pymongo.DESCENDING).limit(1)
             notice = list(notice)
-            notice[0]['_id'] = str(notice[0]['_id'])
+            if len(notice):
+                notice[0]['_id'] = str(notice[0]['_id'])
             emit('comment_notice',notice, broadcast=True) 
         else :
             notice = col_notice.find(
@@ -65,7 +66,8 @@ def socketio_init(socketio):
                         {'kind' : 'comment'}]
                 }).sort('time', pymongo.DESCENDING).limit(1)
             notice = list(notice)
-            notice[0]['_id'] = str(notice[0]['_id'])
+            if len(notice):
+                notice[0]['_id'] = str(notice[0]['_id'])
             emit('comment_notice',notice, broadcast=True) 
 
 
