@@ -34,48 +34,6 @@ pipeline {
                 }
             }
         }
-        
-        stage('Bulid Backend') {
-          agent any
-          steps {
-            echo 'Build Backend'
-
-            dir (''){
-                sh """
-                pip3 install -r requirement.txt
-                """
-            }
-          }
-
-          post {
-            // 작업 실패 시 pipe line을 종료한다.
-            failure {
-              error 'This pipeline stops here...'
-            }
-          }
-        }
-        
-        stage('Deploy Backend') {
-          agent any
-
-          steps {
-            echo 'Build Backend'
-
-            dir ('/home/MJ/ydpsns/YDP-SNS'){
-                sh '''
-                python3 main.py
-                '''
-            }
-          }
-
-          post {
-            success {
-              mail  to: 'alswosp0206@gmail.com',
-                    subject: "Deploy Success",
-                    body: "Successfully deployed!"
-                  
-            }
-          }
-        }
     }
 }
+        
