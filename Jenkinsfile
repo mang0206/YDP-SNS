@@ -41,7 +41,7 @@ pipeline {
             // Jenkins에서 pull한 파일을 /home/ubuntu 경로에 app 이름으로 복사
             dir (''){
                 sh """
-                cp -r /home/jenkins/workspace/sns_project@2 /home/ubuntu/app
+                cp -r * /home/ubuntu/app
                 """
             }
           }
