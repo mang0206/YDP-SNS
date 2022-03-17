@@ -53,6 +53,29 @@ pipeline {
             }
           }
         }
-        
+        stage('Deploy Backend') {
+          agent any
+
+          steps {
+            echo 'Build Backend'
+
+            // docker run --name sns -d -p 8080:80 -v /home/MJ/app:/app robpco/nginx-uwsgi-flask-mssql:3.7
+            dir (''){
+                sh '''
+                docker rm -f sns
+                docker run --name sns -d -p 8080:80 -v /home/MJ/app:/app robpco/nginx-uwsgi-flask:3.6
+                '''
+            }
+          }
+
+          post {
+            success {
+              mail  to: 'alswosp0206@gmail.com',
+                    subject: "Deploy Success",
+                    body: "Successfully deployed!"
+                  
+            }
+          }
+        }
     }
 }  
