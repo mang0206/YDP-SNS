@@ -212,9 +212,54 @@ $("html").click(function(e){
         withdrawal_step[0].style = '';
     } //탈퇴 진행 완료 버튼(로그인 페이지 이동)
     else if (e.target.id == 'withdrawal_submit') {
-        withdrawal_info[0].style.maxHeight = '0px';
-        withdrawal_step[0].style = '';
-        withdrawal_complete[0].style.maxHeight = '100px';
+        let id = document.getElementById('user_id').value;
+        let pw = document.getElementById('user_password').value;
+        let confirm = document.getElementById('confirm').value;
+        let request_data = {
+            'id' : id,
+            'pw' : pw
+        }
+        if(confirm == "탈퇴를 진행합니다.") {
+            $.ajax({
+                type: 'POST',
+                url: 'secession',
+                data: JSON.stringify(request_data),
+                dataType: 'JSON',
+                contentType: "application/json",
+                success: function(data){
+                    console.log(data)
+                    // 탈퇴 성공 시 애니메이션 동작
+                    if (data['result2']== true) {
+                        withdrawal_info[0].style.maxHeight = '0px';
+                        withdrawal_step[0].style = '';
+                        withdrawal_complete[0].style.maxHeight = '100px'; 
+
+                        // delay 후 로그아웃 -> login 페이지로 이동
+                        setTimeout(function() {
+                            $.ajax({
+                                type: 'POST',
+                                url: 'logout',
+                                success: function(data){
+                                    window.location.href = 'http://' + document.domain + ':' + location.port+'/login';
+                                },
+                                error: function(request, error){
+    
+                                }
+                            })
+                          }, 8000);
+                    // 탈퇴 실패 시 alert
+                    } else {
+                        alert(data['result2'])
+                    }
+                },
+                error: function(request, status, error){
+                    alert('ajax 통신 실패')
+                    console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+                }
+            })
+        } else {
+            alert('파란 글씨 확인 후 다시 한번 입력해주세요')
+        }
     };
 
 });

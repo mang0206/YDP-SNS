@@ -3,7 +3,7 @@ from flask_socketio import emit
 from bson.objectid import ObjectId
 import pymongo
 
-conn = pymongo.MongoClient("mongodb://root:study111@13.125.71.134:27017/root?authSource=admin")
+conn = pymongo.MongoClient("mongodb://root:study111@15.164.96.105 :27017/root?authSource=admin")
 db = conn.get_database('root')
 col_user = db.get_collection('user')
 col_post = db.get_collection('post')
@@ -23,7 +23,7 @@ def socketio_init(socketio):
         notice = col_notice.find(
             {'$and': [
                     {'notice_user' : message['id'].split('!')[-1]},
-                    {'reaction_user.nickname' : notice_user['nickname']},
+                    {'notice_info.nickname' : notice_user['nickname']},
                     {'kind' : 'request_friend'}]
             }).sort('time', pymongo.DESCENDING).limit(1)
         notice = list(notice)
@@ -37,7 +37,7 @@ def socketio_init(socketio):
         notice = col_notice.find(
             {'$and': [
                     {'notice_user' : message['create_user']},
-                    {'reaction_user.nickname' : message['session_user']},
+                    {'notice_info.nickname' : message['session_user']},
                     {'kind' : message['kind']}]
             }).sort('time', pymongo.DESCENDING).limit(1)
         notice = list(notice)
@@ -51,21 +51,23 @@ def socketio_init(socketio):
             notice = col_notice.find(
                 {'$and': [
                         {'notice_user' : message['create_user']},
-                        {'reaction_user.nickname' : message['session_user']},
+                        {'notice_info.nickname' : message['session_user']},
                         {'kind' : 'reply'}]
                 }).sort('time', pymongo.DESCENDING).limit(1)
             notice = list(notice)
-            notice[0]['_id'] = str(notice[0]['_id'])
+            if len(notice):
+                notice[0]['_id'] = str(notice[0]['_id'])
             emit('comment_notice',notice, broadcast=True) 
         else :
             notice = col_notice.find(
                 {'$and': [
                         {'notice_user' : message['create_user']},
-                        {'reaction_user.nickname' : message['session_user']},
+                        {'notice_info.nickname' : message['session_user']},
                         {'kind' : 'comment'}]
                 }).sort('time', pymongo.DESCENDING).limit(1)
             notice = list(notice)
-            notice[0]['_id'] = str(notice[0]['_id'])
+            if len(notice):
+                notice[0]['_id'] = str(notice[0]['_id'])
             emit('comment_notice',notice, broadcast=True) 
 
 
@@ -74,7 +76,7 @@ def socketio_init(socketio):
         notice = col_notice.find(
             {'$and': [
                     {'notice_user' : message['mention']},
-                    {'reaction_user.nickname' : message['session_user']},
+                    {'notice_info.nickname' : message['session_user']},
                     {'kind' :'mention'}]
             }).sort('time', pymongo.DESCENDING).limit(1)
         notice = list(notice)

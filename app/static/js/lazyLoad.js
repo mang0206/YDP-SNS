@@ -21,19 +21,24 @@ document.addEventListener("DOMContentLoaded", function() {
                 };
                 //entry가 뷰포트에 들어옴을 감지했을 때
                 if (entry.isIntersecting) {
-                    console.log("isIntersecting", entry)
+                    // console.log("isIntersecting", entry)
                     //해당 entry를 타겟으로 post 변수에 할당
                     let post = entry.target;
-                    //해당 post의 image
-                    let image = $(post).children().children('.content_image_viewer').children().children('.img_album').children();
-                    //data-src 속성 값을 src 속성으로 이동
-                    let src = image.data().src;
-                    image.attr('src',`${src}`);
-                    console.log(image.src, "src")
+                    //해당 post의 images
+                    let images = post.querySelectorAll('.content_image');
+                    // console.log(images)
+
+                    //모든 data-src 속성 값을 src 속성으로 이동
+                    images.forEach(image => {
+                        // console.log(image)
+                        let src = $(image).data().src;
+                        $(image).attr('src',`${src}`);
+                        // console.log(image.src, "src")
+                        //image lazy 클래스 제거
+                        $(image).attr("class", "content_image");
+                    });
                     //post easyCheck 클래스 제거
                     post.classList.remove("easyCheck");
-                    //image lazy 클래스 제거
-                    $(image).attr("class", "content_image");
                     //옵저버를 제거
                     postObserver.unobserve(post);
                 }
@@ -64,13 +69,17 @@ document.addEventListener("DOMContentLoaded", function() {
                     //post top 위치가 윈도우 창의 높이+스크롤 높이보다 작으면
                     if(post.offsetTop < (window.innerHeight + scrollTop)) {
                         //해당 post 이미지의 data-src속성 값을 src 속성으로 바꿈
-                        let image = $(loadedPost).children().children('.content_image_viewer').children().children('.img_album').children();
-                        let src = image.data().src;
-                        image.attr('src',`${src}`);
+                        let images = $(loadedPost).children().children('.content_image_viewer').children().children('.img_album').children();
+                        
+                        images.forEach(image => {
+                            // console.log(image)
+                            let src = $(image).data().src;
+                            $(image).attr('src',`${src}`);
+                            //image lazy 클래스 제거
+                            $(image).attr("class", "content_image");
+                        });
                         //post easyCheck 클래스 제거
                         post.classList.remove("easyCheck");
-                        //image lazy 클래스 제거
-                        $(image).attr("class", "content_image");
                         console.log("lazy load")
                     }
                 });
@@ -85,9 +94,11 @@ document.addEventListener("DOMContentLoaded", function() {
         //20밀리초 후 실행(스크롤 이벤트는 빠르고 자주 일어나므로)
         }, 20);
     }
-    // 이벤트 리스너 선언
+    // 스크롤 이벤트
     document.addEventListener("scroll", lazyload);
+    // 브라우저 사이즈 감지
     window.addEventListener("resize", lazyload);
+    // 화면 모드 감지
     window.addEventListener("orientationChange", lazyload);
     }
 });

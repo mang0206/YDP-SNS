@@ -9,7 +9,7 @@ $(function(){
     });
 });
 //user icon
-let user_icon = document.getElementsByClassName('.top_bar_user');
+// let user_icon = document.getElementsByClassName('.top_bar_user');
 let user_popup = document.getElementById('user_popup');
 let user_triangle = document.getElementById('triangle');
 // notice icon
@@ -17,7 +17,9 @@ let notice_icon = document.getElementsByClassName('notice_icon');
 let notice_popup = document.getElementById('notice_container');
 let notice_dot = document.getElementById('notice_dot');
 let notice_triangle = document.getElementById('notice_triangle');
-console.log(notice_dot)
+
+// post notice modal
+let post_modal = document.querySelectorAll('.notice_modal_background');
 
 //maintain notice dot
 $(function(){
@@ -27,17 +29,31 @@ $(function(){
     }
 })
 
-
 //상단바 아이콘 팝업창 토글
 $('html').click(function(e){
+    console.log(e.target)
     //user modal area
     if (e.target == user_popup){
         return console.log('user modal');
     } //notice modal area
-    else if (e.target == notice_popup) {
-        return console.log('notice modal');
+    else if (e.target.className == 'notice_txt') {
+        return console.log('notice item');
+    } //post notice modal show
+    else if (e.target.className.includes('post_notice_click')) {
+        return console.log('post notice link')
+    } //notice post area
+    else if (e.target.closest('.post_notice_area')) {
+        // post notice like modal 창
+        if (e.target.className.includes('like_close') || e.target.className == 'like_container_back'){
+            //close btn or background 클릭시 none class
+            let notice_like_modal = e.target.closest('.like_container_back')
+            notice_like_modal.classList += ' none';
+        }
+        else {
+            return console.log('notice post');
+        };
     } //not modal area
-    else if(e.target != user_popup || e.target != notice_popup){
+    else if(e.target != user_popup || e.target != notice_popup || e.target.className == 'notice_modal_background' || e.target.id == 'notice_modal_close_img'){
         //user icon click
         if (e.target.className == 'top_bar_user') {
             //user modal toggle
@@ -48,10 +64,11 @@ $('html').click(function(e){
             notice_triangle.className = 'triangle none';
             //notice icon change
             $(notice_icon[0]).attr('src', '../static/img/notification.png');
+            
             console.log('user_icon');
         } 
         //notice icon click
-        else if (e.target.className == 'top_bar_icon notice_icon') {
+        else if (e.target.className.includes('notice_icon')) {
             //notice modal toggle
             notice_popup.classList.toggle('none');
             notice_triangle.classList.toggle('none');
@@ -78,6 +95,13 @@ $('html').click(function(e){
                     alert(error);
                 }
             })
+        } // post notice의 modal 창만 닫힘
+        else if (e.target.className == 'notice_modal_background' || e.target.id == 'notice_modal_close_img') {
+            post_modal.forEach(post => {
+                post.style.display = 'none';
+                console.log('post display none');
+            });
+            document.querySelector(".body").className = "body";
         } 
         else { //if not icon clicked, hide to all modal
             user_popup.className = 'user_popup none';
@@ -85,6 +109,10 @@ $('html').click(function(e){
             notice_popup.className = 'none notice_popup user_popup';
             notice_triangle.className = 'triangle none';
             $(notice_icon[0]).attr('src', '../static/img/notification.png');
+            // post_modal.forEach(post => {
+            //     post.style.display = 'none';
+            //     console.log('post display none');
+            // });
             console.log('close area');
         };
     };
@@ -116,44 +144,61 @@ $(function(){
     });
 });
 function make_notice_div(notice){
+    // notice가 추가될 위치
     const notice_list = document.querySelector(".notice_list");
-    console.log(notice_list)
+    // 각 notice 전체를 감쌀 div tag 
     const create_div = document.createElement('div');
-    const create_a_img = document.createElement('a');
-    const create_img = document.createElement('img');
+    // img를 감쌀 div tag
+    const create_div_img = document.createElement('div');
+
+    // 알림에 해당하는 img or text 데이터의 img, p 태그
+    let create_notice_info = null
+    if (notice['notice_info']['notice_img_kind'] == 'post_text'){
+        create_notice_info = document.createElement('p');
+    } else {
+        create_notice_info = document.createElement('img');
+    }
+    
+    // 시간 정보, 닉네임 정보, 알림 정보를 담을 div tag
     const create_div_notice_content = document.createElement('div');
+    // 알림 정보를 작성할 p 태그
     const create_p_notice_txt = document.createElement('p');
+    // 닉네임을 감쌀 a 태그
     const create_a_notice_a = document.createElement('a');
+    // 시간 정보를 담을 p 태그
     const p_notice_a = document.createElement('p');
 
     // notice 리스트에 추가할 div 태그
     if(notice['kind'] =='request_friend'){
         $(create_div).attr({
             'class': 'notice_item friend_notice',
-            'value': notice['reaction_user']['nickname']
+            'value': notice['notice_info']['nickname']
         });
     } else {
         $(create_div).attr({
             'class': 'notice_item post_notice',
-            'value': notice['reaction_user']['nickname']
+            'value': notice['notice_info']['nickname']
         });
     }
     // 이미지를 감쌀 a 테그
-    $(create_a_img).attr({
-        'href': '/user/'+notice['reaction_user']['nickname'],
+    $(create_div_img).attr({
+        'href': '/user/'+notice['notice_info']['nickname'],
         'class': 'notice_a img'
     });
     // 이미지 테그
-    if(notice['kind'] =='request_friend'){
-        $(create_img).attr({
-            'src': notice['reaction_user']['profile_img'],
+    if(notice['notice_info']['notice_img_kind'] =='profile_img'){
+        $(create_notice_info).attr({
+            'src': notice['notice_info']['notice_img_data'],
             'class': 'friend_notice_img'
         });
-    } else {
-        $(create_img).attr({
-            'src': notice['reaction_user']['profile_img'],
-            'class': 'post_notice_img'
+    } else if(notice['notice_info']['notice_img_kind'] =='post_img') {
+        $(create_notice_info).attr({
+            'src': notice['notice_info']['notice_img_data'],
+            'class': 'post_notice_img',
+            'value': notice['post_id']
         });
+    } else {
+        $(create_notice_info).text('"' + notice['notice_info']['notice_img_data'] + '"');
     }
     $(create_div_notice_content).attr({
         'class': 'notice_content'
@@ -176,9 +221,9 @@ function make_notice_div(notice){
 
     $(create_a_notice_a).attr({
         'class': 'notice_a notice_nickname',
-        'href': '/user/'+notice['reaction_user']['nickname']
+        'href': '/user/'+notice['notice_info']['nickname']
     });
-    $(create_a_notice_a).text(notice['reaction_user']['nickname'])
+    $(create_a_notice_a).text(notice['notice_info']['nickname'])
 
     $(p_notice_a).attr({
         'class': 'notice_a notice_time',
@@ -190,8 +235,8 @@ function make_notice_div(notice){
     create_p_notice_txt.prepend(create_a_notice_a);
     create_p_notice_txt.appendChild(p_notice_a);
     create_div_notice_content.appendChild(create_p_notice_txt);
-    create_a_img.appendChild(create_img);
-    create_div.appendChild(create_a_img);
+    create_div_img.appendChild(create_notice_info);
+    create_div.appendChild(create_div_img);
     create_div.appendChild(create_div_notice_content);
     // 좋아요 리스트에 최종적으로 div 태그 append
     notice_list.prepend(create_div);
@@ -232,3 +277,6 @@ socket.on('mention_notice', function(retMessage) {
         notice_dot.className = 'notice_dot';
     }
 });
+
+
+console.log($('.user_friend').attr('value'))

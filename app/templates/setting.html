@@ -94,15 +94,15 @@
                                 </div>
                                 <div class="withdrawal_step">
                                     <p>개인정보 보호를 위해 아래의 인증 절차를 진행해주세요.</p>
-                                    <input type="text" class="withdrawal_input idpw" placeholder="ID">
-                                    <input type="password" class="withdrawal_input idpw" placeholder="Password">
+                                    <input type="text" class="withdrawal_input idpw" id="user_id" placeholder="ID">
+                                    <input type="password" class="withdrawal_input idpw" id="user_password" placeholder="Password">
                                     <div style="display: flex;">
                                         <p style="padding-right: 5px;">상기 내용을 확인하였으며,</p><p style="color: #0084ff;">탈퇴를 진행합니다.</p>
                                     </div>
-                                    <input type="text" class="withdrawal_input txt" placeholder="파란 글씨에 해당하는 부분을 입력해주세요.">
+                                    <input type="text" class="withdrawal_input txt" id="confirm" placeholder="파란 글씨에 해당하는 부분을 입력해주세요.">
                                     <div class="withdrawal_button">
-                                        <button id="withdrawal_cancel_btn" class="withdrawal_btn">취소</button>
-                                        <button id="withdrawal_submit" class="withdrawal_btn">확인</button>
+                                        <button id="withdrawal_cancel_btn" class="withdrawal_btn" type='button'>취소</button>
+                                        <button id="withdrawal_submit" class="withdrawal_btn" type="submit">확인</button>
                                     </div>
                                 </div>
                                 <!-- <div class="delay_animation"></div> -->

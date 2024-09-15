@@ -134,36 +134,39 @@ $('[id$=_delete_btn]').click(function(){
 // 이미지 슬라이드
 //1.페이지 처음 로드 시 이미지의 개수에 따라 화살표 버튼 및 이미지 번호 표시를 구분 함
 $(function(){   
-    let total_img = document.querySelectorAll('.img_number');
-    // let total_img_val = total_img.val();
-    // console.log(typeof(total_img_val))
-
-    // 페이지에서 불러들인 모든 img_number P 태그를 돌며
-    total_img.forEach(img_num => {
-        //해당 P 태그의 value 속성
-        let total_img_val = $(img_num).attr('value');
-        //해당 P 태그의 양쪽 화살표 버튼
-        let img_arrow_btn = $(img_num).parent().siblings('.content_image_viewer').children().children('.img_arrow_btn');
-
+    let total_img = document.querySelectorAll('.img_album');
+    // 페이지에서 불러들인 모든 img_album을 돌며
+    total_img.forEach(img_album => {
+        //해당 태그의 value 속성
+        let total_img_val = $(img_album).data().length;
+        //해당 태그의 양쪽 화살표 버튼
+        let img_arrow_btn = $(img_album).siblings('.img_arrow_btn');
+        //img 개수 p태그
+        let img_number = $(img_album).parent().parent().siblings('.content_footer').children('.img_number');
+        // notice post p태그
+        if (img_album.id == 'notice_img_album') {
+            console.log("post notice p태그")
+            $(img_album).siblings('#post_notice_img_num').css({"display":"none"});
+        };
         //업로드한 이미지가 한 장일 경우 화살표 & img_num 표시 X
         if (total_img_val == "1") {
             $(img_arrow_btn).css({"display":"none"});
-            $(img_num).css({"display":"none"});
+            img_number.css({"display":"none"});
         };
-        
     });
     //페이지 처음 로드 시, 모든 게시물의 왼쪽 버튼 비활성화
     $('.left_arrow').css({"display":"none"});
 });
 
 //2.여러 이미지의 transform 및 현재 이미지 번호 표시
-$(function(){
+function imgSlide(){
     //모든 이미지 앨범을 가져옴
     let img_albums = document.querySelectorAll('.img_album');
+
     //각 이미지 앨범마다 다른 변수를 지정
     img_albums.forEach(img_album => {
         //해당 게시물의 총 이미지 개수
-        let total_img_num = $(img_album).children().attr('value');
+        let total_img_num = $(img_album).data().length;
 
         let img_index = 0; // 이미지 index
         let translate = 0; //이미지 이동 거리(x축)
@@ -175,10 +178,9 @@ $(function(){
         let p_tag = $(img_album).parent().parent().siblings(".content_footer").children('.img_number');
         //현재 게시물의 textarea
         let content_text = $(img_album).parent().parent().siblings(".content_text");
-        // console.log(content_text.text())
         
-        //img의 src 마지막 문자열 추출 
-        let image_type = p_tag.attr('img').slice(-3, -2);
+        //img의 마지막 문자열 추출(file type check)
+        let image_type = $(img_album).children().data().src.slice(-1);
 
         //img null인 경우(마지막 문자열이 dot)
         if (image_type == ".") {
@@ -212,9 +214,7 @@ $(function(){
                     });
                     //현재 이미지 번호 +1 & text 변경
                     p_tag.text(present_img +` / `+ p_tag.attr('value'));
-
                 }
-    
             };
             //해당 게시물에서 누른 버튼이 left인 경우
             if ($(this).attr("class") == "img_arrow_btn left_arrow") {
@@ -235,9 +235,7 @@ $(function(){
                     });
                     //현재 이미지 번호 -1 & text 변경
                     p_tag.text(present_img +` / `+ p_tag.attr('value'));
-
                 }
-    
             };
             //image의 양 끝에 도달한 경우 버튼 display:none 설정
             //img_album의 transition이 끝났을 때
@@ -260,7 +258,9 @@ $(function(){
         });
 
     });
-});
+};
+// img slide Event
+window.addEventListener('DOMContentLoaded', imgSlide);
 
 import indicate_time from './time_information.js';
 // upload time
@@ -274,16 +274,16 @@ $(function(){
 });
 
 // like list btn
-
 $('html').click(function(e){
-    console.log(e.target)
     // 더보기 버튼
+    let like_container = $(e.target).siblings('.like_container_back');
     if (e.target.className == 'content_like') {
-        $('.like_container_back').attr('class','like_container_back');
+        $(like_container[0]).attr('class','like_container_back');
+        console.log(like_container.className)
         document.querySelector(".body").className = "body scroll_hidden";
     }  //close 버튼 혹은 팝업 영역 외 클릭
-    else if (e.target.className == 'content_icon like_close' || e.target.className == 'like_container_back') {
-        $('.like_container_back').attr('class','like_container_back none');
+    if (e.target.className == 'content_icon like_close' || e.target.className == 'like_container_back') {
+        e.target.closest('.like_container_back').classList += ' none';
         document.querySelector(".body").className = "body";
         console.log("close modal")
     }
@@ -293,7 +293,7 @@ $('html').click(function(e){
 });
 
 //like btn ajax
-$('[id$=_icon]').click(function(){
+$('[id$=like_icon]').click(function(){
     let btn_value = $(this).attr('value');
     let post_id = $(this).attr('post_id');
     let btn = $(this)
@@ -389,148 +389,7 @@ $('[id$=_icon]').click(function(){
     })
 });
 
-// 댓글을 달았을 때 댓글 정보와 댓글을 단 유저 정보를 댓글 목록에 추가하는 함수
-function indicate_comment(data, comment_div){
-    // 댓글 전체를 감쌀 div tag
-    const create_div = document.createElement('div');
-    // 이미지를 감쌀 a tag
-    const create_a_img = document.createElement('a');
-    // user profile img tag
-    const create_img = document.createElement('img');
-    // comment div tag
-    const create_div_user_comment = document.createElement('div');
-    // comment nickname time div tag
-    const create_div_comment_nickname_time = document.createElement('div');
-    // nickname a tag
-    const create_a_nickname = document.createElement('a');
-    // 시간 나타날 p tag
-    const create_p_time = document.createElement('p');
-    // 댓글 내용이 담길 div tag
-    const create_div_comment_txt = document.createElement('div');
-    // 답글 달기 button
-    const create_btn = document.createElement('button');
-    // 답글 보기 button
-    const create_btn_reply = document.createElement('button');
-    // 답글이 들어갈 div tag
-    const create_div_reply = document.createElement('div');
-
-    // 좋아요 리스트에 추가할 div 태그
-    $(create_div).attr({
-        'class': 'user_img_nickname',
-        'value': data['session_user']['nickname'],
-        'comment_id': data['comment_id']
-    });
-    // 이미지를 감쌀 a 테그
-    $(create_a_img).attr({
-        'href': '/user/'+ data['session_user']['nickname']
-    });
-    // 해당 user의 profile img tag
-    $(create_img).attr({
-        'src': data['session_user']['profile_img'][1],
-        'class': 'comment_user_img'
-    });
-    // user_comment div tag
-    $(create_div_user_comment).attr({
-        'class': 'user_comment',
-    });
-    // user_comment div tag
-    $(create_div_comment_nickname_time).attr({
-        'class': 'comment_nickname_time',
-    });
-    // 닉네임 태그
-    $(create_a_nickname).attr({
-        'href': '/user/'+ data['session_user']['nickname'],
-        'class': 'comment_nickname',
-    });
-    $(create_a_nickname).text(data['session_user']['nickname'])
-    // time p tag
-    $(create_p_time).attr({
-        'class': 'comment_time',
-        'value': data['time']
-    });
-    indicate_time(create_p_time)
-
-    // comment div tag
-    $(create_div_comment_txt).attr({
-        'class': 'comment_txt',
-    });
-    for (let i in data['comment']){
-        let comment_text = null
-        if (data['comment'][i].includes('@')){
-            comment_text = document.createElement('a');
-            $(comment_text).attr({
-                'href': "/user/" + data['comment'][i].slice(1),
-                'class': 'comment_nickname',
-                'id' : 'mention'
-            });
-            $(comment_text).text(data['comment'][i])
-        }
-        else {
-            comment_text = document.createElement('span');
-            $(comment_text).text(data['comment'][i])
-        }
-        create_div_comment_txt.appendChild(comment_text)
-    }
-    //답글 button
-    $(create_btn).text('답글 달기')
-    $(create_btn).attr({
-        'class': 'recomment reply',
-        'value': data['session_user']['nickname'],
-        'comment_id' : data['comment_id']
-    });
-    $(create_btn_reply).text('답글 보기')
-    $(create_btn_reply).attr({
-        'class': 'recomment reply_show',
-        // 'value': data['session_user']['nickname'],
-        // 'comment_id' : data['comment_id']
-    });
-    //
-    $(create_div_reply).attr({
-        'class': 'reply_container',
-        'comment_id': data['comment_id']
-    });
-
-
-    // 생성한 태그들 구조에 맞게 append
-    create_div_comment_nickname_time.appendChild(create_a_nickname);
-    create_div_comment_nickname_time.appendChild(create_p_time);
-    create_div_user_comment.appendChild(create_div_comment_nickname_time);
-    create_div_user_comment.appendChild(create_div_comment_txt);
-    create_div_user_comment.appendChild(create_btn);
-    create_a_img.appendChild(create_img)
-    create_div.appendChild(create_a_img);
-    create_div.appendChild(create_div_user_comment);
-    // 좋아요 리스트에 최종적으로 div 태그 append
-    create_div.appendChild(create_btn_reply);
-
-    // session user와 댓글 작성한 user가 같을 시 삭제 버튼 추가 
-    if (data['session_user']['nickname'] == $(comment_div).attr('session_user')){
-        // 댓글 삭제 button
-        const create_btn_delete = document.createElement('button');
-
-        $(create_btn_delete).attr({
-            'class': 'recomment delete_comment',
-            'value': data['session_user']['nickname'],
-            'comment_id' : data['comment_id']
-        });
-        $(create_btn_delete).text('댓글 삭제')
-        create_div.appendChild(create_btn_delete);
-    }
-
-    $(comment_div).prepend(create_div_reply);
-    console.log(comment_div)
-    console.log(data['reply_list'])
-    for (let i in data['reply_list']){
-        let reply_data = {
-            'comment_id': data['comment_dic'],
-            'session_user': data['reply_list'][i]['reply_user'],
-            'time' : data['reply_list'][i]['reply_time'],
-            'reply': data['reply_list'][i]['reply'],
-        }
-        indicate_reply(reply_data,comment_div, create_div_reply)
-    }
-    $(comment_div).prepend(create_div);
-}
+import { indicate_comment, indicate_reply } from './create_comment.js';
 
 // comment list btn
 $(function(){
@@ -622,6 +481,11 @@ $('.comment_submit').click(function(){
     let btn = $(this)
     let add_comment_list = $(this).parent().siblings(".comment_list")
     let create_user = $(this).parents('#content').attr('create_user_nickname')
+    
+    // 댓글 수 변경을 위한 변수들
+    let content_footer = $(this).parents('.content_comment_container').siblings('.content_footer')
+    let content_comment = $(content_footer).find('.content_comment')
+    let comment_count = Number($(content_comment).text().slice(0,1))
 
     var request_data = {
         "kind" : "append_comment",
@@ -638,7 +502,9 @@ $('.comment_submit').click(function(){
         contentType: "application/json",
         success: function(data){
             indicate_comment(data, add_comment_list)
-            
+            comment_count += 1
+            $(content_comment).text(String(comment_count) + '개')
+
             socket.emit('comment_post', request_data);
             if(data['mention'].length > 0){
                 for(let i = 0; i < data['mention'].length; i++){
@@ -651,8 +517,9 @@ $('.comment_submit').click(function(){
                         'session_user': session_user,
                         'mention' : data['mention'][i]
                     }
-                    socket.emit('mention', mention_data);
-                    // console.log(request)
+                    if (create_user != session_user){
+                        socket.emit('mention', mention_data);
+                    }
                 }
             }
         },
@@ -716,111 +583,8 @@ $(document).on("click",".reply",function(){
     $(div_tag).append(create_div);
 });
 
+// import indicate_reply from './create_comment.js';
 // 답글을 달았을 때 댓글 정보와 댓글을 단 유저 정보를 답글 목록에 추가하는 함수
-function indicate_reply(data, comment_div, standard_div){
-    // 답글 전체를 감쌀 div tag
-    const create_div = document.createElement('div');
-    // 이미지를 감쌀 a tag
-    const create_a_img = document.createElement('a');
-    // user profile img tag
-    const create_img = document.createElement('img');
-    // comment div tag
-    const create_div_user_comment = document.createElement('div');
-    // comment nickname time div tag
-    const create_div_comment_nickname_time = document.createElement('div');
-    // nickname a tag
-    const create_a_nickname = document.createElement('a');
-    // 시간 나타날 p tag
-    const create_p_time = document.createElement('p');
-    // 답글 내용이 담길 div tag
-    const create_div_comment_txt = document.createElement('div');
-
-    // 좋아요 리스트에 추가할 div 태그
-    $(create_div).attr({
-        'class': 'reply_item',
-        'value': data['session_user']['nickname']
-    });
-    // 이미지를 감쌀 a 테그
-    $(create_a_img).attr({
-        'href': '/user/'+ data['session_user']['nickname']
-    });
-    // 해당 user의 profile img tag
-    $(create_img).attr({
-        'src': data['session_user']['profile_img'][1],
-        'class': 'comment_user_img'
-    });
-    // user_comment div tag
-    $(create_div_user_comment).attr({
-        'class': 'user_comment',
-    });
-    // user_comment div tag
-    $(create_div_comment_nickname_time).attr({
-        'class': 'comment_nickname_time',
-    });
-    // 닉네임 태그
-    $(create_a_nickname).attr({
-        'href': '/user/'+ data['session_user']['nickname'],
-        'class': 'comment_nickname',
-    });
-    $(create_a_nickname).text(data['session_user']['nickname'])
-    // time p tag
-    $(create_p_time).attr({
-        'class': 'comment_time',
-        'value': data['time']
-    });
-    indicate_time(create_p_time)
-
-    // comment div tag
-    $(create_div_comment_txt).attr({
-        'class': 'comment_txt',
-    });
-    for (let i in data['reply']){
-        let comment_text = null
-        if (data['reply'][i].includes('@')){
-            comment_text = document.createElement('a');
-            $(comment_text).attr({
-                'href': "/user/" + data['reply'][i].slice(1),
-                'class': 'comment_nickname',
-                'id' : 'mention'
-            });
-            $(comment_text).text(data['reply'][i])
-        }
-        else {
-            comment_text = document.createElement('span');
-            $(comment_text).text(data['reply'][i])
-        }
-        create_div_comment_txt.appendChild(comment_text)
-    }
-    //
-
-    // 생성한 태그들 구조에 맞게 append
-    create_div_comment_nickname_time.appendChild(create_a_nickname);
-    create_div_comment_nickname_time.appendChild(create_p_time);
-    create_div_user_comment.appendChild(create_div_comment_nickname_time);
-    create_div_user_comment.appendChild(create_div_comment_txt);
-    create_a_img.appendChild(create_img)
-    create_div.appendChild(create_a_img);
-    create_div.appendChild(create_div_user_comment);
-    // 좋아요 리스트에 최종적으로 div 태그 append
-    // create_div.appendChild(create_btn);
-    
-    // session user와 댓글 작성한 user가 같을 시 삭제 버튼 추가 
-    if (data['session_user']['nickname'] == $(comment_div).attr('session_user')){
-        // 댓글 삭제 button
-        const create_btn_delete = document.createElement('button');
-
-        $(create_btn_delete).attr({
-            'class': 'recomment delete_reply',
-            'value': data['session_user']['nickname'],
-            'comment_id' : data['comment_id']
-        });
-        $(create_btn_delete).text('답글 삭제')
-        create_div.appendChild(create_btn_delete);
-    }
-
-    // $(standard_div).prepend(create_div);
-    $(standard_div).append(create_div);
-}
 
 //답글 전송 ajax
 $(document).on("click",".reply_submit",function(){
@@ -857,6 +621,12 @@ $(document).on("click",".reply_submit",function(){
         'create_user': create_user,
         'session_user': session_user
     }
+
+    // 댓글 수 변경을 위한 변수들
+    let content_footer = $(this).parents('.content_comment_container').siblings('.content_footer')
+    let content_comment = $(content_footer).find('.content_comment')
+    let comment_count = Number($(content_comment).text().slice(0,1))
+
     $.ajax({
         type: "POST",
         url: "/content_reaction_submit",
@@ -869,6 +639,10 @@ $(document).on("click",".reply_submit",function(){
             $(standard_div).attr('style','display:flex;');
             $(remove_tag).remove()
             $(comment_form).show()
+
+            comment_count += 1
+            $(content_comment).text(String(comment_count) + '개')
+
             socket.emit('comment_post', request_data);
 
             console.log('mention = ',data['mention'])
@@ -915,6 +689,11 @@ $(document).on("click",".delete_reply",function(){
     const comment_id = $(this).parent().parent().attr('comment_id')
     const remove_tag = $(this).parent()
 
+    // 댓글 수 변경을 위한 변수들
+    let content_footer = $(this).parents('.content_comment_container').siblings('.content_footer')
+    let content_comment = $(content_footer).find('.content_comment')
+    let comment_count = Number($(content_comment).text().slice(0,1))
+
     var request_data = {
         "kind" : "delete_reply",
         "time": time,
@@ -929,6 +708,9 @@ $(document).on("click",".delete_reply",function(){
         contentType: "application/json",
         success: function(data){
             $(remove_tag).remove()
+
+            comment_count -= 1
+            $(content_comment).text(String(comment_count) + '개')
         },
         error: function(request, status, error){
             alert('ajax 통신 실패')
@@ -945,6 +727,11 @@ $(document).on("click",".delete_comment",function(){
     const comment_id = $(this).attr('comment_id')
     const remove_tag = $(this).parent()
     const remove_reply_tag = $(this).parent().next()
+
+    // 댓글 수 변경을 위한 변수들
+    let content_footer = $(this).parents('.content_comment_container').siblings('.content_footer')
+    let content_comment = $(content_footer).find('.content_comment')
+    let comment_count = Number($(content_comment).text().slice(0,1))
 
     var request_data = {
         "kind" : "delete_comment",
@@ -963,7 +750,10 @@ $(document).on("click",".delete_comment",function(){
             let chiled = remove_reply_tag.children()
              for(let i = 0; i < chiled.length; i++){
                  $(chiled[i]).remove();
+                 comment_count -= 1
              }
+             comment_count -= 1
+            $(content_comment).text(String(comment_count) + '개')
         },
         error: function(request, status, error){
             alert('ajax 통신 실패')
